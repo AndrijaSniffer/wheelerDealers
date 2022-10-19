@@ -40,11 +40,6 @@ create table if not exists `model_type`(
     type_name varchar(255) not null
 );
 
-create table if not exists `model_type_model`(
-    id_model_type int primary key,
-    id_model int primary key
-)
-
 create table if not exists `model`(
     id_model int auto_increment primary key,
     name_model varchar(150) not null,
@@ -55,13 +50,21 @@ create table if not exists `model`(
     foreign key(id_engine) references engine(id_engine)
 );
 
+create table if not exists `model_type_model`(
+    id_model_type int,
+    id_model int,
+
+    primary key (id_model_type, id_model),
+    foreign key id_model_type(id_model_type) references model_type(id_model_type),
+    foreign key id_model(id_model) references model(id_model)
+);
+
 create table if not exists `order`(
     id_order int auto_increment primary key,
     id_user int not null,
     order_number varchar(255) not null,
     created_at datetime default current_timestamp,
-    total int not null,
-    foreign key(id_user) references `user`(id_user)
+    total int not null
 );
 
 create table if not exists `fuel`(
@@ -85,7 +88,7 @@ create table if not exists `interior`(
     id_interior int auto_increment primary key,
     number_of_doors int not null,
     number_of_seats int not null,
-    left_side_steering_wheel boolean not null default true
+    left_side_steering_wheel boolean not null default true,
     color varchar(255) null
 );
 
@@ -103,7 +106,7 @@ CREATE TABLE IF NOT EXISTS `car`(
     chassie_number varchar(255) null,
     is_preowned boolean not null default true,
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY(id_user) REFERENCES USER(id_user),
+
     FOREIGN KEY(id_model) REFERENCES model(id_model),
     foreign key(id_transmission) references transmission(id_transmission),
     foreign key(id_drive) references drive(id_drive),
@@ -113,38 +116,44 @@ CREATE TABLE IF NOT EXISTS `car`(
 
 create table if not exists image(
     id_image int auto_increment primary key,
+    image_name varchar(255) not null
+);
+
+create table if not exists car_image(
+    id_image int,
     id_car int,
-    image_name varchar(255),
-    foreign key(id_car) references car(id_car)
+
+    primary key (id_car, id_image),
+    foreign key id_image(id_image) references image(id_image),
+    foreign key id_car(id_car) references car(id_car)
 );
 
 create table if not exists `order_car`(
     id_order_car int auto_increment primary key,
-    id_car int,
-    id_poster int,
-    id_order int,
-    quantity int,
+    id_car int not null,
+    id_poster int not null,
+    id_order int not null,
+    quantity int null,
     foreign key(id_car) references car(id_car),
-    foreign key(id_poster) references car(id_user),
     foreign key(id_order) references `order`(id_order)
 );
 
-insert into
-    `user`(
-        first_name,
-        last_name,
-        email,
-        password,
-        administrator
-    )
-values
-    (
-        'admin',
-        'admin',
-        'admin@admin.com',
-        '$2y$10$KHo6/FnvXn4O5b/aomvl5e4c7zw8u4b2oFeIWSF1m5oM8P0KBlkYu',
-        true
-    );
+-- insert into
+--     `user`(
+--         first_name,
+--         last_name,
+--         email,
+--         password,
+--         administrator
+--     )
+-- values
+--     (
+--         'admin',
+--         'admin',
+--         'admin@admin.com',
+--         '$2y$10$KHo6/FnvXn4O5b/aomvl5e4c7zw8u4b2oFeIWSF1m5oM8P0KBlkYu',
+--         true
+--     );
 
 -- DROP TABLES --
 drop table order_car;
@@ -158,5 +167,3 @@ drop table car;
 drop table model;
 
 drop table manufacturer;
-
-drop table `user`;
