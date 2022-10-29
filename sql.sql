@@ -51,10 +51,11 @@ create table if not exists `model`(
 );
 
 create table if not exists `model_type_model`(
-    id_model_type int primary key,
-    id_model int primary key,
-    foreign key id_model_type references model_type(id_model_type),
-    foreign key id_model references model(id_model)
+    id_model_type int,
+    id_model int,
+	primary key(id_model_type, id_model),
+    foreign key (id_model_type) references `model_type`(id_model_type),
+    foreign key (id_model) references `model`(id_model)
 );
 
 create table if not exists `order`(
@@ -62,8 +63,7 @@ create table if not exists `order`(
     id_user int not null,
     order_number varchar(255) not null,
     created_at datetime default current_timestamp,
-    total int not null,
-    foreign key(id_user) references `user`(id_user)
+    total int not null
 );
 
 create table if not exists `fuel`(
@@ -105,7 +105,6 @@ CREATE TABLE IF NOT EXISTS `car`(
     chassie_number varchar(255) null,
     is_preowned boolean not null default true,
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY(id_user) REFERENCES USER(id_user),
     FOREIGN KEY(id_model) REFERENCES model(id_model),
     foreign key(id_transmission) references transmission(id_transmission),
     foreign key(id_drive) references drive(id_drive),
@@ -119,10 +118,11 @@ create table if not exists image(
 );
 
 create table if not exists car_image(
-    id_image int primary key,
-    id_car int primary key,
-    foreign key id_image references image(id_image),
-    foreign key id_car references car(id_car)
+    id_image int,
+    id_car int,
+	primary key(id_image, id_car),
+    foreign key (id_image) references image(id_image),
+    foreign key (id_car) references car(id_car)
 );
 
 create table if not exists `order_car`(
@@ -132,7 +132,6 @@ create table if not exists `order_car`(
     id_order int not null,
     quantity int null,
     foreign key(id_car) references car(id_car),
-    foreign key(id_poster) references car(id_user),
     foreign key(id_order) references `order`(id_order)
 );
 
