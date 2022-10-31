@@ -1,11 +1,11 @@
 import datetime
-import time
+from dataclasses import dataclass
 
 from django.db import models
 from django.db.models import UniqueConstraint
 
 
-# Create your models here.
+# region BASE CLASSES
 class Country(models.Model):
     id_country = models.AutoField(primary_key=True, null=False)
     name_country = models.CharField(max_length=255, null=False)
@@ -115,3 +115,16 @@ class OrderCar(models.Model):
     id_poster = models.IntegerField(null=False)
     id_order = models.ForeignKey(Order, on_delete=models.RESTRICT, null=False)
     quantity = models.IntegerField(null=False)
+
+
+# endregion
+
+# region DTO
+
+@dataclass(frozen=True)
+class ManufacturerDto:
+    id_manufacturer: int
+    name_manufacturer: str
+    name_country: str
+
+# endregion
