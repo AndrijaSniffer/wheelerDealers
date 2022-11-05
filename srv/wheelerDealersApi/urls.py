@@ -12,5 +12,17 @@ urlpatterns = [
     path('getManufacturerByPK', views.getManufacturerByPK, name="getManufacturerByPK"),
     path('insertManufacturer', views.insertManufacturer, name="insertManufacturer"),
     path('updateManufacturerByPK', views.updateManufacturerByPK, name="updateManufacturerByPK"),
-    path('deleteManufacturerByPK', views.deleteManufacturerByPK, name="deleteManufacturerByPK")
+    path('deleteManufacturerByPK', views.deleteManufacturerByPK, name="deleteManufacturerByPK"),
+
+    path('getAllEngineType', views.getAllEngineType, name="getAllEngineType"),
+    path('getEngineTypeByPK', views.getEngineTypeByPK, name="getEngineTypeByPK"),
+    path('insertEngineType', views.insertEngineType, name="insertEngineType"),
+    path('updateEngineTypeByPK', views.updateEngineTypeByPK, name="updateEngineTypeByPK"),
+    path('deleteEngineTypeByPK', views.deleteEngineTypeByPK, name="deleteEngineTypeByPK"),
+
+    path('getAllEngine', views.getAllEngine, name="getAllEngine"),
+    path('getEngineByPK', views.getEngineByPK, name="getEngineByPK"),
+    path('insertEngine', views.insertEngine, name="insertEngine"),
+    path('updateEngineByPK', views.updateEngineByPK, name="updateEngineByPK"),
+    path('deleteEngineByPK', views.deleteEngineByPK, name="deleteEngineByPK"),
 ]

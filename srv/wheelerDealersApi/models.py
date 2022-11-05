@@ -25,8 +25,8 @@ class EngineType(models.Model):
 class Engine(models.Model):
     id_engine = models.AutoField(primary_key=True, null=False)
     engine_code = models.CharField(max_length=255, null=False)
-    horsepower = models.IntegerField()
-    kilowatt = models.IntegerField()
+    horsepower = models.IntegerField(null=True)
+    kilowatt = models.IntegerField(null=True)
     volume = models.IntegerField(null=False)
     id_engine_type = models.ForeignKey(EngineType, on_delete=models.RESTRICT, null=False)
 
@@ -126,5 +126,15 @@ class ManufacturerDto:
     id_manufacturer: int
     name_manufacturer: str
     name_country: str
+
+
+@dataclass(frozen=True)
+class EngineDto:
+    id_engine: int
+    engine_code = str
+    horsepower: int
+    kilowatt: int
+    volume: int
+    engine_type: str
 
 # endregion
