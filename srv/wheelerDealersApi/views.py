@@ -3,9 +3,10 @@ import json
 import logging
 
 from django.core import serializers
-from wheelerDealersApi.models import *
-
 from django.http import HttpResponse
+
+from wheelerDealersApi.models import *
+from wheelerDealersApi.util import checkIfKeyExists
 
 
 # region Country
@@ -31,6 +32,24 @@ def insertCountry(request):
     return HttpResponse(status=400)
 
 
+def updateCountryByPK(request):
+    if request.method == "PUT":
+        body_unicode = request.body.decode('utf-8')
+        body = json.loads(body_unicode)
+
+        if not checkIfKeyExists(body, 'id_country'):
+            return HttpResponse(status=400)
+
+        country = Country.objects.filter(id_country=body["id_country"])
+
+        if checkIfKeyExists(body, "name_country"):
+            country.update(name_country=body["name_country"])
+
+        return HttpResponse(content="Successfully updated country", status=200)
+
+    return HttpResponse(status=400)
+
+
 def deleteCountryByPK(request):
     if request.method == "DELETE":
         pk = request.GET['PK']
@@ -39,24 +58,6 @@ def deleteCountryByPK(request):
         country.delete()
 
         return HttpResponse(content="Successfully deleted country", status=200)
-
-    return HttpResponse(status=400)
-
-
-def updateCountryByPK(request):
-    if request.method == "PUT":
-        body_unicode = request.body.decode('utf-8')
-        body = json.loads(body_unicode)
-
-        country = Country.objects.filter(id_country=body["id_country"])
-
-        try:
-            if body["name_country"] is not None:
-                country.update(name_country=body["name_country"])
-        except KeyError:
-            return HttpResponse(status=400)
-
-        return HttpResponse(content="Successfully updated country", status=200)
 
     return HttpResponse(status=400)
 
@@ -119,16 +120,11 @@ def updateManufacturerByPK(request):
 
         manufacturer = Manufacturer.objects.filter(id_manufacturer=body["id_manufacturer"])
 
-        try:
-            manufacturer.update(name_manufacturer=body["name_manufacturer"], id_country_id=body["id_country"])
-        except KeyError:
-            try:
-                manufacturer.update(name_manufacturer=body["name_manufacturer"])
-            except KeyError:
-                try:
-                    manufacturer.update(id_country_id=body["id_country"])
-                except KeyError:
-                    return HttpResponse(status=400)
+        if checkIfKeyExists(body, "name_manufacturer"):
+            manufacturer.update(name_manufacturer=body["name_manufacturer"])
+
+        if checkIfKeyExists(body, "id_country"):
+            manufacturer.update(id_country_id=body["id_country"])
 
         return HttpResponse(content="Successfully updated manufacturer", status=200)
 
@@ -333,6 +329,212 @@ def deleteEngineByPK(request):
             return HttpResponse(status=400)
 
         return HttpResponse(content="Successfully deleted engine type", status=200)
+
+    return HttpResponse(status=400)
+
+
+# endregion
+
+# region ModelType
+
+def getAllModelType(request):
+    return HttpResponse(content=serializers.serialize('json', ModelType.objects.all()), status=200)
+
+
+def getModelTypeByPK(request):
+    if request.method == "GET":
+        pk = request.GET['PK']
+        return HttpResponse(serializers.serialize('json', ModelType.objects.filter(id_model_type=pk)), status=200)
+
+
+def insertModelType(request):
+    if request.method == "POST":
+        post = request.POST
+
+        modelType = ModelType(type_name=post['type_name'])
+        modelType.save()
+
+        return HttpResponse(content="Successfully created new model type", status=200)
+
+    return HttpResponse(status=400)
+
+
+def updateModelTypeByPK(request):
+    if request.method == "PUT":
+        body_unicode = request.body.decode('utf-8')
+        body = json.loads(body_unicode)
+
+        if not checkIfKeyExists(body, 'id_model_type'):
+            return HttpResponse(status=400)
+
+        modelType = ModelType.objects.filter(id_model_type=body["id_model_type"])
+
+        if checkIfKeyExists(body, "type_name"):
+            modelType.update(type_name=body["type_name"])
+
+        return HttpResponse(content="Successfully updated model type", status=200)
+
+    return HttpResponse(status=400)
+
+
+def deleteModelTypeByPK(request):
+    if request.method == "DELETE":
+        pk = request.GET['PK']
+
+        country = Country.objects.filter(id_model_type=pk)
+        country.delete()
+
+        return HttpResponse(content="Successfully deleted model type", status=200)
+
+    return HttpResponse(status=400)
+
+
+# endregion
+
+# region Model
+
+def getAllModel(request):
+    if request.method == "GET":
+        dbModels = Model.objects.all()
+        modelsArray = []
+
+        for m in dbModels:
+            modelsArray.append(dataclasses.asdict(ModelDto(
+                id_model=m.id_model,
+                name_model=m.name_model,
+                year_of_manufacture=m.year_of_manufacture,
+                manufacturer=m.id_manufacturer,
+                engine=m.id_engine
+            )))
+
+        return HttpResponse(content=json.dumps(modelsArray, indent=2), status=200)
+    else:
+        return HttpResponse(status=400)
+
+
+def getModelByPK(request):
+    if request.method == "GET":
+        dbModel = Model.objects.filter(id_manufacturer=request.GET["id_model"])[0]
+
+        modelObj = dataclasses.asdict(ModelDto(
+            id_model=dbModel.id_model,
+            name_model=dbModel.name_model,
+            year_of_manufacture=dbModel.year_of_manufacture,
+            manufacturer=dbModel.id_manufacturer,
+            engine=dbModel.id_engine
+        ))
+
+        return HttpResponse(json.dumps(modelObj))
+    else:
+        return HttpResponse(status=400)
+
+
+def insertModel(request):
+    if request.method == "POST":
+        post = request.POST
+
+        modelObj = Model(
+            id_model=post["id_model"],
+            name_model=post["name_model"],
+            year_of_manufacture=post["year_of_manufacture"],
+            id_manufacturer_id=post["id_manufacturer"],
+            id_engine_id=post["id_engine"]
+        )
+        modelObj.save()
+
+        return HttpResponse(status=200)
+    else:
+        return HttpResponse(status=400)
+
+
+def updateModelByPK(request):
+    if request.method == "PUT":
+        body_unicode = request.body.decode('utf-8')
+        body = json.loads(body_unicode)
+
+        modelObj = Model.objects.filter(id_model=body["id_model"])
+
+        if checkIfKeyExists(body, "name_model"):
+            modelObj.update(name_model=body["name_model"])
+
+        if checkIfKeyExists(body, "year_of_manufacture"):
+            modelObj.update(year_of_manufacture=body["year_of_manufacture"])
+
+        if checkIfKeyExists(body, "id_manufacturer"):
+            modelObj.update(id_manufacturer_id=body["id_manufacturer"])
+
+        if checkIfKeyExists(body, "id_engine"):
+            modelObj.update(id_engine_id=body["id_engine"])
+
+        return HttpResponse(content="Successfully updated model", status=200)
+
+    return HttpResponse(status=400)
+
+
+def deleteModelByPK(request):
+    if request.method == "DELETE":
+        pk = request.GET['PK']
+
+        modelObj = Model.objects.filter(id_manufacturer=pk)
+        modelObj.delete()
+
+        return HttpResponse(content="Successfully deleted model", status=200)
+
+    return HttpResponse(status=400)
+
+
+# endregion
+
+# region ModelTypeModel
+
+def getAllModelTypeModel(request):
+    return HttpResponse(content=serializers.serialize('json', ModelTypeModel.objects.all()), status=200)
+
+
+def getModelTypeModelByPK(request):
+    if request.method == "GET":
+        pk = request.GET['PK']
+        return HttpResponse(serializers.serialize('json', Country.objects.filter(id_country=pk)), status=200)
+
+
+def insertModelTypeModel(request):
+    if request.method == "POST":
+        post = request.POST
+
+        country = Country(name_country=post['name_country'])
+        country.save()
+
+        return HttpResponse(content="Successfully created new country", status=200)
+
+    return HttpResponse(status=400)
+
+
+def updateModelTypeModelByPK(request):
+    if request.method == "PUT":
+        body_unicode = request.body.decode('utf-8')
+        body = json.loads(body_unicode)
+
+        if not checkIfKeyExists(body, 'id_country'):
+            return HttpResponse(status=400)
+
+        country = Country.objects.filter(id_country=body["id_country"])
+
+        if checkIfKeyExists(body, "name_country"):
+            country.update(name_country=body["name_country"])
+
+        return HttpResponse(content="Successfully updated country", status=200)
+
+    return HttpResponse(status=400)
+
+
+def deleteModelTypeModelByPK(request):
+    if request.method == "DELETE":
+        pk = request.GET['PK']
+
+        country = Country.objects.filter(id_country=pk)
+        country.delete()
+
+        return HttpResponse(content="Successfully deleted country", status=200)
 
     return HttpResponse(status=400)
 

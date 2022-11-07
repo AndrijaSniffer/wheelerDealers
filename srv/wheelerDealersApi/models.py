@@ -137,4 +137,13 @@ class EngineDto:
     volume: int
     engine_type: str
 
+
+@dataclass(frozen=True)
+class ModelDto:
+    id_model: int
+    name_model: str
+    year_of_manufacture: int
+    manufacturer: ManufacturerDto
+    engine: EngineDto
+
 # endregion

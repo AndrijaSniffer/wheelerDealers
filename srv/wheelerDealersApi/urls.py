@@ -25,4 +25,16 @@ urlpatterns = [
     path('insertEngine', views.insertEngine, name="insertEngine"),
     path('updateEngineByPK', views.updateEngineByPK, name="updateEngineByPK"),
     path('deleteEngineByPK', views.deleteEngineByPK, name="deleteEngineByPK"),
+
+    path('getAllModelType', views.getAllModelType, name="getAllModelType"),
+    path('getModelTypeByPK', views.getModelTypeByPK, name="getModelTypeByPK"),
+    path('insertModelType', views.insertModelType, name="insertModelType"),
+    path('updateModelTypeByPK', views.updateModelTypeByPK, name="updateModelTypeByPK"),
+    path('deleteModelTypeByPK', views.deleteModelTypeByPK, name="deleteModelTypeByPK"),
+
+    path('getAllModel', views.getAllModel, name="getAllModel"),
+    path('getModelByPK', views.getModelByPK, name="getModelByPK"),
+    path('insertModel', views.insertModel, name="insertModel"),
+    path('updateModelByPK', views.updateModelByPK, name="updateModelByPK"),
+    path('deleteModelByPK', views.deleteModelByPK, name="deleteModelByPK"),
 ]
