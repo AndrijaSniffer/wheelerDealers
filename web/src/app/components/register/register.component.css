@@ -1,0 +1,53 @@
+.wrap {
+    display: flex;
+    height: 100%;
+    width: 100%;
+    background-color: #212121;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    overflow: auto;
+}
+
+.register-form {
+    overflow: auto;
+    border: 2px solid #fdd835;
+    height: fit-content;
+    padding: 40px 60px;
+    border-radius: 1rem;
+    display: flex;
+    flex-direction: column;
+    color: #fdd835;
+    text-align: center;
+    background-color: rgb(45 50 55);
+    position: relative;
+}
+
+.center-logo {
+    margin-bottom: 0.5rem;
+}
+
+.column {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem
+}
+
+.space {
+    margin-bottom: 0.5rem;
+}
+
+.row {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 0.5rem;
+}
+
+.w-40 {
+    width: 40%;
+}
+
+.w-60 {
+    width: 60%;
+}
