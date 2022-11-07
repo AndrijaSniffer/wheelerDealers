@@ -1,0 +1,37 @@
+<div class="wrap">
+    <mat-toolbar class="toolbar" color="primary">
+        <picture class="center-logo">
+            <img class="logo" src="../../assets/images/logo.jpg">
+        </picture>
+        <div class="navigation-menu">
+            <div>
+                <mat-icon>
+
+                </mat-icon>
+            </div>
+            <div>
+                <mat-icon>
+
+                </mat-icon>
+            </div>
+            <div>
+                <mat-icon>
+
+                </mat-icon>
+            </div>
+        </div>
+        <div>
+            <button mat-flat-button type="button" color="accent" (click)="navigate()">
+                Login
+            </button>
+        </div>
+    </mat-toolbar>
+    <div class="content-display">
+        <div class="content-window">
+            <router-outlet></router-outlet>
+        </div>
+    </div>
+    <div class="footer">
+
+    </div>
+</div>

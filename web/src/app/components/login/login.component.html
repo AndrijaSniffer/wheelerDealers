@@ -1,0 +1,33 @@
+<div class="wrap">
+    <picture class="center-logo">
+        <img class="logo" src="../../../assets/images/logo.jpg">
+    </picture>
+    <div class="login-form">
+        <ng-container *ngIf="!isLoading">
+            <button mat-mini-fab type="button" color="accent" (click)="navigateBack()" class="space">
+                    <mat-icon>
+                        arrow_back
+                    </mat-icon>
+            </button>
+            <h1>Welcome</h1>
+            <mat-form-field color="accent" appearance="outline">
+                <mat-label>Enter your email</mat-label>
+                <input matInput placeholder="Email..." [formControl]="email">
+            </mat-form-field>
+            <mat-form-field color="accent" appearance="outline">
+                <mat-label>Enter your password</mat-label>
+                <input matInput [type]="hide ? 'password' : 'text'" [formControl]="password" placeholder="Password...">
+                <button mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide">
+                  <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+                </button>
+            </mat-form-field>
+            <div class="row">
+                <button mat-flat-button color="accent" (click)="navigateRegister()">Register</button> &nbsp; &nbsp; &nbsp;
+                <span (click)="navigateForgot()" class="point">Forgot password?</span>
+            </div>
+            <button class="move" mat-flat-button color="accent" [disabled]="email.invalid || password.invalid">Login</button>
+        </ng-container>
+        <mat-spinner *ngIf="isLoading" color="accent">
+        </mat-spinner>
+    </div>
+</div>
