@@ -35,3 +35,10 @@ body {
 ::-webkit-scrollbar-thumb:hover {
     border: 1px solid transparent;
 }
+
+@supports(scrollbar-color: #F9A825 transparent) {
+    * {
+        scrollbar-color: #F9A825 transparent;
+        scrollbar-width: thin;
+    }
+}

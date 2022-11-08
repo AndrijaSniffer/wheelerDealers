@@ -3,23 +3,26 @@
         <picture class="center-logo">
             <img class="logo" src="../../assets/images/logo.jpg">
         </picture>
-        <div class="navigation-menu">
-            <div>
-                <mat-icon>
+        &nbsp; &nbsp;
 
-                </mat-icon>
-            </div>
-            <div>
-                <mat-icon>
-
-                </mat-icon>
-            </div>
-            <div>
-                <mat-icon>
-
-                </mat-icon>
+        <div class="navigation-wrap">
+            <div class="navigation-menu">
+                <div matRipple class="navigation-menu-item" routerLinkActive="active-item" (click)="navigateTo('home')">
+                    <mat-icon color="accent">home</mat-icon>
+                    <a class="link-item" routerLink="home" color="accent">Homepage</a>
+                </div>
+                <div matRipple class="navigation-menu-item" routerLinkActive="active-item" (click)="navigateTo('search')">
+                    <mat-icon color="accent">search</mat-icon>
+                    <a class="link-item" routerLink="search" color="accent">Search</a>
+                </div>
+                <div matRipple class="navigation-menu-item" routerLinkActive="active-item">
+                    <mat-icon color="accent">star</mat-icon>
+                    <a class="link-item" color="accent">Other</a>
+                </div>
             </div>
         </div>
+        &nbsp; &nbsp;
+
         <div>
             <button mat-flat-button type="button" color="accent" (click)="navigate()">
                 Login
