@@ -8,19 +8,12 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import {MatInputModule} from '@angular/material/input';
 import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 import {MatRippleModule} from '@angular/material/core';
+import {MatCardModule} from '@angular/material/card';
+
 @NgModule({
   declarations: [],
   imports: [
     CommonModule,
-    MatToolbarModule,
-    MatButtonModule,
-    MatIconModule,
-    ReactiveFormsModule,
-    MatFormFieldModule,
-    MatInputModule,
-    FormsModule,
-    MatProgressSpinnerModule,
-    MatRippleModule,
   ],
   exports: [
     MatToolbarModule,
@@ -32,6 +25,7 @@ import {MatRippleModule} from '@angular/material/core';
     MatInputModule,
     MatProgressSpinnerModule,
     MatRippleModule,
+    MatCardModule,
   ],
 })
 export class MaterialSharedModule {}

@@ -29,7 +29,7 @@ const routes: Routes = [
 ];
 
 @NgModule({
-  declarations: [LandingPageComponent],
+  declarations: [LandingPageComponent,HomeComponent,SearchComponent],
   imports: [CommonModule, RouterModule.forChild(routes), MaterialSharedModule],
 })
 export class LandingPageModule {}

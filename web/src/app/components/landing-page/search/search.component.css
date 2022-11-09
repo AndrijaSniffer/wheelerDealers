@@ -1,0 +1,19 @@
+.search-wrap {
+    height: 100%;
+    width: 100%;
+    display: flex;
+}
+
+.search-body {
+    width: 80%;
+    margin: auto;
+    display: flex;
+    flex-direction: column;
+}
+
+.search-body .title {
+    font-weight: 400;
+    font-size: 28px;
+    color: #fdd835;
+    text-align: center;
+}
