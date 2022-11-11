@@ -91,7 +91,6 @@ class Car(models.Model):
     id_fuel = models.ForeignKey(Fuel, on_delete=models.RESTRICT, null=False)
     id_interior = models.ForeignKey(Interior, on_delete=models.RESTRICT, null=False)
     price = models.DecimalField(null=False, max_digits=6, decimal_places=2)
-    quantity = models.IntegerField(null=True)
     color = models.CharField(max_length=255, null=True)
     chassie_number = models.CharField(max_length=255, null=True)
     is_preowned = models.BooleanField(null=False, default=True)
@@ -145,5 +144,20 @@ class ModelDto:
     year_of_manufacture: int
     manufacturer: ManufacturerDto
     engine: EngineDto
+
+
+@dataclass(frozen=True)
+class CarDto:
+    id_car: int
+    id_user: int
+    model: Model
+    transmission: Transmission
+    fuel: Fuel
+    interior: Interior
+    price: float
+    color: str
+    chassie_number: str
+    is_preowned: bool
+    created_at: datetime
 
 # endregion

@@ -381,8 +381,8 @@ def deleteModelTypeByPK(request):
     if request.method == "DELETE":
         pk = request.GET['PK']
 
-        country = Country.objects.filter(id_model_type=pk)
-        country.delete()
+        modelType = ModelType.objects.filter(id_model_type=pk)
+        modelType.delete()
 
         return HttpResponse(content="Successfully deleted model type", status=200)
 
@@ -493,18 +493,23 @@ def getAllModelTypeModel(request):
 
 def getModelTypeModelByPK(request):
     if request.method == "GET":
-        pk = request.GET['PK']
-        return HttpResponse(serializers.serialize('json', Country.objects.filter(id_country=pk)), status=200)
+        pk = request.GET['model']
+        pk2 = request.GET['modelType']
+        return HttpResponse(
+            serializers.serialize('json', ModelTypeModel.objects.filter(id_model=pk, id_model_type=pk2)), status=200)
 
 
 def insertModelTypeModel(request):
     if request.method == "POST":
         post = request.POST
 
-        country = Country(name_country=post['name_country'])
-        country.save()
+        modelTypeModel = ModelTypeModel(
+            id_model_type=post["id_model_type"],
+            id_model=post["id_model"]
+        )
+        modelTypeModel.save()
 
-        return HttpResponse(content="Successfully created new country", status=200)
+        return HttpResponse(content="Successfully created new model type model", status=200)
 
     return HttpResponse(status=400)
 
@@ -514,27 +519,649 @@ def updateModelTypeModelByPK(request):
         body_unicode = request.body.decode('utf-8')
         body = json.loads(body_unicode)
 
-        if not checkIfKeyExists(body, 'id_country'):
-            return HttpResponse(status=400)
+        modelTypeModel = ModelTypeModel.objects.filter(id_model=body["id_model"], id_model_type=body["id_model_type"])
 
-        country = Country.objects.filter(id_country=body["id_country"])
+        modelTypeModel.update(id_model=body["id_model"], id_model_type=body["id_model_type"])
 
-        if checkIfKeyExists(body, "name_country"):
-            country.update(name_country=body["name_country"])
-
-        return HttpResponse(content="Successfully updated country", status=200)
+        return HttpResponse(content="Successfully updated model type model", status=200)
 
     return HttpResponse(status=400)
 
 
 def deleteModelTypeModelByPK(request):
     if request.method == "DELETE":
+        pk = request.GET['model']
+        pk2 = request.GET['modelType']
+
+        modelTypeModel = ModelTypeModel.objects.filter(id_model=pk, id_model_type=pk2)
+        modelTypeModel.delete()
+
+        return HttpResponse(content="Successfully deleted model type model", status=200)
+
+    return HttpResponse(status=400)
+
+
+# endregion
+
+# region Order
+
+def getAllOrder(request):
+    return HttpResponse(content=serializers.serialize('json', Order.objects.all()), status=200)
+
+
+def getOrderByPK(request):
+    if request.method == "GET":
+        pk = request.GET['PK']
+        return HttpResponse(serializers.serialize('json', Order.objects.filter(id_order=pk)), status=200)
+
+
+def insertOrder(request):
+    if request.method == "POST":
+        post = request.POST
+
+        order = Order(
+            id_user=post["id_user"],
+            order_number=post["order_number"],
+            total=post["total"]
+        )
+        order.save()
+
+        return HttpResponse(content="Successfully created new order", status=200)
+
+    return HttpResponse(status=400)
+
+
+# def updateOrderByPK(request):
+#     if request.method == "PUT":
+#         body_unicode = request.body.decode('utf-8')
+#         body = json.loads(body_unicode)
+#
+#         if not checkIfKeyExists(body, 'id_country'):
+#             return HttpResponse(status=400)
+#
+#         country = Country.objects.filter(id_country=body["id_country"])
+#
+#         if checkIfKeyExists(body, "name_country"):
+#             country.update(name_country=body["name_country"])
+#
+#         return HttpResponse(content="Successfully updated country", status=200)
+#
+#     return HttpResponse(status=400)
+
+# def deleteorderByPK(request):
+#     if request.method == "DELETE":
+#         pk = request.GET['PK']
+#
+#         country = Country.objects.filter(id_country=pk)
+#         country.delete()
+#
+#         return HttpResponse(content="Successfully deleted country", status=200)
+#
+#     return HttpResponse(status=400)
+
+# endregion
+
+# region Fuel
+
+def getAllFuel(request):
+    return HttpResponse(content=serializers.serialize('json', Fuel.objects.all()), status=200)
+
+
+def getFuelByPK(request):
+    if request.method == "GET":
+        pk = request.GET['PK']
+        return HttpResponse(serializers.serialize('json', Fuel.objects.filter(id_fuel=pk)), status=200)
+
+
+def insertFuel(request):
+    if request.method == "POST":
+        post = request.POST
+
+        if checkIfKeyExists(post, "kml"):
+            fuel = Fuel(
+                fuel_name=post["fuel_name"],
+                kml=post["kml"]
+            )
+            fuel.save()
+        else:
+            fuel = Fuel(
+                fuel_name=post["fuel_name"]
+            )
+            fuel.save()
+
+        return HttpResponse(content="Successfully created new fuel", status=200)
+
+    return HttpResponse(status=400)
+
+
+def updateFuelByPK(request):
+    if request.method == "PUT":
+        body_unicode = request.body.decode('utf-8')
+        body = json.loads(body_unicode)
+
+        if not checkIfKeyExists(body, 'id_fuel'):
+            return HttpResponse(status=400)
+
+        fuel = Fuel.objects.filter(id_fuel=body["id_fuel"])
+
+        if checkIfKeyExists(body, "fuel_name"):
+            fuel.update(fuel_name=body["fuel_name"])
+
+        if checkIfKeyExists(body, "kml"):
+            fuel.update(kml=body["kml"])
+
+        return HttpResponse(content="Successfully updated fuel", status=200)
+
+    return HttpResponse(status=400)
+
+
+def deleteFuelByPK(request):
+    if request.method == "DELETE":
         pk = request.GET['PK']
 
-        country = Country.objects.filter(id_country=pk)
-        country.delete()
+        fuel = Fuel.objects.filter(id_fuel=pk)
+        fuel.delete()
 
-        return HttpResponse(content="Successfully deleted country", status=200)
+        return HttpResponse(content="Successfully deleted fuel", status=200)
+
+    return HttpResponse(status=400)
+
+
+# endregion
+
+# region Drive
+
+def getAllDrive(request):
+    return HttpResponse(content=serializers.serialize('json', Drive.objects.all()), status=200)
+
+
+def getDriveByPK(request):
+    if request.method == "GET":
+        pk = request.GET['PK']
+        return HttpResponse(serializers.serialize('json', Drive.objects.filter(id_drive=pk)), status=200)
+
+
+def insertDrive(request):
+    if request.method == "POST":
+        post = request.POST
+
+        drive = Drive(drive_type=post['drive_type'])
+        drive.save()
+
+        return HttpResponse(content="Successfully created new drive", status=200)
+
+    return HttpResponse(status=400)
+
+
+def updateDriveByPK(request):
+    if request.method == "PUT":
+        body_unicode = request.body.decode('utf-8')
+        body = json.loads(body_unicode)
+
+        if not checkIfKeyExists(body, 'id_drive'):
+            return HttpResponse(status=400)
+
+        drive = Drive.objects.filter(id_drive=body["id_drive"])
+
+        if checkIfKeyExists(body, "drive_type"):
+            drive.update(drive_type=body["drive_type"])
+
+        return HttpResponse(content="Successfully updated drive", status=200)
+
+    return HttpResponse(status=400)
+
+
+def deleteDriveByPK(request):
+    if request.method == "DELETE":
+        pk = request.GET['PK']
+
+        drive = Drive.objects.filter(id_drive=pk)
+        drive.delete()
+
+        return HttpResponse(content="Successfully deleted drive", status=200)
+
+    return HttpResponse(status=400)
+
+
+# endregion
+
+# region Transmission
+
+def getAllTransmission(request):
+    return HttpResponse(content=serializers.serialize('json', Transmission.objects.all()), status=200)
+
+
+def getTransmissionByPK(request):
+    if request.method == "GET":
+        pk = request.GET['PK']
+        return HttpResponse(serializers.serialize('json', Transmission.objects.filter(id_transmission=pk)), status=200)
+
+
+def insertTransmission(request):
+    if request.method == "POST":
+        post = request.POST
+
+        transmission = Transmission(
+            number_of_speeds=post["number_of_speeds"],
+            transmission_type=post["transmission_type"]
+        )
+        transmission.save()
+
+        return HttpResponse(content="Successfully created new transmission", status=200)
+
+    return HttpResponse(status=400)
+
+
+def updateTransmissionByPK(request):
+    if request.method == "PUT":
+        body_unicode = request.body.decode('utf-8')
+        body = json.loads(body_unicode)
+
+        if not checkIfKeyExists(body, 'id_transmission'):
+            return HttpResponse(status=400)
+
+        transmission = Transmission.objects.filter(id_transmission=body["id_transmission"])
+
+        if checkIfKeyExists(body, "number_of_speeds"):
+            transmission.update(number_of_speeds=body["number_of_speeds"])
+
+        if checkIfKeyExists(body, "transmission_type"):
+            transmission.update(transmission_type=body["transmission_type"])
+
+        return HttpResponse(content="Successfully updated transmission", status=200)
+
+    return HttpResponse(status=400)
+
+
+def deleteTransmissionByPK(request):
+    if request.method == "DELETE":
+        pk = request.GET['PK']
+
+        transmission = Transmission.objects.filter(id_transmission=pk)
+        transmission.delete()
+
+        return HttpResponse(content="Successfully deleted transmission", status=200)
+
+    return HttpResponse(status=400)
+
+
+# endregion
+
+# region Interior
+
+def getAllInterior(request):
+    return HttpResponse(content=serializers.serialize('json', Interior.objects.all()), status=200)
+
+
+def getInteriorByPK(request):
+    if request.method == "GET":
+        pk = request.GET['PK']
+        return HttpResponse(serializers.serialize('json', Interior.objects.filter(id_interior=pk)), status=200)
+
+
+def insertInterior(request):
+    if request.method == "POST":
+        post = request.POST
+
+        if checkIfKeyExists(post, "color"):
+            interior = Interior(
+                number_of_doors=post["number_of_doors"],
+                number_of_seats=post["number_of_seats"],
+                left_side_steering_wheel=post["left_side_steering_wheel"],
+                color=post["color"]
+            )
+            interior.save()
+        else:
+            interior = Interior(
+                number_of_doors=post["number_of_doors"],
+                number_of_seats=post["number_of_seats"],
+                left_side_steering_wheel=post["left_side_steering_wheel"]
+            )
+            interior.save()
+
+        return HttpResponse(content="Successfully created new interior", status=200)
+
+    return HttpResponse(status=400)
+
+
+def updateInteriorByPK(request):
+    if request.method == "PUT":
+        body_unicode = request.body.decode('utf-8')
+        body = json.loads(body_unicode)
+
+        if not checkIfKeyExists(body, 'id_interior'):
+            return HttpResponse(status=400)
+
+        interior = Interior.objects.filter(id_interior=body["id_interior"])
+
+        if checkIfKeyExists(body, "number_of_doors"):
+            interior.update(number_of_doors=body["number_of_doors"])
+
+        if checkIfKeyExists(body, "number_of_seats"):
+            interior.update(number_of_seats=body["number_of_seats"])
+
+        if checkIfKeyExists(body, "left_side_steering_wheel"):
+            interior.update(left_side_steering_wheel=body["left_side_steering_wheel"])
+
+        if checkIfKeyExists(body, "color"):
+            interior.update(color=body["color"])
+
+        return HttpResponse(content="Successfully updated interior", status=200)
+
+    return HttpResponse(status=400)
+
+
+def deleteInteriorByPK(request):
+    if request.method == "DELETE":
+        pk = request.GET['PK']
+
+        interior = Interior.objects.filter(id_interior=pk)
+        interior.delete()
+
+        return HttpResponse(content="Successfully deleted interior", status=200)
+
+    return HttpResponse(status=400)
+
+
+# endregion
+
+# region Image
+
+def getAllImage(request):
+    return HttpResponse(content=serializers.serialize('json', Image.objects.all()), status=200)
+
+
+def getImageByPK(request):
+    if request.method == "GET":
+        pk = request.GET['PK']
+        return HttpResponse(serializers.serialize('json', Image.objects.filter(id_image=pk)), status=200)
+
+
+def insertImage(request):
+    if request.method == "POST":
+        post = request.POST
+
+        image = Image(image_name=post["image_name"])
+        image.save()
+
+        return HttpResponse(content="Successfully created new image", status=200)
+
+    return HttpResponse(status=400)
+
+
+def updateImageByPK(request):
+    if request.method == "PUT":
+        body_unicode = request.body.decode('utf-8')
+        body = json.loads(body_unicode)
+
+        if not checkIfKeyExists(body, 'id_image'):
+            return HttpResponse(status=400)
+
+        image = Image.objects.filter(id_image=body["id_image"])
+
+        if checkIfKeyExists(body, "image_name"):
+            image.update(image_name=body["image_name"])
+
+        return HttpResponse(content="Successfully updated image", status=200)
+
+    return HttpResponse(status=400)
+
+
+def deleteImageByPK(request):
+    if request.method == "DELETE":
+        pk = request.GET['PK']
+
+        image = Image.objects.filter(id_image=pk)
+        image.delete()
+
+        return HttpResponse(content="Successfully deleted image", status=200)
+
+    return HttpResponse(status=400)
+
+
+# endregion
+
+# region CarImage
+
+def getAllCarImage(request):
+    return HttpResponse(content=serializers.serialize('json', CarImage.objects.all()), status=200)
+
+
+def getCarImageByPK(request):
+    if request.method == "GET":
+        pk = request.GET['image']
+        pk2 = request.GET['car']
+        return HttpResponse(serializers.serialize('json', CarImage.objects.filter(id_image=pk, id_car=pk2)), status=200)
+
+
+def insertCarImage(request):
+    if request.method == "POST":
+        post = request.POST
+
+        carImage = CarImage(
+            id_image=post["id_image"],
+            id_car=post["id_car"]
+        )
+        carImage.save()
+
+        return HttpResponse(content="Successfully created new car image", status=200)
+
+    return HttpResponse(status=400)
+
+
+def updateCarImageByPK(request):
+    if request.method == "PUT":
+        body_unicode = request.body.decode('utf-8')
+        body = json.loads(body_unicode)
+
+        carImage = CarImage.objects.filter(id_image=body["id_image"], id_car=body["id_car"])
+
+        carImage.update(id_image=body["id_image"], id_car=body["id_car"])
+
+        return HttpResponse(content="Successfully updated car image", status=200)
+
+    return HttpResponse(status=400)
+
+
+def deleteCarImageByPK(request):
+    if request.method == "DELETE":
+        pk = request.GET['image']
+        pk2 = request.GET['car']
+
+        carImage = CarImage.objects.filter(id_image=pk, id_car=pk2)
+        carImage.delete()
+
+        return HttpResponse(content="Successfully deleted car image", status=200)
+
+    return HttpResponse(status=400)
+
+
+# endregion
+
+# region OrderCar
+
+def getAllOrderCar(request):
+    return HttpResponse(content=serializers.serialize('json', OrderCar.objects.all()), status=200)
+
+
+def getOrderCarByPK(request):
+    if request.method == "GET":
+        pk = request.GET['PK']
+        return HttpResponse(serializers.serialize('json', OrderCar.objects.filter(id_order_car=pk)), status=200)
+
+
+def insertOrderCar(request):
+    if request.method == "POST":
+        post = request.POST
+
+        orderCar = OrderCar(
+            id_car=post["id_car"],
+            id_poster=post["id_user"],
+            id_order=post["id_order"],
+            quantity=post["quantity"]
+        )
+        orderCar.save()
+
+        return HttpResponse(content="Successfully created new car order", status=200)
+
+    return HttpResponse(status=400)
+
+
+def updateOrderCarByPK(request):
+    if request.method == "PUT":
+        body_unicode = request.body.decode('utf-8')
+        body = json.loads(body_unicode)
+
+        if not checkIfKeyExists(body, 'id_order_car'):
+            return HttpResponse(status=400)
+
+        orderCar = OrderCar.objects.filter(id_order_car=body["id_order_car"])
+
+        if checkIfKeyExists(body, "quantity"):
+            orderCar.update(quantity=body["quantity"])
+
+        return HttpResponse(content="Successfully updated car order", status=200)
+
+    return HttpResponse(status=400)
+
+
+def deleteOrderCarByPK(request):
+    if request.method == "DELETE":
+        pk = request.GET['PK']
+
+        orderCar = OrderCar.objects.filter(id_order_car=pk)
+        orderCar.delete()
+
+        return HttpResponse(content="Successfully deleted car order", status=200)
+
+    return HttpResponse(status=400)
+
+
+# endregion
+
+# region Car
+
+def getAllCar(request):
+    if request.method == "GET":
+        dbCars = Car.objects.all()
+        cars = []
+
+        for c in dbCars:
+            cars.append(dataclasses.asdict(CarDto(
+                id_car=c.id_car,
+                id_user=c.id_user,
+                created_at=c.created_at,
+                is_preowned=c.is_preowned,
+                chassie_number=c.chassie_number,
+                color=c.color,
+                model=c.id_model,
+                price=c.price,
+                interior=c.id_interior,
+                transmission=c.id_transmission,
+                fuel=c.id_fuel
+            )))
+
+        return HttpResponse(content=json.dumps(cars, indent=2), status=200)
+    else:
+        return HttpResponse(status=400)
+
+
+def getCarByPK(request):
+    if request.method == "GET":
+        dbCar = Car.objects.filter(id_car=request.GET["id_car"])[0]
+
+        car = dataclasses.asdict(CarDto(
+            id_car=dbCar.id_car,
+            id_user=dbCar.id_user,
+            created_at=dbCar.created_at,
+            is_preowned=dbCar.is_preowned,
+            chassie_number=dbCar.chassie_number,
+            color=dbCar.color,
+            model=dbCar.id_model,
+            price=dbCar.price,
+            interior=dbCar.id_interior,
+            transmission=dbCar.id_transmission,
+            fuel=dbCar.id_fuel
+        ))
+
+        return HttpResponse(json.dumps(car))
+    else:
+        return HttpResponse(status=400)
+
+
+def insertCar(request):
+    if request.method == "POST":
+        post = request.POST
+
+        car = Car(
+            id_user=post["id_user"],
+            created_at=datetime.datetime.utcnow(),
+            is_preowned=post["is_preowned"],
+            chassie_number=post["chassie_number"],
+            color=post["color"],
+            id_model_id=post["id_model"],
+            price=post["price"],
+            id_interior_id=post["id_interior"],
+            id_transmission_id=post["id_transmission"],
+            id_fuel_id=post["id_fuel"]
+        )
+        car.save()
+
+        return HttpResponse(status=200)
+    else:
+        return HttpResponse(status=400)
+
+
+def updateCarByPK(request):
+    if request.method == "PUT":
+        body_unicode = request.body.decode('utf-8')
+        body = json.loads(body_unicode)
+
+        if not checkIfKeyExists(body, 'id_car'):
+            return HttpResponse(status=400)
+
+        car = Car.objects.filter(id_car=body["id_car"])
+
+        if checkIfKeyExists(body, "id_user"):
+            car.update(id_user=body["id_user"])
+
+        if checkIfKeyExists(body, "is_preowned"):
+            car.update(is_preowned=body["is_preowned"])
+
+        if checkIfKeyExists(body, "chassie_number"):
+            car.update(chassie_number=body["chassie_number"])
+
+        if checkIfKeyExists(body, "color"):
+            car.update(color=body["color"])
+
+        if checkIfKeyExists(body, "id_model"):
+            car.update(id_model_id=body["id_model"])
+
+        if checkIfKeyExists(body, "price"):
+            car.update(price=body["price"])
+
+        if checkIfKeyExists(body, "id_interior"):
+            car.update(id_interior_id=body["id_interior"])
+
+        if checkIfKeyExists(body, "id_transmission"):
+            car.update(id_transmission_id=body["id_transmission"])
+
+        if checkIfKeyExists(body, "id_fuel"):
+            car.update(id_fuel_id=body["id_fuel"])
+
+        return HttpResponse(content="Successfully updated car", status=200)
+
+    return HttpResponse(status=400)
+
+
+def deleteCarByPK(request):
+    if request.method == "DELETE":
+        pk = request.GET['PK']
+
+        car = Car.objects.filter(id_car=pk)
+        car.delete()
+
+        return HttpResponse(content="Successfully deleted car", status=200)
 
     return HttpResponse(status=400)
 
