@@ -5,6 +5,7 @@ import { LandingPageComponent } from './landing-page.component';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule, Routes } from '@angular/router';
+import { ContactComponent } from './contact/contact.component';
 
 const routes: Routes = [
   {
@@ -20,6 +21,10 @@ const routes: Routes = [
         component: SearchComponent,
       },
       {
+        path:'contact',
+        component: ContactComponent,
+      },
+      {
         path:'',
         redirectTo:'home',
         pathMatch:'full'
@@ -29,7 +34,7 @@ const routes: Routes = [
 ];
 
 @NgModule({
-  declarations: [LandingPageComponent,HomeComponent,SearchComponent],
+  declarations: [LandingPageComponent,HomeComponent,SearchComponent, ContactComponent],
   imports: [CommonModule, RouterModule.forChild(routes), MaterialSharedModule],
 })
 export class LandingPageModule {}

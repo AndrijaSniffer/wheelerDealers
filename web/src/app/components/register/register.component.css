@@ -11,13 +11,13 @@
 
 .register-form {
     overflow: auto;
-    border: 2px solid #fdd835;
+    border: 2px solid var(--accent-light-color);
     height: fit-content;
     padding: 40px 60px;
     border-radius: 1rem;
     display: flex;
     flex-direction: column;
-    color: var(--accent-font-color);
+    color: var(--accent-light-color);
     text-align: center;
     background-color: var(--gray-background);
     position: relative;

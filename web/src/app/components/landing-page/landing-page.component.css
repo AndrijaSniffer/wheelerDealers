@@ -1,3 +1,5 @@
+/* Toolbar */
+
 .center-logo {
     margin-top: auto;
     margin-bottom: auto;
@@ -7,21 +9,12 @@
     overflow: auto;
     flex-shrink: 0;
     height: 96px;
-    border-bottom: 3px solid #fdd835;
+    border-bottom: 3px solid var(--accent-light-color);
     display: grid;
     grid-auto-flow: column;
     grid-auto-columns: 1fr;
     gap: 8px;
 }
-
-
-/* .toolbar{
-    overflow: auto;
-    flex-shrink: 0;
-    height: 96px;
-    border-bottom: 3px solid #fdd835;
-    display: flex;
-} */
 
 .navigation-wrap {
     flex: 1 1;
@@ -46,7 +39,7 @@
     padding: 2px;
     font-size: 13px;
     font-weight: 400;
-    color: var(--accent-font-color);
+    color: var(--accent-light-color);
     user-select: none;
     position: relative;
 }
@@ -70,7 +63,7 @@ mat-icon {
     left: 0;
     right: 0;
     bottom: 0;
-    background: var(--accent-font-color);
+    background: var(--accent-light-color);
     transition: transform 0.15s ease-in;
     transform: scale(0);
     border-radius: 0 0 1rem 1rem;
@@ -87,7 +80,7 @@ mat-icon {
 
 .navigation-menu-item:hover .link-item {
     opacity: 1;
-    color: var(--accent-font-color);
+    color: var(--accent-light-color);
     text-decoration: none;
     pointer-events: none;
 }
@@ -98,14 +91,14 @@ mat-icon {
     left: 0;
     right: 0;
     bottom: 0;
-    background: var(--accent-font-color);
+    background: var(--accent-light-color);
     border: 2px solid transparent;
     border-radius: 0 0 1rem 1rem;
 }
 
 .active-item .link-item {
     opacity: 1;
-    color: var(--accent-font-color);
+    color: var(--accent-light-color);
     text-decoration: none;
     pointer-events: none;
 }
@@ -114,8 +107,12 @@ mat-icon {
     translate: 0 0;
 }
 
+.login {
+    text-align: end;
+}
 
-/* no longer concerning the nav bar */
+
+/* Main body*/
 
 .wrap {
     height: 100%;
@@ -128,12 +125,6 @@ mat-icon {
     position: relative;
 }
 
-.footer {
-    background-color: var(--black-background);
-    height: 56px;
-    border-top: 3px solid var(--accent-font-color);
-}
-
 .content-window {
     position: absolute;
     inset: 0;
@@ -141,6 +132,21 @@ mat-icon {
     background-color: var(--gray-background);
 }
 
-.login {
-    text-align: end;
+
+/* Footer */
+
+.footer {
+    background-color: var(--black-background);
+    height: 56px;
+    border-top: 3px solid var(--accent-light-color);
+    display: flex;
+    color: var(--accent-light-color);
+    box-sizing: border-box;
+    padding: 0 16px;
+}
+
+.footer .signed {
+    font-weight: 400;
+    font-size: 16px;
+    align-self: center;
 }

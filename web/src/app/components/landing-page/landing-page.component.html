@@ -13,9 +13,9 @@
                 <mat-icon color="accent">search</mat-icon>
                 <a class="link-item" routerLink="search" color="accent">Search</a>
             </div>
-            <div matRipple class="navigation-menu-item" routerLinkActive="active-item">
-                <mat-icon color="accent">star</mat-icon>
-                <a class="link-item" color="accent">Other</a>
+            <div matRipple class="navigation-menu-item" routerLinkActive="active-item" (click)="navigateTo('contact')">
+                <mat-icon color="accent">mail</mat-icon>
+                <a class="link-item" routerLink="contact" color="accent">Contact us</a>
             </div>
         </div>
         <!-- </div> -->
@@ -31,6 +31,8 @@
         </div>
     </div>
     <div class="footer">
-
+        <div class="signed">
+            <span>Andrija Cajic - 3711</span>
+        </div>
     </div>
 </div>

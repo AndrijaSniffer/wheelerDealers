@@ -1,7 +1,9 @@
 /* You can add global styles to this file, and also import other style files */
 
+@import './material-styles-overrides.css';
 :root {
-    --accent-font-color: #fdd835;
+    --accent-light-color: #fdd835;
+    --accent-dark-color: #F9A825;
     --black-background: #212121;
     --gray-background: #2d3237;
 }
@@ -32,7 +34,7 @@ body {
 }
 
 ::-webkit-scrollbar-thumb {
-    background: #F9A825;
+    background: var(--accent-dark-color);
     border: 2px solid transparent;
     background-clip: padding-box;
     border-radius: 8px;
@@ -42,9 +44,9 @@ body {
     border: 1px solid transparent;
 }
 
-@supports(scrollbar-color: #F9A825 transparent) {
+@supports(scrollbar-color: var(--accent-dark-color) transparent) {
     * {
-        scrollbar-color: #F9A825 transparent;
+        scrollbar-color: var(--accent-dark-color) transparent;
         scrollbar-width: thin;
     }
 }
