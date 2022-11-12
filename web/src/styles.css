@@ -1,5 +1,11 @@
 /* You can add global styles to this file, and also import other style files */
 
+:root {
+    --accent-font-color: #fdd835;
+    --black-background: #212121;
+    --gray-background: #2d3237;
+}
+
 html,
 body {
     height: 100%;
@@ -34,4 +40,11 @@ body {
 
 ::-webkit-scrollbar-thumb:hover {
     border: 1px solid transparent;
+}
+
+@supports(scrollbar-color: #F9A825 transparent) {
+    * {
+        scrollbar-color: #F9A825 transparent;
+        scrollbar-width: thin;
+    }
 }

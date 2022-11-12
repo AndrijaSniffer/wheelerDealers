@@ -14,4 +14,8 @@ export class LandingPageComponent implements OnInit {
   navigate() {
     this.router.navigate(['./login']);
   }
+  
+  navigateTo(path:string){
+    this.router.navigate([`main/${path}`]);
+  }
 }
