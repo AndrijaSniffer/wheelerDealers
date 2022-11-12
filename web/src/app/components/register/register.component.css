@@ -1,0 +1,53 @@
+.wrap {
+    display: flex;
+    height: 100%;
+    width: 100%;
+    background-color: var(--black-background);
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    overflow: auto;
+}
+
+.register-form {
+    overflow: auto;
+    border: 2px solid var(--accent-light-color);
+    height: fit-content;
+    padding: 40px 60px;
+    border-radius: 1rem;
+    display: flex;
+    flex-direction: column;
+    color: var(--accent-light-color);
+    text-align: center;
+    background-color: var(--gray-background);
+    position: relative;
+}
+
+.center-logo {
+    margin-bottom: 0.5rem;
+}
+
+.column {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem
+}
+
+.space {
+    margin-bottom: 0.5rem;
+}
+
+.row {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 0.5rem;
+}
+
+.w-40 {
+    width: 40%;
+}
+
+.w-60 {
+    width: 60%;
+}

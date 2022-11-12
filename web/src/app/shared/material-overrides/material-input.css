@@ -1,0 +1,18 @@
+.mat-form-field-appearance-outline .mat-form-field-outline {
+    color: var(--accent-light-color);
+}
+
+
+/* focused overwrite color */
+
+mat-label {
+    color: var(--accent-light-color);
+}
+
+.mat-form-field-appearance-outline:hover .mat-form-field-outline {
+    color: var(--accent-dark-color)
+}
+
+.mat-form-field-appearance-outline.mat-focused .mat-form-field-outline {
+    color: var(--accent-dark-color) !important;
+}
