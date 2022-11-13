@@ -96,5 +96,9 @@ urlpatterns = [
     path('getCarByPK', views.getCarByPK, name="getCarByPK"),
     path('insertCar', views.insertCar, name="insertCar"),
     path('updateCarByPK', views.updateCarByPK, name="updateCarByPK"),
-    path('deleteCarByPK', views.deleteCarByPK, name="deleteCarByPK")
+    path('deleteCarByPK', views.deleteCarByPK, name="deleteCarByPK"),
+
+    path('login', views.loginUser, name="loginUser"),
+    path('logout', views.logoutUser, name='logoutUser'),
+    path('isAuthorized', views.isAuthorized, name='isAuthorized')
 ]

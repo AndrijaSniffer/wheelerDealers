@@ -2,6 +2,7 @@ import dataclasses
 import json
 import logging
 
+from django.contrib.auth import authenticate, login, logout
 from django.core import serializers
 from django.http import HttpResponse
 
@@ -1165,4 +1166,51 @@ def deleteCarByPK(request):
 
     return HttpResponse(status=400)
 
+
+# endregion
+
+# region Auth
+
+def loginUser(request):
+    if request.method == "POST":
+        post = request.POST
+
+        if not (checkIfKeyExists(post, 'username') and checkIfKeyExists(post, 'password')):
+            return HttpResponse(status=400)
+
+        username = request.POST['username']
+        password = request.POST['password']
+        user = authenticate(request, username=username, password=password)
+        if user is not None:
+            login(request, user)
+
+            return HttpResponse(json.dumps(dataclasses.asdict(UserDto(
+                userId=user.id,
+                firstName=user.first_name,
+                lastName=user.last_name,
+                username=user.username,
+                isStaff=user.is_staff,
+                isSuperuser=user.is_superuser,
+                email=user.email
+            ))), content_type='json')
+        else:
+            return HttpResponse(status=401)
+
+    else:
+        return HttpResponse(status=400)
+
+
+def logoutUser(request):
+    if request.method == 'DELETE':
+        logout(request)
+        return HttpResponse(status=200)
+    else:
+        return HttpResponse(status=400)
+
+
+def isAuthorized(request):
+    if request.method == 'GET':
+        return HttpResponse(json.dumps({"authorized": request.user.is_authenticated}), content_type='json')
+    else:
+        return HttpResponse(status=400)
 # endregion

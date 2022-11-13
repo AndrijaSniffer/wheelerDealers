@@ -97,6 +97,12 @@ class Car(models.Model):
     created_at = models.DateTimeField(null=False, default=datetime.datetime.now())
 
 
+class CarPhoneNumber(models.Model):
+    phone_number = models.CharField(max_length=20, null=False)
+    id_car = models.ForeignKey(Car, on_delete=models.RESTRICT, null=False)
+    models.UniqueConstraint(fields=['phone_number', 'id_car'], name='carPhoneNumberPK')
+
+
 class Image(models.Model):
     id_image = models.AutoField(primary_key=True, null=False)
     image_name = models.CharField(max_length=255, null=False)
@@ -159,5 +165,15 @@ class CarDto:
     chassie_number: str
     is_preowned: bool
     created_at: datetime
+
+@dataclass(frozen=True)
+class UserDto:
+    userId: int
+    isSuperuser: bool
+    isStaff: bool
+    firstName: str
+    lastName: str
+    email: str
+    username: str
 
 # endregion
