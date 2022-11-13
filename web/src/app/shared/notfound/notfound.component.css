@@ -1,0 +1,18 @@
+.error-wrap {
+    background-color: var(--black-background);
+    height: 100%;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+.error-sign {
+    scale: 5;
+    margin-bottom: 5rem;
+}
+
+.back-button {
+    padding: 0.5rem 1rem;
+}

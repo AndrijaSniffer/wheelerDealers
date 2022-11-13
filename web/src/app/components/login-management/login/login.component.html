@@ -22,7 +22,7 @@
                 </button>
             </mat-form-field>
             <div class="row">
-                <button mat-flat-button color="accent" (click)="navigateRegister()">Register</button> &nbsp; &nbsp; &nbsp;
+                <button mat-flat-button color="accent" type="button" (click)="navigateRegister()">Register</button>
                 <span (click)="navigateForgot()" class="point">Forgot password?</span>
             </div>
             <button class="move" mat-flat-button color="accent" [disabled]="email.invalid || password.invalid">Login</button>

@@ -1,0 +1,12 @@
+.mat-menu-panel {
+    background-color: var(--black-background);
+    border: 1px solid var(--accent-light-color);
+}
+
+.mat-menu-item {
+    color: var(--accent-light-color);
+}
+
+.mat-menu-item mat-icon {
+    color: var(--accent-light-color) !important;
+}

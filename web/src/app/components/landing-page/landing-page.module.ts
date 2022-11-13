@@ -21,20 +21,30 @@ const routes: Routes = [
         component: SearchComponent,
       },
       {
-        path:'contact',
+        path: 'contact',
         component: ContactComponent,
       },
       {
-        path:'',
-        redirectTo:'home',
-        pathMatch:'full'
-      }
+        path: 'profile',
+        loadChildren: () =>
+          import('../profile/profile.module').then((m) => m.ProfileModule),
+      },
+      {
+        path: '',
+        redirectTo: 'home',
+        pathMatch: 'full',
+      },
     ],
   },
 ];
 
 @NgModule({
-  declarations: [LandingPageComponent,HomeComponent,SearchComponent, ContactComponent],
+  declarations: [
+    LandingPageComponent,
+    HomeComponent,
+    SearchComponent,
+    ContactComponent,
+  ],
   imports: [CommonModule, RouterModule.forChild(routes), MaterialSharedModule],
 })
 export class LandingPageModule {}

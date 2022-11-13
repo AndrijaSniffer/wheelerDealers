@@ -33,7 +33,7 @@ export class RegisterComponent implements OnInit {
     },{validators:checkPassword} as AbstractControlOptions)
   }
   navigateBack(){
-    this.router.navigate(['./login'])
+    this.router.navigate(['management/login'])
   }
 
   submitForm(){

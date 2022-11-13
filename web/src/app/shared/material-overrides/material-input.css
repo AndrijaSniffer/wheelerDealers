@@ -2,6 +2,11 @@
     color: var(--accent-light-color);
 }
 
+input[type="password"]::-ms-reveal,
+input[type="password"]::-ms-clear {
+    display: none;
+}
+
 
 /* focused overwrite color */
 
@@ -10,7 +15,7 @@ mat-label {
 }
 
 .mat-form-field-appearance-outline:hover .mat-form-field-outline {
-    color: var(--accent-dark-color)
+    color: var(--accent-dark-color);
 }
 
 .mat-form-field-appearance-outline.mat-focused .mat-form-field-outline {
