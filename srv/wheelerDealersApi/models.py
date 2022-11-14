@@ -166,6 +166,7 @@ class CarDto:
     is_preowned: bool
     created_at: datetime
 
+
 @dataclass(frozen=True)
 class UserDto:
     userId: int

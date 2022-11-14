@@ -3,8 +3,10 @@ import json
 import logging
 
 from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.models import User
 from django.core import serializers
 from django.http import HttpResponse
+from django.views.decorators.csrf import csrf_exempt
 
 from wheelerDealersApi.models import *
 from wheelerDealersApi.util import checkIfKeyExists
@@ -1171,6 +1173,7 @@ def deleteCarByPK(request):
 
 # region Auth
 
+@csrf_exempt
 def loginUser(request):
     if request.method == "POST":
         post = request.POST
@@ -1213,4 +1216,64 @@ def isAuthorized(request):
         return HttpResponse(json.dumps({"authorized": request.user.is_authenticated}), content_type='json')
     else:
         return HttpResponse(status=400)
+
+
+@csrf_exempt
+def registerUser(request):
+    if request.method == 'POST':
+        post = request.POST
+
+        if not (checkIfKeyExists(post, 'username') and checkIfKeyExists(post, 'password')
+                and checkIfKeyExists(post, 'email') and checkIfKeyExists(post, 'firstName')
+                and checkIfKeyExists(post, 'lastName')):
+            return HttpResponse(status=400)
+
+        user = User.objects.create_user(post["username"], post["email"], post["password"], first_name=post["firstName"],
+                                        last_name=post["lastName"], is_staff=False)
+        return HttpResponse(status=200)
+    else:
+        return HttpResponse(status=400)
+
+
+def deactivateUser(request):
+    if request.method == 'DELETE':
+        if request.user.is_superuser:
+            if not checkIfKeyExists(request.GET, 'PK'):
+                return HttpResponse(status=400)
+
+            pk = request.GET["PK"]
+
+            user = User.objects.filter(id=pk)
+            user.update(is_active=False)
+
+            return HttpResponse(status=200)
+
+        else:
+            return HttpResponse(status=401)
+    else:
+        return HttpResponse(status=400)
+
+
+def updateUser(request):
+    if request.method == 'PUT':
+        id = request.user.id
+        body_unicode = request.body.decode('utf-8')
+        body = json.loads(body_unicode)
+
+        user = User.objects.filter(id=id)
+
+        if checkIfKeyExists(body, 'firstName'):
+            user.update(first_name=body['firstName'])
+
+        if checkIfKeyExists(body, 'lastName'):
+            user.update(last_name=body['lastName'])
+
+        if checkIfKeyExists(body, 'password'):
+            user.set_password(body['password'])
+            user.save()
+
+        return HttpResponse(status=200)
+    else:
+        return HttpResponse(status=400)
+
 # endregion

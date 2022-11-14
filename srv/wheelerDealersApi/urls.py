@@ -100,5 +100,8 @@ urlpatterns = [
 
     path('login', views.loginUser, name="loginUser"),
     path('logout', views.logoutUser, name='logoutUser'),
-    path('isAuthorized', views.isAuthorized, name='isAuthorized')
+    path('isAuthorized', views.isAuthorized, name='isAuthorized'),
+    path('registerUser', views.registerUser, name='registerUser'),
+    path('deactivateUser', views.deactivateUser, name='deactivateUser'),
+    path('updateUser', views.updateUser, name='updateUser')
 ]
