@@ -22,9 +22,9 @@ export class LoginComponent implements OnInit {
     this.router.navigate(["./"])
   }
   navigateRegister(){
-    this.router.navigate(["./register"])
+    this.router.navigate(["management/register"])
   }
   navigateForgot(){
-    this.router.navigate(["./forgot"])
+    this.router.navigate(["management/forgot"])
   }
 }

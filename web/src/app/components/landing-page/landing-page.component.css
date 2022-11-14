@@ -8,8 +8,9 @@
 .toolbar {
     overflow: auto;
     flex-shrink: 0;
+    padding: 0px 24px;
     height: 96px;
-    border-bottom: 3px solid var(--accent-light-color);
+    border-bottom: 1px solid var(--accent-light-color);
     display: grid;
     grid-auto-flow: column;
     grid-auto-columns: 1fr;
@@ -67,7 +68,7 @@ mat-icon {
     transition: transform 0.15s ease-in;
     transform: scale(0);
     border-radius: 0 0 1rem 1rem;
-    border: 2px solid transparent;
+    border: 1px solid transparent;
 }
 
 .navigation-menu-item:hover::after {
@@ -111,6 +112,10 @@ mat-icon {
     text-align: end;
 }
 
+.font-size {
+    font-size: 18px;
+}
+
 
 /* Main body*/
 
@@ -138,7 +143,6 @@ mat-icon {
 .footer {
     background-color: var(--black-background);
     height: 56px;
-    border-top: 3px solid var(--accent-light-color);
     display: flex;
     color: var(--accent-light-color);
     box-sizing: border-box;
