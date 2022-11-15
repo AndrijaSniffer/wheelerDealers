@@ -1,6 +1,8 @@
 import { Router } from '@angular/router';
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators, ValidationErrors, AbstractControl, FormBuilder, AbstractControlOptions } from '@angular/forms';
+import {User} from "../../../classes/user";
+import {UserService} from "../../../services/user.service";
 
 @Component({
   selector: 'app-register',
@@ -16,7 +18,8 @@ export class RegisterComponent implements OnInit {
   registerForm!:FormGroup
 
   constructor(private router:Router,
-    private formBuilder:FormBuilder) { }
+              private formBuilder:FormBuilder,
+              private registerUserService:UserService) { }
 
   ngOnInit(): void {
     this.buildForm()
@@ -29,7 +32,7 @@ export class RegisterComponent implements OnInit {
       email: new FormControl("",[Validators.required,Validators.email]),
       password: new FormControl("",Validators.required),
       confirmPassword: new FormControl("",Validators.required),
-      phone:new FormControl("",Validators.maxLength(10))
+      // phone:new FormControl("",Validators.maxLength(10))
     },{validators:checkPassword} as AbstractControlOptions)
   }
   navigateBack(){
@@ -37,9 +40,22 @@ export class RegisterComponent implements OnInit {
   }
 
   submitForm(){
+    if(this.registerForm.valid){
+      let user:User = {
+        firstName: this.registerForm.value.name,
+        lastName: this.registerForm.value.lastName,
+        email: this.registerForm.value.email,
+        password: this.registerForm.value.password
+      }
+
+      this.registerUserService.registerUser(user).subscribe(data => {
+        if(data.status == 200){
+          this.navigateBack();
+        }
+      });
+    }
   }
 }
-
 
 function checkPassword(control: AbstractControl) {
   const password = control.get("password")!;
