@@ -1,51 +1,42 @@
 <div class="wrap">
-    <mat-toolbar class="toolbar" color="primary">
-        <picture class="center-logo">
-            <img class="logo" src="../../assets/images/logo.jpg">
-        </picture>
-        <div class="navigation-menu">
-            <div matRipple class="navigation-menu-item" routerLinkActive="active-item" (click)="navigateTo('home')">
-                <mat-icon color="accent">home</mat-icon>
-                <a class="link-item" routerLink="home" color="accent">Homepage</a>
-            </div>
-            <div matRipple class="navigation-menu-item" routerLinkActive="active-item" (click)="navigateTo('search')">
-                <mat-icon color="accent">search</mat-icon>
-                <a class="link-item" routerLink="search" color="accent">Search</a>
-            </div>
-            <div matRipple class="navigation-menu-item" routerLinkActive="active-item" (click)="navigateTo('contact')">
-                <mat-icon color="accent">mail</mat-icon>
-                <a class="link-item" routerLink="contact" color="accent">Contact us</a>
-            </div>
-        </div>
-        <div class="login">
-            <ng-container>
-                <button mat-mini-fab class="font-size" type="button" [matMenuTriggerFor]="menu">
-                    DP
-                </button>
-                <mat-menu #menu="matMenu" color="accent" xPosition="before">
-                    <button mat-menu-item type="button" (click)="navigateTo('profile')">
-                        <mat-icon>person</mat-icon>
-                        <span>Profile</span>
-                    </button>
-                    <button mat-menu-item type="button">
-                        <mat-icon>logout</mat-icon>
-                        <span>Logout</span>
-                    </button>
-                </mat-menu>
-            </ng-container>
-            <button mat-flat-button type="button" color="accent" (click)="navigate()">
-                Login
-            </button>
-        </div>
-    </mat-toolbar>
-    <div class="content-display">
-        <div class="content-window">
-            <router-outlet></router-outlet>
-        </div>
+  <mat-toolbar class="toolbar" color="primary">
+    <picture class="center-logo">
+      <img class="logo" src="../../assets/images/logo.jpg">
+    </picture>
+    <div class="navigation-menu">
+      <div matRipple class="navigation-menu-item" routerLinkActive="active-item" (click)="navigateTo('home')">
+        <mat-icon color="accent">home</mat-icon>
+        <a class="link-item" routerLink="home" color="accent">Homepage</a>
+      </div>
+      <div matRipple class="navigation-menu-item" routerLinkActive="active-item" (click)="navigateTo('search')">
+        <mat-icon color="accent">search</mat-icon>
+        <a class="link-item" routerLink="search" color="accent">Search</a>
+      </div>
+      <div matRipple class="navigation-menu-item" routerLinkActive="active-item" (click)="navigateTo('contact')">
+        <mat-icon color="accent">mail</mat-icon>
+        <a class="link-item" routerLink="contact" color="accent">Contact us</a>
+      </div>
     </div>
-    <div class="footer">
-        <div class="signed">
-            <span>Andrija Cajic - 3711</span>
-        </div>
+    <div class="login">
+      <ng-container *ngIf="isAuth">
+       <p>Hello {{username}}!</p>
+      </ng-container>
+      <button mat-flat-button *ngIf="!isAuth" type="button" color="accent" (click)="navigate()">
+        Login
+      </button>
+      <button mat-flat-button *ngIf="isAuth" type="button" color="accent" (click)="logout()">
+        Logout
+      </button>
     </div>
+  </mat-toolbar>
+  <div class="content-display">
+    <div class="content-window">
+      <router-outlet></router-outlet>
+    </div>
+  </div>
+  <div class="footer">
+    <div class="signed">
+      <span>Andrija Cajic - 3711</span>
+    </div>
+  </div>
 </div>

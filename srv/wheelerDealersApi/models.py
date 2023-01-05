@@ -164,17 +164,19 @@ class CarDto:
     color: str
     chassie_number: str
     is_preowned: bool
-    created_at: datetime
+    created_at: str
 
 
 @dataclass(frozen=True)
 class UserDto:
-    userId: int
+    id: int
     isSuperuser: bool
     isStaff: bool
+    isActive: bool
     firstName: str
     lastName: str
     email: str
     username: str
+    dateJoined: str
 
 # endregion

@@ -27,6 +27,7 @@ export class RegisterComponent implements OnInit {
 
   buildForm(){
     this.registerForm = this.formBuilder.group({
+      username: new FormControl("",Validators.required),
       name:new FormControl ("",Validators.required),
       lastName: new FormControl("",Validators.required),
       email: new FormControl("",[Validators.required,Validators.email]),
@@ -42,6 +43,7 @@ export class RegisterComponent implements OnInit {
   submitForm(){
     if(this.registerForm.valid){
       let user:User = {
+        username: this.registerForm.value.username,
         firstName: this.registerForm.value.name,
         lastName: this.registerForm.value.lastName,
         email: this.registerForm.value.email,
