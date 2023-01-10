@@ -35,13 +35,18 @@ export class LoginComponent implements OnInit {
           let tokens = response.body as jwtTokens;
 
           this._userService.currentUser = JSON.parse(atob(tokens.access.split('.')[1])) as User;
+          console.log(this._userService.currentUser);
 
           sessionStorage.setItem('refresh', tokens.refresh);
           sessionStorage.setItem('access', tokens.access);
 
           this._userService.changeIsAuth(true);
 
-          this.router.navigate(['/main/home'])/*.then(() => this._userService.isAuthenticated.next(true))*/;
+          if (this._userService.currentUser.isAdmin) {
+            this.router.navigate(['/admin/general']);
+          } else {
+            this.router.navigate(['/main/home']);
+          }
         },
         error: err => {
           if (err.status == 401) {

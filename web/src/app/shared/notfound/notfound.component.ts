@@ -1,5 +1,5 @@
-import { Router } from '@angular/router';
-import { Component, OnInit } from '@angular/core';
+import {Router} from '@angular/router';
+import {Component, OnInit} from '@angular/core';
 
 @Component({
   selector: 'app-notfound',
@@ -9,13 +9,14 @@ import { Component, OnInit } from '@angular/core';
 export class NotfoundComponent implements OnInit {
 
   constructor(
-    private router:Router
-  ) { }
+    private router: Router
+  ) {
+  }
 
   ngOnInit(): void {
   }
 
-  homepage(){
+  homepage() {
     this.router.navigate(['./main'])
   }
 }

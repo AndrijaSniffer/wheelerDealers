@@ -5,9 +5,8 @@ export class User {
   lastName: string;
   password?: string;
   email: string;
-  isSuperuser?: boolean;
+  isAdmin?: boolean;
   isStaff?: boolean;
-  isActive?: boolean;
+  lastLogin?: string;
   dateJoined?: string;
-  csrftoken?: string;
 }

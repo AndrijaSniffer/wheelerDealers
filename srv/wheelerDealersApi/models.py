@@ -167,10 +167,10 @@ class CarDto:
     created_at: str
 
 
-@dataclass(frozen=True)
+@dataclass()
 class UserDto:
     id: int
-    isSuperuser: bool
+    isAdmin: bool
     isStaff: bool
     isActive: bool
     firstName: str
@@ -178,5 +178,6 @@ class UserDto:
     email: str
     username: str
     dateJoined: str
+    lastLogin: str
 
 # endregion

@@ -1,11 +1,11 @@
-import { MaterialSharedModule } from './../../shared/material-shared.module';
-import { SearchComponent } from './search/search.component';
-import { HomeComponent } from './home/home.component';
-import { LandingPageComponent } from './landing-page.component';
-import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { RouterModule, Routes } from '@angular/router';
-import { ContactComponent } from './contact/contact.component';
+import {MaterialSharedModule} from '../../shared/material-shared.module';
+import {SearchComponent} from './search/search.component';
+import {HomeComponent} from './home/home.component';
+import {LandingPageComponent} from './landing-page.component';
+import {NgModule} from '@angular/core';
+import {CommonModule} from '@angular/common';
+import {RouterModule, Routes} from '@angular/router';
+import {ContactComponent} from './contact/contact.component';
 
 const routes: Routes = [
   {
@@ -47,4 +47,5 @@ const routes: Routes = [
   ],
   imports: [CommonModule, RouterModule.forChild(routes), MaterialSharedModule],
 })
-export class LandingPageModule {}
+export class LandingPageModule {
+}

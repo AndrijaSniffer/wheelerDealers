@@ -1,0 +1,67 @@
+<div>
+  <table mat-table [dataSource]="usersDataSource" class="mat-elevation-z8">
+
+    <ng-container matColumnDef="id">
+      <th mat-header-cell *matHeaderCellDef>ID</th>
+      <td mat-cell *matCellDef="let element"> {{ element.id }} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="username">
+      <th mat-header-cell *matHeaderCellDef>Username</th>
+      <td mat-cell *matCellDef="let element"> {{ element.username }} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="firstName">
+      <th mat-header-cell *matHeaderCellDef>First name</th>
+      <td mat-cell *matCellDef="let element"> {{ element.firstName }} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="lastName">
+      <th mat-header-cell *matHeaderCellDef>Last name</th>
+      <td mat-cell *matCellDef="let element"> {{ element.lastName }} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="email">
+      <th mat-header-cell *matHeaderCellDef>Email</th>
+      <td mat-cell *matCellDef="let element"> {{ element.email }} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="isStaff">
+      <th mat-header-cell *matHeaderCellDef>Is staff</th>
+      <td mat-cell *matCellDef="let element"> {{ element.isStaff }} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="isAdmin">
+      <th mat-header-cell *matHeaderCellDef>Is admin</th>
+      <td mat-cell *matCellDef="let element"> {{ element.isAdmin }} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="lastLogin">
+      <th mat-header-cell *matHeaderCellDef>Last date of login</th>
+      <td mat-cell *matCellDef="let element"> {{ (element.lastLogin != "None") ? (element.lastLogin | date:'medium') : 'Never' }} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="dateJoined">
+      <th mat-header-cell *matHeaderCellDef>Date joined</th>
+      <td mat-cell *matCellDef="let element"> {{ (element.dateJoined != null) ? (element.dateJoined | date:'medium') : 'Never'  }} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="options">
+      <th mat-header-cell *matHeaderCellDef>Options</th>
+      <td mat-cell *matCellDef="let element">
+        <button class="option-btn" (click)="openUserDialog('view', element.id)">
+          <mat-icon color="accent">visibility</mat-icon>
+        </button>
+        <button class="option-btn" (click)="openUserDialog('edit', element.id)">
+          <mat-icon color="accent">edit</mat-icon>
+        </button>
+        <button class="option-btn" (click)="openUserDialog('delete', element.id)">
+          <mat-icon color="accent">delete</mat-icon>
+        </button>
+      </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+  </table>
+</div>

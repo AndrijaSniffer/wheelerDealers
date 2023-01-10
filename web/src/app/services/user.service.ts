@@ -1,8 +1,8 @@
 import {Injectable} from '@angular/core';
 import {User} from "../classes/user";
-import {HttpClient, HttpHeaders, HttpResponse} from "@angular/common/http";
+import {HttpClient, HttpResponse} from "@angular/common/http";
 import {AppConstants} from "../../AppConstants";
-import {BehaviorSubject, Observable, Subject} from "rxjs";
+import {BehaviorSubject, Observable} from "rxjs";
 
 @Injectable({
   providedIn: 'root'
@@ -30,11 +30,11 @@ export class UserService {
     });
   }
 
-  changeIsAuth(val: boolean){
+  changeIsAuth(val: boolean) {
     this._isAuthenticated.next(val);
   }
 
-  logout(){
+  logout() {
     sessionStorage.removeItem('refresh');
     sessionStorage.removeItem('access');
     this.currentUser = null;
@@ -55,5 +55,9 @@ export class UserService {
       responseType: "text",
       observe: "response"
     });
+  }
+
+  getAllUsers(): Observable<any>{
+    return this.http.get(AppConstants.GET_ALL_USER_API);
   }
 }

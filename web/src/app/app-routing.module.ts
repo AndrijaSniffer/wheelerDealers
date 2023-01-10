@@ -1,6 +1,7 @@
-import { NotfoundComponent } from './shared/notfound/notfound.component';
-import { NgModule } from '@angular/core';
-import { RouterModule, Routes } from '@angular/router';
+import {NotfoundComponent} from './shared/notfound/notfound.component';
+import {NgModule} from '@angular/core';
+import {RouterModule, Routes} from '@angular/router';
+import {AdminGuard} from "./guard/admin-guard";
 
 const routes: Routes = [
   {
@@ -17,12 +18,21 @@ const routes: Routes = [
         (m) => m.LoginManagementModule
       ),
   },
-  { path: '', redirectTo: 'main/home', pathMatch: 'full' },
-  { path: '**', component: NotfoundComponent },
+  {
+    path: 'admin',
+    loadChildren: () =>
+      import('./components/admin/admin.module').then(
+        (m) => m.AdminModule
+      ),
+    canActivate: [AdminGuard]
+  },
+  {path: '', redirectTo: 'main/home', pathMatch: 'full'},
+  {path: '**', component: NotfoundComponent},
 ];
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
   exports: [RouterModule],
 })
-export class AppRoutingModule {}
+export class AppRoutingModule {
+}

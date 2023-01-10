@@ -1,0 +1,9 @@
+table{
+  width: 100%;
+}
+
+.option-btn {
+  background-color: transparent;
+  border: 0;
+  cursor: pointer;
+}

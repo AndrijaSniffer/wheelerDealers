@@ -1,8 +1,14 @@
 import {Router} from '@angular/router';
-import {Component, OnInit, OnDestroy} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {UserService} from "../../services/user.service";
-import {Subject, Subscription} from "rxjs";
+import {Subject} from "rxjs";
 import {User} from "../../classes/user";
+
+interface IUser {
+  username: string;
+  isAdmin: boolean;
+  isStaff: boolean;
+}
 
 @Component({
   selector: 'app-landing-page',
@@ -12,7 +18,11 @@ import {User} from "../../classes/user";
 export class LandingPageComponent implements OnInit, OnDestroy {
   private destroyed$ = new Subject<void>();
   private isAuthenticated: boolean;
-  username: string = ''
+  iuser: IUser = {
+    isAdmin: false,
+    isStaff: false,
+    username: ''
+  };
 
   constructor(private router: Router,
               private _userService: UserService) {
@@ -22,11 +32,17 @@ export class LandingPageComponent implements OnInit, OnDestroy {
     this._userService.isAuthenticated.subscribe((isAuth) => {
       if (sessionStorage.getItem('access') != null &&
         sessionStorage.getItem('refresh') != null) {
+
         this._userService.currentUser = JSON.parse(atob(sessionStorage.getItem('access')!.split('.')[1])) as User;
-        this.username = this._userService.currentUser.username;
+        this.iuser.username = this._userService.currentUser.username;
+        this.iuser.isAdmin = this._userService.currentUser.isAdmin ?? false;
+        this.iuser.isStaff = this._userService.currentUser.isStaff ?? false;
+
         this.isAuthenticated = true;
       } else {
-        this.username = isAuth ? this._userService.currentUser!.username : '';
+        this.iuser.username = isAuth ? this._userService.currentUser!.username : '';
+        this.iuser.isAdmin = isAuth ? (this._userService.currentUser!.isAdmin ?? false) : false;
+        this.iuser.isStaff = isAuth ? (this._userService.currentUser!.isStaff ?? false) : false;
         this.isAuthenticated = isAuth;
       }
     })
@@ -42,11 +58,15 @@ export class LandingPageComponent implements OnInit, OnDestroy {
     return this.isAuthenticated;
   }
 
-  navigate() {
+  get isStaff(): boolean {
+    return this.iuser.isStaff;
+  }
+
+  navigateToLogin() {
     this.router.navigate(['./management']);
   }
 
-  navigateTo(path: string) {
+  navigateToMain(path: string) {
     this.router.navigate([`main/${path}`]);
   }
 

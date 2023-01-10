@@ -1,0 +1,24 @@
+<mat-dialog-content>
+  <div *ngIf="mode == 'view' || mode == 'delete'">
+    <mat-list>
+      <mat-list-item>Country id: {{country.id_country}}</mat-list-item>
+      <mat-list-item>Country name: {{country.name_country}}</mat-list-item>
+    </mat-list>
+  </div>
+
+  <div *ngIf="mode == 'edit'">
+    <form class="column" [formGroup]="editForm">
+      <mat-form-field color="accent" appearance="outline">
+        <mat-label>Edit country name</mat-label>
+        <input matInput placeholder="{{country.name_country}}..." formControlName="countryName">
+      </mat-form-field>
+    </form>
+  </div>
+</mat-dialog-content>
+
+<mat-divider></mat-divider>
+
+<mat-dialog-actions>
+  <button mat-raised-button color="accent" (click)="onConfirmClick()" tabindex="1">{{confirmButtonText}}</button>
+  <button mat-raised-button mat-dialog-close tabindex="-1">{{cancelButtonText}}</button>
+</mat-dialog-actions>

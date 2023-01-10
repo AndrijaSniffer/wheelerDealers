@@ -1,9 +1,9 @@
-import { RegisterComponent } from './register/register.component';
-import { LoginComponent } from './login/login.component';
-import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { Routes, RouterModule } from '@angular/router';
-import { MaterialSharedModule } from 'src/app/shared/material-shared.module';
+import {RegisterComponent} from './register/register.component';
+import {LoginComponent} from './login/login.component';
+import {NgModule} from '@angular/core';
+import {CommonModule} from '@angular/common';
+import {RouterModule, Routes} from '@angular/router';
+import {MaterialSharedModule} from 'src/app/shared/material-shared.module';
 
 
 const routes: Routes = [
@@ -12,13 +12,13 @@ const routes: Routes = [
     component: LoginComponent,
   },
   {
-    path:'register',
-    component:RegisterComponent
+    path: 'register',
+    component: RegisterComponent
   },
   {
-    path:'',
-    redirectTo:'login',
-    pathMatch:'full'
+    path: '',
+    redirectTo: 'login',
+    pathMatch: 'full'
   }
 ];
 
@@ -32,4 +32,5 @@ const routes: Routes = [
     RouterModule.forChild(routes), MaterialSharedModule
   ]
 })
-export class LoginManagementModule { }
+export class LoginManagementModule {
+}

@@ -1,3 +1,6 @@
+import json
+from dataclasses import asdict
+
 from django.http import HttpResponse
 from rest_framework import routers, viewsets
 from rest_framework.permissions import AllowAny
@@ -20,6 +23,31 @@ def registerUser(request):
         user = User.objects.create_user(post["username"], post["email"], post["password"], first_name=post["firstName"],
                                         last_name=post["lastName"], is_staff=False)
         return HttpResponse(status=200)
+    else:
+        return HttpResponse(status=400)
+
+
+def getAllUsers(request):
+    if request.method == 'GET':
+        listUser = User.objects.all()
+        listUserDto = []
+
+        for user in listUser:
+            dto = UserDto(
+                id=user.id,
+                username=user.username,
+                firstName=user.first_name,
+                lastName=user.last_name,
+                isStaff=user.is_staff,
+                isAdmin=user.is_superuser,
+                isActive=user.is_active,
+                lastLogin=str(user.last_login),
+                email=user.email,
+                dateJoined=str(user.date_joined)
+            )
+            listUserDto.append(asdict(dto))
+
+        return HttpResponse(json.dumps(listUserDto))
     else:
         return HttpResponse(status=400)
 
@@ -119,116 +147,6 @@ class CarView(viewsets.ModelViewSet):
     serializer_class = CarSerializer
     permission_classes = [AllowAny]
 
-
-# region Auth
-#
-# def loginUser(request):
-#     if request.method == "POST":
-#         post = request.POST
-#
-#         if not (checkIfKeyExists(post, 'username') and checkIfKeyExists(post, 'password')):
-#             return HttpResponse(status=400)
-#
-#         username = request.POST['username']
-#         password = request.POST['password']
-#         user = authenticate(request, username=username, password=password)
-#         if user is not None:
-#             login(request, user)
-#
-#             response = HttpResponse(json.dumps(dataclasses.asdict(UserDto(
-#                 id=user.id,
-#                 firstName=user.first_name,
-#                 lastName=user.last_name,
-#                 username=user.username,
-#                 isStaff=user.is_staff,
-#                 isSuperuser=user.is_superuser,
-#                 email=user.email,
-#                 isActive=user.is_active,
-#                 dateJoined=str(user.date_joined)
-#             ))), content_type='json')
-#
-#             return response
-#         else:
-#             return HttpResponse(status=401)
-#
-#     else:
-#         return HttpResponse(status=400)
-#
-#
-# def logoutUser(request):
-#     if request.method == 'DELETE':
-#         logout(request)
-#         return HttpResponse(status=200)
-#     else:
-#         return HttpResponse(status=400)
-#
-#
-# def isAuthorized(request):
-#     if request.method == 'GET':
-#         return HttpResponse(json.dumps({"authorized": request.user.is_authenticated}), content_type='json')
-#     else:
-#         return HttpResponse(status=400)
-#
-#
-# def registerUser(request):
-#     if request.method == 'POST':
-#         post = request.POST
-#
-#         if not (checkIfKeyExists(post, 'username') and checkIfKeyExists(post, 'password')
-#                 and checkIfKeyExists(post, 'email') and checkIfKeyExists(post, 'firstName')
-#                 and checkIfKeyExists(post, 'lastName')):
-#             return HttpResponse(status=400)
-#
-#         user = User.objects.create_user(post["username"], post["email"], post["password"], first_name=post["firstName"],
-#                                         last_name=post["lastName"], is_staff=False)
-#         return HttpResponse(status=200)
-#     else:
-#         return HttpResponse(status=400)
-#
-#
-# def deactivateUser(request):
-#     if request.method == 'DELETE':
-#         if request.user.is_superuser:
-#             if not checkIfKeyExists(request.GET, 'PK'):
-#                 return HttpResponse(status=400)
-#
-#             pk = request.GET["PK"]
-#
-#             user = User.objects.filter(id=pk)
-#             user.update(is_active=False)
-#
-#             return HttpResponse(status=200)
-#
-#         else:
-#             return HttpResponse(status=401)
-#     else:
-#         return HttpResponse(status=400)
-#
-#
-# def updateUser(request):
-#     if request.method == 'PUT':
-#         id = request.user.id
-#         body_unicode = request.body.decode('utf-8')
-#         body = json.loads(body_unicode)
-#
-#         user = User.objects.filter(id=id)
-#
-#         if checkIfKeyExists(body, 'firstName'):
-#             user.update(first_name=body['firstName'])
-#
-#         if checkIfKeyExists(body, 'lastName'):
-#             user.update(last_name=body['lastName'])
-#
-#         if checkIfKeyExists(body, 'password'):
-#             user.set_password(body['password'])
-#             user.save()
-#
-#         return HttpResponse(status=200)
-#     else:
-#         return HttpResponse(status=400)
-#
-#
-# # endregion
 
 # region Router
 

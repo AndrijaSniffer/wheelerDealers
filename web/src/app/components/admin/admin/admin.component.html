@@ -1,0 +1,55 @@
+<div class="wrap">
+  <mat-toolbar class="toolbar" color="primary">
+    <picture class="center-logo">
+      <img class="logo" src="../../assets/images/logo.jpg">
+    </picture>
+    <div class="navigation-menu">
+      <div matRipple class="navigation-menu-item" routerLinkActive="active-item"
+           (click)="navigateToAdmin('general')">
+        <mat-icon color="accent">home</mat-icon>
+        <a class="link-item" routerLink="general" color="accent">General</a>
+      </div>
+
+      <div matRipple class="navigation-menu-item" routerLinkActive="active-item"
+           (click)="navigateToAdmin('users')">
+        <mat-icon color="accent">person</mat-icon>
+        <a class="link-item" routerLink="users" color="accent">Users</a>
+      </div>
+
+      <div matRipple class="navigation-menu-item" routerLinkActive="active-item"
+           (click)="navigateToAdmin('parts')">
+        <mat-icon color="accent">build</mat-icon>
+        <a class="link-item" routerLink="parts" color="accent">Car parts</a>
+      </div>
+
+      <div matRipple class="navigation-menu-item" routerLinkActive="active-item"
+           (click)="navigateToAdmin('search')">
+        <mat-icon color="accent">settings</mat-icon>
+        <a class="link-item" routerLink="search" color="accent">Car properties</a>
+      </div>
+
+      <div matRipple class="navigation-menu-item" routerLinkActive="active-item"
+           (click)="navigateToAdmin('search')">
+        <mat-icon color="accent">list_alt</mat-icon>
+        <a class="link-item" routerLink="search" color="accent">Orders</a>
+      </div>
+
+    </div>
+    <div class="login row">
+      <p *ngIf="isAuth">Hello {{iuser.username}}!</p>
+      <button mat-flat-button type="button" color="accent" (click)="logout()">
+        Logout
+      </button>
+    </div>
+  </mat-toolbar>
+  <div class="content-display">
+    <div class="content-window">
+      <router-outlet></router-outlet>
+    </div>
+  </div>
+  <div class="footer">
+    <div class="signed">
+      <span>Andrija Cajic - 3711</span>
+    </div>
+  </div>
+</div>
