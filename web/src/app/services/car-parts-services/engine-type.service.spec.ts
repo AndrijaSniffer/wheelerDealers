@@ -1,13 +1,13 @@
 import { TestBed } from '@angular/core/testing';
 
-import { EngineDriveService } from './engine-drive.service';
+import { EngineTypeService } from './engine-type.service';
 
 describe('EngineDriveService', () => {
-  let service: EngineDriveService;
+  let service: EngineTypeService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({});
-    service = TestBed.inject(EngineDriveService);
+    service = TestBed.inject(EngineTypeService);
   });
 
   it('should be created', () => {

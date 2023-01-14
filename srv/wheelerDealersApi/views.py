@@ -1,7 +1,9 @@
 import json
 from dataclasses import asdict
 
-from django.http import HttpResponse
+from django.core.serializers import serialize
+from django.db import connection
+from django.http import HttpResponse, JsonResponse
 from rest_framework import routers, viewsets
 from rest_framework.permissions import AllowAny
 
@@ -26,6 +28,27 @@ def registerUser(request):
     else:
         return HttpResponse(status=400)
 
+
+def getAllEngine(request):
+    if request.method == 'GET':
+        listEngine = []
+
+        with connection.cursor() as cursor:
+            cursor.execute("SELECT `id_engine`, `engine_code`, `horsepower`, `kilowatt`, `volume`, `id_engine_type`, `engine_type` FROM `wheelerdealersapi_engine` as `e`, `wheelerdealersapi_enginetype` as `et` WHERE e.id_engine_type_id = et.id_engine_type;")
+            rows = cursor.fetchall()
+
+            for row in rows:
+                listEngine.append(asdict(EngineDto(
+                    id_engine=row[0],
+                    engine_code=row[1],
+                    horsepower=row[2],
+                    kilowatt=row[3],
+                    volume=row[4],
+                    id_engine_type=row[5],
+                    engine_type=row[6]
+                )))
+
+        return HttpResponse(json.dumps(listEngine))
 
 def getAllUsers(request):
     if request.method == 'GET':
@@ -146,6 +169,7 @@ class CarView(viewsets.ModelViewSet):
     queryset = Car.objects.all()
     serializer_class = CarSerializer
     permission_classes = [AllowAny]
+
 
 
 # region Router

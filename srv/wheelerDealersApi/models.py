@@ -29,7 +29,8 @@ class Engine(models.Model):
     kilowatt = models.IntegerField(null=True)
     volume = models.IntegerField(null=False)
     id_engine_type = models.ForeignKey(EngineType, on_delete=models.RESTRICT, null=False)
-
+    # id_engine_type = models.IntegerField()
+    # engine_type = models.CharField(max_length=255)
 
 class ModelType(models.Model):
     id_model_type = models.AutoField(primary_key=True)
@@ -136,10 +137,11 @@ class ManufacturerDto:
 @dataclass(frozen=True)
 class EngineDto:
     id_engine: int
-    engine_code = str
+    engine_code: str
     horsepower: int
     kilowatt: int
     volume: int
+    id_engine_type: int
     engine_type: str
 
 
