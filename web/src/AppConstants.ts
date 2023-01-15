@@ -63,9 +63,9 @@ export class AppConstants {
   public static UPDATE_MANUFACTURER_BY_ID = `${AppConstants.API_ENDPOINT}manufacturers/`;
   public static DELETE_MANUFACTURER_BY_ID = `${AppConstants.API_ENDPOINT}manufacturers/`;
 
-  public static GET_ALL_FUEL = `${AppConstants.API_ENDPOINT}fuels`;
-  public static GET_FUEL_BY_ID = `${AppConstants.GET_ALL_FUEL}/`;
-  public static CREATE_FUEL = `${AppConstants.GET_ALL_FUEL}/`;
-  public static UPDATE_FUEL_BY_ID = `${AppConstants.GET_ALL_FUEL}/`;
-  public static DELETE_FUEL_BY_ID = `${AppConstants.GET_ALL_FUEL}/`;
+  public static GET_ALL_MODEL_TYPE = `${AppConstants.API_ENDPOINT}modelTypes`;
+  public static GET_MODEL_TYPE_BY_ID = `${AppConstants.GET_ALL_MODEL_TYPE}/`;
+  public static CREATE_MODEL_TYPE = `${AppConstants.GET_ALL_MODEL_TYPE}/`;
+  public static UPDATE_MODEL_TYPE_BY_ID = `${AppConstants.GET_ALL_MODEL_TYPE}/`;
+  public static DELETE_MODEL_TYPE_BY_ID = `${AppConstants.GET_ALL_MODEL_TYPE}/`;
 }

@@ -12,11 +12,11 @@ export class ModelTypeService {
   constructor(private http: HttpClient) { }
 
   getAllModelType(): Observable<any> {
-    return this.http.get(AppConstants.GET_ALL_FUEL);
+    return this.http.get(AppConstants.GET_ALL_MODEL_TYPE);
   }
 
   getModelTypeById(id: number): Observable<any> {
-    return this.http.get(`${AppConstants.GET_FUEL_BY_ID}${id}`);
+    return this.http.get(`${AppConstants.GET_MODEL_TYPE_BY_ID}${id}`);
   }
 
   createModelType(modelType: ModelType) {
@@ -26,7 +26,7 @@ export class ModelTypeService {
       formData.append(key, value);
     }
 
-    return this.http.post(AppConstants.CREATE_FUEL, formData, {withCredentials: true});
+    return this.http.post(AppConstants.CREATE_MODEL_TYPE, formData, {withCredentials: true});
   }
 
   updateModelType(id: number, modelType: ModelType){
@@ -36,10 +36,10 @@ export class ModelTypeService {
       formData.append(key, value);
     }
 
-    return this.http.put(`${AppConstants.UPDATE_FUEL_BY_ID}${id}/`, formData, {withCredentials: true});
+    return this.http.put(`${AppConstants.UPDATE_MODEL_TYPE_BY_ID}${id}/`, formData, {withCredentials: true});
   }
 
   deleteModelTypeById(id: number){
-    return this.http.delete(`${AppConstants.DELETE_FUEL_BY_ID}${id}`, {withCredentials: true});
+    return this.http.delete(`${AppConstants.DELETE_MODEL_TYPE_BY_ID}${id}`, {withCredentials: true});
   }
 }
