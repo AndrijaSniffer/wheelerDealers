@@ -1,1 +1,110 @@
-<p>car-part-engine works!</p>
+<mat-expansion-panel hideToggle>
+  <mat-expansion-panel-header>
+    <mat-panel-title>
+      Form
+    </mat-panel-title>
+    <mat-panel-description>
+      Add a new engine
+    </mat-panel-description>
+  </mat-expansion-panel-header>
+
+  <form class="column" (ngSubmit)="submitForm()" (change)="hpOrKilowattChange()" [formGroup]="form">
+    <mat-form-field color="accent" appearance="outline">
+      <mat-label>Engine code</mat-label>
+      <input matInput placeholder="Code..." formControlName="engineCode">
+    </mat-form-field>
+
+    <mat-form-field color="accent" appearance="outline">
+      <mat-label>Horsepower</mat-label>
+      <input matInput type="number" placeholder="Horsepower..." formControlName="horsepower">
+    </mat-form-field>
+
+    <mat-form-field color="accent" appearance="outline">
+      <mat-label>Kilowatt</mat-label>
+      <input matInput type="number" placeholder="Kilowatt..." formControlName="kilowatt">
+    </mat-form-field>
+
+    <mat-form-field color="accent" appearance="outline">
+      <mat-label>Engine volume</mat-label>
+      <input matInput type="number" placeholder="Volume..." formControlName="volume">
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Engine type</mat-label>
+      <select matNativeControl formControlName="engineType">
+        <option *ngFor="let engineType of dataEngineType" value="{{engineType.id_engine_type}}">{{engineType.engine_type}}</option>
+      </select>
+    </mat-form-field>
+
+    <br>
+    <button mat-flat-button color="accent" type="submit" [disabled]="isButtonDisabled">Add new</button>
+  </form>
+
+</mat-expansion-panel>
+
+<mat-expansion-panel hideToggle>
+  <mat-expansion-panel-header>
+    <mat-panel-title>
+      Table
+    </mat-panel-title>
+    <mat-panel-description>
+      Table containing all engines with manipulation options
+    </mat-panel-description>
+  </mat-expansion-panel-header>
+
+  <table mat-table [dataSource]="data" class="mat-elevation-z8">
+    <ng-container matColumnDef="id">
+      <th mat-header-cell *matHeaderCellDef>ID</th>
+      <td mat-cell *matCellDef="let element"> {{ element.id_engine }} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="engineCode">
+      <th mat-header-cell *matHeaderCellDef>Engine code</th>
+      <td mat-cell *matCellDef="let element"> {{ element.engine_code }} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="horsepower">
+      <th mat-header-cell *matHeaderCellDef>Horsepower</th>
+      <td mat-cell *matCellDef="let element"> {{ element.horsepower }}{{element.horsepower == null ? 'N/A' : 'hp'}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="kilowatt">
+      <th mat-header-cell *matHeaderCellDef>Kilowatt</th>
+      <td mat-cell *matCellDef="let element"> {{ element.kilowatt }}{{element.kilowatt == null ? 'N/A' : 'kw'}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="volume">
+      <th mat-header-cell *matHeaderCellDef>Engine volume</th>
+      <td mat-cell *matCellDef="let element"> {{ element.volume }} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="idEngineType">
+      <th mat-header-cell *matHeaderCellDef>ID engine type</th>
+      <td mat-cell *matCellDef="let element"> {{ element.id_engine_type }} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="engineType">
+      <th mat-header-cell *matHeaderCellDef>Drive type</th>
+      <td mat-cell *matCellDef="let element"> {{ element.engine_type }} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="options">
+      <th mat-header-cell *matHeaderCellDef>Options</th>
+      <td mat-cell *matCellDef="let element">
+        <button class="option-btn" (click)="openDialog('view', element.id_engine)">
+          <mat-icon color="accent">visibility</mat-icon>
+        </button>
+        <button class="option-btn" (click)="openDialog('edit', element.id_engine)">
+          <mat-icon color="accent">edit</mat-icon>
+        </button>
+        <button class="option-btn" (click)="openDialog('delete', element.id_engine)">
+          <mat-icon color="accent">delete</mat-icon>
+        </button>
+      </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+  </table>
+
+</mat-expansion-panel>

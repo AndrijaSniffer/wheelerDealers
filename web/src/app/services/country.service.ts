@@ -3,6 +3,7 @@ import {HttpClient} from "@angular/common/http";
 import {AppConstants} from "../../AppConstants";
 import {Country} from "../classes/country";
 import {Form} from "@angular/forms";
+import {Observable} from "rxjs";
 
 @Injectable({
   providedIn: 'root'
@@ -12,11 +13,11 @@ export class CountryService {
   constructor(private client: HttpClient) {
   }
 
-  getAllCountry() {
+  getAllCountry(): Observable<any> {
     return this.client.get(AppConstants.GET_ALL_COUNTRY, {withCredentials: true});
   }
 
-  getCountryId(id: number) {
+  getCountryId(id: number): Observable<any> {
     return this.client.get(`${AppConstants.GET_COUNTRY_BY_ID}${id}`, {withCredentials: true});
   }
 

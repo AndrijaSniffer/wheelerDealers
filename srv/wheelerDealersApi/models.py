@@ -131,7 +131,7 @@ class OrderCar(models.Model):
 class ManufacturerDto:
     id_manufacturer: int
     name_manufacturer: str
-    name_country: str
+    id_country: Country #JSON Objekat
 
 
 @dataclass(frozen=True)

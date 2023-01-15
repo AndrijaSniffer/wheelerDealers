@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import {FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
 import {MatDialog} from "@angular/material/dialog";
-import {DriveDialogComponent} from "../../../dialogs/drive-dialog/drive-dialog.component";
 import {EngineType} from "../../../../classes/engine-type";
 import {EngineTypeService} from "../../../../services/car-parts-services/engine-type.service";
+import {EngineTypeDialogComponent} from "../../../dialogs/engine-type-dialog/engine-type-dialog.component";
 
 @Component({
   selector: 'app-car-part-engine-type',
@@ -56,7 +56,7 @@ export class CarPartEngineTypeComponent implements OnInit {
           cancel: "Cancel"
         }
     }
-    const dialogRef = this.dialog.open(DriveDialogComponent, {
+    const dialogRef = this.dialog.open(EngineTypeDialogComponent, {
       data: {
         mode: mode,
         idEngineType: id_engine_type,

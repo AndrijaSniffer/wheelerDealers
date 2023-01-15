@@ -56,4 +56,16 @@ export class AppConstants {
   public static CREATE_TRANSMISSION = `${AppConstants.GET_ALL_TRANSMISSION}/`;
   public static UPDATE_TRANSMISSION_BY_ID = `${AppConstants.GET_ALL_TRANSMISSION}/`;
   public static DELETE_TRANSMISSION_BY_ID = `${AppConstants.GET_ALL_TRANSMISSION}/`;
+
+  public static GET_ALL_MANUFACTURER = `${AppConstants.API_ENDPOINT}getAllManufacturers`;
+  public static GET_MANUFACTURER_BY_ID = `${AppConstants.API_ENDPOINT}manufacturers/`;
+  public static CREATE_MANUFACTURER = `${AppConstants.API_ENDPOINT}manufacturers/`;
+  public static UPDATE_MANUFACTURER_BY_ID = `${AppConstants.API_ENDPOINT}manufacturers/`;
+  public static DELETE_MANUFACTURER_BY_ID = `${AppConstants.API_ENDPOINT}manufacturers/`;
+
+  public static GET_ALL_FUEL = `${AppConstants.API_ENDPOINT}fuels`;
+  public static GET_FUEL_BY_ID = `${AppConstants.GET_ALL_FUEL}/`;
+  public static CREATE_FUEL = `${AppConstants.GET_ALL_FUEL}/`;
+  public static UPDATE_FUEL_BY_ID = `${AppConstants.GET_ALL_FUEL}/`;
+  public static DELETE_FUEL_BY_ID = `${AppConstants.GET_ALL_FUEL}/`;
 }

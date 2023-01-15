@@ -1,1 +1,72 @@
-<p>car-part-transmission works!</p>
+<mat-expansion-panel hideToggle>
+  <mat-expansion-panel-header>
+    <mat-panel-title>
+      Form
+    </mat-panel-title>
+    <mat-panel-description>
+      Add a new transmission
+    </mat-panel-description>
+  </mat-expansion-panel-header>
+
+  <form class="column" (ngSubmit)="submitForm()" [formGroup]="form">
+    <mat-form-field color="accent" appearance="outline">
+      <mat-label>Number of gears</mat-label>
+      <input matInput type="number" placeholder="Name..." formControlName="numberOfSpeeds">
+    </mat-form-field>
+
+    <mat-form-field color="accent" appearance="outline">
+      <mat-label>Type</mat-label>
+      <input matInput placeholder="..." formControlName="transmissionType">
+    </mat-form-field>
+    <br>
+    <button mat-flat-button color="accent" type="submit" [disabled]="form.invalid">Add new</button>
+  </form>
+
+</mat-expansion-panel>
+
+<mat-expansion-panel hideToggle>
+  <mat-expansion-panel-header>
+    <mat-panel-title>
+      Table
+    </mat-panel-title>
+    <mat-panel-description>
+      Table containing all transmission types with manipulation options
+    </mat-panel-description>
+  </mat-expansion-panel-header>
+
+  <table mat-table [dataSource]="data" class="mat-elevation-z8">
+    <ng-container matColumnDef="id">
+      <th mat-header-cell *matHeaderCellDef>ID</th>
+      <td mat-cell *matCellDef="let element"> {{ element.id_transmission }} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="numberOfSpeeds">
+      <th mat-header-cell *matHeaderCellDef>Number of gears</th>
+      <td mat-cell *matCellDef="let element"> {{ element.number_of_speeds }} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="transmissionType">
+      <th mat-header-cell *matHeaderCellDef>Type of transmission</th>
+      <td mat-cell *matCellDef="let element"> {{ element.transmission_type }} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="options">
+      <th mat-header-cell *matHeaderCellDef>Options</th>
+      <td mat-cell *matCellDef="let element">
+        <button class="option-btn" (click)="openDialog('view', element.id_transmission)">
+          <mat-icon color="accent">visibility</mat-icon>
+        </button>
+        <button class="option-btn" (click)="openDialog('edit', element.id_transmission)">
+          <mat-icon color="accent">edit</mat-icon>
+        </button>
+        <button class="option-btn" (click)="openDialog('delete', element.id_transmission)">
+          <mat-icon color="accent">delete</mat-icon>
+        </button>
+      </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+  </table>
+
+</mat-expansion-panel>

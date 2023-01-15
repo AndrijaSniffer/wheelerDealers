@@ -1,7 +1,7 @@
 import json
 from dataclasses import asdict
 
-from django.core.serializers import serialize
+from django.forms.models import model_to_dict
 from django.db import connection
 from django.http import HttpResponse, JsonResponse
 from rest_framework import routers, viewsets
@@ -34,7 +34,10 @@ def getAllEngine(request):
         listEngine = []
 
         with connection.cursor() as cursor:
-            cursor.execute("SELECT `id_engine`, `engine_code`, `horsepower`, `kilowatt`, `volume`, `id_engine_type`, `engine_type` FROM `wheelerdealersapi_engine` as `e`, `wheelerdealersapi_enginetype` as `et` WHERE e.id_engine_type_id = et.id_engine_type;")
+            cursor.execute(
+                "SELECT `id_engine`, `engine_code`, `horsepower`, `kilowatt`, `volume`, `id_engine_type`, `engine_type`"
+                " FROM `wheelerdealersapi_engine` as `e`, `wheelerdealersapi_enginetype` as `et`"
+                " WHERE e.id_engine_type_id = et.id_engine_type;")
             rows = cursor.fetchall()
 
             for row in rows:
@@ -49,6 +52,28 @@ def getAllEngine(request):
                 )))
 
         return HttpResponse(json.dumps(listEngine))
+
+
+def getAllManufacturers(request):
+    if request.method == 'GET':
+        listManufacturers = []
+
+        with connection.cursor() as cursor:
+            cursor.execute(
+                "SELECT `id_manufacturer`, `name_manufacturer`, `id_country_id` as `id_country`, `name_country` "
+                "FROM `wheelerdealersapi_manufacturer` m, `wheelerdealersapi_country` c "
+                "WHERE m.id_country_id = c.id_country;")
+            rows = cursor.fetchall()
+
+            for row in rows:
+                listManufacturers.append(asdict(ManufacturerDto(
+                    id_manufacturer=row[0],
+                    name_manufacturer=row[1],
+                    id_country= model_to_dict(Country(id_country=row[2], name_country=row[3]))
+                )))
+
+        return HttpResponse(json.dumps(listManufacturers))
+
 
 def getAllUsers(request):
     if request.method == 'GET':
@@ -169,7 +194,6 @@ class CarView(viewsets.ModelViewSet):
     queryset = Car.objects.all()
     serializer_class = CarSerializer
     permission_classes = [AllowAny]
-
 
 
 # region Router
