@@ -45,7 +45,11 @@ const routes: Routes = [
     SearchComponent,
     ContactComponent,
   ],
-  imports: [CommonModule, RouterModule.forChild(routes), MaterialSharedModule],
+  imports: [
+    CommonModule,
+    RouterModule.forChild(routes),
+    MaterialSharedModule,
+  ],
 })
 export class LandingPageModule {
 }
