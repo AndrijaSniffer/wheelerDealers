@@ -1,0 +1,91 @@
+<mat-expansion-panel hideToggle>
+  <mat-expansion-panel-header>
+    <mat-panel-title>
+      Form
+    </mat-panel-title>
+    <mat-panel-description>
+      Add a new model
+    </mat-panel-description>
+  </mat-expansion-panel-header>
+
+  <form class="column" (ngSubmit)="submitForm()" [formGroup]="form">
+    <mat-form-field color="accent" appearance="outline">
+      <mat-label>Model name</mat-label>
+      <input matInput placeholder="Name..." formControlName="nameModel">
+    </mat-form-field>
+
+    <mat-form-field color="accent" appearance="outline">
+      <mat-label>Year of manufacture</mat-label>
+      <input matInput type="number" placeholder="Year..." formControlName="yearOfManufacture">
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Manufacturer</mat-label>
+      <select matNativeControl formControlName="manufacturerId">
+        <option *ngFor="let manufacturer of dataManufacturer" value="{{manufacturer.id_manufacturer}}">{{manufacturer.name_manufacturer}}</option>
+      </select>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Engine code</mat-label>
+      <select matNativeControl formControlName="engineId">
+        <option *ngFor="let engine of dataEngine" value="{{engine.id_engine}}">{{engine.engine_code}}</option>
+      </select>
+    </mat-form-field>
+    <br>
+    <button mat-flat-button color="accent" type="submit" [disabled]="form.invalid">Add new</button>
+  </form>
+
+</mat-expansion-panel>
+
+<mat-expansion-panel hideToggle>
+  <mat-expansion-panel-header>
+    <mat-panel-title>
+      Table
+    </mat-panel-title>
+    <mat-panel-description>
+      Table containing all manufacturers with manipulation options
+    </mat-panel-description>
+  </mat-expansion-panel-header>
+
+  <table mat-table [dataSource]="data" class="mat-elevation-z8">
+    <ng-container matColumnDef="id">
+      <th mat-header-cell *matHeaderCellDef>ID</th>
+      <td mat-cell *matCellDef="let element"> {{ element.id_model }} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="nameModel">
+      <th mat-header-cell *matHeaderCellDef>Name</th>
+      <td mat-cell *matCellDef="let element"> {{ element.name_model }} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="manufacturerName">
+      <th mat-header-cell *matHeaderCellDef>Manufacturer</th>
+      <td mat-cell *matCellDef="let element"> {{ element.id_manufacturer.name_manufacturer }} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="engineCode">
+      <th mat-header-cell *matHeaderCellDef>Engine</th>
+      <td mat-cell *matCellDef="let element"> {{ element.id_engine.engine_code }} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="options">
+      <th mat-header-cell *matHeaderCellDef>Options</th>
+      <td mat-cell *matCellDef="let element">
+        <button class="option-btn" (click)="openDialog('view', element.id_model)">
+          <mat-icon color="accent">visibility</mat-icon>
+        </button>
+        <button class="option-btn" (click)="openDialog('edit', element.id_model)">
+          <mat-icon color="accent">edit</mat-icon>
+        </button>
+        <button class="option-btn" (click)="openDialog('delete', element.id_model)">
+          <mat-icon color="accent">delete</mat-icon>
+        </button>
+      </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+  </table>
+
+</mat-expansion-panel>

@@ -13,6 +13,7 @@ import { TransmissionDialogComponent } from './transmission-dialog/transmission-
 import {MatCheckboxModule} from "@angular/material/checkbox";
 import { ManufacturerDialogComponent } from './manufacturer-dialog/manufacturer-dialog.component';
 import { ModelTypeDialogComponent } from './model-type-dialog/model-type-dialog.component';
+import { ModelDialogComponent } from './model-dialog/model-dialog.component';
 
 
 @NgModule({
@@ -26,6 +27,7 @@ import { ModelTypeDialogComponent } from './model-type-dialog/model-type-dialog.
     TransmissionDialogComponent,
     ManufacturerDialogComponent,
     ModelTypeDialogComponent,
+    ModelDialogComponent,
   ],
     imports: [
         CommonModule,

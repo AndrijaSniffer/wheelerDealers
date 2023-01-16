@@ -12,7 +12,7 @@ import {ModelTypeDialogComponent} from "../../../dialogs/model-type-dialog/model
 })
 export class CarPropertiesModelTypeComponent implements OnInit {
   data: ModelType[] = [];
-  displayedColumns = ["id", "nameManufacturer", "countryName", "options"];
+  displayedColumns = ["id", "typeName", "options"];
   form: FormGroup;
 
   constructor(private formBuilder: FormBuilder, private dialog: MatDialog, private _modelTypeService: ModelTypeService) { }

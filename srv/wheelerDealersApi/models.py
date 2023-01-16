@@ -32,6 +32,7 @@ class Engine(models.Model):
     # id_engine_type = models.IntegerField()
     # engine_type = models.CharField(max_length=255)
 
+
 class ModelType(models.Model):
     id_model_type = models.AutoField(primary_key=True)
     type_name = models.CharField(max_length=255, null=False)
@@ -131,7 +132,7 @@ class OrderCar(models.Model):
 class ManufacturerDto:
     id_manufacturer: int
     name_manufacturer: str
-    id_country: Country #JSON Objekat
+    id_country: Country  # JSON Objekat
 
 
 @dataclass(frozen=True)
@@ -150,19 +151,19 @@ class ModelDto:
     id_model: int
     name_model: str
     year_of_manufacture: int
-    manufacturer: ManufacturerDto
-    engine: EngineDto
+    id_manufacturer: ManufacturerDto
+    id_engine: EngineDto
 
 
 @dataclass(frozen=True)
 class CarDto:
     id_car: int
     id_user: int
-    model: Model
-    transmission: Transmission
-    fuel: Fuel
-    interior: Interior
-    price: float
+    id_model: Model
+    id_transmission: Transmission
+    id_fuel: Fuel
+    id_interior: Interior
+    price: str
     color: str
     chassie_number: str
     is_preowned: bool
@@ -181,5 +182,23 @@ class UserDto:
     username: str
     dateJoined: str
     lastLogin: str
+
+
+# class IfExistsSearch:
+#     id_manufacturer: bool
+#     id_model: bool
+#     id_transmission: bool
+#     id_fuel: bool
+#     id_drive: bool
+#     is_preowned: bool
+#     price_from: bool
+#     price_to: bool
+#     volume: bool
+#     hp_from: bool
+#     hp_to: bool
+#     kw_from: bool
+#     kw_to: bool
+#     car_color: bool
+#     left_side_steering_wheel: bool
 
 # endregion

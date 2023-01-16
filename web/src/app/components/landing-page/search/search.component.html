@@ -1,55 +1,111 @@
 <div class="search-wrap">
   <mat-card class="search-body" color="accent">
     <mat-card-title class="title">Browse cars</mat-card-title>
-    <mat-card-content class="search-tiles">
-      <mat-form-field color="accent" appearance="outline">
-        <mat-label>Enter your name</mat-label>
-        <input matInput placeholder="Name...">
+    <mat-card-content class="search-tiles" [formGroup]="form">
+      <mat-form-field appearance="outline">
+        <mat-label>Manufacturer</mat-label>
+        <select matNativeControl formControlName="manufacturerId">
+          <option *ngFor="let manufacturer of dataManufacturer"
+                  value="{{manufacturer.id_manufacturer}}">{{manufacturer.name_manufacturer}}</option>
+        </select>
       </mat-form-field>
-      <mat-form-field color="accent" appearance="outline">
-        <mat-label>Enter your name</mat-label>
-        <input matInput placeholder="Name...">
+
+      <mat-form-field appearance="outline">
+        <mat-label>Model</mat-label>
+        <select matNativeControl formControlName="modelId">
+          <option *ngFor="let model of dataModel" value="{{model.id_model}}">{{model.name_model}}</option>
+        </select>
       </mat-form-field>
-      <mat-form-field color="accent" appearance="outline">
-        <mat-label>Enter your name</mat-label>
-        <input matInput placeholder="Name...">
+
+      <mat-form-field appearance="outline">
+        <mat-label>Transmission</mat-label>
+        <select matNativeControl formControlName="transmissionId">
+          <option *ngFor="let transmission of dataTransmission"
+                  value="{{transmission.id_transmission}}">{{transmission.transmission_type}}</option>
+        </select>
       </mat-form-field>
-      <mat-form-field color="accent" appearance="outline">
-        <mat-label>Enter your name</mat-label>
-        <input matInput placeholder="Name...">
+
+      <mat-form-field appearance="outline">
+        <mat-label>Fuel</mat-label>
+        <select matNativeControl formControlName="fuelId">
+          <option *ngFor="let fuel of dataFuel" value="{{fuel.id_fuel}}">{{fuel.fuel_name}}</option>
+        </select>
       </mat-form-field>
-      <mat-form-field color="accent" appearance="outline">
-        <mat-label>Enter your name</mat-label>
-        <input matInput placeholder="Name...">
+
+      <mat-form-field appearance="outline">
+        <mat-label>Drive</mat-label>
+        <select matNativeControl formControlName="driveId">
+          <option *ngFor="let drive of dataDrive" value="{{drive.id_drive}}">{{drive.drive_type}}</option>
+        </select>
       </mat-form-field>
+
       <mat-form-field color="accent" appearance="outline">
-        <mat-label>Enter your name</mat-label>
-        <input matInput placeholder="Name...">
+        <input matInput [hidden]="true" formControlName="leftSideSteeringWheel"/>
+        <mat-checkbox formControlName="isPreOwned">Is car preowned?</mat-checkbox>
       </mat-form-field>
+
       <mat-form-field color="accent" appearance="outline">
-        <mat-label>Enter your name</mat-label>
-        <input matInput placeholder="Name...">
+        <mat-label>Price from</mat-label>
+        <input matInput type="number" placeholder="From..." formControlName="priceFrom">
       </mat-form-field>
+
       <mat-form-field color="accent" appearance="outline">
-        <mat-label>Enter your name</mat-label>
-        <input matInput placeholder="Name...">
+        <mat-label>Price to</mat-label>
+        <input matInput type="number" placeholder="To..." formControlName="priceTo">
       </mat-form-field>
+
       <mat-form-field color="accent" appearance="outline">
-        <mat-label>Enter your name</mat-label>
-        <input matInput placeholder="Name...">
+        <mat-label>Engine volume</mat-label>
+        <input matInput type="number" placeholder="Volume..." formControlName="volume">
       </mat-form-field>
+
       <mat-form-field color="accent" appearance="outline">
-        <mat-label>Enter your name</mat-label>
-        <input matInput placeholder="Name...">
+        <mat-label>Horsepower from</mat-label>
+        <input matInput type="number" placeholder="From..." formControlName="hpFrom">
       </mat-form-field>
+
       <mat-form-field color="accent" appearance="outline">
-        <mat-label>Enter your name</mat-label>
-        <input matInput placeholder="Name...">
+        <mat-label>Horsepower to</mat-label>
+        <input matInput type="number" placeholder="To..." formControlName="hpTo">
       </mat-form-field>
+
       <mat-form-field color="accent" appearance="outline">
-        <mat-label>Enter your name</mat-label>
-        <input matInput placeholder="Name...">
+        <mat-label>Kilowatt from</mat-label>
+        <input matInput type="number" placeholder="From..." formControlName="kwFrom">
+      </mat-form-field>
+
+      <mat-form-field color="accent" appearance="outline">
+        <mat-label>Kilowatt to</mat-label>
+        <input matInput type="number" placeholder="To..." formControlName="kwTo">
+      </mat-form-field>
+
+      <mat-form-field color="accent" appearance="outline">
+        <mat-label>Color</mat-label>
+        <input matInput placeholder="Color..." formControlName="carColor">
+      </mat-form-field>
+
+      <mat-form-field color="accent" appearance="outline">
+        <input matInput [hidden]="true" formControlName="leftSideSteeringWheel"/>
+        <mat-checkbox formControlName="leftSideSteeringWheel">Left side steering wheel</mat-checkbox>
       </mat-form-field>
     </mat-card-content>
+    <mat-card-footer style="text-align: center">
+      <button mat-flat-button color="accent" (click)="search()" [disabled]="form.invalid">Search</button>
+    </mat-card-footer>
   </mat-card>
 </div>
+
+<hr>
+
+<mat-card *ngFor="let car of dataCar" class="search-body" color="accent" style="width: 300px">
+  <mat-card-title class="title">{{car.id_model.id_manufacturer.name_manufacturer}} {{car.id_model.name_model}}</mat-card-title>
+  <img mat-card-image src="https://demofree.sirv.com/nope-not-here.jpg" height="300px" alt="no picture">
+  <mat-card-content>
+    <mat-list>
+      <mat-list-item>Manufacturer: {{car.id_model.id_manufacturer.name_manufacturer}}</mat-list-item>
+      <mat-list-item>Fuel: {{car.id_fuel.fuel_name}}</mat-list-item>
+      <mat-list-item>Price: {{car.price}}</mat-list-item>
+      <mat-list-item>Year of manufacture: {{car.id_model.year_of_manufacture}}</mat-list-item>
+    </mat-list>
+  </mat-card-content>
+</mat-card>

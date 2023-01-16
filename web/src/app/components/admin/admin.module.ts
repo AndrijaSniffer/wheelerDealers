@@ -18,6 +18,8 @@ import { MatCheckboxModule } from "@angular/material/checkbox";
 import { CarPropertiesComponent } from './car-properties/car-properties.component';
 import { CarPropertiesManufacturerComponent } from './car-properties/car-properties-manufacturer/car-properties-manufacturer.component';
 import { CarPropertiesModelTypeComponent } from './car-properties/car-properties-model-type/car-properties-model-type.component';
+import { CarPropertiesModelComponent } from './car-properties/car-properties-model/car-properties-model.component';
+import { CarManagementComponent } from './car-management/car-management.component';
 
 const routes: Routes = [
   {
@@ -39,6 +41,10 @@ const routes: Routes = [
       {
         path: 'properties',
         component: CarPropertiesComponent
+      },
+      {
+        path: 'cars',
+        component: CarManagementComponent
       }
     ]
   }
@@ -58,7 +64,9 @@ const routes: Routes = [
     CarPartTransmissionComponent,
     CarPropertiesComponent,
     CarPropertiesManufacturerComponent,
-    CarPropertiesModelTypeComponent
+    CarPropertiesModelTypeComponent,
+    CarPropertiesModelComponent,
+    CarManagementComponent
   ],
     imports: [
         CommonModule,

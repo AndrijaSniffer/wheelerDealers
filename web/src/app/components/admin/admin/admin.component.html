@@ -29,7 +29,12 @@
       </div>
 
       <div matRipple class="navigation-menu-item" routerLinkActive="active-item"
-           (click)="navigateToAdmin('search')">
+           (click)="navigateToAdmin('cars')">
+        <mat-icon color="accent">directions_car</mat-icon>
+        <a class="link-item" routerLink="search" color="accent">Cars</a>
+      </div>
+
+      <div matRipple class="navigation-menu-item" routerLinkActive="active-item">
         <mat-icon color="accent">list_alt</mat-icon>
         <a class="link-item" routerLink="search" color="accent">Orders</a>
       </div>

@@ -6,6 +6,8 @@ import {NgModule} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {RouterModule, Routes} from '@angular/router';
 import {ContactComponent} from './contact/contact.component';
+import {MatCheckboxModule} from "@angular/material/checkbox";
+import {MatListModule} from "@angular/material/list";
 
 const routes: Routes = [
   {
@@ -49,6 +51,8 @@ const routes: Routes = [
     CommonModule,
     RouterModule.forChild(routes),
     MaterialSharedModule,
+    MatCheckboxModule,
+    MatListModule,
   ],
 })
 export class LandingPageModule {

@@ -1,3 +1,21 @@
+export class Search {
+  id_manufacturer?: number;
+  id_model?: number;
+  id_transmission?: number;
+  id_fuel?: number;
+  id_drive?: number;
+  is_preowned?: boolean;
+  price_from?: number;
+  price_to?: number;
+  volume?: number;
+  hp_from?: number;
+  hp_to?: number;
+  kw_from?: number;
+  kw_to?: number;
+  car_color?: string;
+  left_side_steering_wheel?: boolean;
+}
+
 export class AppConstants {
   public static TOKEN_EXCLUSIONS = [
     "/wheelerDealersApi/api/user/create",
@@ -9,6 +27,9 @@ export class AppConstants {
   public static GET_ALL_USER_API = `${AppConstants.API_ENDPOINT}api/user`;
   public static LOGIN_USER_API = `${AppConstants.API_ENDPOINT}api/token/`;
   public static REFRESH_TOKEN = `${AppConstants.API_ENDPOINT}api/token/refresh/`;
+
+  public static DEFAULT_SEARCH = `${AppConstants.API_ENDPOINT}search/default`;
+  public static NORMAL_SEARCH = `${AppConstants.API_ENDPOINT}search/normal`;
 
   //COUNTRY
   public static GET_ALL_COUNTRY = `${AppConstants.API_ENDPOINT}countries`;
@@ -68,4 +89,10 @@ export class AppConstants {
   public static CREATE_MODEL_TYPE = `${AppConstants.GET_ALL_MODEL_TYPE}/`;
   public static UPDATE_MODEL_TYPE_BY_ID = `${AppConstants.GET_ALL_MODEL_TYPE}/`;
   public static DELETE_MODEL_TYPE_BY_ID = `${AppConstants.GET_ALL_MODEL_TYPE}/`;
+
+  public static GET_ALL_MODEL = `${AppConstants.API_ENDPOINT}getAllModels`;
+  public static GET_MODEL_BY_ID = `${AppConstants.API_ENDPOINT}models/`;
+  public static CREATE_MODEL = `${AppConstants.API_ENDPOINT}models/`;
+  public static UPDATE_MODEL_BY_ID = `${AppConstants.API_ENDPOINT}models/`;
+  public static DELETE_MODEL_BY_ID = `${AppConstants.API_ENDPOINT}models/`;
 }
