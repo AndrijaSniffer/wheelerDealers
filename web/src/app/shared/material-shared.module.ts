@@ -12,6 +12,7 @@ import {MatCardModule} from '@angular/material/card';
 import {NotfoundComponent} from './notfound/notfound.component';
 import {MatTabsModule} from '@angular/material/tabs';
 import {MatMenuModule} from '@angular/material/menu';
+import {MatGridListModule} from '@angular/material/grid-list';
 
 @NgModule({
   declarations: [NotfoundComponent],
@@ -28,7 +29,8 @@ import {MatMenuModule} from '@angular/material/menu';
     MatRippleModule,
     MatCardModule,
     MatTabsModule,
-    MatMenuModule
+    MatMenuModule,
+    MatGridListModule,
   ],
   exports: [
     MatToolbarModule,
@@ -42,7 +44,8 @@ import {MatMenuModule} from '@angular/material/menu';
     MatRippleModule,
     MatCardModule,
     MatTabsModule,
-    MatMenuModule
+    MatMenuModule,
+    MatGridListModule,
   ],
 })
 export class MaterialSharedModule {
