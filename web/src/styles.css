@@ -51,3 +51,40 @@ body {
     scrollbar-width: thin;
   }
 }
+
+.flexbox {
+  display: flex;
+}
+
+.flex {
+  flex: 1 1 33%;
+  color: #fff;
+  padding: 4px;
+}
+
+.flex.auto {
+  flex: 1 1 auto;
+}
+
+.flex.middle {
+  flex: 1 1 66%;
+}
+
+.flex div {
+  padding: 8px 0 8px 0;
+}
+
+.flex h3 {
+  font-size: 1.75rem;
+  color: #F7CF1A;
+}
+
+.flex a {
+  text-decoration: none;
+  color: #fff;
+}
+
+.flex a img {
+  vertical-align: bottom;
+  margin-right: 6px;
+}
