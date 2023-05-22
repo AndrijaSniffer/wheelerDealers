@@ -3,7 +3,7 @@ from dataclasses import asdict
 
 from django.forms.models import model_to_dict
 from django.db import connection
-from django.http import HttpResponse, JsonResponse
+from django.http import HttpResponse
 from rest_framework import routers, viewsets
 from rest_framework.permissions import AllowAny
 
