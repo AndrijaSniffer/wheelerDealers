@@ -4,18 +4,19 @@ import com.metropolitan.wheelerDealers.entities.Order;
 import com.metropolitan.wheelerDealers.services.IOrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@Controller
+@RestController
 @RequestMapping("orders")
 public class OrderController {
     @Autowired
     private IOrderService orderService;
 
     @GetMapping()
+    @PreAuthorize("hasAnyAuthority('admin', 'user')")
     public ResponseEntity<List<Order>> getAllOrders(){
         List<Order> countries = orderService.getAllOrders();
 
@@ -23,6 +24,7 @@ public class OrderController {
     }
 
     @GetMapping("{id}")
+    @PreAuthorize("hasAnyAuthority('admin', 'user')")
     public ResponseEntity<Order> getOrderById(@PathVariable int id){
         Order c = orderService.getOrderById(id);
 
@@ -34,6 +36,7 @@ public class OrderController {
     }
 
     @PostMapping
+    @PreAuthorize("hasAuthority('admin')")
     public ResponseEntity<String> createOrder(@RequestBody Order order){
         if(orderService.createOrUpdateOrder(order)){
             return ResponseEntity.ok("Created");
@@ -43,6 +46,7 @@ public class OrderController {
     }
 
     @PutMapping
+    @PreAuthorize("hasAuthority('admin')")
     public ResponseEntity<String> updateOrder(@RequestBody Order order){
         if(order.getId() != null) {
             if (orderService.createOrUpdateOrder(order)) {
@@ -56,6 +60,7 @@ public class OrderController {
     }
 
     @DeleteMapping("{id}")
+    @PreAuthorize("hasAuthority('admin')")
     public ResponseEntity<String> deleteOrder(@PathVariable Integer id){
         orderService.deleteOrder(id);
         return ResponseEntity.ok("Deleted");

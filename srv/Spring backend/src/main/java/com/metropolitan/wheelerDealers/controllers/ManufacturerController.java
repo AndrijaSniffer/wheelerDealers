@@ -4,18 +4,19 @@ import com.metropolitan.wheelerDealers.entities.Manufacturer;
 import com.metropolitan.wheelerDealers.services.IManufacturerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@Controller
+@RestController
 @RequestMapping("manufacturers")
 public class ManufacturerController {
     @Autowired
     private IManufacturerService manufacturerService;
 
     @GetMapping()
+    @PreAuthorize("hasAnyAuthority('admin', 'user')")
     public ResponseEntity<List<Manufacturer>> getAllManufacturers(){
         List<Manufacturer> countries = manufacturerService.getAllManufacturers();
 
@@ -23,6 +24,7 @@ public class ManufacturerController {
     }
 
     @GetMapping("{id}")
+    @PreAuthorize("hasAnyAuthority('admin', 'user')")
     public ResponseEntity<Manufacturer> getManufacturerById(@PathVariable int id){
         Manufacturer c = manufacturerService.getManufacturerById(id);
 
@@ -34,6 +36,7 @@ public class ManufacturerController {
     }
 
     @PostMapping
+    @PreAuthorize("hasAuthority('admin')")
     public ResponseEntity<String> createManufacturer(@RequestBody Manufacturer manufacturer){
         if(manufacturerService.createOrUpdateManufacturer(manufacturer)){
             return ResponseEntity.ok("Created");
@@ -43,6 +46,7 @@ public class ManufacturerController {
     }
 
     @PutMapping
+    @PreAuthorize("hasAuthority('admin')")
     public ResponseEntity<String> updateManufacturer(@RequestBody Manufacturer manufacturer){
         if(manufacturer.getId() != null) {
             if (manufacturerService.createOrUpdateManufacturer(manufacturer)) {
@@ -56,6 +60,7 @@ public class ManufacturerController {
     }
 
     @DeleteMapping("{id}")
+    @PreAuthorize("hasAuthority('admin')")
     public ResponseEntity<String> deleteManufacturer(@PathVariable Integer id){
         manufacturerService.deleteManufacturer(id);
         return ResponseEntity.ok("Deleted");

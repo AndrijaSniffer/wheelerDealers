@@ -4,18 +4,19 @@ import com.metropolitan.wheelerDealers.entities.EngineType;
 import com.metropolitan.wheelerDealers.services.IEngineTypeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@Controller
+@RestController
 @RequestMapping("engine-types")
 public class EngineTypeController {
     @Autowired
     private IEngineTypeService engineTypeService;
 
     @GetMapping()
+    @PreAuthorize("hasAnyAuthority('admin', 'user')")
     public ResponseEntity<List<EngineType>> getAllEngineTypes(){
         List<EngineType> countries = engineTypeService.getAllEngineTypes();
 
@@ -23,6 +24,7 @@ public class EngineTypeController {
     }
 
     @GetMapping("{id}")
+    @PreAuthorize("hasAnyAuthority('admin', 'user')")
     public ResponseEntity<EngineType> getEngineTypeById(@PathVariable int id){
         EngineType c = engineTypeService.getEngineTypeById(id);
 
@@ -34,6 +36,7 @@ public class EngineTypeController {
     }
 
     @PostMapping
+    @PreAuthorize("hasAuthority('admin')")
     public ResponseEntity<String> createEngineType(@RequestBody EngineType engineType){
         if(engineTypeService.createOrUpdateEngineType(engineType)){
             return ResponseEntity.ok("Created");
@@ -43,6 +46,7 @@ public class EngineTypeController {
     }
 
     @PutMapping
+    @PreAuthorize("hasAuthority('admin')")
     public ResponseEntity<String> updateEngineType(@RequestBody EngineType engineType){
         if(engineType.getId() != null) {
             if (engineTypeService.createOrUpdateEngineType(engineType)) {
@@ -56,6 +60,7 @@ public class EngineTypeController {
     }
 
     @DeleteMapping("{id}")
+    @PreAuthorize("hasAuthority('admin')")
     public ResponseEntity<String> deleteEngineType(@PathVariable Integer id){
         engineTypeService.deleteEngineType(id);
         return ResponseEntity.ok("Deleted");

@@ -4,18 +4,19 @@ import com.metropolitan.wheelerDealers.entities.Car;
 import com.metropolitan.wheelerDealers.services.ICarService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@Controller
+@RestController
 @RequestMapping("cars")
 public class CarController {
     @Autowired
     private ICarService carService;
 
     @GetMapping()
+    @PreAuthorize("hasAnyAuthority('admin', 'user')")
     public ResponseEntity<List<Car>> getAllCars(){
         List<Car> countries = carService.getAllCars();
 
@@ -23,6 +24,7 @@ public class CarController {
     }
 
     @GetMapping("{id}")
+    @PreAuthorize("hasAnyAuthority('admin', 'user')")
     public ResponseEntity<Car> getCarById(@PathVariable int id){
         Car c = carService.getCarById(id);
 
@@ -34,6 +36,7 @@ public class CarController {
     }
 
     @PostMapping
+    @PreAuthorize("hasAuthority('admin')")
     public ResponseEntity<String> createCar(@RequestBody Car car){
         if(carService.createOrUpdateCar(car)){
             return ResponseEntity.ok("Created");
@@ -43,6 +46,7 @@ public class CarController {
     }
 
     @PutMapping
+    @PreAuthorize("hasAuthority('admin')")
     public ResponseEntity<String> updateCar(@RequestBody Car car){
         if(car.getId() != null) {
             if (carService.createOrUpdateCar(car)) {
@@ -56,6 +60,7 @@ public class CarController {
     }
 
     @DeleteMapping("{id}")
+    @PreAuthorize("hasAuthority('admin')")
     public ResponseEntity<String> deleteCar(@PathVariable Integer id){
         carService.deleteCar(id);
         return ResponseEntity.ok("Deleted");

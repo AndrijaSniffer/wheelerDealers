@@ -4,18 +4,19 @@ import com.metropolitan.wheelerDealers.entities.Fuel;
 import com.metropolitan.wheelerDealers.services.IFuelService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@Controller
+@RestController
 @RequestMapping("fuel")
 public class FuelController {
     @Autowired
     private IFuelService fuelService;
 
     @GetMapping()
+    @PreAuthorize("hasAnyAuthority('admin', 'user')")
     public ResponseEntity<List<Fuel>> getAllFuel(){
         List<Fuel> countries = fuelService.getAllFuels();
 
@@ -23,6 +24,7 @@ public class FuelController {
     }
 
     @GetMapping("{id}")
+    @PreAuthorize("hasAnyAuthority('admin', 'user')")
     public ResponseEntity<Fuel> getFuelById(@PathVariable int id){
         Fuel c = fuelService.getFuelById(id);
 
@@ -34,6 +36,7 @@ public class FuelController {
     }
 
     @PostMapping
+    @PreAuthorize("hasAuthority('admin')")
     public ResponseEntity<String> createFuel(@RequestBody Fuel fuel){
         if(fuelService.createOrUpdateFuel(fuel)){
             return ResponseEntity.ok("Created");
@@ -43,6 +46,7 @@ public class FuelController {
     }
 
     @PutMapping
+    @PreAuthorize("hasAuthority('admin')")
     public ResponseEntity<String> updateFuel(@RequestBody Fuel fuel){
         if(fuel.getId() != null) {
             if (fuelService.createOrUpdateFuel(fuel)) {
@@ -56,6 +60,7 @@ public class FuelController {
     }
 
     @DeleteMapping("{id}")
+    @PreAuthorize("hasAuthority('admin')")
     public ResponseEntity<String> deleteFuel(@PathVariable Integer id){
         fuelService.deleteFuel(id);
         return ResponseEntity.ok("Deleted");

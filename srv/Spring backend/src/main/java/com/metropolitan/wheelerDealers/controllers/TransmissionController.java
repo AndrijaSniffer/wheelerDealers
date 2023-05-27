@@ -4,18 +4,19 @@ import com.metropolitan.wheelerDealers.entities.Transmission;
 import com.metropolitan.wheelerDealers.services.ITransmissionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@Controller
+@RestController
 @RequestMapping("transmissions")
 public class TransmissionController {
     @Autowired
     private ITransmissionService transmissionService;
 
     @GetMapping()
+    @PreAuthorize("hasAnyAuthority('admin', 'user')")
     public ResponseEntity<List<Transmission>> getAllTransmissions(){
         List<Transmission> countries = transmissionService.getAllTransmissions();
 
@@ -23,6 +24,7 @@ public class TransmissionController {
     }
 
     @GetMapping("{id}")
+    @PreAuthorize("hasAnyAuthority('admin', 'user')")
     public ResponseEntity<Transmission> getTransmissionById(@PathVariable int id){
         Transmission c = transmissionService.getTransmissionById(id);
 
@@ -34,6 +36,7 @@ public class TransmissionController {
     }
 
     @PostMapping
+    @PreAuthorize("hasAuthority('admin')")
     public ResponseEntity<String> createTransmission(@RequestBody Transmission transmission){
         if(transmissionService.createOrUpdateTransmission(transmission)){
             return ResponseEntity.ok("Created");
@@ -43,6 +46,7 @@ public class TransmissionController {
     }
 
     @PutMapping
+    @PreAuthorize("hasAuthority('admin')")
     public ResponseEntity<String> updateTransmission(@RequestBody Transmission transmission){
         if(transmission.getId() != null) {
             if (transmissionService.createOrUpdateTransmission(transmission)) {
@@ -56,6 +60,7 @@ public class TransmissionController {
     }
 
     @DeleteMapping("{id}")
+    @PreAuthorize("hasAuthority('admin')")
     public ResponseEntity<String> deleteTransmission(@PathVariable Integer id){
         transmissionService.deleteTransmission(id);
         return ResponseEntity.ok("Deleted");

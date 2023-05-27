@@ -4,18 +4,19 @@ import com.metropolitan.wheelerDealers.entities.Drive;
 import com.metropolitan.wheelerDealers.services.IDriveService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@Controller
+@RestController
 @RequestMapping("drives")
 public class DriveController {
     @Autowired
     private IDriveService driveService;
 
     @GetMapping()
+    @PreAuthorize("hasAnyAuthority('admin', 'user')")
     public ResponseEntity<List<Drive>> getAllDrives(){
         List<Drive> countries = driveService.getAllDrives();
 
@@ -23,6 +24,7 @@ public class DriveController {
     }
 
     @GetMapping("{id}")
+    @PreAuthorize("hasAnyAuthority('admin', 'user')")
     public ResponseEntity<Drive> getDriveById(@PathVariable int id){
         Drive c = driveService.getDriveById(id);
 
@@ -34,6 +36,7 @@ public class DriveController {
     }
 
     @PostMapping
+    @PreAuthorize("hasAuthority('admin')")
     public ResponseEntity<String> createDrive(@RequestBody Drive drive){
         if(driveService.createOrUpdateDrive(drive)){
             return ResponseEntity.ok("Created");
@@ -43,6 +46,7 @@ public class DriveController {
     }
 
     @PutMapping
+    @PreAuthorize("hasAuthority('admin')")
     public ResponseEntity<String> updateDrive(@RequestBody Drive drive){
         if(drive.getId() != null) {
             if (driveService.createOrUpdateDrive(drive)) {
@@ -56,6 +60,7 @@ public class DriveController {
     }
 
     @DeleteMapping("{id}")
+    @PreAuthorize("hasAuthority('admin')")
     public ResponseEntity<String> deleteDrive(@PathVariable Integer id){
         driveService.deleteDrive(id);
         return ResponseEntity.ok("Deleted");

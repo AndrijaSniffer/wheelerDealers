@@ -4,18 +4,19 @@ import com.metropolitan.wheelerDealers.entities.Country;
 import com.metropolitan.wheelerDealers.services.ICountryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@Controller
+@RestController
 @RequestMapping("countries")
 public class CountryController {
     @Autowired
     private ICountryService countryService;
 
     @GetMapping()
+    @PreAuthorize("hasAnyAuthority('admin', 'user')")
     public ResponseEntity<List<Country>> getAllCountries(){
         List<Country> countries = countryService.getAllCountries();
 
@@ -23,6 +24,7 @@ public class CountryController {
     }
 
     @GetMapping("{id}")
+    @PreAuthorize("hasAnyAuthority('admin', 'user')")
     public ResponseEntity<Country> getCountryById(@PathVariable int id){
         Country c = countryService.getCountryById(id);
 
@@ -34,6 +36,7 @@ public class CountryController {
     }
 
     @PostMapping
+    @PreAuthorize("hasAuthority('admin')")
     public ResponseEntity<String> createCountry(@RequestBody Country country){
         if(countryService.createOrUpdateCountry(country)){
             return ResponseEntity.ok("Created");
@@ -43,6 +46,7 @@ public class CountryController {
     }
 
     @PutMapping
+    @PreAuthorize("hasAuthority('admin')")
     public ResponseEntity<String> updateCountry(@RequestBody Country country){
         if(country.getId() != null) {
             if (countryService.createOrUpdateCountry(country)) {
@@ -56,6 +60,7 @@ public class CountryController {
     }
 
     @DeleteMapping("{id}")
+    @PreAuthorize("hasAuthority('admin')")
     public ResponseEntity<String> deleteCountry(@PathVariable Integer id){
         countryService.deleteCountry(id);
         return ResponseEntity.ok("Deleted");
