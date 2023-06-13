@@ -17,28 +17,26 @@ export class DriveService {
   }
 
   getDriveById(id: number): Observable<any> {
-    return this.http.get(`${AppConstants.GET_DRIVE_BY_ID}${id}`);
+    return this.http.get(`${AppConstants.GET_DRIVE_BY_ID}/${id}`);
   }
 
   createDrive(drive: Drive) {
-    let formData: FormData = new FormData();
+    let object: any = {};
 
     for (const [key, value] of Object.entries(drive)) {
-      formData.append(key, value);
+      object[key] = value;
     }
 
-    return this.http.post(AppConstants.CREATE_DRIVE, formData, {withCredentials: true});
+    return this.http.post(AppConstants.CREATE_DRIVE, JSON.stringify(object), {withCredentials: true});
   }
 
   updateDrive(id: number, driveType: string){
-    let formData: FormData = new FormData();
+    let object = {id: id, driveType: driveType}
 
-    formData.append('drive_type', driveType);
-
-    return this.http.put(`${AppConstants.UPDATE_DRIVE_BY_ID}${id}/`, formData, {withCredentials: true});
+    return this.http.put(`${AppConstants.UPDATE_DRIVE_BY_ID}`, JSON.stringify(object), {withCredentials: true});
   }
 
   deleteDriveById(id: number){
-    return this.http.delete(`${AppConstants.DELETE_DRIVE_BY_ID}${id}`, {withCredentials: true});
+    return this.http.delete(`${AppConstants.DELETE_DRIVE_BY_ID}/${id}`, {withCredentials: true});
   }
 }

@@ -1,6 +1,9 @@
 package com.metropolitan.wheelerDealers.controllers;
 
+import com.metropolitan.wheelerDealers.DTO.ManufacturerDTO;
+import com.metropolitan.wheelerDealers.DTO.MessageResponse;
 import com.metropolitan.wheelerDealers.entities.Manufacturer;
+import com.metropolitan.wheelerDealers.services.ICountryService;
 import com.metropolitan.wheelerDealers.services.IManufacturerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -15,8 +18,11 @@ public class ManufacturerController {
     @Autowired
     private IManufacturerService manufacturerService;
 
+    @Autowired
+    private ICountryService countryService;
+
     @GetMapping()
-    @PreAuthorize("hasAnyAuthority('admin', 'user')")
+//    @PreAuthorize("hasAnyAuthority('admin', 'user')")
     public ResponseEntity<List<Manufacturer>> getAllManufacturers(){
         List<Manufacturer> countries = manufacturerService.getAllManufacturers();
 
@@ -37,9 +43,12 @@ public class ManufacturerController {
 
     @PostMapping
     @PreAuthorize("hasAuthority('admin')")
-    public ResponseEntity<String> createManufacturer(@RequestBody Manufacturer manufacturer){
-        if(manufacturerService.createOrUpdateManufacturer(manufacturer)){
-            return ResponseEntity.ok("Created");
+    public ResponseEntity<MessageResponse> createManufacturer(@RequestBody ManufacturerDTO manufacturer){
+        Manufacturer manufacturer1 = new Manufacturer(manufacturer.getId(), manufacturer.getNameManufacturer(),
+                countryService.getCountryById(manufacturer.getIdCountry()));
+
+        if(manufacturerService.createOrUpdateManufacturer(manufacturer1)){
+            return ResponseEntity.ok(new MessageResponse("Created"));
         }else{
             return ResponseEntity.internalServerError().build();
         }
@@ -47,10 +56,13 @@ public class ManufacturerController {
 
     @PutMapping
     @PreAuthorize("hasAuthority('admin')")
-    public ResponseEntity<String> updateManufacturer(@RequestBody Manufacturer manufacturer){
+    public ResponseEntity<MessageResponse> updateManufacturer(@RequestBody ManufacturerDTO manufacturer){
+        Manufacturer manufacturer1 = new Manufacturer(manufacturer.getId(), manufacturer.getNameManufacturer(),
+                countryService.getCountryById(manufacturer.getIdCountry()));
+
         if(manufacturer.getId() != null) {
-            if (manufacturerService.createOrUpdateManufacturer(manufacturer)) {
-                return ResponseEntity.ok("Updated");
+            if (manufacturerService.createOrUpdateManufacturer(manufacturer1)) {
+                return ResponseEntity.ok(new MessageResponse("Updated"));
             } else {
                 return ResponseEntity.internalServerError().build();
             }
@@ -61,8 +73,8 @@ public class ManufacturerController {
 
     @DeleteMapping("{id}")
     @PreAuthorize("hasAuthority('admin')")
-    public ResponseEntity<String> deleteManufacturer(@PathVariable Integer id){
+    public ResponseEntity<MessageResponse> deleteManufacturer(@PathVariable Integer id){
         manufacturerService.deleteManufacturer(id);
-        return ResponseEntity.ok("Deleted");
+        return ResponseEntity.ok(new MessageResponse("Deleted"));
     }
 }

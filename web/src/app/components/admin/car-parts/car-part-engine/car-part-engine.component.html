@@ -32,7 +32,7 @@
     <mat-form-field appearance="outline">
       <mat-label>Engine type</mat-label>
       <select matNativeControl formControlName="engineType">
-        <option *ngFor="let engineType of dataEngineType" value="{{engineType.id_engine_type}}">{{engineType.engine_type}}</option>
+        <option *ngFor="let engineType of dataEngineType" value="{{engineType.id}}">{{engineType.engineType}}</option>
       </select>
     </mat-form-field>
 
@@ -55,12 +55,12 @@
   <table mat-table [dataSource]="data" class="mat-elevation-z8">
     <ng-container matColumnDef="id">
       <th mat-header-cell *matHeaderCellDef>ID</th>
-      <td mat-cell *matCellDef="let element"> {{ element.id_engine }} </td>
+      <td mat-cell *matCellDef="let element"> {{ element.id }} </td>
     </ng-container>
 
     <ng-container matColumnDef="engineCode">
       <th mat-header-cell *matHeaderCellDef>Engine code</th>
-      <td mat-cell *matCellDef="let element"> {{ element.engine_code }} </td>
+      <td mat-cell *matCellDef="let element"> {{ element.engineCode }} </td>
     </ng-container>
 
     <ng-container matColumnDef="horsepower">
@@ -80,24 +80,24 @@
 
     <ng-container matColumnDef="idEngineType">
       <th mat-header-cell *matHeaderCellDef>ID engine type</th>
-      <td mat-cell *matCellDef="let element"> {{ element.id_engine_type }} </td>
+      <td mat-cell *matCellDef="let element"> {{ element.idEngineType.id }} </td>
     </ng-container>
 
     <ng-container matColumnDef="engineType">
-      <th mat-header-cell *matHeaderCellDef>Drive type</th>
-      <td mat-cell *matCellDef="let element"> {{ element.engine_type }} </td>
+      <th mat-header-cell *matHeaderCellDef>Engine type</th>
+      <td mat-cell *matCellDef="let element"> {{ element.idEngineType.engineType }} </td>
     </ng-container>
 
     <ng-container matColumnDef="options">
       <th mat-header-cell *matHeaderCellDef>Options</th>
       <td mat-cell *matCellDef="let element">
-        <button class="option-btn" (click)="openDialog('view', element.id_engine)">
+        <button class="option-btn" (click)="openDialog('view', element.id)">
           <mat-icon color="accent">visibility</mat-icon>
         </button>
-        <button class="option-btn" (click)="openDialog('edit', element.id_engine)">
+        <button class="option-btn" (click)="openDialog('edit', element.id)">
           <mat-icon color="accent">edit</mat-icon>
         </button>
-        <button class="option-btn" (click)="openDialog('delete', element.id_engine)">
+        <button class="option-btn" (click)="openDialog('delete', element.id)">
           <mat-icon color="accent">delete</mat-icon>
         </button>
       </td>

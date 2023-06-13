@@ -13,6 +13,7 @@ import {ModelService} from "../../../services/model.service";
 import {FuelService} from "../../../services/car-parts-services/fuel.service";
 import {TransmissionService} from "../../../services/car-parts-services/transmission.service";
 import {DriveService} from "../../../services/car-parts-services/drive.service";
+import {CarSearchDto} from "../../../classes/car-search-dto";
 
 @Component({
   selector: 'app-search',
@@ -21,7 +22,7 @@ import {DriveService} from "../../../services/car-parts-services/drive.service";
 })
 export class SearchComponent implements OnInit {
 
-  dataCar: Car[] = [];
+  dataCar: CarSearchDto[] = [];
   dataManufacturer: Manufacturer[] = [];
   dataModel: Model[] = [];
   dataTransmission: Transmission[] = [];
@@ -61,8 +62,9 @@ export class SearchComponent implements OnInit {
     })
   }
 
-  getAllCars(){
-    this._searchService.defaultSearch().subscribe((res: Car[]) => {
+  getAllCars() {
+    this._searchService.defaultSearch().subscribe((res: CarSearchDto[]) => {
+      console.warn(res)
       this.dataCar = res;
     })
   }
@@ -95,52 +97,38 @@ export class SearchComponent implements OnInit {
 
     let s: Search = {};
 
-    if(formValue.manufacturerId)
-      s.id_manufacturer = formValue.manufacturerId;
+    s.idManufacturer = formValue.manufacturerId ? formValue.manufacturerId : null;
 
-    if(formValue.modelId)
-      s.id_model = formValue.modelId;
+    s.idModel = formValue.modelId ? formValue.modelId : null;
 
-    if(formValue.transmissionId)
-      s.id_transmission = formValue.transmissionId;
+    s.idTransmission = formValue.transmissionId ? formValue.transmissionId : null;
 
-    if(formValue.fuelId)
-      s.id_fuel = formValue.fuelId;
+    s.idFuel = formValue.fuelId ? formValue.fuelId : null;
 
-    if(formValue.driveId)
-      s.id_drive = formValue.driveId;
+    s.idDrive = formValue.driveId ? formValue.driveId : null;
 
-    if(formValue.isPreOwned)
-      s.is_preowned = formValue.isPreOwned;
+    s.isPreowned = formValue.isPreOwned ? formValue.isPreOwned : null;
 
-    if(formValue.priceFrom)
-      s.price_from = formValue.priceFrom;
+    s.priceFrom = formValue.priceFrom ? formValue.priceFrom : null;
 
-    if(formValue.priceTo)
-      s.price_to = formValue.priceTo;
+    s.priceTo = formValue.priceTo ? formValue.priceTo : null;
 
-    if(formValue.volume)
-      s.volume = formValue.volume;
+    s.volume = formValue.volume ? formValue.volume : null;
 
-    if(formValue.hpFrom)
-      s.hp_from = formValue.hpFrom;
+    s.hpFrom = formValue.hpFrom ? formValue.hpFrom : null;
 
-    if(formValue.hpTo)
-      s.hp_to = formValue.hpTo;
+    s.hpTo = formValue.hpTo ? formValue.hpTo : null;
 
-    if(formValue.kwFrom)
-      s.kw_from = formValue.kwFrom;
+    s.kwFrom = formValue.kwFrom ? formValue.kwFrom : null;
 
-    if(formValue.kwTo)
-      s.kw_to = formValue.kwTo;
+    s.kwTo = formValue.kwTo ? formValue.kwTo : null;
 
-    if(formValue.carColor)
-      s.car_color = formValue.carColor;
+    s.carColor = formValue.carColor ? formValue.carColor : null;
 
-    if(formValue.leftSideSteeringWheel)
-      s.left_side_steering_wheel = formValue.leftSideSteeringWheel;
+    s.leftSideSteeringWheel = formValue.leftSideSteeringWheel ? formValue.leftSideSteeringWheel : null;
 
-    this._searchService.normalSearch(s).subscribe((res: Car[]) => {
+    this._searchService.normalSearch(s).subscribe((res: CarSearchDto[]) => {
+      console.warn(res)
       this.dataCar = res;
     })
   }

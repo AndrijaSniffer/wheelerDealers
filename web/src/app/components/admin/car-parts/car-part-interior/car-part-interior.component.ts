@@ -74,10 +74,12 @@ export class CarPartInteriorComponent implements OnInit {
   }
 
   submitForm() {
-    this._interiorService.createInterior({number_of_doors: this.form.value.numberOfDoors,
-      number_of_seats: this.form.value.numberOfSeats,
-      left_side_steering_wheel: this.form.value.leftSideSteeringWheel,
-      color: this.form.value.color}).subscribe(() => {
+    this._interiorService.createInterior({
+      numberOfDoors: this.form.value.numberOfDoors,
+      numberOfSeats: this.form.value.numberOfSeats,
+      leftSideSteeringWheel: this.form.value.leftSideSteeringWheel,
+      color: this.form.value.color
+    }).subscribe(() => {
       this.getInterior();
     });
   }

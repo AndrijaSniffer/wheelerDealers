@@ -20,7 +20,7 @@ interface DialogData {
 export class TransmissionDialogComponent implements OnInit {
   mode: "view" | "edit" | "delete";
   idTransmission: number;
-  transmission: Transmission = {id_transmission: 0, transmission_type: '', number_of_speeds: 0};
+  transmission: Transmission = {id: 0, transmissionType: '', numberOfGears: 0};
   confirmButtonText: string = 'Confirm';
   cancelButtonText: string = 'Cancel';
   editForm!: FormGroup;
@@ -45,8 +45,8 @@ export class TransmissionDialogComponent implements OnInit {
 
   buildForm() {
     this.editForm = this.formBuilder.group({
-      transmissionType: new FormControl(this.transmission.transmission_type, Validators.required),
-      numberOfSpeeds: new FormControl(this.transmission.number_of_speeds, Validators.required)
+      transmissionType: new FormControl(this.transmission.transmissionType, Validators.required),
+      numberOfSpeeds: new FormControl(this.transmission.numberOfGears, Validators.required)
     });
   }
 

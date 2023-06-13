@@ -1,13 +1,17 @@
 package com.metropolitan.wheelerDealers.entities;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Getter
 @Setter
+@AllArgsConstructor
 @Entity
 @Table(name = "engine")
+@NoArgsConstructor
 public class Engine {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -26,7 +30,7 @@ public class Engine {
     @Column(name = "volume", nullable = false)
     private Integer volume;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "id_engine_type")
     private EngineType idEngineType;
 

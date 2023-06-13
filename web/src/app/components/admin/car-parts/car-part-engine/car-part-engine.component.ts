@@ -89,9 +89,9 @@ export class CarPartEngineComponent implements OnInit {
 
   submitForm() {
     this._engineService.createEngine({
-      engine_code: this.form.value.engineCode,
+      engineCode: this.form.value.engineCode,
       volume: this.form.value.volume,
-      id_engine_type: this.form.value.engineType,
+      idEngineType: this.form.value.engineType,
       horsepower: this.form.value.horsepower ?? null,
       kilowatt: this.form.value.kilowatt ?? null
     }).subscribe(() => {

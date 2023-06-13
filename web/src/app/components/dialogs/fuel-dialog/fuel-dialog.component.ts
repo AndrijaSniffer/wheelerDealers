@@ -18,7 +18,7 @@ interface DialogData {
 export class FuelDialogComponent implements OnInit {
   mode: "view" | "edit" | "delete";
   idFuel: number;
-  fuel: Fuel = {id_fuel: 0, fuel_name: '', kml: 0};
+  fuel: Fuel = {id: 0, fuelName: '', kml: 0};
   confirmButtonText: string = 'Confirm';
   cancelButtonText: string = 'Cancel';
   editForm!: FormGroup;
@@ -43,7 +43,7 @@ export class FuelDialogComponent implements OnInit {
 
   buildForm() {
     this.editForm = this.formBuilder.group({
-      fuelName: new FormControl(this.fuel.fuel_name, Validators.required),
+      fuelName: new FormControl(this.fuel.fuelName, Validators.required),
       kml: new FormControl(this.fuel.kml)
     });
   }

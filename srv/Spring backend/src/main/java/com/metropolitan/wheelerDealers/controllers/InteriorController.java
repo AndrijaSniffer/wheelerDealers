@@ -1,5 +1,6 @@
 package com.metropolitan.wheelerDealers.controllers;
 
+import com.metropolitan.wheelerDealers.DTO.MessageResponse;
 import com.metropolitan.wheelerDealers.entities.Interior;
 import com.metropolitan.wheelerDealers.services.IInteriorService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,9 +38,9 @@ public class InteriorController {
 
     @PostMapping
     @PreAuthorize("hasAuthority('admin')")
-    public ResponseEntity<String> createInterior(@RequestBody Interior interior){
+    public ResponseEntity<MessageResponse> createInterior(@RequestBody Interior interior){
         if(interiorService.createOrUpdateInterior(interior)){
-            return ResponseEntity.ok("Created");
+            return ResponseEntity.ok(new MessageResponse("Created"));
         }else{
             return ResponseEntity.internalServerError().build();
         }
@@ -47,10 +48,10 @@ public class InteriorController {
 
     @PutMapping
     @PreAuthorize("hasAuthority('admin')")
-    public ResponseEntity<String> updateInterior(@RequestBody Interior interior){
+    public ResponseEntity<MessageResponse> updateInterior(@RequestBody Interior interior){
         if(interior.getId() != null) {
             if (interiorService.createOrUpdateInterior(interior)) {
-                return ResponseEntity.ok("Updated");
+                return ResponseEntity.ok(new MessageResponse("Updated"));
             } else {
                 return ResponseEntity.internalServerError().build();
             }
@@ -61,8 +62,8 @@ public class InteriorController {
 
     @DeleteMapping("{id}")
     @PreAuthorize("hasAuthority('admin')")
-    public ResponseEntity<String> deleteInterior(@PathVariable Integer id){
+    public ResponseEntity<MessageResponse> deleteInterior(@PathVariable Integer id){
         interiorService.deleteInterior(id);
-        return ResponseEntity.ok("Deleted");
+        return ResponseEntity.ok(new MessageResponse("Deleted"));
     }
 }

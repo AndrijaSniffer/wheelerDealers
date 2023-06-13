@@ -1,11 +1,15 @@
 package com.metropolitan.wheelerDealers.entities;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Getter
 @Setter
+@AllArgsConstructor
+@NoArgsConstructor
 @Entity
 @Table(name = "manufacturer")
 public class Manufacturer {
@@ -17,7 +21,7 @@ public class Manufacturer {
     @Column(name = "name_manufacturer", nullable = false, length = 150)
     private String nameManufacturer;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "id_country")
     private Country idCountry;
 

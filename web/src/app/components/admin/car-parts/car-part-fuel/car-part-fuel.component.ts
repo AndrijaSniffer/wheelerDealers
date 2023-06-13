@@ -69,7 +69,7 @@ export class CarPartFuelComponent implements OnInit {
   }
 
   submitForm() {
-    this._fuelService.createFuel({fuel_name: this.form.value.fuelName, kml: this.form.value.kml}).subscribe(() => {
+    this._fuelService.createFuel({fuelName: this.form.value.fuelName, kml: this.form.value.kml}).subscribe(() => {
       this.getFuel();
     });
   }

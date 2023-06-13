@@ -16,30 +16,32 @@ export class EngineService {
   }
 
   getEngineById(id: number): Observable<any>{
-    return this.http.get(`${AppConstants.GET_ENGINE_BY_ID}${id}`);
+    return this.http.get(`${AppConstants.GET_ENGINE_BY_ID}/${id}`);
   }
 
   createEngine(et: Engine){
-    let formData: FormData = new FormData();
+    let object: any = {}
 
     for (const [key, value] of Object.entries(et)) {
-      formData.append(key, value);
+      object[key] = value;
     }
 
-    return this.http.post(AppConstants.CREATE_ENGINE, formData, {withCredentials: true});
+    return this.http.post(AppConstants.CREATE_ENGINE, JSON.stringify(object), {withCredentials: true});
   }
 
-  updateEngine(id: number, engine: Engine){
-    let formData: FormData = new FormData();
+  updateEngine(id: number, engine: Engine) {
+    let object: any = {}
 
     for (const [key, value] of Object.entries(engine)) {
-      formData.append(key, value);
+      object[key] = value;
     }
 
-    return this.http.put(`${AppConstants.UPDATE_ENGINE_BY_ID}${id}/`, formData, {withCredentials: true});
+    object["id"] = id;
+
+    return this.http.put(`${AppConstants.UPDATE_ENGINE_BY_ID}`, JSON.stringify(object), {withCredentials: true});
   }
 
   deleteEngineById(id: number){
-    return this.http.delete(`${AppConstants.DELETE_ENGINE_BY_ID}${id}`, {withCredentials: true});
+    return this.http.delete(`${AppConstants.DELETE_ENGINE_BY_ID}/${id}`, {withCredentials: true});
   }
 }

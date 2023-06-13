@@ -1,5 +1,6 @@
 package com.metropolitan.wheelerDealers.controllers;
 
+import com.metropolitan.wheelerDealers.DTO.MessageResponse;
 import com.metropolitan.wheelerDealers.entities.Model;
 import com.metropolitan.wheelerDealers.services.IModelService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,7 +17,7 @@ public class ModelController {
     private IModelService modelService;
 
     @GetMapping()
-    @PreAuthorize("hasAnyAuthority('admin', 'user')")
+//    @PreAuthorize("hasAnyAuthority('admin', 'user')")
     public ResponseEntity<List<Model>> getAllModels(){
         List<Model> countries = modelService.getAllModels();
 
@@ -37,9 +38,9 @@ public class ModelController {
 
     @PostMapping
     @PreAuthorize("hasAuthority('admin')")
-    public ResponseEntity<String> createModel(@RequestBody Model model){
+    public ResponseEntity<MessageResponse> createModel(@RequestBody Model model){
         if(modelService.createOrUpdateModel(model)){
-            return ResponseEntity.ok("Created");
+            return ResponseEntity.ok(new MessageResponse("Created"));
         }else{
             return ResponseEntity.internalServerError().build();
         }
@@ -47,10 +48,10 @@ public class ModelController {
 
     @PutMapping
     @PreAuthorize("hasAuthority('admin')")
-    public ResponseEntity<String> updateModel(@RequestBody Model model){
+    public ResponseEntity<MessageResponse> updateModel(@RequestBody Model model){
         if(model.getId() != null) {
             if (modelService.createOrUpdateModel(model)) {
-                return ResponseEntity.ok("Updated");
+                return ResponseEntity.ok(new MessageResponse("Updated"));
             } else {
                 return ResponseEntity.internalServerError().build();
             }
@@ -61,8 +62,8 @@ public class ModelController {
 
     @DeleteMapping("{id}")
     @PreAuthorize("hasAuthority('admin')")
-    public ResponseEntity<String> deleteModel(@PathVariable Integer id){
+    public ResponseEntity<MessageResponse> deleteModel(@PathVariable Integer id){
         modelService.deleteModel(id);
-        return ResponseEntity.ok("Deleted");
+        return ResponseEntity.ok(new MessageResponse("Deleted"));
     }
 }

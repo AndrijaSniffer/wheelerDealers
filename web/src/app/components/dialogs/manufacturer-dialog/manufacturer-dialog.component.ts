@@ -22,7 +22,7 @@ interface DialogData {
 export class ManufacturerDialogComponent implements OnInit {
   mode: "view" | "edit" | "delete";
   idManufacturer: number;
-  manufacturer: Manufacturer = {id_manufacturer: 0, name_manufacturer: '', id_country: {id_country: 0, name_country: ''}};
+  manufacturer: Manufacturer = {id: 0, nameManufacturer: '', idCountry: {id: 0, nameCountry: ''}};
   confirmButtonText: string = 'Confirm';
   cancelButtonText: string = 'Cancel';
   editForm!: FormGroup;
@@ -53,8 +53,8 @@ export class ManufacturerDialogComponent implements OnInit {
 
   buildForm() {
     this.editForm = this.formBuilder.group({
-      nameManufacturer: new FormControl(this.manufacturer.name_manufacturer, Validators.required),
-      countryId: new FormControl(this.manufacturer.id_country, Validators.required)
+      nameManufacturer: new FormControl(this.manufacturer.nameManufacturer, Validators.required),
+      countryId: new FormControl(this.manufacturer.idCountry, Validators.required)
     });
   }
 
@@ -79,8 +79,11 @@ export class ManufacturerDialogComponent implements OnInit {
 
   submitEditForm() {
     if (this.editForm.valid) {
-      this._manufacturerService.updateManufacturer(this.idManufacturer, {name_manufacturer: this.editForm.value.nameManufacturer,
-      id_country: this.editForm.value.countryId}).subscribe(() => {});
+      this._manufacturerService.updateManufacturer(this.idManufacturer, {
+        nameManufacturer: this.editForm.value.nameManufacturer,
+        idCountry: this.editForm.value.countryId
+      }).subscribe(() => {
+      });
     }
   }
 }

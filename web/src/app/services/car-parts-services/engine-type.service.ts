@@ -16,27 +16,26 @@ export class EngineTypeService {
   }
 
   getEngineTypeById(id: number): Observable<any>{
-    return this.http.get(`${AppConstants.GET_ENGINE_TYPE_BY_ID}${id}`);
+    return this.http.get(`${AppConstants.GET_ENGINE_TYPE_BY_ID}/${id}`);
   }
 
   createEngineType(et: EngineType){
-    let formData: FormData = new FormData();
+    let object: any = {};
 
     for (const [key, value] of Object.entries(et)) {
-      formData.append(key, value);
+      object[key] = value;
     }
 
-    return this.http.post(AppConstants.CREATE_ENGINE_TYPE, formData, {withCredentials: true});
+    return this.http.post(AppConstants.CREATE_ENGINE_TYPE, JSON.stringify(object), {withCredentials: true});
   }
 
   updateEngineType(id: number, engineType: string){
-    let formData: FormData = new FormData();
+    let object: any = {id: id, engineType: engineType};
 
-    formData.append('engine_type', engineType);
-    return this.http.put(`${AppConstants.UPDATE_ENGINE_TYPE_BY_ID}${id}/`, formData, {withCredentials: true});
+    return this.http.put(`${AppConstants.UPDATE_ENGINE_TYPE_BY_ID}`, JSON.stringify(object), {withCredentials: true});
   }
 
   deleteEngineTypeById(id: number){
-    return this.http.delete(`${AppConstants.DELETE_ENGINE_TYPE_BY_ID}${id}`, {withCredentials: true});
+    return this.http.delete(`${AppConstants.DELETE_ENGINE_TYPE_BY_ID}/${id}`, {withCredentials: true});
   }
 }

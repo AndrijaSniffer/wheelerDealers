@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
 import {User} from "../classes/user";
-import {HttpClient, HttpResponse} from "@angular/common/http";
-import {AppConstants} from "../../AppConstants";
+import {HttpClient, HttpHeaders, HttpResponse} from "@angular/common/http";
+import {AppConstants, jwtTokens} from "../../AppConstants";
 import {BehaviorSubject, Observable} from "rxjs";
 
 @Injectable({
@@ -24,9 +24,19 @@ export class UserService {
     this.formData.append("username", username);
     this.formData.append("password", password);
 
-    return this.http.post(AppConstants.LOGIN_USER_API, this.formData, {
+    let object: any = {};
+
+    this.formData.forEach(function (value, key) {
+      object[key] = value;
+    });
+
+    const json = JSON.stringify(object);
+    const header: HttpHeaders = new HttpHeaders().set('Content-Type', 'application/json; charset=utf-8');
+
+    return this.http.post(AppConstants.LOGIN_USER_API, json, {
       responseType: "json",
       observe: "response",
+      headers: header
     });
   }
 
@@ -57,7 +67,24 @@ export class UserService {
     });
   }
 
-  getAllUsers(): Observable<any>{
+  getAllUsers(): Observable<any> {
     return this.http.get(AppConstants.GET_ALL_USER_API);
+  }
+
+  parseJwtToUser(jwtToken: jwtTokens | null) {
+    let authUser;
+    if (jwtToken) {
+      authUser = JSON.parse(atob(jwtToken.access.split('.')[1]));
+    } else {
+      authUser = JSON.parse(atob(sessionStorage.getItem('access')!.split('.')[1]));
+    }
+
+    this.currentUser = {
+      username: authUser.username,
+      email: authUser.email,
+      firstName: authUser.firstName,
+      lastName: authUser.lastName,
+      isAdmin: authUser.role.authority === 'admin'
+    };
   }
 }

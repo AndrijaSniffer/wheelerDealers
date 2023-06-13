@@ -79,8 +79,10 @@ export class CarPropertiesManufacturerComponent implements OnInit {
   }
 
   submitForm() {
-    this._manufacturerService.createManufacturer({name_manufacturer: this.form.value.nameManufacturer,
-      id_country: this.form.value.countryId}).subscribe(() => {
+    this._manufacturerService.createManufacturer({
+      nameManufacturer: this.form.value.nameManufacturer,
+      idCountry: this.form.value.countryId
+    }).subscribe(() => {
       this.getManufacturer();
     });
   }

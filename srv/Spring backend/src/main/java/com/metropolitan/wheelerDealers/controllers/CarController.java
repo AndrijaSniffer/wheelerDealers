@@ -1,5 +1,6 @@
 package com.metropolitan.wheelerDealers.controllers;
 
+import com.metropolitan.wheelerDealers.DTO.MessageResponse;
 import com.metropolitan.wheelerDealers.entities.Car;
 import com.metropolitan.wheelerDealers.services.ICarService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,9 +38,9 @@ public class CarController {
 
     @PostMapping
     @PreAuthorize("hasAuthority('admin')")
-    public ResponseEntity<String> createCar(@RequestBody Car car){
+    public ResponseEntity<MessageResponse> createCar(@RequestBody Car car){
         if(carService.createOrUpdateCar(car)){
-            return ResponseEntity.ok("Created");
+            return ResponseEntity.ok(new MessageResponse("Created"));
         }else{
             return ResponseEntity.internalServerError().build();
         }
@@ -47,10 +48,10 @@ public class CarController {
 
     @PutMapping
     @PreAuthorize("hasAuthority('admin')")
-    public ResponseEntity<String> updateCar(@RequestBody Car car){
+    public ResponseEntity<MessageResponse> updateCar(@RequestBody Car car){
         if(car.getId() != null) {
             if (carService.createOrUpdateCar(car)) {
-                return ResponseEntity.ok("Updated");
+                return ResponseEntity.ok(new MessageResponse("Updated"));
             } else {
                 return ResponseEntity.internalServerError().build();
             }
@@ -61,8 +62,8 @@ public class CarController {
 
     @DeleteMapping("{id}")
     @PreAuthorize("hasAuthority('admin')")
-    public ResponseEntity<String> deleteCar(@PathVariable Integer id){
+    public ResponseEntity<MessageResponse> deleteCar(@PathVariable Integer id){
         carService.deleteCar(id);
-        return ResponseEntity.ok("Deleted");
+        return ResponseEntity.ok(new MessageResponse("Deleted"));
     }
 }

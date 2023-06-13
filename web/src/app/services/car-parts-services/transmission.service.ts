@@ -17,29 +17,26 @@ export class TransmissionService {
   }
 
   getTrasmissionById(id: number): Observable<any> {
-    return this.http.get(`${AppConstants.GET_TRANSMISSION_BY_ID}${id}`);
+    return this.http.get(`${AppConstants.GET_TRANSMISSION_BY_ID}/${id}`);
   }
 
   createTransmission(transmission: Transmission) {
-    let formData: FormData = new FormData();
+    let object: any = {}
 
     for (const [key, value] of Object.entries(transmission)) {
-      formData.append(key, value);
+      object[key] = value;
     }
 
-    return this.http.post(AppConstants.CREATE_TRANSMISSION, formData, {withCredentials: true});
+    return this.http.post(AppConstants.CREATE_TRANSMISSION, JSON.stringify(object), {withCredentials: true});
   }
 
   updateTransmission(id: number, transmissionType: string, numberOfGears: number){
-    let formData: FormData = new FormData();
+    let object = {id: id, transmissionType: transmissionType, numberOfGears: numberOfGears};
 
-    formData.append('transmission_type', transmissionType);
-    formData.append('number_of_speeds', numberOfGears.toString());
-
-    return this.http.put(`${AppConstants.UPDATE_TRANSMISSION_BY_ID}${id}/`, formData, {withCredentials: true});
+    return this.http.put(`${AppConstants.UPDATE_TRANSMISSION_BY_ID}`, JSON.stringify(object), {withCredentials: true});
   }
 
   deleteTrasmissionById(id: number){
-    return this.http.delete(`${AppConstants.DELETE_TRANSMISSION_BY_ID}${id}`, {withCredentials: true});
+    return this.http.delete(`${AppConstants.DELETE_TRANSMISSION_BY_ID}/${id}`, {withCredentials: true});
   }
 }

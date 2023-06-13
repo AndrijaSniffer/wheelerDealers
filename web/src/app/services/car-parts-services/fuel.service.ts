@@ -16,29 +16,26 @@ export class FuelService {
   }
 
   getFuelById(id: number): Observable<any> {
-    return this.http.get(`${AppConstants.GET_FUEL_BY_ID}${id}`);
+    return this.http.get(`${AppConstants.GET_FUEL_BY_ID}/${id}`);
   }
 
   createFuel(fuel: Fuel) {
-    let formData: FormData = new FormData();
+    let object: any = {}
 
     for (const [key, value] of Object.entries(fuel)) {
-      formData.append(key, value);
+      object[key] = value;
     }
 
-    return this.http.post(AppConstants.CREATE_FUEL, formData, {withCredentials: true});
+    return this.http.post(AppConstants.CREATE_FUEL, JSON.stringify(object), {withCredentials: true});
   }
 
   updateFuel(id: number, fuelName: string, kml: number){
-    let formData: FormData = new FormData();
+    let object: any = {id: id, fuelName: fuelName, kml: kml};
 
-    formData.append('fuel_name', fuelName);
-    formData.append('kml', kml.toString());
-
-    return this.http.put(`${AppConstants.UPDATE_FUEL_BY_ID}${id}/`, formData, {withCredentials: true});
+    return this.http.put(`${AppConstants.UPDATE_FUEL_BY_ID}`, JSON.stringify(object), {withCredentials: true});
   }
 
   deleteFuelById(id: number){
-    return this.http.delete(`${AppConstants.DELETE_FUEL_BY_ID}${id}`, {withCredentials: true});
+    return this.http.delete(`${AppConstants.DELETE_FUEL_BY_ID}/${id}`, {withCredentials: true});
   }
 }

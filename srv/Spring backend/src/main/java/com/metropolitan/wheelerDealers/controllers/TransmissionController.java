@@ -1,5 +1,6 @@
 package com.metropolitan.wheelerDealers.controllers;
 
+import com.metropolitan.wheelerDealers.DTO.MessageResponse;
 import com.metropolitan.wheelerDealers.entities.Transmission;
 import com.metropolitan.wheelerDealers.services.ITransmissionService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,7 +17,7 @@ public class TransmissionController {
     private ITransmissionService transmissionService;
 
     @GetMapping()
-    @PreAuthorize("hasAnyAuthority('admin', 'user')")
+//    @PreAuthorize("hasAnyAuthority('admin', 'user')")
     public ResponseEntity<List<Transmission>> getAllTransmissions(){
         List<Transmission> countries = transmissionService.getAllTransmissions();
 
@@ -37,9 +38,9 @@ public class TransmissionController {
 
     @PostMapping
     @PreAuthorize("hasAuthority('admin')")
-    public ResponseEntity<String> createTransmission(@RequestBody Transmission transmission){
+    public ResponseEntity<MessageResponse> createTransmission(@RequestBody Transmission transmission){
         if(transmissionService.createOrUpdateTransmission(transmission)){
-            return ResponseEntity.ok("Created");
+            return ResponseEntity.ok(new MessageResponse("Created"));
         }else{
             return ResponseEntity.internalServerError().build();
         }
@@ -47,10 +48,10 @@ public class TransmissionController {
 
     @PutMapping
     @PreAuthorize("hasAuthority('admin')")
-    public ResponseEntity<String> updateTransmission(@RequestBody Transmission transmission){
+    public ResponseEntity<MessageResponse> updateTransmission(@RequestBody Transmission transmission){
         if(transmission.getId() != null) {
             if (transmissionService.createOrUpdateTransmission(transmission)) {
-                return ResponseEntity.ok("Updated");
+                return ResponseEntity.ok(new MessageResponse("Updated"));
             } else {
                 return ResponseEntity.internalServerError().build();
             }
@@ -61,8 +62,8 @@ public class TransmissionController {
 
     @DeleteMapping("{id}")
     @PreAuthorize("hasAuthority('admin')")
-    public ResponseEntity<String> deleteTransmission(@PathVariable Integer id){
+    public ResponseEntity<MessageResponse> deleteTransmission(@PathVariable Integer id){
         transmissionService.deleteTransmission(id);
-        return ResponseEntity.ok("Deleted");
+        return ResponseEntity.ok(new MessageResponse("Deleted"));
     }
 }

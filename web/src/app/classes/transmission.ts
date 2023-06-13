@@ -1,5 +1,5 @@
 export class Transmission {
-  id_transmission?: number;
-  number_of_speeds: number;
-  transmission_type: string;
+  id?: number;
+  numberOfGears: number;
+  transmissionType: string;
 }

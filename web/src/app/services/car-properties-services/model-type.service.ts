@@ -16,30 +16,32 @@ export class ModelTypeService {
   }
 
   getModelTypeById(id: number): Observable<any> {
-    return this.http.get(`${AppConstants.GET_MODEL_TYPE_BY_ID}${id}`);
+    return this.http.get(`${AppConstants.GET_MODEL_TYPE_BY_ID}/${id}`);
   }
 
   createModelType(modelType: ModelType) {
-    let formData: FormData = new FormData();
+    let object: any = {}
 
     for (const [key, value] of Object.entries(modelType)) {
-      formData.append(key, value);
+      object[key] = value;
     }
 
-    return this.http.post(AppConstants.CREATE_MODEL_TYPE, formData, {withCredentials: true});
+    return this.http.post(AppConstants.CREATE_MODEL_TYPE, JSON.stringify(object), {withCredentials: true});
   }
 
-  updateModelType(id: number, modelType: ModelType){
-    let formData: FormData = new FormData();
+  updateModelType(id: number, modelType: ModelType) {
+    let object: any = {}
 
     for (const [key, value] of Object.entries(modelType)) {
-      formData.append(key, value);
+      object[key] = value;
     }
 
-    return this.http.put(`${AppConstants.UPDATE_MODEL_TYPE_BY_ID}${id}/`, formData, {withCredentials: true});
+    object["id"] = id;
+
+    return this.http.put(`${AppConstants.UPDATE_MODEL_TYPE_BY_ID}`, JSON.stringify(modelType), {withCredentials: true});
   }
 
   deleteModelTypeById(id: number){
-    return this.http.delete(`${AppConstants.DELETE_MODEL_TYPE_BY_ID}${id}`, {withCredentials: true});
+    return this.http.delete(`${AppConstants.DELETE_MODEL_TYPE_BY_ID}/${id}`, {withCredentials: true});
   }
 }

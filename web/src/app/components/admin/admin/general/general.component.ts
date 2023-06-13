@@ -34,6 +34,7 @@ export class GeneralComponent implements OnInit {
 
   getCountries(){
     this._countryService.getAllCountry().subscribe(response => {
+      console.warn(response)
       this.countriesData = response as Country[];
     })
   }
@@ -73,7 +74,7 @@ export class GeneralComponent implements OnInit {
 
   submitCreateForm() {
     if(this.createForm.valid){
-      this._countryService.createCountry({name_country: this.createForm.value.countryName}).subscribe(res => {
+      this._countryService.createCountry({nameCountry: this.createForm.value.countryName}).subscribe(res => {
         console.warn(res);
         this.getCountries();
       });

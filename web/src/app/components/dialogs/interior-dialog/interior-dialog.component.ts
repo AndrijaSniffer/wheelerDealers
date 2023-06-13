@@ -20,7 +20,7 @@ interface DialogData {
 export class InteriorDialogComponent implements OnInit {
   mode: "view" | "edit" | "delete";
   idInterior: number;
-  interior: Interior = {id_interior: 0, number_of_doors: 0, number_of_seats: 0, left_side_steering_wheel: true, color: ''};
+  interior: Interior = {id: 0, numberOfDoors: 0, numberOfSeats: 0, leftSideSteeringWheel: true, color: ''};
   confirmButtonText: string = 'Confirm';
   cancelButtonText: string = 'Cancel';
   editForm!: FormGroup;
@@ -45,9 +45,9 @@ export class InteriorDialogComponent implements OnInit {
 
   buildForm() {
     this.editForm = this.formBuilder.group({
-      numberOfDoors: new FormControl(this.interior.number_of_doors, Validators.required),
-      numberOfSeats: new FormControl(this.interior.number_of_seats, Validators.required),
-      leftSideSteeringWheel: new FormControl(this.interior.left_side_steering_wheel, Validators.required),
+      numberOfDoors: new FormControl(this.interior.numberOfDoors, Validators.required),
+      numberOfSeats: new FormControl(this.interior.numberOfSeats, Validators.required),
+      leftSideSteeringWheel: new FormControl(this.interior.leftSideSteeringWheel, Validators.required),
       color: new FormControl(this.interior.color)
     });
   }
@@ -74,10 +74,13 @@ export class InteriorDialogComponent implements OnInit {
   submitEditForm() {
     if (this.editForm.valid) {
       let formValues = this.editForm.value
-      this._interiorService.updateInterior(this.idInterior, {number_of_doors: formValues.numberOfDoors,
-      number_of_seats: formValues.numberOfSeats,
-      left_side_steering_wheel: formValues.leftSideSteeringWheel,
-      color: formValues.color}).subscribe(() => {});
+      this._interiorService.updateInterior(this.idInterior, {
+        numberOfDoors: formValues.numberOfDoors,
+        numberOfSeats: formValues.numberOfSeats,
+        leftSideSteeringWheel: formValues.leftSideSteeringWheel,
+        color: formValues.color
+      }).subscribe(() => {
+      });
     }
   }
 }

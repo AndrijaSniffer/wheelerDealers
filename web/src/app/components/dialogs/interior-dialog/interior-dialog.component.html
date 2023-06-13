@@ -1,10 +1,10 @@
 <mat-dialog-content>
   <div *ngIf="mode == 'view' || mode == 'delete'">
     <mat-list>
-      <mat-list-item>Interior id: {{interior.id_interior}}</mat-list-item>
-      <mat-list-item>Number of doors: {{interior.number_of_doors}}</mat-list-item>
-      <mat-list-item>Number of seats: {{interior.number_of_seats}}</mat-list-item>
-      <mat-list-item>Left side steering wheel: {{interior.left_side_steering_wheel ? 'Yes' : 'No'}}</mat-list-item>
+      <mat-list-item>Interior id: {{interior.id}}</mat-list-item>
+      <mat-list-item>Number of doors: {{interior.numberOfDoors}}</mat-list-item>
+      <mat-list-item>Number of seats: {{interior.numberOfSeats}}</mat-list-item>
+      <mat-list-item>Left side steering wheel: {{interior.leftSideSteeringWheel ? 'Yes' : 'No'}}</mat-list-item>
       <mat-list-item>Color: {{interior.color ?? 'N/A'}}</mat-list-item>
     </mat-list>
   </div>

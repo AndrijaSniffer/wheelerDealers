@@ -69,7 +69,7 @@ export class CarPartDriveComponent implements OnInit {
   }
 
   submitForm() {
-    this._driveService.createDrive({drive_type: this.form.value.driveType}).subscribe(res => {
+    this._driveService.createDrive({driveType: this.form.value.driveType}).subscribe(res => {
       this.getDrives();
     });
   }

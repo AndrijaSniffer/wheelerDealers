@@ -19,7 +19,7 @@ export class CountryDialogComponent implements OnInit {
 
   mode: "view" | "edit" | "delete";
   countryId: number;
-  country: Country = {id_country: 0, name_country: ''};
+  country: Country = {id: 0, nameCountry: ''};
   confirmButtonText: string = 'Confirm';
   cancelButtonText: string = 'Cancel';
   editForm!: FormGroup;
@@ -60,7 +60,7 @@ export class CountryDialogComponent implements OnInit {
         break;
 
       case "delete":
-        this._countryService.deleteCountryById(this.countryId).subscribe(response => {
+        this._countryService.deleteCountryById(this.countryId).subscribe((response: any) => {
           console.warn(response);
           this.dialogRef.close();
         });

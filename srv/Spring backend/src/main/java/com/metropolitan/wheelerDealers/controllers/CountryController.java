@@ -1,5 +1,6 @@
 package com.metropolitan.wheelerDealers.controllers;
 
+import com.metropolitan.wheelerDealers.DTO.MessageResponse;
 import com.metropolitan.wheelerDealers.entities.Country;
 import com.metropolitan.wheelerDealers.services.ICountryService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,9 +38,9 @@ public class CountryController {
 
     @PostMapping
     @PreAuthorize("hasAuthority('admin')")
-    public ResponseEntity<String> createCountry(@RequestBody Country country){
+    public ResponseEntity<MessageResponse> createCountry(@RequestBody Country country){
         if(countryService.createOrUpdateCountry(country)){
-            return ResponseEntity.ok("Created");
+            return ResponseEntity.ok(new MessageResponse("Created"));
         }else{
             return ResponseEntity.internalServerError().build();
         }
@@ -47,10 +48,10 @@ public class CountryController {
 
     @PutMapping
     @PreAuthorize("hasAuthority('admin')")
-    public ResponseEntity<String> updateCountry(@RequestBody Country country){
+    public ResponseEntity<MessageResponse> updateCountry(@RequestBody Country country){
         if(country.getId() != null) {
             if (countryService.createOrUpdateCountry(country)) {
-                return ResponseEntity.ok("Updated");
+                return ResponseEntity.ok(new MessageResponse("Updated"));
             } else {
                 return ResponseEntity.internalServerError().build();
             }
@@ -61,9 +62,9 @@ public class CountryController {
 
     @DeleteMapping("{id}")
     @PreAuthorize("hasAuthority('admin')")
-    public ResponseEntity<String> deleteCountry(@PathVariable Integer id){
+    public ResponseEntity<MessageResponse> deleteCountry(@PathVariable Integer id){
         countryService.deleteCountry(id);
-        return ResponseEntity.ok("Deleted");
+        return ResponseEntity.ok(new MessageResponse("Deleted"));
     }
 
 }

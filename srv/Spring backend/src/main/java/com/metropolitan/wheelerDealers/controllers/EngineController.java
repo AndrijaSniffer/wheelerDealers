@@ -1,7 +1,10 @@
 package com.metropolitan.wheelerDealers.controllers;
 
+import com.metropolitan.wheelerDealers.DTO.EngineDTO;
+import com.metropolitan.wheelerDealers.DTO.MessageResponse;
 import com.metropolitan.wheelerDealers.entities.Engine;
 import com.metropolitan.wheelerDealers.services.IEngineService;
+import com.metropolitan.wheelerDealers.services.IEngineTypeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -14,6 +17,9 @@ import java.util.List;
 public class EngineController {
     @Autowired
     private IEngineService engineService;
+
+    @Autowired
+    private IEngineTypeService engineTypeService;
 
     @GetMapping()
     @PreAuthorize("hasAnyAuthority('admin', 'user')")
@@ -37,9 +43,12 @@ public class EngineController {
 
     @PostMapping
     @PreAuthorize("hasAuthority('admin')")
-    public ResponseEntity<String> createEngine(@RequestBody Engine engine){
-        if(engineService.createOrUpdateEngine(engine)){
-            return ResponseEntity.ok("Created");
+    public ResponseEntity<MessageResponse> createEngine(@RequestBody EngineDTO engine){
+        Engine engine1 = new Engine(engine.getId(), engine.getEngineCode(), engine.getHorsepower(), engine.getKilowatt(),
+                engine.getVolume(), engineTypeService.getEngineTypeById(engine.getIdEngineType()));
+
+        if(engineService.createOrUpdateEngine(engine1)){
+            return ResponseEntity.ok(new MessageResponse("Created"));
         }else{
             return ResponseEntity.internalServerError().build();
         }
@@ -47,10 +56,13 @@ public class EngineController {
 
     @PutMapping
     @PreAuthorize("hasAuthority('admin')")
-    public ResponseEntity<String> updateEngine(@RequestBody Engine engine){
+    public ResponseEntity<MessageResponse> updateEngine(@RequestBody EngineDTO engine){
+        Engine engine1 = new Engine(engine.getId(), engine.getEngineCode(), engine.getHorsepower(), engine.getKilowatt(),
+                engine.getVolume(), engineTypeService.getEngineTypeById(engine.getIdEngineType()));
+
         if(engine.getId() != null) {
-            if (engineService.createOrUpdateEngine(engine)) {
-                return ResponseEntity.ok("Updated");
+            if (engineService.createOrUpdateEngine(engine1)) {
+                return ResponseEntity.ok(new MessageResponse("Updated"));
             } else {
                 return ResponseEntity.internalServerError().build();
             }
@@ -61,8 +73,8 @@ public class EngineController {
 
     @DeleteMapping("{id}")
     @PreAuthorize("hasAuthority('admin')")
-    public ResponseEntity<String> deleteEngine(@PathVariable Integer id){
+    public ResponseEntity<MessageResponse> deleteEngine(@PathVariable Integer id){
         engineService.deleteEngine(id);
-        return ResponseEntity.ok("Deleted");
+        return ResponseEntity.ok(new MessageResponse("Deleted"));
     }
 }

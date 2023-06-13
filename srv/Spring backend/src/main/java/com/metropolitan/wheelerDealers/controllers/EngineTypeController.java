@@ -1,5 +1,6 @@
 package com.metropolitan.wheelerDealers.controllers;
 
+import com.metropolitan.wheelerDealers.DTO.MessageResponse;
 import com.metropolitan.wheelerDealers.entities.EngineType;
 import com.metropolitan.wheelerDealers.services.IEngineTypeService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,9 +19,9 @@ public class EngineTypeController {
     @GetMapping()
     @PreAuthorize("hasAnyAuthority('admin', 'user')")
     public ResponseEntity<List<EngineType>> getAllEngineTypes(){
-        List<EngineType> countries = engineTypeService.getAllEngineTypes();
+        List<EngineType> allEngineTypes = engineTypeService.getAllEngineTypes();
 
-        return ResponseEntity.ok(countries);
+        return ResponseEntity.ok(allEngineTypes);
     }
 
     @GetMapping("{id}")
@@ -37,9 +38,9 @@ public class EngineTypeController {
 
     @PostMapping
     @PreAuthorize("hasAuthority('admin')")
-    public ResponseEntity<String> createEngineType(@RequestBody EngineType engineType){
+    public ResponseEntity<MessageResponse> createEngineType(@RequestBody EngineType engineType){
         if(engineTypeService.createOrUpdateEngineType(engineType)){
-            return ResponseEntity.ok("Created");
+            return ResponseEntity.ok(new MessageResponse("Created"));
         }else{
             return ResponseEntity.internalServerError().build();
         }
@@ -47,10 +48,10 @@ public class EngineTypeController {
 
     @PutMapping
     @PreAuthorize("hasAuthority('admin')")
-    public ResponseEntity<String> updateEngineType(@RequestBody EngineType engineType){
+    public ResponseEntity<MessageResponse> updateEngineType(@RequestBody EngineType engineType){
         if(engineType.getId() != null) {
             if (engineTypeService.createOrUpdateEngineType(engineType)) {
-                return ResponseEntity.ok("Updated");
+                return ResponseEntity.ok(new MessageResponse("Updated"));
             } else {
                 return ResponseEntity.internalServerError().build();
             }
@@ -61,8 +62,8 @@ public class EngineTypeController {
 
     @DeleteMapping("{id}")
     @PreAuthorize("hasAuthority('admin')")
-    public ResponseEntity<String> deleteEngineType(@PathVariable Integer id){
+    public ResponseEntity<MessageResponse> deleteEngineType(@PathVariable Integer id){
         engineTypeService.deleteEngineType(id);
-        return ResponseEntity.ok("Deleted");
+        return ResponseEntity.ok(new MessageResponse("Deleted"));
     }
 }

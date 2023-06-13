@@ -1,5 +1,5 @@
 export class Fuel {
-  id_fuel?: number;
-  fuel_name: string;
+  id?: number;
+  fuelName: string;
   kml?: number;
 }

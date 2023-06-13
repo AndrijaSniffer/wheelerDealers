@@ -6,10 +6,7 @@ import com.metropolitan.wheelerDealers.services.ISearchService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -19,8 +16,14 @@ public class SearchController {
     @Autowired
     private ISearchService searchService;
 
+    @GetMapping
+    public ResponseEntity<List<SearchResultDTO>> defaultSearch(){
+        List<SearchResultDTO> dto = searchService.defaultSearch();
+        return ResponseEntity.ok(dto);
+    }
+
     @PostMapping
-    @PreAuthorize("hasAnyAuthority('admin', 'user')")
+//    @PreAuthorize("hasAnyAuthority('admin', 'user')")
     public ResponseEntity<List<SearchResultDTO>> search(@RequestBody SearchDTO searchDTO){
         System.out.println(searchDTO);
 

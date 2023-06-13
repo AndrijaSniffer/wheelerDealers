@@ -14,8 +14,8 @@ public class Transmission {
     @Column(name = "id_transmission", nullable = false)
     private Integer id;
 
-    @Column(name = "number_of_speeds", nullable = false)
-    private Integer numberOfSpeeds;
+    @Column(name = "number_of_gears", nullable = false)
+    private Integer numberOfGears;
 
     @Column(name = "transmission_type", nullable = false)
     private String transmissionType;

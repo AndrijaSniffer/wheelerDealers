@@ -1,8 +1,8 @@
 <mat-dialog-content>
   <div *ngIf="mode == 'view' || mode == 'delete'">
     <mat-list>
-      <mat-list-item>Drive id: {{drive.id_drive}}</mat-list-item>
-      <mat-list-item>Drive type: {{drive.drive_type}}</mat-list-item>
+      <mat-list-item>Drive id: {{drive.id}}</mat-list-item>
+      <mat-list-item>Drive type: {{drive.driveType}}</mat-list-item>
     </mat-list>
   </div>
 
@@ -10,7 +10,7 @@
     <form class="column" [formGroup]="editForm">
       <mat-form-field color="accent" appearance="outline">
         <mat-label>Edit drive type</mat-label>
-        <input matInput placeholder="{{drive.drive_type}}..." formControlName="driveType">
+        <input matInput placeholder="{{drive.driveType}}..." formControlName="driveType">
       </mat-form-field>
     </form>
   </div>

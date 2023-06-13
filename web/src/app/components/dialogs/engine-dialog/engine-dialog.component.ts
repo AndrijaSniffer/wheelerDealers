@@ -21,12 +21,12 @@ export class EngineDialogComponent implements OnInit {
   mode: "view" | "edit" | "delete";
   idEngine: number;
   engine: Engine = {
-    id_engine: 0,
-    engine_code: '',
+    id: 0,
+    engineCode: '',
     kilowatt: 0,
     volume: 0,
     horsepower: 0,
-    id_engine_type: {id_engine_type: 0, engine_type: ''}
+    idEngineType: {id: 0, engineType: ''}
   };
   confirmButtonText: string = 'Confirm';
   cancelButtonText: string = 'Cancel';
@@ -83,11 +83,11 @@ export class EngineDialogComponent implements OnInit {
     if (this.editForm.valid) {
       let e = new Engine()
 
-      e.engine_code = this.editForm.value.engineCode;
+      e.engineCode = this.editForm.value.engineCode;
       e.horsepower = this.editForm.value.horsepower;
       e.kilowatt = this.editForm.value.kilowatt;
       e.volume = this.editForm.value.volume;
-      e.id_engine_type = this.editForm.value.idEngineType;
+      e.idEngineType = this.editForm.value.idEngineType;
 
       this._engineService.updateEngine(this.idEngine, e).subscribe(() => {});
     }

@@ -1,5 +1,6 @@
 package com.metropolitan.wheelerDealers.controllers;
 
+import com.metropolitan.wheelerDealers.DTO.MessageResponse;
 import com.metropolitan.wheelerDealers.entities.Fuel;
 import com.metropolitan.wheelerDealers.services.IFuelService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,7 +17,7 @@ public class FuelController {
     private IFuelService fuelService;
 
     @GetMapping()
-    @PreAuthorize("hasAnyAuthority('admin', 'user')")
+//    @PreAuthorize("hasAnyAuthority('admin', 'user')")
     public ResponseEntity<List<Fuel>> getAllFuel(){
         List<Fuel> countries = fuelService.getAllFuels();
 
@@ -37,9 +38,9 @@ public class FuelController {
 
     @PostMapping
     @PreAuthorize("hasAuthority('admin')")
-    public ResponseEntity<String> createFuel(@RequestBody Fuel fuel){
+    public ResponseEntity<MessageResponse> createFuel(@RequestBody Fuel fuel){
         if(fuelService.createOrUpdateFuel(fuel)){
-            return ResponseEntity.ok("Created");
+            return ResponseEntity.ok(new MessageResponse("Created"));
         }else{
             return ResponseEntity.internalServerError().build();
         }
@@ -47,10 +48,10 @@ public class FuelController {
 
     @PutMapping
     @PreAuthorize("hasAuthority('admin')")
-    public ResponseEntity<String> updateFuel(@RequestBody Fuel fuel){
+    public ResponseEntity<MessageResponse> updateFuel(@RequestBody Fuel fuel){
         if(fuel.getId() != null) {
             if (fuelService.createOrUpdateFuel(fuel)) {
-                return ResponseEntity.ok("Updated");
+                return ResponseEntity.ok(new MessageResponse("Updated"));
             } else {
                 return ResponseEntity.internalServerError().build();
             }
@@ -61,8 +62,8 @@ public class FuelController {
 
     @DeleteMapping("{id}")
     @PreAuthorize("hasAuthority('admin')")
-    public ResponseEntity<String> deleteFuel(@PathVariable Integer id){
+    public ResponseEntity<MessageResponse> deleteFuel(@PathVariable Integer id){
         fuelService.deleteFuel(id);
-        return ResponseEntity.ok("Deleted");
+        return ResponseEntity.ok(new MessageResponse("Deleted"));
     }
 }

@@ -1,10 +1,14 @@
 package com.metropolitan.wheelerDealers.DTO;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.time.Instant;
 
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class SearchResultDTO {
     private Integer id_car;
     private Integer id_user;

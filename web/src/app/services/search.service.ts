@@ -15,12 +15,6 @@ export class SearchService {
   }
 
   normalSearch(filter: Search): Observable<any>{
-    let formData: FormData = new FormData();
-
-    for (const [key, value] of Object.entries(filter)) {
-      formData.append(key, value);
-    }
-
-    return this.http.post(AppConstants.NORMAL_SEARCH, formData, {withCredentials: true});
+    return this.http.post(AppConstants.NORMAL_SEARCH, JSON.stringify(filter), {withCredentials: true});
   }
 }

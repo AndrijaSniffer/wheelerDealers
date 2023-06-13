@@ -7,6 +7,11 @@ import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.Query;
 import org.springframework.stereotype.Repository;
 
+import java.math.BigDecimal;
+import java.math.BigInteger;
+import java.sql.Timestamp;
+import java.time.Instant;
+import java.util.ArrayList;
 import java.util.List;
 
 @Repository
@@ -15,11 +20,22 @@ public class SearchRepo implements ISearchRepo {
     private EntityManager entityManager;
 
     @Override
+    public List<SearchResultDTO> defaultSearch() {
+        StringBuilder sql = new StringBuilder("SELECT DISTINCT `id_car`, `id_user`, `price`, c.`color`, `chassie_number`, `is_preowned`, `created_at`, c.`id_fuel`, `fuel_name`, `kml`, c.`id_model`, `name_model`, `year_of_manufacture`, mo.`id_manufacturer`, `name_manufacturer` " +
+                "FROM `car` c, `fuel` f, `model` mo, `manufacturer` ma, `transmission` t, `drive` d, `engine` e, `interior` i " +
+                "WHERE c.id_fuel = f.id_fuel and c.id_model = mo.id_model and mo.id_manufacturer = ma.id_manufacturer;");
+
+        Query query = entityManager.createNativeQuery(sql.toString());
+
+        return mapToSearchDTOList(query.getResultList());
+    }
+
+    @Override
     public List<SearchResultDTO> search(SearchDTO searchDTO) {
 
         StringBuilder sql = new StringBuilder("SELECT DISTINCT `id_car`, `id_user`, `price`, c.`color`, `chassie_number`, `is_preowned`, `created_at`, c.`id_fuel`, `fuel_name`, `kml`, c.`id_model`, `name_model`, `year_of_manufacture`, mo.`id_manufacturer`, `name_manufacturer` " +
                 "FROM `car` c, `fuel` f, `model` mo, `manufacturer` ma, `transmission` t, `drive` d, `engine` e, `interior` i " +
-                "WHERE c.id_fuel = f.id_fuel and c.id_model = mo.id_model and mo.id_manufacturer = ma.id_manufacturer;");
+                "WHERE c.id_fuel = f.id_fuel and c.id_model = mo.id_model and mo.id_manufacturer = ma.id_manufacturer");
 
         //region Basic parameters SQL
         if (searchDTO.getIdManufacturer() != null)
@@ -74,15 +90,34 @@ public class SearchRepo implements ISearchRepo {
             sql.append(" and e.kilowatt < ").append(searchDTO.getKwTo());
         //endregion
 
-        System.out.println(sql);
         Query query = entityManager.createNativeQuery(sql.toString());
 
-//        List<SearchResultDTO> list = query.getResultList();
-//
-//        for (int i = 0; i < list.size(); i++) {
-//            System.out.println(list.get(i));
-//        }
+        return mapToSearchDTOList(query.getResultList());
+    }
 
-        return query.getResultList();
+    private List<SearchResultDTO> mapToSearchDTOList(List<Object[]> rows){
+        List<SearchResultDTO> result = new ArrayList<>(rows.size());
+
+        for (Object[] row : rows) {
+            result.add(new SearchResultDTO(
+                    (Integer) row[0],
+                    (Integer) row[1],
+                    ((BigDecimal) row[2]).intValue(),
+                    (String) row[3],
+                    (String) row[4],
+                    (Boolean) row[5],
+                    ((Timestamp) row[6]).toInstant(),
+                    (Integer) row[7],
+                    (String) row[8],
+                    (Integer) row[9],
+                    (Integer) row[10],
+                    (String) row[11],
+                    (Integer) row[12],
+                    (Integer) row[13],
+                    (String) row[14]
+            ));
+        }
+
+        return result;
     }
 }

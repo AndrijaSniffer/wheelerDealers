@@ -22,7 +22,7 @@ interface DialogData {
 export class ModelTypeDialogComponent implements OnInit {
   mode: "view" | "edit" | "delete";
   idModelType: number;
-  modelType: ModelType = {id_model_type: 0, type_name: ''};
+  modelType: ModelType = {id: 0, typeName: ''};
   confirmButtonText: string = 'Confirm';
   cancelButtonText: string = 'Cancel';
   editForm!: FormGroup;
@@ -47,7 +47,7 @@ export class ModelTypeDialogComponent implements OnInit {
 
   buildForm() {
     this.editForm = this.formBuilder.group({
-      typeName: new FormControl(this.modelType.type_name, Validators.required)
+      typeName: new FormControl(this.modelType.typeName, Validators.required)
     });
   }
 
@@ -72,7 +72,8 @@ export class ModelTypeDialogComponent implements OnInit {
 
   submitEditForm() {
     if (this.editForm.valid) {
-      this._modelTypeService.updateModelType(this.idModelType, {type_name: this.editForm.value.typeName}).subscribe(() => {});
+      this._modelTypeService.updateModelType(this.idModelType, {typeName: this.editForm.value.typeName}).subscribe(() => {
+      });
     }
   }
 

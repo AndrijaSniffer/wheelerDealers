@@ -18,7 +18,7 @@ interface DialogData {
 export class EngineTypeDialogComponent implements OnInit {
   mode: "view" | "edit" | "delete";
   idEngineType: number;
-  engineType: EngineType = {id_engine_type: 0, engine_type: ''};
+  engineType: EngineType = {id: 0, engineType: ''};
   confirmButtonText: string = 'Confirm';
   cancelButtonText: string = 'Cancel';
   editForm!: FormGroup;

@@ -67,7 +67,7 @@ export class CarPropertiesModelTypeComponent implements OnInit {
   }
 
   submitForm() {
-    this._modelTypeService.createModelType({type_name: this.form.value.typeName}).subscribe(() => {
+    this._modelTypeService.createModelType({typeName: this.form.value.typeName}).subscribe(() => {
       this.getModelType();
     });
   }

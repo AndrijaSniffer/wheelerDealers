@@ -22,14 +22,15 @@
     <mat-form-field appearance="outline">
       <mat-label>Manufacturer</mat-label>
       <select matNativeControl formControlName="manufacturerId">
-        <option *ngFor="let manufacturer of dataManufacturer" value="{{manufacturer.id_manufacturer}}">{{manufacturer.name_manufacturer}}</option>
+        <option *ngFor="let manufacturer of dataManufacturer"
+                value="{{manufacturer.id}}">{{manufacturer.nameManufacturer}}</option>
       </select>
     </mat-form-field>
 
     <mat-form-field appearance="outline">
       <mat-label>Engine code</mat-label>
       <select matNativeControl formControlName="engineId">
-        <option *ngFor="let engine of dataEngine" value="{{engine.id_engine}}">{{engine.engine_code}}</option>
+        <option *ngFor="let engine of dataEngine" value="{{engine.id}}">{{engine.engineCode}}</option>
       </select>
     </mat-form-field>
     <br>
@@ -51,34 +52,34 @@
   <table mat-table [dataSource]="data" class="mat-elevation-z8">
     <ng-container matColumnDef="id">
       <th mat-header-cell *matHeaderCellDef>ID</th>
-      <td mat-cell *matCellDef="let element"> {{ element.id_model }} </td>
+      <td mat-cell *matCellDef="let element"> {{ element.id }} </td>
     </ng-container>
 
     <ng-container matColumnDef="nameModel">
       <th mat-header-cell *matHeaderCellDef>Name</th>
-      <td mat-cell *matCellDef="let element"> {{ element.name_model }} </td>
+      <td mat-cell *matCellDef="let element"> {{ element.nameModel }} </td>
     </ng-container>
 
     <ng-container matColumnDef="manufacturerName">
       <th mat-header-cell *matHeaderCellDef>Manufacturer</th>
-      <td mat-cell *matCellDef="let element"> {{ element.id_manufacturer.name_manufacturer }} </td>
+      <td mat-cell *matCellDef="let element"> {{ element.idManufacturer.nameManufacturer }} </td>
     </ng-container>
 
     <ng-container matColumnDef="engineCode">
       <th mat-header-cell *matHeaderCellDef>Engine</th>
-      <td mat-cell *matCellDef="let element"> {{ element.id_engine.engine_code }} </td>
+      <td mat-cell *matCellDef="let element"> {{ element.idEngine.engineCode }} </td>
     </ng-container>
 
     <ng-container matColumnDef="options">
       <th mat-header-cell *matHeaderCellDef>Options</th>
       <td mat-cell *matCellDef="let element">
-        <button class="option-btn" (click)="openDialog('view', element.id_model)">
+        <button class="option-btn" (click)="openDialog('view', element.id)">
           <mat-icon color="accent">visibility</mat-icon>
         </button>
-        <button class="option-btn" (click)="openDialog('edit', element.id_model)">
+        <button class="option-btn" (click)="openDialog('edit', element.id)">
           <mat-icon color="accent">edit</mat-icon>
         </button>
-        <button class="option-btn" (click)="openDialog('delete', element.id_model)">
+        <button class="option-btn" (click)="openDialog('delete', element.id)">
           <mat-icon color="accent">delete</mat-icon>
         </button>
       </td>

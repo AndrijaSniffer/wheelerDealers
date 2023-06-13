@@ -1,8 +1,8 @@
 <mat-dialog-content>
   <div *ngIf="mode == 'view' || mode == 'delete'">
     <mat-list>
-      <mat-list-item>Country id: {{country.id_country}}</mat-list-item>
-      <mat-list-item>Country name: {{country.name_country}}</mat-list-item>
+      <mat-list-item>Country id: {{country.id}}</mat-list-item>
+      <mat-list-item>Country name: {{country.nameCountry}}</mat-list-item>
     </mat-list>
   </div>
 
@@ -10,7 +10,7 @@
     <form class="column" [formGroup]="editForm">
       <mat-form-field color="accent" appearance="outline">
         <mat-label>Edit country name</mat-label>
-        <input matInput placeholder="{{country.name_country}}..." formControlName="countryName">
+        <input matInput placeholder="{{country.nameCountry}}..." formControlName="countryName">
       </mat-form-field>
     </form>
   </div>

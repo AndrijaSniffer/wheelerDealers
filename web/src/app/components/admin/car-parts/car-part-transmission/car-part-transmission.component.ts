@@ -72,8 +72,10 @@ export class CarPartTransmissionComponent implements OnInit {
   }
 
   submitForm() {
-    this._transmissionService.createTransmission({transmission_type: this.form.value.transmissionType,
-      number_of_speeds: this.form.value.numberOfSpeeds}).subscribe(() => {
+    this._transmissionService.createTransmission({
+      transmissionType: this.form.value.transmissionType,
+      numberOfGears: this.form.value.numberOfSpeeds
+    }).subscribe(() => {
       this.getTransmission();
     });
   }

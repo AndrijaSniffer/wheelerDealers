@@ -32,24 +32,24 @@
   <table mat-table [dataSource]="data" class="mat-elevation-z8">
     <ng-container matColumnDef="id">
       <th mat-header-cell *matHeaderCellDef>ID</th>
-      <td mat-cell *matCellDef="let element"> {{ element.id_drive }} </td>
+      <td mat-cell *matCellDef="let element"> {{ element.id }} </td>
     </ng-container>
 
     <ng-container matColumnDef="driveType">
       <th mat-header-cell *matHeaderCellDef>Drive type</th>
-      <td mat-cell *matCellDef="let element"> {{ element.drive_type }} </td>
+      <td mat-cell *matCellDef="let element"> {{ element.driveType }} </td>
     </ng-container>
 
     <ng-container matColumnDef="options">
       <th mat-header-cell *matHeaderCellDef>Options</th>
       <td mat-cell *matCellDef="let element">
-        <button class="option-btn" (click)="openDialog('view', element.id_drive)">
+        <button class="option-btn" (click)="openDialog('view', element.id)">
           <mat-icon color="accent">visibility</mat-icon>
         </button>
-        <button class="option-btn" (click)="openDialog('edit', element.id_drive)">
+        <button class="option-btn" (click)="openDialog('edit', element.id)">
           <mat-icon color="accent">edit</mat-icon>
         </button>
-        <button class="option-btn" (click)="openDialog('delete', element.id_drive)">
+        <button class="option-btn" (click)="openDialog('delete', element.id)">
           <mat-icon color="accent">delete</mat-icon>
         </button>
       </td>

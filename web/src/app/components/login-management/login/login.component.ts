@@ -2,12 +2,7 @@ import {Router} from '@angular/router';
 import {Component, OnInit} from '@angular/core';
 import {FormControl, Validators} from '@angular/forms';
 import {UserService} from "../../../services/user.service";
-import {User} from "../../../classes/user";
-
-interface jwtTokens {
-  refresh: string;
-  access: string;
-}
+import {jwtTokens} from "../../../../AppConstants";
 
 @Component({
   selector: 'app-login',
@@ -34,15 +29,15 @@ export class LoginComponent implements OnInit {
         next: response => {
           let tokens = response.body as jwtTokens;
 
-          this._userService.currentUser = JSON.parse(atob(tokens.access.split('.')[1])) as User;
-          console.log(this._userService.currentUser);
+          this._userService.parseJwtToUser(tokens);
 
-          sessionStorage.setItem('refresh', tokens.refresh);
+          sessionStorage.setItem('refresh', tokens.refresh == null ? "" : tokens.refresh);
           sessionStorage.setItem('access', tokens.access);
 
           this._userService.changeIsAuth(true);
 
-          if (this._userService.currentUser.isAdmin) {
+          console.warn(this._userService.currentUser);
+          if (this._userService.currentUser && this._userService.currentUser.isAdmin) {
             this.router.navigate(['/admin/general']);
           } else {
             this.router.navigate(['/main/home']);

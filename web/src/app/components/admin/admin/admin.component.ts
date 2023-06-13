@@ -30,15 +30,18 @@ export class AdminComponent implements OnInit {
 
   ngOnInit(): void {
     // this._userService.isAuthenticated.subscribe((isAuth) => {
-    if (sessionStorage.getItem('access') != null &&
-      sessionStorage.getItem('refresh') != null) {
+    if (sessionStorage.getItem('access') != null) {
 
-      this._userService.currentUser = JSON.parse(atob(sessionStorage.getItem('access')!.split('.')[1])) as User;
-      this.iuser.username = this._userService.currentUser.username;
-      this.iuser.isAdmin = this._userService.currentUser.isAdmin ?? false;
-      this.iuser.isStaff = this._userService.currentUser.isStaff ?? false;
+      this._userService.parseJwtToUser(null);
 
-      this.isAuthenticated = true;
+      if (this._userService.currentUser) {
+        this.iuser.username = this._userService.currentUser.username;
+        this.iuser.isAdmin = this._userService.currentUser.isAdmin ?? false;
+        this.iuser.isStaff = this._userService.currentUser.isStaff ?? false;
+
+        this.isAuthenticated = true;
+      }
+
     }
     // else {
     //   this.iuser.username = this._userService.currentUser!.username;

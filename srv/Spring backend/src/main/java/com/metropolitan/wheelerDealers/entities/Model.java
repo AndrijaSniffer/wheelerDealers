@@ -20,11 +20,11 @@ public class Model {
     @Column(name = "year_of_manufacture", nullable = false)
     private Integer yearOfManufacture;
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @ManyToOne(fetch = FetchType.EAGER, optional = false)
     @JoinColumn(name = "id_manufacturer", nullable = false)
     private Manufacturer idManufacturer;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "id_engine")
     private Engine idEngine;
 

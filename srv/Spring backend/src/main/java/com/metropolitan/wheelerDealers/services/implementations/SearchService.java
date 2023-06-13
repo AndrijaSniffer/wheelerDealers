@@ -15,6 +15,11 @@ public class SearchService implements ISearchService {
     private ISearchRepo searchRepo;
 
     @Override
+    public List<SearchResultDTO> defaultSearch() {
+        return searchRepo.defaultSearch();
+    }
+
+    @Override
     public List<SearchResultDTO> search(SearchDTO searchDTO) {
 
         return searchRepo.search(searchDTO);

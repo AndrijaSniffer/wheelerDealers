@@ -1,5 +1,6 @@
 package com.metropolitan.wheelerDealers.controllers;
 
+import com.metropolitan.wheelerDealers.DTO.MessageResponse;
 import com.metropolitan.wheelerDealers.entities.Drive;
 import com.metropolitan.wheelerDealers.services.IDriveService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,7 +17,7 @@ public class DriveController {
     private IDriveService driveService;
 
     @GetMapping()
-    @PreAuthorize("hasAnyAuthority('admin', 'user')")
+//    @PreAuthorize("hasAnyAuthority('admin', 'user')")
     public ResponseEntity<List<Drive>> getAllDrives(){
         List<Drive> countries = driveService.getAllDrives();
 
@@ -37,9 +38,9 @@ public class DriveController {
 
     @PostMapping
     @PreAuthorize("hasAuthority('admin')")
-    public ResponseEntity<String> createDrive(@RequestBody Drive drive){
+    public ResponseEntity<MessageResponse> createDrive(@RequestBody Drive drive){
         if(driveService.createOrUpdateDrive(drive)){
-            return ResponseEntity.ok("Created");
+            return ResponseEntity.ok(new MessageResponse("Created"));
         }else{
             return ResponseEntity.internalServerError().build();
         }
@@ -47,10 +48,10 @@ public class DriveController {
 
     @PutMapping
     @PreAuthorize("hasAuthority('admin')")
-    public ResponseEntity<String> updateDrive(@RequestBody Drive drive){
+    public ResponseEntity<MessageResponse> updateDrive(@RequestBody Drive drive){
         if(drive.getId() != null) {
             if (driveService.createOrUpdateDrive(drive)) {
-                return ResponseEntity.ok("Updated");
+                return ResponseEntity.ok(new MessageResponse("Updated"));
             } else {
                 return ResponseEntity.internalServerError().build();
             }
@@ -61,8 +62,8 @@ public class DriveController {
 
     @DeleteMapping("{id}")
     @PreAuthorize("hasAuthority('admin')")
-    public ResponseEntity<String> deleteDrive(@PathVariable Integer id){
+    public ResponseEntity<MessageResponse> deleteDrive(@PathVariable Integer id){
         driveService.deleteDrive(id);
-        return ResponseEntity.ok("Deleted");
+        return ResponseEntity.ok(new MessageResponse("Deleted"));
     }
 }

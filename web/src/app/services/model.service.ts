@@ -16,29 +16,30 @@ export class ModelService {
   }
 
   getModelById(id: number): Observable<any> {
-    return this.http.get(`${AppConstants.GET_MODEL_BY_ID}${id}`);
+    return this.http.get(`${AppConstants.GET_MODEL_BY_ID}/${id}`);
   }
 
   createModel(model: Model) {
-    let formData: FormData = new FormData();
+    let object: any = {}
 
     for (const [key, value] of Object.entries(model)) {
-      formData.append(key, value);
+      object[key] = value;
     }
 
-    return this.http.post(AppConstants.CREATE_MODEL, formData, {withCredentials: true});
+    return this.http.post(AppConstants.CREATE_MODEL, JSON.stringify(object), {withCredentials: true});
   }
 
-  updateModel(id: number, fuelName: string, kml: number){
-    let formData: FormData = new FormData();
+  updateModel(id: number, model: Model) {
+    let object: any = {}
 
-    formData.append('fuel_name', fuelName);
-    formData.append('kml', kml.toString());
+    for (const [key, value] of Object.entries(model)) {
+      object[key] = value;
+    }
 
-    return this.http.put(`${AppConstants.UPDATE_MODEL_BY_ID}${id}/`, formData, {withCredentials: true});
+    return this.http.put(`${AppConstants.UPDATE_MODEL_BY_ID}`, JSON.stringify(object), {withCredentials: true});
   }
 
-  deleteModelById(id: number){
-    return this.http.delete(`${AppConstants.DELETE_MODEL_BY_ID}${id}`, {withCredentials: true});
+  deleteModelById(id: number) {
+    return this.http.delete(`${AppConstants.DELETE_MODEL_BY_ID}/${id}`, {withCredentials: true});
   }
 }

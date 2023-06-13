@@ -88,10 +88,10 @@ export class CarPropertiesModelComponent implements OnInit {
 
   submitForm() {
     this._modelService.createModel({
-      year_of_manufacture: this.form.value.yearOfManufacture,
-      id_manufacturer: this.form.value.manufacturerId,
-      name_model: this.form.value.nameModel,
-      id_engine: this.form.value.engineId
+      yearOfManufacture: this.form.value.yearOfManufacture,
+      idManufacturer: this.form.value.manufacturerId,
+      nameModel: this.form.value.nameModel,
+      idEngine: this.form.value.engineId
     }).subscribe(() => {
       this.getModel();
     });

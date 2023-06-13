@@ -1,8 +1,8 @@
 <mat-dialog-content>
   <div *ngIf="mode == 'view' || mode == 'delete'">
     <mat-list>
-      <mat-list-item>Engine type id: {{engineType.id_engine_type}}</mat-list-item>
-      <mat-list-item>Engine type: {{engineType.engine_type}}</mat-list-item>
+      <mat-list-item>Engine type id: {{engineType.id}}</mat-list-item>
+      <mat-list-item>Engine type: {{engineType.engineType}}</mat-list-item>
     </mat-list>
   </div>
 
@@ -10,7 +10,7 @@
     <form class="column" [formGroup]="editForm">
       <mat-form-field color="accent" appearance="outline">
         <mat-label>Edit engine type</mat-label>
-        <input matInput placeholder="{{engineType.engine_type}}..." formControlName="engineType">
+        <input matInput placeholder="{{engineType.engineType}}..." formControlName="engineType">
       </mat-form-field>
     </form>
   </div>

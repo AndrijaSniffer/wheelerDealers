@@ -19,7 +19,7 @@ export class DriveDialogComponent implements OnInit {
 
   mode: "view" | "edit" | "delete";
   idDrive: number;
-  drive: Drive = {id_drive: 0, drive_type: ''};
+  drive: Drive = {id: 0, driveType: ''};
   confirmButtonText: string = 'Confirm';
   cancelButtonText: string = 'Cancel';
   editForm!: FormGroup;

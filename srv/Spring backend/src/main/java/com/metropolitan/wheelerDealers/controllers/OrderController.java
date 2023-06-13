@@ -1,5 +1,6 @@
 package com.metropolitan.wheelerDealers.controllers;
 
+import com.metropolitan.wheelerDealers.DTO.MessageResponse;
 import com.metropolitan.wheelerDealers.entities.Order;
 import com.metropolitan.wheelerDealers.services.IOrderService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,9 +38,9 @@ public class OrderController {
 
     @PostMapping
     @PreAuthorize("hasAuthority('admin')")
-    public ResponseEntity<String> createOrder(@RequestBody Order order){
+    public ResponseEntity<MessageResponse> createOrder(@RequestBody Order order){
         if(orderService.createOrUpdateOrder(order)){
-            return ResponseEntity.ok("Created");
+            return ResponseEntity.ok(new MessageResponse("Created"));
         }else{
             return ResponseEntity.internalServerError().build();
         }
@@ -47,10 +48,10 @@ public class OrderController {
 
     @PutMapping
     @PreAuthorize("hasAuthority('admin')")
-    public ResponseEntity<String> updateOrder(@RequestBody Order order){
+    public ResponseEntity<MessageResponse> updateOrder(@RequestBody Order order){
         if(order.getId() != null) {
             if (orderService.createOrUpdateOrder(order)) {
-                return ResponseEntity.ok("Updated");
+                return ResponseEntity.ok(new MessageResponse("Updated"));
             } else {
                 return ResponseEntity.internalServerError().build();
             }
@@ -61,8 +62,8 @@ public class OrderController {
 
     @DeleteMapping("{id}")
     @PreAuthorize("hasAuthority('admin')")
-    public ResponseEntity<String> deleteOrder(@PathVariable Integer id){
+    public ResponseEntity<MessageResponse> deleteOrder(@PathVariable Integer id){
         orderService.deleteOrder(id);
-        return ResponseEntity.ok("Deleted");
+        return ResponseEntity.ok(new MessageResponse("Deleted"));
     }
 }

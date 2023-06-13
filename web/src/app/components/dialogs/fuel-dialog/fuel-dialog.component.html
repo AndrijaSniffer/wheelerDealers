@@ -1,8 +1,8 @@
 <mat-dialog-content>
   <div *ngIf="mode == 'view' || mode == 'delete'">
     <mat-list>
-      <mat-list-item>Fuel id: {{fuel.id_fuel}}</mat-list-item>
-      <mat-list-item>Name: {{fuel.fuel_name}}</mat-list-item>
+      <mat-list-item>Fuel id: {{fuel.id}}</mat-list-item>
+      <mat-list-item>Name: {{fuel.fuelName}}</mat-list-item>
       <mat-list-item>Kilometers per litre: {{fuel.kml}}</mat-list-item>
     </mat-list>
   </div>
@@ -11,7 +11,7 @@
     <form class="column" [formGroup]="editForm">
       <mat-form-field color="accent" appearance="outline">
         <mat-label>Edit fuel name</mat-label>
-        <input matInput placeholder="{{fuel.fuel_name}}..." formControlName="fuelName">
+        <input matInput placeholder="{{fuel.fuelName}}..." formControlName="fuelName">
       </mat-form-field>
 
       <mat-form-field color="accent" appearance="outline">
