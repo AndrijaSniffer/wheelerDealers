@@ -75,21 +75,15 @@ class ModelTypeModelSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 
-class OrderSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Order
-        fields = '__all__'
-
-
 class FuelSerializer(serializers.ModelSerializer):
     class Meta:
         model = Fuel
         fields = '__all__'
 
 
-class DriveSerializer(serializers.ModelSerializer):
+class DrivetrainSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Drive
+        model = Drivetrain
         fields = '__all__'
 
 
@@ -111,12 +105,6 @@ class CarSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 
-class CarPhoneNumberSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = CarPhoneNumber
-        fields = '__all__'
-
-
 class ImageSerializer(serializers.ModelSerializer):
     class Meta:
         model = Image
@@ -126,10 +114,4 @@ class ImageSerializer(serializers.ModelSerializer):
 class CarImageSerializer(serializers.ModelSerializer):
     class Meta:
         model = CarImage
-        fields = '__all__'
-
-
-class OrderCarSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = OrderCar
         fields = '__all__'

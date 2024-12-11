@@ -3,14 +3,20 @@ from dataclasses import asdict
 
 from django.forms.models import model_to_dict
 from django.db import connection
-from django.http import HttpResponse, JsonResponse
+from django.http import HttpResponse
+from django.utils import timezone
 from rest_framework import routers, viewsets
 from rest_framework.permissions import AllowAny
 
+from wheelerDealersApi import security
+from wheelerDealersApi.classes import UserClass, CompanyClass
+from wheelerDealersApi.db_handler import DBHandler
+from wheelerDealersApi.security import MyTokenObtainPairSerializer
 from wheelerDealersApi.serializer import *
-from wheelerDealersApi.util import checkIfKeyExists, checkIfValueExists
+from wheelerDealersApi.util import checkIfKeyExists, checkIfValueExists, safe_int
 
 router = routers.DefaultRouter()
+db_handler = DBHandler()
 
 
 def registerUser(request):
@@ -18,15 +24,65 @@ def registerUser(request):
         post = request.POST
 
         if not (checkIfKeyExists(post, 'username') and checkIfKeyExists(post, 'password')
-                and checkIfKeyExists(post, 'email') and checkIfKeyExists(post, 'firstName')
-                and checkIfKeyExists(post, 'lastName')):
+                and checkIfKeyExists(post, 'email') and checkIfKeyExists(post, 'is_reseller')):
             return HttpResponse(status=400)
 
-        user = User.objects.create_user(post["username"], post["email"], post["password"], first_name=post["firstName"],
-                                        last_name=post["lastName"], is_staff=False)
-        return HttpResponse(status=200)
+        if db_handler.CheckIfUserExists(str(post.get('username'))):
+            return HttpResponse("User already exists", status=409)
+
+        password = post.get('password')
+
+        PIB, phone, address = None, None, None
+
+        if checkIfKeyExists(post, 'PIB'):
+            PIB = safe_int(post.get('PIB'))
+
+        if checkIfKeyExists(post, 'phone'):
+            phone = post.get('phone')
+
+        if checkIfKeyExists(post, 'address'):
+            address = post.get('address')
+
+        # Password hashing done in constructor
+        user = UserClass(
+            None,
+            CompanyClass(PIB, None, None, None, None),
+            post.get('username'),
+            post.get('email'),
+            password,
+            bool(post.get('deactivated')),
+            timezone.now(),
+            phone,
+            address,
+            bool(post.get('is_reseller')),
+            False,
+        )
+
+        if db_handler.CreateNewUser(user):
+            return HttpResponse("New user added", status=201)
+        else:
+            return HttpResponse("Unable to create user", status=500)
     else:
         return HttpResponse(status=400)
+
+
+def signIn(request):
+    if request.method == 'POST':
+        post = request.POST
+
+        username = post.get('username')
+        password = post.get('password')
+
+        user = db_handler.GetUserForAuthorization(username)
+
+        if user is not None:
+            if security.SecurityUtil.verify_password(password, user.password):
+                token = MyTokenObtainPairSerializer.get_token(user)
+                return HttpResponse(status=200)
+            else:
+                return HttpResponse(status=401)
+        else:
+            return HttpResponse(status=404)
 
 
 def getAllEngine(request):
@@ -100,7 +156,7 @@ def getAllModels(request):
 
 def getAllUsers(request):
     if request.method == 'GET':
-        listUser = User.objects.all()
+        listUser = UserClass.objects.all()
         listUserDto = []
 
         for user in listUser:
@@ -129,7 +185,7 @@ def defaultSearch(request):
 
         with connection.cursor() as cursor:
             cursor.execute(
-                "SELECT `id_car`, `id_user`, `price`, `color`, `chassie_number`, `is_preowned`, `created_at`, `id_fuel`, `fuel_name`, `kml`, `id_model`, `name_model`, `year_of_manufacture`, `id_manufacturer`, `name_manufacturer` "
+                "SELECT `id_car`, `id_user`, `price`, `color`, `chassis_number`, `is_preowned`, `created_at`, `id_fuel`, `fuel_name`, `kml`, `id_model`, `name_model`, `year_of_manufacture`, `id_manufacturer`, `name_manufacturer` "
                 "FROM `wheelerdealersapi_car` c, `wheelerdealersapi_fuel` f, `wheelerdealersapi_model` mo, `wheelerdealersapi_manufacturer` ma "
                 "WHERE c.id_fuel_id = f.id_fuel and c.id_model_id = mo.id_model and mo.id_manufacturer_id = ma.id_manufacturer;")
             rows = cursor.fetchall()
@@ -142,7 +198,7 @@ def defaultSearch(request):
                         id_user=row[1],
                         price=str(row[2]),
                         color=row[3],
-                        chassie_number=row[4],
+                        chassis_number=row[4],
                         is_preowned=row[5],
                         created_at=str(row[6]),
                         id_fuel=model_to_dict(Fuel(id_fuel=row[7], fuel_name=row[8], kml=row[9])),
@@ -224,12 +280,12 @@ def normalSearch(request):
         car_color_sql = f"{f'and c.color = {car_color} ' if car_color is not None else ''}"
         left_side_steering_wheel_sql = f"{f'and i.left_side_steering_wheel = {bool(left_side_steering_wheel[0])} ' if left_side_steering_wheel is not None else ''}"
 
-        sql = "SELECT DISTINCT `id_car`, `id_user`, `price`, c.`color`, `chassie_number`, `is_preowned`, `created_at`, `id_fuel`, `fuel_name`, `kml`, `id_model`, `name_model`, `year_of_manufacture`, `id_manufacturer`, `name_manufacturer` " \
-                "FROM `wheelerdealersapi_car` c, `wheelerdealersapi_fuel` f, `wheelerdealersapi_model` mo, `wheelerdealersapi_manufacturer` ma," \
-                " `wheelerdealersapi_transmission` t, `wheelerdealersapi_drive` d, `wheelerdealersapi_engine` e,  `wheelerdealersapi_interior` i " \
-                "WHERE c.id_fuel_id = f.id_fuel and c.id_model_id = mo.id_model and mo.id_manufacturer_id = ma.id_manufacturer " \
-                f"{id_manufacturer_sql}{id_model_sql}{id_transmission_sql}{id_fuel_sql}{id_drive_sql}{id_preowned_sql}"\
-                f"{price_sql}{volume_sql}{hp_sql}{kw_sql}{car_color_sql}{left_side_steering_wheel_sql}"
+        sql = "SELECT DISTINCT `id_car`, `id_user`, `price`, c.`color`, `chassis_number`, `is_preowned`, `created_at`, `id_fuel`, `fuel_name`, `kml`, `id_model`, `name_model`, `year_of_manufacture`, `id_manufacturer`, `name_manufacturer` " \
+              "FROM `wheelerdealersapi_car` c, `wheelerdealersapi_fuel` f, `wheelerdealersapi_model` mo, `wheelerdealersapi_manufacturer` ma," \
+              " `wheelerdealersapi_transmission` t, `wheelerdealersapi_drive` d, `wheelerdealersapi_engine` e,  `wheelerdealersapi_interior` i " \
+              "WHERE c.id_fuel_id = f.id_fuel and c.id_model_id = mo.id_model and mo.id_manufacturer_id = ma.id_manufacturer " \
+              f"{id_manufacturer_sql}{id_model_sql}{id_transmission_sql}{id_fuel_sql}{id_drive_sql}{id_preowned_sql}" \
+              f"{price_sql}{volume_sql}{hp_sql}{kw_sql}{car_color_sql}{left_side_steering_wheel_sql}"
 
         with connection.cursor() as cursor:
             cursor.execute(sql)
@@ -243,7 +299,7 @@ def normalSearch(request):
                         id_user=row[1],
                         price=str(row[2]),
                         color=row[3],
-                        chassie_number=row[4],
+                        chassis_number=row[4],
                         is_preowned=row[5],
                         created_at=str(row[6]),
                         id_fuel=model_to_dict(Fuel(id_fuel=row[7], fuel_name=row[8], kml=row[9])),
@@ -301,21 +357,15 @@ class ModelTypeModelView(viewsets.ModelViewSet):
     permission_classes = [AllowAny]
 
 
-class OrderView(viewsets.ModelViewSet):
-    queryset = Order.objects.all()
-    serializer_class = OrderSerializer
-    permission_classes = [AllowAny]
-
-
 class FuelView(viewsets.ModelViewSet):
     queryset = Fuel.objects.all()
     serializer_class = FuelSerializer
     permission_classes = [AllowAny]
 
 
-class DriveView(viewsets.ModelViewSet):
-    queryset = Drive.objects.all()
-    serializer_class = DriveSerializer
+class DrivetrainView(viewsets.ModelViewSet):
+    queryset = Drivetrain.objects.all()
+    serializer_class = DrivetrainSerializer
     permission_classes = [AllowAny]
 
 
@@ -343,12 +393,6 @@ class CarImageView(viewsets.ModelViewSet):
     permission_classes = [AllowAny]
 
 
-class OrderCarView(viewsets.ModelViewSet):
-    queryset = OrderCar.objects.all()
-    serializer_class = OrderCarSerializer
-    permission_classes = [AllowAny]
-
-
 class CarView(viewsets.ModelViewSet):
     queryset = Car.objects.all()
     serializer_class = CarSerializer
@@ -358,20 +402,18 @@ class CarView(viewsets.ModelViewSet):
 # region Router
 
 router.register(r'countries', CountryView, 'countries')
+router.register(r'drivetrains', DrivetrainView, 'drivetrains')
 router.register(r'manufacturers', ManufacturerView, 'manufacturers')
 router.register(r'engineTypes', EngineTypeView, 'engineTypes')
 router.register(r'engines', EngineView, 'engines')
 router.register(r'modelTypes', ModelTypeView, 'modelTypes')
 router.register(r'models', ModelView, 'models')
 router.register(r'modelTypeModels', ModelTypeModelView, 'modelTypeModels')
-router.register(r'orders', OrderView, 'orders')
 router.register(r'fuels', FuelView, 'fuel')
-router.register(r'drives', DriveView, 'drives')
 router.register(r'transmissions', TransmissionView, 'transmissions')
 router.register(r'interiors', InteriorView, 'interiors')
 router.register(r'images', ImageView, 'images')
 router.register(r'carImages', CarImageView, 'carImages')
-router.register(r'orderCars', OrderCarView, 'orderCars')
 router.register(r'cars', CarView, 'cars')
 
 # endregion

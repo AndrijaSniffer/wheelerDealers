@@ -94,9 +94,10 @@ DATABASES = {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'wheelerdealers',
         'USER': 'root',
-        'PASSWORD': '',
+        'PASSWORD': 'root',
         'HOST': 'localhost',
         'PORT': '3306',
+        'OPTIONS': {'ssl': {'ca': None}}
     }
 }
 

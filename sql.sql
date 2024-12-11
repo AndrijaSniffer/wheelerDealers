@@ -1,13 +1,18 @@
--- create table if not exists `user`(
---     id_user int auto_increment primary key,
---     first_name varchar(150) not null,
---     last_name varchar(150) not null,
---     email varchar(150) not null,
---     password varchar(255) not null,
---     administrator boolean not null default false,
---     deleted boolean not null default false,
---     created_at DATETIME default CURRENT_TIMESTAMP
--- );
+-- create database if not exists `wheelerdealers`;
+
+use `wheelerdealers`;
+
+create table if not exists `user`(
+    id_user int auto_increment primary key,
+    first_name varchar(150) not null,
+    last_name varchar(150) not null,
+    email varchar(150) not null,
+    password varchar(255) not null,
+    administrator boolean not null default false,
+    deleted boolean not null default false,
+    created_at DATETIME default CURRENT_TIMESTAMP
+);
+
 create table if not exists `country`(
     id_country int auto_increment primary key,
     name_country varchar(255) not null
@@ -135,33 +140,34 @@ create table if not exists `order_car`(
     foreign key(id_order) references `order`(id_order)
 );
 
--- insert into
---     `user`(
---         first_name,
---         last_name,
---         email,
---         password,
---         administrator
---     )
--- values
---     (
---         'admin',
---         'admin',
---         'admin@admin.com',
---         '$2y$10$KHo6/FnvXn4O5b/aomvl5e4c7zw8u4b2oFeIWSF1m5oM8P0KBlkYu',
---         true
---     );
+insert into
+    `user`(
+        first_name,
+        last_name,
+        email,
+        password,
+        administrator
+    )
+values
+    (
+        'admin',
+        'admin',
+        'admin@admin.com',
+        '$2y$10$KHo6/FnvXn4O5b/aomvl5e4c7zw8u4b2oFeIWSF1m5oM8P0KBlkYu',
+        true
+    );
+
 -- DROP TABLES --
-drop table order_car;
+-- drop table order_car;
 
-drop table `order`;
+-- drop table `order`;
 
-drop table image;
+-- drop table image;
 
-drop table car;
+-- drop table car;
 
-drop table model;
+-- drop table model;
 
-drop table manufacturer;
+-- drop table manufacturer;
 
-drop table `user`;
+-- drop table `user`;
