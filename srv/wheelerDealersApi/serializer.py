@@ -10,6 +10,7 @@ class RegisterSerializer(serializers.ModelSerializer):
     username = serializers.CharField(required=True)
     password = serializers.CharField(
         write_only=True, required=True, validators=[validate_password])
+    PIB = serializers.PrimaryKeyRelatedField(queryset=Company.objects.all(), required=False, allow_null=True)
 
     # The view handles 'is_staff' and 'is_superuser' so you don't need to pass them through the request
     # There can only be one staff and superuser for now
@@ -41,10 +42,12 @@ class RegisterSerializer(serializers.ModelSerializer):
         return attrs
 
     def create(self, validated_data):
+        PIB_id = validated_data.get('PIB').PIB if validated_data.get('PIB') is not None else None
         user = User.objects.create(
             username=validated_data.get('username'),
             is_active=validated_data.get('is_active'),
             is_reseller=validated_data.get('is_reseller'),
+            PIB=validated_data.get('PIB'),
             phone=validated_data.get('phone'),
             address=validated_data.get('address'),
             is_staff=validated_data.get('is_staff'),
@@ -57,10 +60,18 @@ class RegisterSerializer(serializers.ModelSerializer):
         return user
 
 
+class CompanySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Company
+        fields = '__all__'
+
+
 class UserSerializer(serializers.ModelSerializer):
+    PIB = CompanySerializer(allow_null=True, required=False)
+
     class Meta:
         model = User
-        fields = '__all__'  # Or specify the fields you want to expose
+        exclude = ['password']
 
 
 class CountrySerializer(serializers.ModelSerializer):

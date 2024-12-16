@@ -30,6 +30,7 @@ def createAccount(request):
     data['is_superuser'] = not admin_exists  # Add is_superuser to the request data
     data['is_staff'] = not admin_exists
     data['is_active'] = True
+    data['PIB'] = None if data.get('PIB') is None else int(data.get('PIB'))
 
     serializer = RegisterSerializer(data=data)
     if serializer.is_valid():

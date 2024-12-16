@@ -1,3 +1,5 @@
+from datetime import timedelta
+
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from rest_framework_simplejwt.views import TokenObtainPairView
 from rest_framework.permissions import BasePermission, SAFE_METHODS
@@ -13,6 +15,8 @@ class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
         token['isReseller'] = user.is_reseller
         token['isAdmin'] = user.is_superuser
         token['dateJoined'] = str(user.date_joined)
+        # token.set_exp(lifetime=timedelta(minutes=30))
+        token.set_exp(lifetime=timedelta(hours=2))
 
         return token
 

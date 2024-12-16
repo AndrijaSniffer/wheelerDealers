@@ -4,26 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="37752ba3-f47d-4d8f-a171-cb2644d2956f" name="Changes" comment="- Models for the database changed, User made custom with Company. Added PD files and documentation">
-      <change afterPath="$PROJECT_DIR$/wheelerDealersApi/managers.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/wheelerDealersApi/migrations/0002_rename_deactivated_user_is_staff_and_more.py" afterDir="false" />
+    <list default="true" id="37752ba3-f47d-4d8f-a171-cb2644d2956f" name="Changes" comment="- Reset migrations and made a custom User for DRF authentication">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/srv/settings.py" beforeDir="false" afterPath="$PROJECT_DIR$/srv/settings.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/wheelerDealersApi/classes.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/wheelerDealersApi/migrations/0001_initial.py" beforeDir="false" afterPath="$PROJECT_DIR$/wheelerDealersApi/migrations/0001_initial.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/wheelerDealersApi/migrations/0002_alter_car_created_at_alter_engine_horsepower_and_more.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/wheelerDealersApi/migrations/0003_remove_car_quantity_alter_car_created_at_and_more.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/wheelerDealersApi/migrations/0004_alter_car_created_at_alter_order_created_at_and_more.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/wheelerDealersApi/migrations/0005_rename_chassie_number_car_chassis_number_and_more.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/wheelerDealersApi/migrations/0006_rename_id_car_car_car_rename_id_fuel_car_fuel_and_more.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/wheelerDealersApi/migrations/0007_alter_car_created_at_alter_enginetype_type_and_more.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/wheelerDealersApi/migrations/0008_company_rename_drive_drivetrain_and_more.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/wheelerDealersApi/migrations/0009_alter_user_pib.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/wheelerDealersApi/migrations/0010_rename_display_name_user_username.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/wheelerDealersApi/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/wheelerDealersApi/models.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/wheelerDealersApi/security.py" beforeDir="false" afterPath="$PROJECT_DIR$/wheelerDealersApi/security.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/wheelerDealersApi/serializer.py" beforeDir="false" afterPath="$PROJECT_DIR$/wheelerDealersApi/serializer.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/wheelerDealersApi/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/wheelerDealersApi/urls.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/wheelerDealersApi/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/wheelerDealersApi/views.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -212,7 +196,7 @@
       <workItem from="1733832681722" duration="14068000" />
       <workItem from="1733938440384" duration="8921000" />
       <workItem from="1734010678306" duration="14776000" />
-      <workItem from="1734350609373" duration="11398000" />
+      <workItem from="1734350609373" duration="16205000" />
     </task>
     <task id="LOCAL-00001" summary="- Models for the database changed, User made custom with Company. Added PD files and documentation">
       <option name="closed" value="true" />
@@ -222,7 +206,15 @@
       <option name="project" value="LOCAL" />
       <updated>1733951359383</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="- Reset migrations and made a custom User for DRF authentication">
+      <option name="closed" value="true" />
+      <created>1734367710187</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1734367710187</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -254,15 +246,21 @@
   <component name="VcsManagerConfiguration">
     <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
     <MESSAGE value="- Models for the database changed, User made custom with Company. Added PD files and documentation" />
-    <option name="LAST_COMMIT_MESSAGE" value="- Models for the database changed, User made custom with Company. Added PD files and documentation" />
+    <MESSAGE value="- Reset migrations and made a custom User for DRF authentication" />
+    <option name="LAST_COMMIT_MESSAGE" value="- Reset migrations and made a custom User for DRF authentication" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
       <breakpoints>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/wheelerDealersApi/views.py</url>
-          <line>33</line>
+          <line>34</line>
           <option name="timeStamp" value="4" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/wheelerDealersApi/serializer.py</url>
+          <line>44</line>
+          <option name="timeStamp" value="6" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
