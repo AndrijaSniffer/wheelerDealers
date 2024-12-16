@@ -6,11 +6,11 @@ from .security import MyTokenObtainPairView
 
 urlpatterns = [
     path('', include(views.router.urls)),
-    path('api/token/', MyTokenObtainPairView.as_view(), name='token_obtain_pair'),
+    path('api/auth/login', MyTokenObtainPairView.as_view(), name='token_obtain_pair'),
     path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
     path('api/token/verify/', TokenVerifyView.as_view(), name='token_verify'),
-    path('api/user/create', views.registerUser, name='register_user'),
-    path('api/user/signin', views.signIn, name='sign_in'),
+    path('api/auth/create', views.createAccount, name='create_user'),
+    path('api/auth/getAll', views.getAllUsers, name='get_all_users'),
     path('getAllEngine', views.getAllEngine, name='getAllEngine'),
     path('getAllManufacturers', views.getAllManufacturers, name='getAllManufacturers'),
     path('getAllModels', views.getAllModels, name='getAllModels'),

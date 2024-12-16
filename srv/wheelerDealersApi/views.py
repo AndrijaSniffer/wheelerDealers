@@ -4,86 +4,48 @@ from dataclasses import asdict
 from django.forms.models import model_to_dict
 from django.db import connection
 from django.http import HttpResponse
-from django.utils import timezone
-from rest_framework import routers, viewsets
+from django.views.decorators.csrf import csrf_exempt
+from rest_framework import routers, viewsets, status, permissions
+from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import AllowAny
+from rest_framework.response import Response
 
-from wheelerDealersApi import security
-from wheelerDealersApi.classes import UserClass, CompanyClass
-from wheelerDealersApi.db_handler import DBHandler
-from wheelerDealersApi.security import MyTokenObtainPairSerializer
+
 from wheelerDealersApi.serializer import *
-from wheelerDealersApi.util import checkIfKeyExists, checkIfValueExists, safe_int
+from wheelerDealersApi.util import checkIfValueExists
+from wheelerDealersApi.security import IsAdminOrReadOnly
 
 router = routers.DefaultRouter()
-db_handler = DBHandler()
 
 
-def registerUser(request):
-    if request.method == 'POST':
-        post = request.POST
+@csrf_exempt
+@api_view(['POST'])
+@permission_classes([AllowAny])
+def createAccount(request):
+    user = User.objects.filter(is_superuser=True).first()
+    admin_exists = bool(user)  # True if admin exists, False if not
 
-        if not (checkIfKeyExists(post, 'username') and checkIfKeyExists(post, 'password')
-                and checkIfKeyExists(post, 'email') and checkIfKeyExists(post, 'is_reseller')):
-            return HttpResponse(status=400)
+    # Create a mutable copy of request data (using _full_data)
+    data = request.data.dict()  # Convert from QueryDict to Dict
+    data['is_superuser'] = not admin_exists  # Add is_superuser to the request data
+    data['is_staff'] = not admin_exists
+    data['is_active'] = True
 
-        if db_handler.CheckIfUserExists(str(post.get('username'))):
-            return HttpResponse("User already exists", status=409)
-
-        password = post.get('password')
-
-        PIB, phone, address = None, None, None
-
-        if checkIfKeyExists(post, 'PIB'):
-            PIB = safe_int(post.get('PIB'))
-
-        if checkIfKeyExists(post, 'phone'):
-            phone = post.get('phone')
-
-        if checkIfKeyExists(post, 'address'):
-            address = post.get('address')
-
-        # Password hashing done in constructor
-        user = UserClass(
-            None,
-            CompanyClass(PIB, None, None, None, None),
-            post.get('username'),
-            post.get('email'),
-            password,
-            bool(post.get('deactivated')),
-            timezone.now(),
-            phone,
-            address,
-            bool(post.get('is_reseller')),
-            False,
-        )
-
-        if db_handler.CreateNewUser(user):
-            return HttpResponse("New user added", status=201)
-        else:
-            return HttpResponse("Unable to create user", status=500)
+    serializer = RegisterSerializer(data=data)
+    if serializer.is_valid():
+        serializer.save()
+        return Response(status=status.HTTP_200_OK, data=serializer.data)
     else:
-        return HttpResponse(status=400)
+        return Response(status=status.HTTP_422_UNPROCESSABLE_ENTITY, data=serializer.errors)
 
 
-def signIn(request):
-    if request.method == 'POST':
-        post = request.POST
-
-        username = post.get('username')
-        password = post.get('password')
-
-        user = db_handler.GetUserForAuthorization(username)
-
-        if user is not None:
-            if security.SecurityUtil.verify_password(password, user.password):
-                token = MyTokenObtainPairSerializer.get_token(user)
-                return HttpResponse(status=200)
-            else:
-                return HttpResponse(status=401)
-        else:
-            return HttpResponse(status=404)
-
+@csrf_exempt
+@api_view(['GET'])
+@permission_classes([permissions.IsAuthenticated, permissions.IsAdminUser])
+def getAllUsers(request):
+    users = User.objects.all()  # Fetch all users
+    serializer = UserSerializer(users, many=True)  # Serialize the queryset
+    return Response(status=status.HTTP_200_OK, data=serializer.data)
 
 def getAllEngine(request):
     if request.method == 'GET':
@@ -152,31 +114,6 @@ def getAllModels(request):
                 )))
 
         return HttpResponse(json.dumps(listModels))
-
-
-def getAllUsers(request):
-    if request.method == 'GET':
-        listUser = UserClass.objects.all()
-        listUserDto = []
-
-        for user in listUser:
-            dto = UserDto(
-                id=user.id,
-                username=user.username,
-                firstName=user.first_name,
-                lastName=user.last_name,
-                isStaff=user.is_staff,
-                isAdmin=user.is_superuser,
-                isActive=user.is_active,
-                lastLogin=str(user.last_login),
-                email=user.email,
-                dateJoined=str(user.date_joined)
-            )
-            listUserDto.append(asdict(dto))
-
-        return HttpResponse(json.dumps(listUserDto))
-    else:
-        return HttpResponse(status=400)
 
 
 def defaultSearch(request):
@@ -318,85 +255,85 @@ def normalSearch(request):
 class CountryView(viewsets.ModelViewSet):
     queryset = Country.objects.all()
     serializer_class = CountrySerializer
-    permission_classes = [AllowAny]
+    permission_classes = [IsAdminOrReadOnly]
 
 
 class ManufacturerView(viewsets.ModelViewSet):
     queryset = Manufacturer.objects.all()
     serializer_class = ManufacturerSerializer
-    permission_classes = [AllowAny]
+    permission_classes = [IsAdminOrReadOnly]
 
 
 class EngineTypeView(viewsets.ModelViewSet):
     queryset = EngineType.objects.all()
     serializer_class = EngineTypeSerializer
-    permission_classes = [AllowAny]
+    permission_classes = [IsAdminOrReadOnly]
 
 
 class EngineView(viewsets.ModelViewSet):
     queryset = Engine.objects.all()
     serializer_class = EngineSerializer
-    permission_classes = [AllowAny]
+    permission_classes = [IsAdminOrReadOnly]
 
 
 class ModelTypeView(viewsets.ModelViewSet):
     queryset = ModelType.objects.all()
     serializer_class = ModelTypeSerializer
-    permission_classes = [AllowAny]
+    permission_classes = [IsAdminOrReadOnly]
 
 
 class ModelView(viewsets.ModelViewSet):
     queryset = Model.objects.all()
     serializer_class = ModelSerializer
-    permission_classes = [AllowAny]
+    permission_classes = [IsAdminOrReadOnly]
 
 
 class ModelTypeModelView(viewsets.ModelViewSet):
     queryset = ModelTypeModel.objects.all()
     serializer_class = ModelTypeModelSerializer
-    permission_classes = [AllowAny]
+    permission_classes = [IsAdminOrReadOnly]
 
 
 class FuelView(viewsets.ModelViewSet):
     queryset = Fuel.objects.all()
     serializer_class = FuelSerializer
-    permission_classes = [AllowAny]
+    permission_classes = [IsAdminOrReadOnly]
 
 
 class DrivetrainView(viewsets.ModelViewSet):
     queryset = Drivetrain.objects.all()
     serializer_class = DrivetrainSerializer
-    permission_classes = [AllowAny]
+    permission_classes = [IsAdminOrReadOnly]
 
 
 class TransmissionView(viewsets.ModelViewSet):
     queryset = Transmission.objects.all()
     serializer_class = TransmissionSerializer
-    permission_classes = [AllowAny]
+    permission_classes = [IsAdminOrReadOnly]
 
 
 class InteriorView(viewsets.ModelViewSet):
     queryset = Interior.objects.all()
     serializer_class = InteriorSerializer
-    permission_classes = [AllowAny]
+    permission_classes = [IsAdminOrReadOnly]
 
 
 class ImageView(viewsets.ModelViewSet):
     queryset = Image.objects.all()
     serializer_class = ImageSerializer
-    permission_classes = [AllowAny]
+    permission_classes = [IsAdminOrReadOnly]
 
 
 class CarImageView(viewsets.ModelViewSet):
     queryset = CarImage.objects.all()
     serializer_class = CarImageSerializer
-    permission_classes = [AllowAny]
+    permission_classes = [IsAdminOrReadOnly]
 
 
 class CarView(viewsets.ModelViewSet):
     queryset = Car.objects.all()
     serializer_class = CarSerializer
-    permission_classes = [AllowAny]
+    permission_classes = [IsAdminOrReadOnly]
 
 
 # region Router

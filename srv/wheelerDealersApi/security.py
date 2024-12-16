@@ -1,6 +1,6 @@
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from rest_framework_simplejwt.views import TokenObtainPairView
-from passlib.hash import pbkdf2_sha256 as sha256
+from rest_framework.permissions import BasePermission, SAFE_METHODS
 
 
 class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
@@ -10,7 +10,7 @@ class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
 
         token['username'] = user.username
         token['email'] = user.email
-        token['isStaff'] = user.is_reseller
+        token['isReseller'] = user.is_reseller
         token['isAdmin'] = user.is_superuser
         token['dateJoined'] = str(user.date_joined)
 
@@ -21,11 +21,12 @@ class MyTokenObtainPairView(TokenObtainPairView):
     serializer_class = MyTokenObtainPairSerializer
 
 
-class SecurityUtil:
-    @staticmethod
-    def hashing_password(password: str) -> str:
-        return sha256.using(rounds=100000).hash(password)
+class IsAdminOrReadOnly(BasePermission):
+    """
+    Custom permission to allow read-only access to all, but restrict modifications to admins.
+    """
 
-    @staticmethod
-    def verify_password(plain_password: str, hashed_password: str):
-        return sha256.verify(plain_password, hashed_password)
+    def has_permission(self, request, view):
+        if request.method in SAFE_METHODS:  # SAFE_METHODS = ('GET', 'HEAD', 'OPTIONS')
+            return True
+        return request.user and request.user.is_superuser

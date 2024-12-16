@@ -1,9 +1,13 @@
 import datetime
 from dataclasses import dataclass
+from django.utils import timezone
 
-from django.db.models.functions import Now
+from django.contrib.auth.base_user import AbstractBaseUser
+from django.contrib.auth.models import PermissionsMixin
 from django.db import models
 from django.db.models import UniqueConstraint
+
+from wheelerDealersApi.managers import CustomUserManager
 
 
 # region USERS
@@ -16,18 +20,24 @@ class Company(models.Model):
     website_url = models.CharField(max_length=255, null=True)
 
 
-class User(models.Model):
-    user = models.AutoField(primary_key=True, null=False)
+class User(AbstractBaseUser, PermissionsMixin):
+    # Django automatically adds an 'id' field as the primary key when using AbstractBaseUser
     PIB = models.ForeignKey(Company, on_delete=models.CASCADE, null=True)
-    username = models.CharField(max_length=255, null=False)
+    username = models.CharField(max_length=255, null=False, unique=True)
     email = models.CharField(max_length=255, null=False)
     password = models.CharField(max_length=255, null=False)
-    deactivated = models.BooleanField(null=False, default=False)
-    created_at = models.DateTimeField(null=False, auto_now_add=True)
+    is_staff = models.BooleanField(default=False)
+    is_active = models.BooleanField(default=True)
+    date_joined = models.DateTimeField(default=timezone.now)
     phone = models.CharField(max_length=255, null=True)
     address = models.CharField(max_length=255, null=True)
     is_reseller = models.BooleanField(null=False, default=False)
-    is_admin = models.BooleanField(null=False, default=False)
+    USERNAME_FIELD = 'username'
+    REQUIRED_FIELDS = ['email', 'password', 'is_reseller']
+    objects = CustomUserManager()
+
+    def __str__(self):
+        return self.username
 
 
 class ChatActivityLogs(models.Model):

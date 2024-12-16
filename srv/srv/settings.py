@@ -20,6 +20,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = 'django-insecure-8o4ndd5b3g@8e200b8d!u@1_e+mdv57+p#@^-v6zp_-(vpoq8%'
+AUTH_USER_MODEL = 'wheelerDealersApi.User'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True

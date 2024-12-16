@@ -4,46 +4,27 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="37752ba3-f47d-4d8f-a171-cb2644d2956f" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/../Dokumentacija/P11_F01_3711.docx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../WheelerDealers_PD/Funkcionalni_Zahtevi.rqb" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../WheelerDealers_PD/Funkcionalni_Zahtevi.rqm" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../WheelerDealers_PD/Nefunkcionalni_Zahtevi.rqm" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../WheelerDealers_PD/WheelerDealers_Fizicki.pdb" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../WheelerDealers_PD/WheelerDealers_Fizicki.pdm" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../WheelerDealers_PD/WheelerDealers_Konceptualni.cdb" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../WheelerDealers_PD/WheelerDealers_Konceptualni.cdm" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../WheelerDealers_PD/WheelerDealers_Logicki.ldb" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../WheelerDealers_PD/WheelerDealers_Logicki.ldm" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../WheelerDealers_PD/WheelerDealers_PD.pjb" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../WheelerDealers_PD/WheelerDealers_PD.prj" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../WheelerDealers_PD/Workspace.sws" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/wheelerDealersApi/classes.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/wheelerDealersApi/db_handler.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/wheelerDealersApi/migrations/0005_rename_chassie_number_car_chassis_number_and_more.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/wheelerDealersApi/migrations/0006_rename_id_car_car_car_rename_id_fuel_car_fuel_and_more.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/wheelerDealersApi/migrations/0007_alter_car_created_at_alter_enginetype_type_and_more.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/wheelerDealersApi/migrations/0008_company_rename_drive_drivetrain_and_more.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/wheelerDealersApi/migrations/0009_alter_user_pib.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/wheelerDealersApi/migrations/0010_rename_display_name_user_username.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../sql.sql" beforeDir="false" afterPath="$PROJECT_DIR$/../sql.sql" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources.local.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources.local.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources/050b2017-68a0-43bf-a5eb-506a14fb7121.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources/050b2017-68a0-43bf-a5eb-506a14fb7121.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/srv.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/srv.iml" afterDir="false" />
+    <list default="true" id="37752ba3-f47d-4d8f-a171-cb2644d2956f" name="Changes" comment="- Models for the database changed, User made custom with Company. Added PD files and documentation">
+      <change afterPath="$PROJECT_DIR$/wheelerDealersApi/managers.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/wheelerDealersApi/migrations/0002_rename_deactivated_user_is_staff_and_more.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/srv/settings.py" beforeDir="false" afterPath="$PROJECT_DIR$/srv/settings.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/wheelerDealersApi/admin.py" beforeDir="false" afterPath="$PROJECT_DIR$/wheelerDealersApi/admin.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wheelerDealersApi/classes.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wheelerDealersApi/migrations/0001_initial.py" beforeDir="false" afterPath="$PROJECT_DIR$/wheelerDealersApi/migrations/0001_initial.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wheelerDealersApi/migrations/0002_alter_car_created_at_alter_engine_horsepower_and_more.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wheelerDealersApi/migrations/0003_remove_car_quantity_alter_car_created_at_and_more.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wheelerDealersApi/migrations/0004_alter_car_created_at_alter_order_created_at_and_more.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wheelerDealersApi/migrations/0005_rename_chassie_number_car_chassis_number_and_more.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wheelerDealersApi/migrations/0006_rename_id_car_car_car_rename_id_fuel_car_fuel_and_more.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wheelerDealersApi/migrations/0007_alter_car_created_at_alter_enginetype_type_and_more.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wheelerDealersApi/migrations/0008_company_rename_drive_drivetrain_and_more.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wheelerDealersApi/migrations/0009_alter_user_pib.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wheelerDealersApi/migrations/0010_rename_display_name_user_username.py" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/wheelerDealersApi/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/wheelerDealersApi/models.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/wheelerDealersApi/security.py" beforeDir="false" afterPath="$PROJECT_DIR$/wheelerDealersApi/security.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/wheelerDealersApi/serializer.py" beforeDir="false" afterPath="$PROJECT_DIR$/wheelerDealersApi/serializer.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/wheelerDealersApi/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/wheelerDealersApi/urls.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/wheelerDealersApi/util.py" beforeDir="false" afterPath="$PROJECT_DIR$/wheelerDealersApi/util.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/wheelerDealersApi/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/wheelerDealersApi/views.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../web/.vscode/extensions.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../web/.vscode/launch.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../web/.vscode/tasks.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../web/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/../web/package-lock.json" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -100,7 +81,7 @@
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "RunOnceActivity.pycharm.django.structure.promotion.once.per.project": "true",
     "WebServerToolWindowFactoryState": "false",
-    "git-widget-placeholder": "python-backend",
+    "git-widget-placeholder": "python-backend-jwt-custom-user",
     "last_opened_file_path": "C:/Users/cajic/OneDrive/Dokumenti/wheelerDealers/srv",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
@@ -229,8 +210,19 @@
       <workItem from="1733697687096" duration="389000" />
       <workItem from="1733699036680" duration="403000" />
       <workItem from="1733832681722" duration="14068000" />
-      <workItem from="1733938440384" duration="8118000" />
+      <workItem from="1733938440384" duration="8921000" />
+      <workItem from="1734010678306" duration="14776000" />
+      <workItem from="1734350609373" duration="11398000" />
     </task>
+    <task id="LOCAL-00001" summary="- Models for the database changed, User made custom with Company. Added PD files and documentation">
+      <option name="closed" value="true" />
+      <created>1733951359383</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1733951359383</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -241,7 +233,19 @@
       <map>
         <entry key="MAIN">
           <value>
-            <State />
+            <State>
+              <option name="FILTERS">
+                <map>
+                  <entry key="branch">
+                    <value>
+                      <list>
+                        <option value="python-backend-jwt-custom-user" />
+                      </list>
+                    </value>
+                  </entry>
+                </map>
+              </option>
+            </State>
           </value>
         </entry>
       </map>
@@ -249,6 +253,19 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
+    <MESSAGE value="- Models for the database changed, User made custom with Company. Added PD files and documentation" />
+    <option name="LAST_COMMIT_MESSAGE" value="- Models for the database changed, User made custom with Company. Added PD files and documentation" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/wheelerDealersApi/views.py</url>
+          <line>33</line>
+          <option name="timeStamp" value="4" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/srv$manage.coverage" NAME="manage Coverage Results" MODIFIED="1731341282473" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />

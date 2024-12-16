@@ -1,20 +1,72 @@
-from django.contrib.auth.models import User
+from django.contrib.auth.password_validation import validate_password
 
 from wheelerDealersApi.models import *
 from rest_framework import serializers
 
+from wheelerDealersApi.models import User
 
-# class UserSerializer(serializers.ModelSerializer):
-#     class Meta:
-#         model = User
-#         fields = ['id', 'password', 'last_login', 'is_superuser', 'username', 'first_name', 'last_name', 'email', 'is_staff',
-#                   'is_active', 'date_joined']
+
+class RegisterSerializer(serializers.ModelSerializer):
+    username = serializers.CharField(required=True)
+    password = serializers.CharField(
+        write_only=True, required=True, validators=[validate_password])
+
+    # The view handles 'is_staff' and 'is_superuser' so you don't need to pass them through the request
+    # There can only be one staff and superuser for now
+    class Meta:
+        model = User
+        fields = ('username',
+                  'email',
+                  'password',
+                  'PIB',
+                  'is_active',
+                  'is_staff',
+                  'is_reseller',
+                  'is_superuser',
+                  'phone',
+                  'address')
+        extra_kwargs = {
+            'username': {'required': True},
+            'password': {'required': True},
+            'is_active': {'required': True},
+            'is_staff': {'required': True},
+            'phone': {'required': False},
+            'address': {'required': False},
+            'PIB': {'required': False},
+            'is_reseller': {'required': True},
+            'is_superuser': {'required': True}
+        }
+
+    def validate(self, attrs):
+        return attrs
+
+    def create(self, validated_data):
+        user = User.objects.create(
+            username=validated_data.get('username'),
+            is_active=validated_data.get('is_active'),
+            is_reseller=validated_data.get('is_reseller'),
+            phone=validated_data.get('phone'),
+            address=validated_data.get('address'),
+            is_staff=validated_data.get('is_staff'),
+            email=validated_data.get('email'),
+            is_superuser=validated_data.get('is_superuser')
+        )
+        user.set_password(validated_data.get('password'))
+        user.save()
+
+        return user
+
+
+class UserSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = '__all__'  # Or specify the fields you want to expose
 
 
 class CountrySerializer(serializers.ModelSerializer):
     class Meta:
         model = Country
-        fields = ['id_country', 'name_country']
+        fields = '__all__'
 
 
 class ManufacturerSerializer(serializers.ModelSerializer):
@@ -30,31 +82,9 @@ class EngineTypeSerializer(serializers.ModelSerializer):
 
 
 class EngineSerializer(serializers.ModelSerializer):
-    # id_engine = serializers.IntegerField()
-    # engine_code = serializers.CharField(max_length=255)
-    # horsepower = serializers.IntegerField()
-    # kilowatt = serializers.IntegerField()
-    # volume = serializers.IntegerField()
-    # id_engine_type = EngineTypeSerializer(many=False, read_only=True)
-
-    # id_engine_type = EngineTypeSerializer(many=False)
     class Meta:
         model = Engine
         fields = '__all__'
-
-    # def create(self, validated_data):
-    #     engineType = validated_data.pop('id_engine_type')
-    #     engineType.id_engine_type = 1
-    #     instance = Engine.objects.create(**validated_data)
-    #     EngineType.objects.create(instance=instance, **engineType)
-    #
-    #
-    #     return instance
-
-    # def to_representation(self, instance):
-    #     representation = super(EquipmentSerializer, self).to_representation(instance)
-    #     representation['assigment'] = AssignmentSerializer(instance.assigment_set.all(), many=True).data
-    #     return representation
 
 
 class ModelTypeSerializer(serializers.ModelSerializer):
