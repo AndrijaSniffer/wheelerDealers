@@ -3,13 +3,13 @@ from dataclasses import asdict
 
 from django.forms.models import model_to_dict
 from django.db import connection
+from django.db.models import Q
 from django.http import HttpResponse
 from django.views.decorators.csrf import csrf_exempt
 from rest_framework import routers, viewsets, status, permissions
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
-
 
 from wheelerDealersApi.serializer import *
 from wheelerDealersApi.util import checkIfValueExists
@@ -49,104 +49,67 @@ def getAllUsers(request):
     return Response(status=status.HTTP_200_OK, data=serializer.data)
 
 
+@api_view(['GET'])
+@permission_classes([AllowAny])
 def normalSearch(request):
-    if request.method == 'POST':
-        postData = dict(request.POST)
-        search = {}
+    if request.method == 'GET':
+        search = request.GET
 
-        for key in postData.keys():
-            search[key] = postData[key]
+        filters = Q()
 
-        listCars = []
+        id_manufacturer = search.get('id_manufacturer', None)
+        id_model = search.get('id_model', None)
+        id_transmission = search.get('id_transmission', None)
+        id_fuel = search.get('id_fuel', None)
+        id_drive = search.get('id_drive', None)
+        is_preowned = search.get('is_preowned', None)
+        price_from = search.get('price_from', None)
+        price_to = search.get('price_to', None)
+        volume = search.get('volume', None)
+        hp_from = search.get('hp_from', None)
+        hp_to = search.get('hp_to', None)
+        kw_from = search.get('kw_from', None)
+        kw_to = search.get('kw_to', None)
+        car_color = search.get('car_color', None)
+        left_side_steering_wheel = search.get('left_side_steering_wheel', None)
 
-        id_manufacturer = checkIfValueExists(search, 'id_manufacturer')
-        id_model = checkIfValueExists(search, 'id_model')
-        id_transmission = checkIfValueExists(search, 'id_transmission')
-        id_fuel = checkIfValueExists(search, 'id_fuel')
-        id_drive = checkIfValueExists(search, 'id_drive')
-        is_preowned = checkIfValueExists(search, 'is_preowned')
-        price_from = checkIfValueExists(search, 'price_from')
-        price_to = checkIfValueExists(search, 'price_to')
-        volume = checkIfValueExists(search, 'volume')
-        hp_from = checkIfValueExists(search, 'hp_from')
-        hp_to = checkIfValueExists(search, 'hp_to')
-        kw_from = checkIfValueExists(search, 'kw_from')
-        kw_to = checkIfValueExists(search, 'kw_to')
-        car_color = checkIfValueExists(search, 'car_color')
-        left_side_steering_wheel = checkIfValueExists(search, 'left_side_steering_wheel')
+        if id_manufacturer:
+            filters &= Q(model__manufacturer=id_manufacturer)
+        if id_model:
+            filters &= Q(model=id_model)
+        if id_transmission:
+            filters &= Q(transmission=id_transmission)
+        if id_fuel:
+            filters &= Q(fuel=id_fuel)
+        if id_drive:
+            filters &= Q(drive=id_drive)
+        if is_preowned is not None:
+            filters &= Q(is_preowned=is_preowned)
+        if price_from:
+            filters &= Q(price__gte=price_from)
+        if price_to:
+            filters &= Q(price__lte=price_to)
+        if volume:
+            filters &= Q(engine__volume=volume)
+        if hp_from:
+            filters &= Q(engine__horsepower__gte=hp_from)
+        if hp_to:
+            filters &= Q(engine__horsepower__lte=hp_to)
+        if kw_from:
+            filters &= Q(engine__kilowatt__gte=kw_from)
+        if kw_to:
+            filters &= Q(engine__kilowatt__lte=kw_to)
+        if car_color:
+            filters &= Q(color=car_color)
+        if left_side_steering_wheel is not None:
+            filters &= Q(interior__left_side_steering_wheel=left_side_steering_wheel)
 
-        id_manufacturer_sql = f"{f'and ma.id_manufacturer = {int(id_manufacturer[0])} ' if id_manufacturer is not None else ''}"
-        id_model_sql = f"{f'and mo.id_model = {int(id_model[0])} ' if id_model is not None else ''}"
-        id_transmission_sql = f"{f'and t.id_transmission = {int(id_transmission[0])} ' if id_transmission is not None else ''}"
-        id_fuel_sql = f"{f'and f.id_fuel = {int(id_fuel[0])} ' if id_fuel is not None else ''}"
-        id_drive_sql = f"{f'and d.id_drive = {int(id_drive[0])} ' if id_drive is not None else ''}"
-        id_preowned_sql = f"{f'and c.is_preowned = {bool(is_preowned[0])} ' if is_preowned is not None else ''}"
+        cars = Car.objects.filter(filters).distinct()
+        serializer = CarSerializer(cars, many=True)  # Pass queryset to the serializer
 
-        if price_from is not None and price_to is not None:
-            price_sql = f"and c.price is between {int(price_from[0])} and {int(price_to[0])} "
-        elif price_from is None and price_to is not None:
-            price_sql = f"and c.price < {int(price_to[0])} "
-        elif price_from is not None and price_to is None:
-            price_sql = f"and c.price > {int(price_from[0])} "
-        else:
-            price_sql = ''
-
-        volume_sql = f"{f'and e.volume = {int(volume[0])} ' if volume is not None else ''}"
-
-        if hp_from is not None and hp_to is not None:
-            hp_sql = f"and e.horsepower is between {int(hp_from[0])} and {int(hp_to[0])} "
-        elif hp_from is None and hp_to is not None:
-            hp_sql = f"and e.horsepower < {int(hp_to[0])} "
-        elif hp_from is not None and hp_to is None:
-            hp_sql = f"and e.horsepower > {int(hp_from[0])} "
-        else:
-            hp_sql = ''
-
-        if kw_from is not None and kw_to is not None:
-            kw_sql = f"and e.kilowatt is between {int(kw_from[0])} and {int(kw_to[0])} "
-        elif kw_from is None and kw_to is not None:
-            kw_sql = f"and e.kilowatt < {int(kw_to[0])} "
-        elif kw_from is not None and kw_to is None:
-            kw_sql = f"and e.kilowatt > {int(kw_from[0])} "
-        else:
-            kw_sql = ''
-
-        car_color_sql = f"{f'and c.color = {car_color} ' if car_color is not None else ''}"
-        left_side_steering_wheel_sql = f"{f'and i.left_side_steering_wheel = {bool(left_side_steering_wheel[0])} ' if left_side_steering_wheel is not None else ''}"
-
-        sql = "SELECT DISTINCT `id_car`, `id_user`, `price`, c.`color`, `chassis_number`, `is_preowned`, `created_at`, `id_fuel`, `fuel_name`, `kml`, `id_model`, `name_model`, `year_of_manufacture`, `id_manufacturer`, `name_manufacturer` " \
-              "FROM `wheelerdealersapi_car` c, `wheelerdealersapi_fuel` f, `wheelerdealersapi_model` mo, `wheelerdealersapi_manufacturer` ma," \
-              " `wheelerdealersapi_transmission` t, `wheelerdealersapi_drive` d, `wheelerdealersapi_engine` e,  `wheelerdealersapi_interior` i " \
-              "WHERE c.id_fuel_id = f.id_fuel and c.id_model_id = mo.id_model and mo.id_manufacturer_id = ma.id_manufacturer " \
-              f"{id_manufacturer_sql}{id_model_sql}{id_transmission_sql}{id_fuel_sql}{id_drive_sql}{id_preowned_sql}" \
-              f"{price_sql}{volume_sql}{hp_sql}{kw_sql}{car_color_sql}{left_side_steering_wheel_sql}"
-
-        with connection.cursor() as cursor:
-            cursor.execute(sql)
-            rows = cursor.fetchall()
-
-            for row in rows:
-                man = ManufacturerDto(id_manufacturer=row[13], name_manufacturer=row[14], id_country=None)
-                listCars.append(
-                    asdict(CarDto(
-                        id_car=row[0],
-                        id_user=row[1],
-                        price=str(row[2]),
-                        color=row[3],
-                        chassis_number=row[4],
-                        is_preowned=row[5],
-                        created_at=str(row[6]),
-                        id_fuel=model_to_dict(Fuel(id_fuel=row[7], fuel_name=row[8], kml=row[9])),
-                        id_model=asdict(ModelDto(id_model=row[10], name_model=row[11], year_of_manufacture=row[12],
-                                                 id_manufacturer=man, id_engine=None)),
-                        id_interior=None,
-                        id_transmission=None
-                    ))
-                )
-
-            return HttpResponse(json.dumps(listCars))
+        return Response(status=status.HTTP_200_OK, data=serializer.data)
     else:
-        return HttpResponse(status=400)
+        return Response(status=status.HTTP_400_BAD_REQUEST)
 
 
 class CountryView(viewsets.ModelViewSet):
