@@ -1,11 +1,8 @@
-import datetime
-from dataclasses import dataclass
-from django.utils import timezone
-
 from django.contrib.auth.base_user import AbstractBaseUser
 from django.contrib.auth.models import PermissionsMixin
 from django.db import models
 from django.db.models import UniqueConstraint
+from django.utils import timezone
 
 from wheelerDealersApi.managers import CustomUserManager
 
