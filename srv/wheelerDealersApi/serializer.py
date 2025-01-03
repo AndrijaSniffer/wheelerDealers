@@ -80,39 +80,15 @@ class CountrySerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 
-class ManufacturerSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Manufacturer
-        fields = '__all__'
-
-
 class EngineTypeSerializer(serializers.ModelSerializer):
     class Meta:
         model = EngineType
         fields = '__all__'
 
 
-class EngineSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Engine
-        fields = '__all__'
-
-
 class ModelTypeSerializer(serializers.ModelSerializer):
     class Meta:
         model = ModelType
-        fields = '__all__'
-
-
-class ModelSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Model
-        fields = '__all__'
-
-
-class ModelTypeModelSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = ModelTypeModel
         fields = '__all__'
 
 
@@ -140,10 +116,92 @@ class InteriorSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 
+class EngineSerializer(serializers.ModelSerializer):
+    engine_type = serializers.PrimaryKeyRelatedField(queryset=EngineType.objects.all())
+
+    class Meta:
+        model = Engine
+        fields = '__all__'
+
+    def to_representation(self, instance):
+        # Customize how engine_type is displayed
+        ret = super().to_representation(instance)
+        ret['engine_type'] = EngineTypeSerializer(instance.engine_type).data
+        return ret
+
+
+class ManufacturerSerializer(serializers.ModelSerializer):
+    country = serializers.PrimaryKeyRelatedField(queryset=Country.objects.all())
+
+    class Meta:
+        model = Manufacturer
+        fields = '__all__'
+
+    def to_representation(self, instance):
+        # Customize how country is displayed
+        ret = super().to_representation(instance)
+        ret['country'] = CountrySerializer(instance.country).data
+        return ret
+
+
+class ModelSerializer(serializers.ModelSerializer):
+    manufacturer = serializers.PrimaryKeyRelatedField(queryset=Manufacturer.objects.all())
+    engine = serializers.PrimaryKeyRelatedField(queryset=Engine.objects.all())
+    model_types = serializers.SerializerMethodField()
+
+    class Meta:
+        model = Model
+        fields = '__all__'
+
+    def get_model_types(self, obj):
+        # Get all ModelTypeModel entries for the current Model instance
+        model_type_models = ModelTypeModel.objects.filter(model=obj)
+        # Extract the associated ModelType objects
+        model_types = [mtm.model_type for mtm in model_type_models]
+        return ModelTypeSerializer(model_types, many=True).data
+
+    def to_representation(self, instance):
+        # Customize how manufacturer and engine are displayed
+        ret = super().to_representation(instance)
+        ret['engine'] = EngineSerializer(instance.engine).data
+        ret['manufacturer'] = ManufacturerSerializer(instance.manufacturer).data
+        return ret
+
+
+class ModelTypeModelSerializer(serializers.ModelSerializer):
+    model_type = serializers.PrimaryKeyRelatedField(queryset=ModelType.objects.all())
+    model = serializers.PrimaryKeyRelatedField(queryset=Model.objects.all())
+
+    class Meta:
+        model = ModelTypeModel
+        fields = '__all__'
+
+
 class CarSerializer(serializers.ModelSerializer):
+    user = serializers.PrimaryKeyRelatedField(queryset=User.objects.all())
+    model = serializers.PrimaryKeyRelatedField(queryset=Model.objects.all())
+    transmission = serializers.PrimaryKeyRelatedField(queryset=Transmission.objects.all())
+    fuel = serializers.PrimaryKeyRelatedField(queryset=Fuel.objects.all())
+    interior = serializers.PrimaryKeyRelatedField(queryset=Interior.objects.all())
+    images = serializers.SerializerMethodField()
+
     class Meta:
         model = Car
         fields = '__all__'
+
+    def get_images(self, obj):
+        car_images = CarImage.objects.filter(car=obj)
+        images = [ci.image for ci in car_images]
+        return ImageSerializer(images, many=True).data
+
+    def to_representation(self, instance):
+        ret = super().to_representation(instance)
+        ret['user'] = UserSerializer(instance.user).data
+        ret['model'] = ModelSerializer(instance.model).data
+        ret['transmission'] = TransmissionSerializer(instance.transmission).data
+        ret['fuel'] = FuelSerializer(instance.fuel).data
+        ret['interior'] = InteriorSerializer(instance.interior).data
+        return ret
 
 
 class ImageSerializer(serializers.ModelSerializer):

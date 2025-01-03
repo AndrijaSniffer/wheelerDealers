@@ -48,110 +48,6 @@ def getAllUsers(request):
     serializer = UserSerializer(users, many=True)  # Serialize the queryset
     return Response(status=status.HTTP_200_OK, data=serializer.data)
 
-def getAllEngine(request):
-    if request.method == 'GET':
-        listEngine = []
-
-        with connection.cursor() as cursor:
-            cursor.execute(
-                "SELECT `id_engine`, `engine_code`, `horsepower`, `kilowatt`, `volume`, `id_engine_type`, `engine_type`"
-                " FROM `wheelerdealersapi_engine` as `e`, `wheelerdealersapi_enginetype` as `et`"
-                " WHERE e.id_engine_type_id = et.id_engine_type;")
-            rows = cursor.fetchall()
-
-            for row in rows:
-                listEngine.append(asdict(EngineDto(
-                    id_engine=row[0],
-                    engine_code=row[1],
-                    horsepower=row[2],
-                    kilowatt=row[3],
-                    volume=row[4],
-                    id_engine_type=row[5],
-                    engine_type=row[6]
-                )))
-
-        return HttpResponse(json.dumps(listEngine))
-
-
-def getAllManufacturers(request):
-    if request.method == 'GET':
-        listManufacturers = []
-
-        with connection.cursor() as cursor:
-            cursor.execute(
-                "SELECT `id_manufacturer`, `name_manufacturer`, `id_country_id` as `id_country`, `name_country` "
-                "FROM `wheelerdealersapi_manufacturer` m, `wheelerdealersapi_country` c "
-                "WHERE m.id_country_id = c.id_country;")
-            rows = cursor.fetchall()
-
-            for row in rows:
-                listManufacturers.append(asdict(ManufacturerDto(
-                    id_manufacturer=row[0],
-                    name_manufacturer=row[1],
-                    id_country=model_to_dict(Country(id_country=row[2], name_country=row[3]))
-                )))
-
-        return HttpResponse(json.dumps(listManufacturers))
-
-
-def getAllModels(request):
-    if request.method == 'GET':
-        listModels = []
-
-        with connection.cursor() as cursor:
-            cursor.execute(
-                "SELECT `id_model`, `name_model`, `year_of_manufacture`, `id_engine`, `engine_code`, `id_manufacturer`, `name_manufacturer` "
-                "FROM `wheelerdealersapi_model` mo, `wheelerdealersapi_engine` e, `wheelerdealersapi_manufacturer` ma "
-                "WHERE mo.id_engine_id = e.id_engine and mo.id_manufacturer_id = ma.id_manufacturer")
-            rows = cursor.fetchall()
-
-            for row in rows:
-                listModels.append(asdict(ModelDto(
-                    id_model=row[0],
-                    name_model=row[1],
-                    year_of_manufacture=row[2],
-                    id_engine=model_to_dict(Engine(id_engine=row[3], engine_code=row[4])),
-                    id_manufacturer=model_to_dict(Manufacturer(id_manufacturer=row[5], name_manufacturer=row[6]))
-                )))
-
-        return HttpResponse(json.dumps(listModels))
-
-
-def defaultSearch(request):
-    if request.method == 'GET':
-        listCars = []
-
-        with connection.cursor() as cursor:
-            cursor.execute(
-                "SELECT `id_car`, `id_user`, `price`, `color`, `chassis_number`, `is_preowned`, `created_at`, `id_fuel`, `fuel_name`, `kml`, `id_model`, `name_model`, `year_of_manufacture`, `id_manufacturer`, `name_manufacturer` "
-                "FROM `wheelerdealersapi_car` c, `wheelerdealersapi_fuel` f, `wheelerdealersapi_model` mo, `wheelerdealersapi_manufacturer` ma "
-                "WHERE c.id_fuel_id = f.id_fuel and c.id_model_id = mo.id_model and mo.id_manufacturer_id = ma.id_manufacturer;")
-            rows = cursor.fetchall()
-
-            for row in rows:
-                man = ManufacturerDto(id_manufacturer=row[13], name_manufacturer=row[14], id_country=None)
-                listCars.append(
-                    asdict(CarDto(
-                        id_car=row[0],
-                        id_user=row[1],
-                        price=str(row[2]),
-                        color=row[3],
-                        chassis_number=row[4],
-                        is_preowned=row[5],
-                        created_at=str(row[6]),
-                        id_fuel=model_to_dict(Fuel(id_fuel=row[7], fuel_name=row[8], kml=row[9])),
-                        id_model=asdict(ModelDto(id_model=row[10], name_model=row[11], year_of_manufacture=row[12],
-                                                 id_manufacturer=man, id_engine=None)),
-                        id_interior=None,
-                        id_transmission=None
-                    ))
-                )
-
-            return HttpResponse(json.dumps(listCars))
-
-    else:
-        return HttpResponse(status=400)
-
 
 def normalSearch(request):
     if request.method == 'POST':
@@ -339,19 +235,19 @@ class CarView(viewsets.ModelViewSet):
 
 # region Router
 
-router.register(r'countries', CountryView, 'countries')
-router.register(r'drivetrains', DrivetrainView, 'drivetrains')
-router.register(r'manufacturers', ManufacturerView, 'manufacturers')
-router.register(r'engineTypes', EngineTypeView, 'engineTypes')
-router.register(r'engines', EngineView, 'engines')
-router.register(r'modelTypes', ModelTypeView, 'modelTypes')
-router.register(r'models', ModelView, 'models')
-router.register(r'modelTypeModels', ModelTypeModelView, 'modelTypeModels')
-router.register(r'fuels', FuelView, 'fuel')
-router.register(r'transmissions', TransmissionView, 'transmissions')
-router.register(r'interiors', InteriorView, 'interiors')
-router.register(r'images', ImageView, 'images')
-router.register(r'carImages', CarImageView, 'carImages')
-router.register(r'cars', CarView, 'cars')
+router.register(r'country', CountryView, 'country')
+router.register(r'drivetrain', DrivetrainView, 'drivetrain')
+router.register(r'manufacturer', ManufacturerView, 'manufacturer')
+router.register(r'engineType', EngineTypeView, 'engineType')
+router.register(r'engine', EngineView, 'engine')
+router.register(r'modelType', ModelTypeView, 'modelType')
+router.register(r'model', ModelView, 'model')
+router.register(r'modelTypeModel', ModelTypeModelView, 'modelTypeModel')
+router.register(r'fuel', FuelView, 'fuel')
+router.register(r'transmission', TransmissionView, 'transmission')
+router.register(r'interior', InteriorView, 'interior')
+router.register(r'image', ImageView, 'image')
+router.register(r'carImage', CarImageView, 'carImage')
+router.register(r'car', CarView, 'car')
 
 # endregion

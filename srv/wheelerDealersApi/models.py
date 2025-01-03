@@ -117,7 +117,7 @@ class Engine(models.Model):
 
 class Model(models.Model):
     model = models.AutoField(primary_key=True, null=False)
-    name_model = models.CharField(max_length=255, null=False)
+    name = models.CharField(max_length=255, null=False)
     year_of_manufacture = models.IntegerField(null=False)
     manufacturer = models.ForeignKey(Manufacturer, on_delete=models.RESTRICT, null=False)
     engine = models.ForeignKey(Engine, on_delete=models.RESTRICT, null=True)
@@ -154,80 +154,3 @@ class CarImage(models.Model):
 
 
 # endregion THE END
-
-# region DTO
-
-@dataclass(frozen=True)
-class ManufacturerDto:
-    manufacturer: int
-    name_manufacturer: str
-    country: Country  # JSON Objekat
-
-
-@dataclass(frozen=True)
-class EngineDto:
-    engine: int
-    engine_code: str
-    horsepower: int
-    kilowatt: int
-    volume: int
-    engine_type: int
-    type: str
-
-
-@dataclass(frozen=True)
-class ModelDto:
-    model: int
-    name_model: str
-    year_of_manufacture: int
-    manufacturer: ManufacturerDto
-    engine: EngineDto
-
-
-@dataclass(frozen=True)
-class CarDto:
-    car: int
-    user: int
-    model: Model
-    transmission: Transmission
-    fuel: Fuel
-    interior: Interior
-    price: str
-    color: str
-    chassis_number: str
-    is_preowned: bool
-    created_at: str
-
-
-@dataclass()
-class UserDto:
-    user_id: int
-    PIB: Company
-    display_name: str
-    email: str
-    password: str
-    deactivated: bool
-    created_at: datetime
-    phone: str
-    address: str
-    is_reseller: bool
-    is_admin: bool
-
-# class IfExistsSearch:
-#     manufacturer: bool
-#     model: bool
-#     transmission: bool
-#     fuel: bool
-#     drive: bool
-#     is_preowned: bool
-#     price_from: bool
-#     price_to: bool
-#     volume: bool
-#     hp_from: bool
-#     hp_to: bool
-#     kw_from: bool
-#     kw_to: bool
-#     car_color: bool
-#     left_side_steering_wheel: bool
-
-# endregion

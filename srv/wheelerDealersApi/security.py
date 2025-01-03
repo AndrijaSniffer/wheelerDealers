@@ -15,8 +15,6 @@ class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
         token['isReseller'] = user.is_reseller
         token['isAdmin'] = user.is_superuser
         token['dateJoined'] = str(user.date_joined)
-        # token.set_exp(lifetime=timedelta(minutes=30))
-        token.set_exp(lifetime=timedelta(hours=2))
 
         return token
 
