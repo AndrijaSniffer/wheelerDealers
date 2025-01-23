@@ -5,7 +5,7 @@ from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
 
-from wheelerDealersApi.security import IsAdminOrReadOnly
+from wheelerDealersApi.security import IsAdminOrReadOnly, IsUserSelf
 from wheelerDealersApi.serializer import *
 
 router = routers.DefaultRouter()
@@ -35,10 +35,18 @@ def createAccount(request):
 
 @csrf_exempt
 @api_view(['GET'])
-@permission_classes([permissions.IsAuthenticated, permissions.IsAdminUser])
+@permission_classes([permissions.IsAdminUser])
 def getAllUsers(request):
     users = User.objects.all()  # Fetch all users
     serializer = UserSerializer(users, many=True)  # Serialize the queryset
+    return Response(status=status.HTTP_200_OK, data=serializer.data)
+
+
+@api_view(['GET'])
+@permission_classes([IsUserSelf | permissions.IsAdminUser])
+def getAllUsers(request, id: int):
+    user = User.objects.get(pk=id)  # Fetch user by id
+    serializer = UserSerializer(user, many=False)  # Serialize the queryset
     return Response(status=status.HTTP_200_OK, data=serializer.data)
 
 
@@ -103,6 +111,12 @@ def normalSearch(request):
         return Response(status=status.HTTP_200_OK, data=serializer.data)
     else:
         return Response(status=status.HTTP_400_BAD_REQUEST)
+
+
+class CompanyView(viewsets.ModelViewSet):
+    queryset = Company.objects.all()
+    serializer_class = CompanySerializer
+    permission_classes = [permissions.IsAuthenticated, permissions.IsAdminUser]
 
 
 class CountryView(viewsets.ModelViewSet):
@@ -191,6 +205,7 @@ class CarView(viewsets.ModelViewSet):
 
 # region Router
 
+router.register(r'company', CompanyView, 'company')
 router.register(r'country', CountryView, 'country')
 router.register(r'drivetrain', DrivetrainView, 'drivetrain')
 router.register(r'manufacturer', ManufacturerView, 'manufacturer')
