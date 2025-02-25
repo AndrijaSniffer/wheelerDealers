@@ -1,3 +1,5 @@
+import os
+
 from django.db.models import Q
 from django.views.decorators.csrf import csrf_exempt
 from rest_framework import routers, viewsets, status, permissions
@@ -5,6 +7,7 @@ from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
 
+from srv import settings
 from wheelerDealersApi.security import IsAdminOrReadOnly, IsUserSelf
 from wheelerDealersApi.serializer import *
 
@@ -23,9 +26,49 @@ def createAccount(request):
     data['is_superuser'] = not admin_exists  # Add is_superuser to the request data
     data['is_staff'] = not admin_exists
     data['is_active'] = True
-    data['PIB'] = None if data.get('PIB') is None else int(data.get('PIB'))
+    data['PIB'] = None if data.get('PIB') is None or data.get('PIB') == 'null' else int(data.get('PIB'))
 
     serializer = RegisterSerializer(data=data)
+    if serializer.is_valid():
+        serializer.save()
+        return Response(status=status.HTTP_200_OK, data=serializer.data)
+    else:
+        if data['PIB'] is not None:
+            try:
+                # Attempt to find and delete the company with the given PIB
+                company = Company.objects.get(PIB=data['PIB'])
+                company.delete()
+            except Company.DoesNotExist:
+                # If no company exists with the given PIB, do nothing
+                pass
+        return Response(status=status.HTTP_422_UNPROCESSABLE_ENTITY, data=serializer.errors)
+
+
+@csrf_exempt
+@api_view(['POST'])
+@permission_classes([AllowAny])
+def createCompany(request):
+    logo_name = None
+    if request.FILES.get('logo'):
+        logo_image = request.FILES['logo']
+
+        # Define the path to save the logo
+        upload_dir = settings.LOGO_ROOT
+        if not os.path.exists(upload_dir):
+            os.makedirs(upload_dir)
+
+        # Save the logo to the local folder
+        file_path = os.path.join(upload_dir, logo_image.name)
+        with open(file_path, 'wb+') as destination:
+            for chunk in logo_image.chunks():
+                destination.write(chunk)
+        logo_name = logo_image.name
+
+    data = request.data.dict()
+    data['logo_name'] = logo_name
+    data.pop('logo', None)
+
+    serializer = CompanySerializer(data=data)
     if serializer.is_valid():
         serializer.save()
         return Response(status=status.HTTP_200_OK, data=serializer.data)
@@ -116,7 +159,7 @@ def normalSearch(request):
 class CompanyView(viewsets.ModelViewSet):
     queryset = Company.objects.all()
     serializer_class = CompanySerializer
-    permission_classes = [permissions.IsAuthenticated, permissions.IsAdminUser]
+    permission_classes = [IsAdminOrReadOnly]
 
 
 class CountryView(viewsets.ModelViewSet):

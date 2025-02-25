@@ -1,0 +1,8 @@
+.input-list-item {
+  height: auto !important;
+  margin-bottom: 2em !important;
+}
+
+:host ::ng-deep .mat-horizontal-stepper-header{
+  pointer-events: none !important;
+}

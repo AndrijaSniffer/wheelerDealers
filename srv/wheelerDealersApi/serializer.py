@@ -1,5 +1,6 @@
 from django.contrib.auth.password_validation import validate_password
 
+from srv import settings
 from wheelerDealersApi.models import *
 from rest_framework import serializers
 
@@ -64,6 +65,21 @@ class CompanySerializer(serializers.ModelSerializer):
     class Meta:
         model = Company
         fields = '__all__'
+
+    def to_representation(self, instance):
+        # Call the parent class's to_representation method to get the original dictionary
+        representation = super().to_representation(instance)
+
+        # Check if 'logo_name' exists in the representation and is not empty
+        if 'logo_name' in representation and representation['logo_name']:
+            # Construct the absolute PATH using LOGO_URL
+            representation['logo_path'] = f"{settings.LOGO_URL}{representation['logo_name']}"
+
+        # Remove 'logo_name' from the response to avoid confusion
+        if 'logo_name' in representation:
+            del representation['logo_name']
+
+        return representation
 
 
 class UserSerializer(serializers.ModelSerializer):

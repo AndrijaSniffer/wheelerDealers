@@ -5,6 +5,9 @@ import {NotificationService} from './notification.service';
 import {jwtDecode} from 'jwt-decode';
 import {AppUser} from '../app.user';
 import {UserService} from './user.service';
+import {Company} from '../classes/company';
+import {User} from '../classes/user';
+import {AppUtil} from '../app.util';
 
 export interface JWToken {
   refresh: string,
@@ -66,6 +69,63 @@ export class AuthService {
           }
         }
       )
+    })
+  }
+
+  registerCompany(company: Company, logoFile: File): Promise<boolean | string> {
+    const companyFormData = new FormData();
+    companyFormData.append('PIB', company.PIB.toString()); // Append the PIB field
+    companyFormData.append('address', company.address); // Append the address field
+    companyFormData.append('phone', company.phone.toString()); // Append the phone field
+    companyFormData.append('logo', logoFile); // Append the logo file
+    companyFormData.append('website_url', company.websiteUrl); // Append the website URL
+
+    return new Promise((resolve, _) => {
+      this._http.post<JSON>(AppConstants.REGISTER_COMPANY, companyFormData).subscribe({
+        next: async (response: JSON) => {
+          resolve(response['logo_url']);
+        },
+        error: err => {
+          console.error(err);
+          if (err instanceof HttpErrorResponse) {
+            if (err.status === 422) {
+              this._notification.showTimedNotification(err.error.detail);
+            }
+          }
+          resolve(false);
+        }
+      })
+    })
+  }
+
+  registerUser(user: User): Promise<boolean> {
+    const userFormData = new FormData();
+
+    Object.entries(user).forEach(([key, value]) => {
+      if (key === 'PIB' && value !== null) {
+        userFormData.append('PIB', (value as Company).PIB.toString());
+      } else {
+        userFormData.append(AppUtil.toSnakeCase(key), value);
+      }
+    });
+
+    return new Promise((resolve, _) => {
+      this._http.post<JSON>(AppConstants.REGISTER_USER, userFormData).subscribe({
+        next: async (_: JSON) => {
+          resolve(true);
+        },
+        error: err => {
+          console.error(err);
+          console.error(err.error);
+          if (err instanceof HttpErrorResponse) {
+            if (err.status === 422) {
+              const errorMessages = AppUtil.parseJsonErrorsToString(err.error);
+              this._notification.showTimedErrorNotification(errorMessages);
+            }
+          }
+          resolve(false);
+        }
+      })
     })
   }
 }

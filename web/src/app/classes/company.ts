@@ -2,8 +2,8 @@ export class Company {
   PIB: number;
   address: string;
   phone: string;
-  logoUrl: string;
-  websiteUrl: string;
+  logoUrl: string | null;
+  websiteUrl: string | null;
 
   constructor(PIB: number, address: string, phone: string, logoUrl: string, websiteUrl: string) {
     this.PIB = PIB;

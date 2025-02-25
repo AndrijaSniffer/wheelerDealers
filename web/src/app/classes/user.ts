@@ -2,10 +2,11 @@ import {Company} from './company';
 
 export class User {
   id: number;
-  PIB: Company | undefined;
+  PIB: Company | null;
   lastLogin: Date;
   isSuperuser: boolean;
   username: string;
+  password: string;
   email: string;
   isStaff: boolean;
   isActive: boolean;
@@ -14,7 +15,7 @@ export class User {
   address: string;
   isReseller: boolean;
 
-  constructor(id: number, PIB: Company | undefined, lastLogin: Date, isSuperuser: boolean, username: string, email: string,
+  constructor(id: number, PIB: Company | null, lastLogin: Date, isSuperuser: boolean, username: string, email: string,
               isStaff: boolean, isActive: boolean, dateJoined: Date, phone: string, address: string, isReseller: boolean) {
     this.id = id;
     this.PIB = PIB;

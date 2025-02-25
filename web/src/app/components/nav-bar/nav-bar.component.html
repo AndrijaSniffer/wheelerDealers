@@ -5,7 +5,7 @@
   <span class="spacer"></span>
   <div *ngIf="!isLoggedIn">
     <button mat-button (click)="openLoginDialog()">Login</button>
-    <button mat-button>Sign up</button>
+    <button mat-button (click)="openSignUpDialog()">Sign up</button>
   </div>
   <div *ngIf="isLoggedIn">
     <span>Hello {{ username }}!</span>

@@ -8,12 +8,12 @@ import {Company} from '../classes/company';
 })
 export class UserFactory {
   static create(jsonData: any): User {
-    let company: Company | undefined;
+    let company: Company | null;
 
     if (jsonData.PIB !== null) {
       company = CompanyFactory.create(jsonData.PIB);
     } else {
-      company = undefined;
+      company = null;
     }
 
     return new User(

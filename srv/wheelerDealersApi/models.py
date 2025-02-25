@@ -10,18 +10,18 @@ from wheelerDealersApi.managers import CustomUserManager
 # region USERS
 
 class Company(models.Model):
-    PIB = models.AutoField(primary_key=True, null=False)
+    PIB = models.BigIntegerField(primary_key=True, null=False)
     address = models.CharField(max_length=255, null=False)
     phone = models.CharField(max_length=255, null=False)
-    logo_url = models.CharField(max_length=255, null=True)
-    website_url = models.CharField(max_length=255, null=True)
+    logo_name = models.CharField(max_length=255, null=True, unique=True)
+    website_url = models.CharField(max_length=255, null=True, unique=True)
 
 
 class User(AbstractBaseUser, PermissionsMixin):
     # Django automatically adds an 'id' field as the primary key when using AbstractBaseUser
     PIB = models.ForeignKey(Company, on_delete=models.CASCADE, null=True)
     username = models.CharField(max_length=255, null=False, unique=True)
-    email = models.CharField(max_length=255, null=False)
+    email = models.CharField(max_length=255, null=False, unique=True)
     password = models.CharField(max_length=255, null=False)
     is_staff = models.BooleanField(default=False)
     is_active = models.BooleanField(default=True)

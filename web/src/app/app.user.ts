@@ -13,9 +13,9 @@ interface JWTPair {
   providedIn: 'root'
 })
 export class AppUser {
-  private _user: User | undefined;
+  private _user: User | null;
   private _tokenExpiration: number;
-  private _tokens: JWTPair | undefined;
+  private _tokens: JWTPair | null;
 
   private _loggedIn: Promise<boolean>;
   loggedInObservable: Observable<boolean>;
@@ -33,7 +33,7 @@ export class AppUser {
     if (jsonData) {
       this._user = UserFactory.create(jsonData);
     } else {
-      this._user = undefined;
+      this._user = null;
     }
   }
 
