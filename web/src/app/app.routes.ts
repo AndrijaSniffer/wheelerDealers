@@ -3,12 +3,16 @@ import {LandingPageComponent} from './components/landing-page/landing-page.compo
 import {NgModule} from '@angular/core';
 import {SearchPageComponent} from './components/search-page/search-page.component';
 import {ContactUsPageComponent} from './components/contact-us-page/contact-us-page.component';
+import {CountryComponent} from './components/admin/country/country.component';
+import {AdminGuard} from './guards/admin.guard';
+import {NoAdminGuard} from './guards/no-admin.guard';
 
 export const routes: Routes = [
   { path: '', redirectTo: 'home', pathMatch: 'full' },
-  { path: 'home', component: LandingPageComponent  },
-  { path: 'search', component: SearchPageComponent },
-  { path: 'contact', component: ContactUsPageComponent }
+  { path: 'home', component: LandingPageComponent, canActivate: [NoAdminGuard] },
+  { path: 'search', component: SearchPageComponent, canActivate: [NoAdminGuard] },
+  { path: 'contact', component: ContactUsPageComponent, canActivate: [NoAdminGuard] },
+  { path: 'admin/countryManagement', component: CountryComponent, canActivate: [AdminGuard] }
 ];
 
 @NgModule({

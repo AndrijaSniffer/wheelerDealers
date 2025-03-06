@@ -26,10 +26,10 @@ export interface AccessToken {
   providedIn: 'root'
 })
 export class AuthService {
-  private readonly _http = inject(HttpClient)
-  private readonly _notification = inject(NotificationService)
-  private readonly _appUser = inject(AppUser)
-  private readonly _userService = inject(UserService)
+  private readonly _http = inject(HttpClient);
+  private readonly _notification = inject(NotificationService);
+  private readonly _appUser = inject(AppUser);
+  private readonly _userService = inject(UserService);
 
   login(username: string, password: string): Promise<boolean> {
     const formData = new FormData();
@@ -48,8 +48,11 @@ export class AuthService {
               let decodedToken = jwtDecode(accessToken) as AccessToken;
               this._appUser.tokens = {refresh: response.refresh, access: response.access};
               this._appUser.tokenExpiration = decodedToken.exp;
-              this._appUser.user = await this._userService.getUserById(decodedToken.user_id);
+              this._appUser.user = JSON.stringify(await this._userService.getUserById(decodedToken.user_id));
               this._appUser.setLoggedIn(true);
+
+              sessionStorage.setItem('tokens', JSON.stringify(this._appUser.tokens));
+              sessionStorage.setItem('user', JSON.stringify(this._appUser.user));
 
               resolve(true);
 

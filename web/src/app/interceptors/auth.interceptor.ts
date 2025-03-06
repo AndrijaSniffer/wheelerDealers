@@ -14,8 +14,6 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
   // Check if the request URL matches any of the excluded URLs.
   const isExcluded = excludedUrls.some(url => req.url === url);
 
-  // console.warn(isExcluded);
-
   if (!isExcluded) {
     const token = appUser.tokens.access; // Token from the currently logged-in user.
     if (token) {

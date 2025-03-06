@@ -10,7 +10,7 @@ export class UserService {
 
   getUserById(userId: number): Promise<JSON> {
     return new Promise<JSON>((resolve, reject) => {
-      this._http.get((AppConstants.GET_USER_BY_ID + userId.toString())).subscribe({
+      this._http.get((AppConstants.GET_USER_BY_ID + `/${userId.toString()}`)).subscribe({
         next: (response: JSON) => {
           console.warn(response);
           resolve(response);

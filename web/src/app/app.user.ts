@@ -1,40 +1,44 @@
-import {Injectable} from '@angular/core';
+import {inject, Injectable} from '@angular/core';
 import {User} from './classes/user';
-import {from, Observable} from 'rxjs';
+import {Observable, Subject} from 'rxjs';
 import {UserFactory} from './factories/user.factory';
+import {Router} from '@angular/router';
 
-interface JWTPair {
+export interface JWTPair {
   refresh: string;
   access: string;
 }
-
 
 @Injectable({
   providedIn: 'root'
 })
 export class AppUser {
+  private readonly _router: Router = inject(Router);
+
   private _user: User | null;
   private _tokenExpiration: number;
   private _tokens: JWTPair | null;
 
-  private _loggedIn: Promise<boolean>;
+  private _loggedIn: Subject<boolean>;
   loggedInObservable: Observable<boolean>;
 
   constructor() {
-    this._loggedIn = Promise.resolve(false);
-    this.loggedInObservable = from(this._loggedIn);
+    this._loggedIn = new Subject<boolean>();
+    this._loggedIn.next(false);
+
+    this.loggedInObservable = this._loggedIn.asObservable();
   }
 
   get user(): User {
     return this._user;
   }
 
-  set user(jsonData: any) {
-    if (jsonData) {
-      this._user = UserFactory.create(jsonData);
-    } else {
-      this._user = null;
-    }
+  /**
+   *
+   * @param user It can be either JSON (string) or a User object from the session storage
+   */
+  set user(user: string | User) {
+    this._user = typeof user === 'string' ? UserFactory.create(user) : user instanceof User ? user : null;
   }
 
   get tokenExpiration(): number {
@@ -54,7 +58,19 @@ export class AppUser {
   }
 
   setLoggedIn(loggedIn: boolean) {
-    this._loggedIn = Promise.resolve(loggedIn);
+    this._loggedIn.next(loggedIn);
+  }
+
+  logout(){
+    this._user = null;
+    this._tokenExpiration = null;
+    this._tokens = null;
+    this. _loggedIn.next(false);
+
+    sessionStorage.removeItem('user');
+    sessionStorage.removeItem('tokens');
+
+    this._router.navigate(['/']).then(_ => {});
   }
 
 }

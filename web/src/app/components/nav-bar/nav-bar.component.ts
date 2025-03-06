@@ -7,6 +7,7 @@ import {LoginDialog, SignUpDialog} from '../dialogs/dialogs.component';
 import {NotificationService} from '../../services/notification.service';
 import {AppUser} from '../../app.user';
 import {NgIf} from '@angular/common';
+import {AuthService} from '../../services/auth.service';
 
 @Component({
   selector: 'app-nav-bar',
@@ -23,30 +24,48 @@ export class NavBarComponent {
   private readonly _dialog = inject(MatDialog);
   private readonly _notification = inject(NotificationService)
   private readonly _appUser = inject(AppUser);
+  protected readonly _authService = inject(AuthService);
 
   isLoggedIn: boolean = false;
   username: String = '';
+  isSuperuser: boolean = false;
 
-  goToHome(){
-    this._router.navigate(['/']).then(() => {});
+  constructor() {
+    this._appUser.loggedInObservable.subscribe(loggedIn => {
+      if (loggedIn) {
+        this.isLoggedIn = loggedIn;
+        this.username = this._appUser.user.username;
+        this.isSuperuser = this._appUser.user.isSuperuser;
+      } else {
+        this.isLoggedIn = false;
+        this.username = '';
+        this.isSuperuser = false;
+      }
+    })
   }
 
-  goToSearch(){
-    this._router.navigate(['/search']).then(() => {});
+  goToHome() {
+    this._router.navigate(['/']).then(() => {
+    });
   }
 
-  goToContact(){
-    this._router.navigate(['/contact']).then(() => {});
+  goToSearch() {
+    this._router.navigate(['/search']).then(() => {
+    });
+  }
+
+  goToContact() {
+    this._router.navigate(['/contact']).then(() => {
+    });
   }
 
   openLoginDialog() {
     const dialogRef = this._dialog.open(LoginDialog)
 
     dialogRef.afterClosed().subscribe(result => {
-      if(result){
-        this._router.navigate(['/']).then(() => {
-          this.isLoggedIn = true;
-          this.username = this._appUser.user.username;
+      if (result) {
+        const pathUrl = this._appUser.user.isSuperuser ? 'admin/countryManagement' : '/';
+        this._router.navigate([pathUrl]).then(() => {
           this._notification.showTimedNotification("Logged in successfully!");
         });
       }
@@ -59,7 +78,7 @@ export class NavBarComponent {
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      if(result){
+      if (result) {
         this._router.navigate(['/']).then(() => {
           this._notification.showTimedNotification("Registered successfully!<br>You may log in now");
           this.openLoginDialog();
@@ -68,16 +87,7 @@ export class NavBarComponent {
     });
   }
 
-  logout(){
-    this._appUser.tokens = null;
-    this._appUser.user = null;
-    this._appUser.tokenExpiration = null;
-
-    this._appUser.setLoggedIn(false);
-    this.isLoggedIn = false;
-
-    this._router.navigate(['/']).then(() => {
-      this._notification.showTimedNotification("Logged out successfully!");
-    });
+  logout() {
+    this._appUser.logout();
   }
 }

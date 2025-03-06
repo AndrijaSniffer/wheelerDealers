@@ -1,7 +1,8 @@
-import { Component } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
+import {Component, inject} from '@angular/core';
+import {RouterOutlet} from '@angular/router';
 import {NavBarComponent} from './components/nav-bar/nav-bar.component';
 import {FooterComponent} from './components/footer/footer.component';
+import {AppUser, JWTPair} from './app.user';
 
 @Component({
   selector: 'app-root',
@@ -10,5 +11,23 @@ import {FooterComponent} from './components/footer/footer.component';
   styleUrl: './app.component.css'
 })
 export class AppComponent {
-  title = 'web';
+  private readonly _appUser: AppUser = inject(AppUser);
+
+  title = 'Wheeler Dealers';
+
+  ngOnInit() {
+    this.checkIfAuthenticated();
+  }
+
+  private checkIfAuthenticated() {
+    const storedTokens = sessionStorage.getItem('tokens');
+    const storedUser = sessionStorage.getItem('user');
+
+    if (storedTokens && storedUser) {
+      const tokens: JWTPair = JSON.parse(storedTokens);
+      this._appUser.user = storedUser;
+      this._appUser.tokens = tokens;
+      this._appUser.setLoggedIn(true);
+    }
+  }
 }
