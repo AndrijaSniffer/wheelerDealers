@@ -17,4 +17,6 @@ export class AppConstants {
 
   static readonly COMPANY_URL = AppConstants.SERVER_URL + 'company';
 
+  static readonly COUNTRY_URL = AppConstants.SERVER_URL + 'country';
+
 }

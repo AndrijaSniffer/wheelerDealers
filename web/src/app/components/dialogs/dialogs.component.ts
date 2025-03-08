@@ -1,11 +1,12 @@
 import {Component, inject, ViewChild} from '@angular/core';
 import {
+  MAT_DIALOG_DATA,
   MatDialogActions,
   MatDialogContent,
   MatDialogRef,
   MatDialogTitle
 } from '@angular/material/dialog';
-import {MatFormField, MatFormFieldModule} from '@angular/material/form-field';
+import {MatError, MatFormField, MatFormFieldModule, MatLabel} from '@angular/material/form-field';
 import {MatButton} from '@angular/material/button';
 import {MatInput} from '@angular/material/input';
 import {
@@ -24,6 +25,14 @@ import {NgForOf, NgIf} from '@angular/common';
 import {MatList, MatListItem} from '@angular/material/list';
 import {User} from '../../classes/user';
 import {MatDivider} from '@angular/material/divider';
+import {CountryService} from '../../services/country.service';
+import {Country} from '../../classes/country';
+import {AppUtil} from '../../app.util';
+
+export interface IDialogData<T> {
+  object: T,
+  isView: boolean
+}
 
 @Component({
   selector: 'login-dialog',
@@ -295,5 +304,86 @@ export class SignUpDialog {
     this.isValidFile = null;
 
     this.stepper.reset();
+  }
+}
+
+@Component({
+  selector: 'country-dialog',
+  imports: [
+    MatDialogTitle,
+    MatDialogContent,
+    MatDialogActions,
+    MatButton,
+    ReactiveFormsModule,
+    NgIf,
+    MatList,
+    MatListItem,
+    MatFormField,
+    MatInput,
+    MatLabel,
+    MatError
+  ],
+  templateUrl: 'country.dialog.html',
+  styleUrls: ['country.dialog.css'],
+})
+export class CountryDialog {
+  private readonly _dialogRef = inject(MatDialogRef<LoginDialog>);
+  private readonly _fb = inject(FormBuilder);
+  private readonly _data = inject<IDialogData<Country> | null>(MAT_DIALOG_DATA);
+  private readonly _countryService: CountryService = inject(CountryService);
+
+  isView: boolean = true;
+  isNewOrEdit: boolean = true;
+  jsonCountryObject: string = '';
+  form: FormGroup;
+
+  constructor() {
+    this.isView = this._data.isView;
+
+    if (this._data.isView) {
+      this.jsonCountryObject = AppUtil.toRawJSONText(this._data.object);
+      console.warn(this.jsonCountryObject);
+    } else if (this._data && this._data.object) {
+      this.isNewOrEdit = false;
+      this.form = this._fb.group({
+        name: [this._data.object.name, Validators.required],
+      });
+    } else if (this._data && !this._data.object) {
+      this.form = this._fb.group({
+        name: ['', Validators.required],
+      });
+    }
+  }
+
+  dismiss(value: any) {
+    this._dialogRef.close(value);
+  }
+
+  submit() {
+    if(this.form.valid) {
+      if (this.isNewOrEdit) {
+        const newCountry: Country = {
+          id: null,
+          name: this.form.get('name').value,
+        }
+
+        this._countryService.create(newCountry).subscribe({
+          next: (country) => {
+            console.log(country);
+            this.dismiss(country);
+          },
+          error: (error) => {
+            console.error(error);
+          }
+        });
+      } else {
+        if(this._data.object.id) {
+          const country = this._data.object;
+          country.name = this.form.get('name').value;
+
+          this._countryService.update(country);
+        }
+      }
+    }
   }
 }

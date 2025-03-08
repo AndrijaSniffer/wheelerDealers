@@ -29,4 +29,8 @@ export class AppUtil {
     // Use a regular expression to replace uppercase letters with _<letter>
     return input.replace(/([A-Z])/g, '_$1').toLowerCase();
   }
+
+  static toRawJSONText<T>(object: T): string {
+    return JSON.stringify(object, null, 2);
+  }
 }

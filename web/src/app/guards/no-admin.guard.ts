@@ -10,9 +10,7 @@ export class NoAdminGuard implements CanActivate {
   private readonly _appUser: AppUser = inject(AppUser);
 
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean {
-    console.log('User state:', this._appUser.user);
     if (this._appUser.user && this._appUser.user.isSuperuser) {
-      console.log('Redirecting admin');
       this._router.navigate(['admin/countryManagement']).then(_ => {});
       return false;
     }

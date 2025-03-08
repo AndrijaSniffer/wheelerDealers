@@ -1,0 +1,16 @@
+.main-container {
+  padding: 3vh 20vh 20vh;
+}
+
+.table-list-item {
+  height: auto !important;
+}
+
+.mat-column-id, .mat-column-name, .mat-column-options {
+  width: 33.3% !important;
+  text-align: center !important;
+}
+
+.option-btn {
+  margin-right: 0.5vw;
+}
