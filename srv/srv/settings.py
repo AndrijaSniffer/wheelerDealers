@@ -27,6 +27,8 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'wheelerDealersApi/media')
 LOGO_ROOT = os.path.join(MEDIA_ROOT, 'logos')
 LOGO_URL = 'media/logos/'
 
+APPEND_SLASH = False
+
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.1/howto/deployment/checklist/
 

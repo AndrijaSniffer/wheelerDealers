@@ -28,10 +28,37 @@ import {MatDivider} from '@angular/material/divider';
 import {CountryService} from '../../services/country.service';
 import {Country} from '../../classes/country';
 import {AppUtil} from '../../app.util';
+import {NotificationService} from '../../services/notification.service';
 
 export interface IDialogData<T> {
   object: T,
   isView: boolean
+}
+
+@Component({
+  selector: 'app-yes-no-dialog',
+  templateUrl: 'yes-no.dialog.html',
+  imports: [
+    MatDialogTitle,
+    MatDialogContent,
+    MatDialogActions,
+    MatButton
+  ],
+  styles: ''
+})
+export class YesNoDialogComponent {
+  private readonly _dialogRef = inject(MatDialogRef<YesNoDialogComponent>);
+  private readonly _data = inject<string>(MAT_DIALOG_DATA);
+
+  textToDisplay = '';
+
+  constructor() {
+    this.textToDisplay = this._data;
+  }
+
+  dismiss(value: boolean){
+    this._dialogRef.close(value);
+  }
 }
 
 @Component({
@@ -58,7 +85,7 @@ export class LoginDialog {
 
   form: FormGroup;
 
-  ngOnInit() {
+  constructor() {
     this.form = this._fb.group({
       username: ['', Validators.required],
       password: ['', Validators.required]
@@ -327,10 +354,11 @@ export class SignUpDialog {
   styleUrls: ['country.dialog.css'],
 })
 export class CountryDialog {
-  private readonly _dialogRef = inject(MatDialogRef<LoginDialog>);
+  private readonly _dialogRef = inject(MatDialogRef<CountryDialog>);
   private readonly _fb = inject(FormBuilder);
   private readonly _data = inject<IDialogData<Country> | null>(MAT_DIALOG_DATA);
   private readonly _countryService: CountryService = inject(CountryService);
+  private readonly _notification = inject(NotificationService)
 
   isView: boolean = true;
   isNewOrEdit: boolean = true;
@@ -374,6 +402,7 @@ export class CountryDialog {
           },
           error: (error) => {
             console.error(error);
+            this._notification.showTimedErrorNotification(error.message);
           }
         });
       } else {
@@ -381,7 +410,14 @@ export class CountryDialog {
           const country = this._data.object;
           country.name = this.form.get('name').value;
 
-          this._countryService.update(country);
+          this._countryService.update(country).subscribe({
+            next: (country) => {
+              this.dismiss(country);
+            },
+            error: (error) => {
+              this._notification.showTimedErrorNotification(error.message);
+            }
+          });
         }
       }
     }
