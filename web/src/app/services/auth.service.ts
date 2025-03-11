@@ -1,13 +1,13 @@
 import {inject, Injectable} from '@angular/core';
-import {HttpClient, HttpErrorResponse} from '@angular/common/http';
+import {HttpBackend, HttpClient, HttpErrorResponse} from '@angular/common/http';
 import {AppConstants} from '../app.constants';
 import {NotificationService} from './notification.service';
-import {jwtDecode} from 'jwt-decode';
-import {AppUser} from '../app.user';
+import {AppUser, JWTPair} from '../app.user';
 import {UserService} from './user.service';
 import {Company} from '../classes/company';
 import {User} from '../classes/user';
 import {AppUtil} from '../app.util';
+import {Observable} from 'rxjs';
 
 export interface JWToken {
   refresh: string,
@@ -27,9 +27,14 @@ export interface AccessToken {
 })
 export class AuthService {
   private readonly _http = inject(HttpClient);
+  private readonly _httpBackendClient: HttpClient;
   private readonly _notification = inject(NotificationService);
   private readonly _appUser = inject(AppUser);
   private readonly _userService = inject(UserService);
+
+  constructor(httpBackend: HttpBackend) {
+    this._httpBackendClient = new HttpClient(httpBackend);
+  }
 
   login(username: string, password: string): Promise<boolean> {
     const formData = new FormData();
@@ -44,8 +49,7 @@ export class AuthService {
             let accessToken = response.access
 
             try {
-              // console.warn(jwtDecode(accessToken));
-              let decodedToken = jwtDecode(accessToken) as AccessToken;
+              let decodedToken = AppUtil.decodeJWTAccessToken(accessToken);
               this._appUser.tokens = {refresh: response.refresh, access: response.access};
               this._appUser.tokenExpiration = decodedToken.exp;
               this._appUser.user = JSON.stringify(await this._userService.getUserById(decodedToken.user_id));
@@ -130,5 +134,12 @@ export class AuthService {
         }
       })
     })
+  }
+
+  refreshUserSession(refreshToken: string): Observable<JWTPair> {
+    const formData = new FormData();
+    formData.append('refresh', refreshToken);
+
+    return this._httpBackendClient.post(`${AppConstants.REFRESH_URL}/`, formData) as Observable<JWTPair>;
   }
 }

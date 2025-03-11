@@ -1,4 +1,6 @@
 import {Injectable} from '@angular/core';
+import {jwtDecode} from 'jwt-decode';
+import {AccessToken} from './services/auth.service';
 
 @Injectable({
   providedIn: 'root'
@@ -32,5 +34,9 @@ export class AppUtil {
 
   static toRawJSONText<T>(object: T): string {
     return JSON.stringify(object, null, 2);
+  }
+
+  static decodeJWTAccessToken(accessToken: string): AccessToken {
+    return jwtDecode(accessToken) as AccessToken;
   }
 }

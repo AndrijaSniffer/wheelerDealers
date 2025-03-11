@@ -3,6 +3,7 @@ import {RouterOutlet} from '@angular/router';
 import {NavBarComponent} from './components/nav-bar/nav-bar.component';
 import {FooterComponent} from './components/footer/footer.component';
 import {AppUser, JWTPair} from './app.user';
+import {AppUtil} from './app.util';
 
 @Component({
   selector: 'app-root',
@@ -12,6 +13,7 @@ import {AppUser, JWTPair} from './app.user';
 })
 export class AppComponent {
   private readonly _appUser: AppUser = inject(AppUser);
+
 
   title = 'Wheeler Dealers';
 
@@ -27,6 +29,7 @@ export class AppComponent {
       const tokens: JWTPair = JSON.parse(storedTokens);
       this._appUser.user = storedUser;
       this._appUser.tokens = tokens;
+      this._appUser.tokenExpiration = AppUtil.decodeJWTAccessToken(tokens.access).exp;
       this._appUser.setLoggedIn(true);
     }
   }

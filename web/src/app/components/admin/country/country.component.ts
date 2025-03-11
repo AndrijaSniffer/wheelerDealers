@@ -59,10 +59,9 @@ export class CountryComponent {
   getAllCountries() {
     this._countryService.getAll().subscribe({
       next: data => {
-        console.warn(data);
         this.countries = data;
         this.dataSource = new MatTableDataSource(this.countries);
-        this._notification.showTimedNotification('Countries loaded');
+        // this._notification.showTimedNotification('Countries loaded');
       },
       error: err => {
         console.error(err);

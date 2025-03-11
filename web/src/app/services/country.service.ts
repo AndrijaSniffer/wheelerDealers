@@ -19,14 +19,14 @@ export class CountryService {
   }
 
   create(country: Country): Observable<Country> {
-    return this._http.post<Country>(`${AppConstants.COUNTRY_URL}/`, country);
+    return this._http.post<Country>(`${AppConstants.COUNTRY_URL}`, country);
   }
 
   update(country: Country): Observable<Country> {
-    return this._http.put<Country>(`${AppConstants.COUNTRY_URL}/${country.id}/`, country);
+    return this._http.put<Country>(`${AppConstants.COUNTRY_URL}/${country.id}`, country);
   }
 
   delete(id: number): Observable<any> {
-    return this._http.delete<any>(AppConstants.COUNTRY_URL + `/${id}/`);
+    return this._http.delete<any>(AppConstants.COUNTRY_URL + `/${id}`);
   }
 }

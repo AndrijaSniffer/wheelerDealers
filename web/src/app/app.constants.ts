@@ -9,6 +9,8 @@ export class AppConstants {
 
   static readonly LOGIN_URL = AppConstants.SERVER_URL + 'api/auth/login';
 
+  static readonly REFRESH_URL = AppConstants.SERVER_URL + 'api/token/refresh';
+
   static readonly GET_USER_BY_ID = AppConstants.SERVER_URL + 'api/auth/user';
 
   static readonly REGISTER_USER = AppConstants.SERVER_URL + 'api/auth/create';
