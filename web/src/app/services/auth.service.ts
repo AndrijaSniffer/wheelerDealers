@@ -27,10 +27,10 @@ export interface AccessToken {
 })
 export class AuthService {
   private readonly _http = inject(HttpClient);
-  private readonly _httpBackendClient: HttpClient;
   private readonly _notification = inject(NotificationService);
   private readonly _appUser = inject(AppUser);
   private readonly _userService = inject(UserService);
+  private _httpBackendClient: HttpClient;
 
   constructor(httpBackend: HttpBackend) {
     this._httpBackendClient = new HttpClient(httpBackend);
@@ -122,7 +122,6 @@ export class AuthService {
           resolve(true);
         },
         error: err => {
-          console.error(err);
           console.error(err.error);
           if (err instanceof HttpErrorResponse) {
             if (err.status === 422) {

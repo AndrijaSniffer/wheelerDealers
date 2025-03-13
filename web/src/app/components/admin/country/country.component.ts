@@ -44,7 +44,7 @@ import {NotificationService} from '../../../services/notification.service';
   styleUrl: './country.component.css'
 })
 export class CountryComponent {
-  private readonly _notification = inject(NotificationService)
+  private readonly _notification = inject(NotificationService);
   private readonly _countryService = inject(CountryService);
   private readonly _dialog = inject(MatDialog);
 
@@ -53,10 +53,10 @@ export class CountryComponent {
   private countries: Country[];
 
   constructor() {
-    this.getAllCountries();
+    this.getAll();
   }
 
-  getAllCountries() {
+  getAll() {
     this._countryService.getAll().subscribe({
       next: data => {
         this.countries = data;
@@ -70,19 +70,19 @@ export class CountryComponent {
     });
   }
 
-  newCountry() {
+  new() {
     this._dialog.open(CountryDialog, {
       data: {object: null, isView: false},
     }).afterClosed().subscribe(result => {
       if (result) {
         this._notification.showTimedNotification('New country successfully created!');
-        this.getAllCountries();
+        this.getAll();
       }
     });
   }
 
   view(id: number) {
-    const countrySelected = this.countries.filter(country => country.id === id)[0];
+    const countrySelected = this.countries.find(country => country.id === id);
 
     this._dialog.open(CountryDialog, {
       data: {object: countrySelected, isView: true}
@@ -92,20 +92,20 @@ export class CountryComponent {
   }
 
   edit(id: number) {
-    const countrySelected = this.countries.filter(country => country.id === id)[0];
+    const countrySelected = this.countries.find(country => country.id === id);
 
     this._dialog.open(CountryDialog, {
       data: {object: countrySelected, isView: false},
     }).afterClosed().subscribe(result => {
       if (result) {
         this._notification.showTimedNotification('Country successfully updated!');
-        this.getAllCountries();
+        this.getAll();
       }
     });
   }
 
   delete(id: number) {
-    const countrySelected = this.countries.filter(country => country.id === id)[0];
+    const countrySelected = this.countries.find(country => country.id === id);
 
     this._dialog.open(YesNoDialogComponent, {
       data: `Are you sure you want to delete this country?\n${JSON.stringify(countrySelected)}?`,
@@ -114,7 +114,7 @@ export class CountryComponent {
         this._countryService.delete(id).subscribe({
           next: _ => {
             this._notification.showTimedNotification('Country successfully deleted!');
-            this.getAllCountries();
+            this.getAll();
           },
           error: err => {
             console.error(err);

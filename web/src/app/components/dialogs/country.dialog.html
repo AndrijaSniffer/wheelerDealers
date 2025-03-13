@@ -1,7 +1,7 @@
 <h2 mat-dialog-title>Country</h2>
 <mat-dialog-content>
     <div *ngIf="isView">
-        <h3>Current country as JSON:<br></h3>
+        <h3>Selected country as JSON:<br></h3>
         <pre>{{this.jsonCountryObject}}</pre>
     </div>
 
@@ -9,7 +9,7 @@
         <mat-list class="form-list">
             <mat-list-item>
               <mat-form-field appearance="fill" class="full-width">
-                <mat-label>Username</mat-label>
+                <mat-label>Country name</mat-label>
                 <input matInput type="input" formControlName="name" required/>
                 <mat-error *ngIf="form.get('name')?.hasError('required')">Name is required.</mat-error>
               </mat-form-field>

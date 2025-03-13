@@ -29,6 +29,8 @@ import {CountryService} from '../../services/country.service';
 import {Country} from '../../classes/country';
 import {AppUtil} from '../../app.util';
 import {NotificationService} from '../../services/notification.service';
+import {EngineType} from '../../classes/engine-type';
+import {EngineTypeService} from '../../services/engine-type.service';
 
 export interface IDialogData<T> {
   object: T,
@@ -56,7 +58,7 @@ export class YesNoDialogComponent {
     this.textToDisplay = this._data;
   }
 
-  dismiss(value: boolean){
+  dismiss(value: boolean) {
     this._dialogRef.close(value);
   }
 }
@@ -358,7 +360,7 @@ export class CountryDialog {
   private readonly _fb = inject(FormBuilder);
   private readonly _data = inject<IDialogData<Country> | null>(MAT_DIALOG_DATA);
   private readonly _countryService: CountryService = inject(CountryService);
-  private readonly _notification = inject(NotificationService)
+  private readonly _notification = inject(NotificationService);
 
   isView: boolean = true;
   isNewOrEdit: boolean = true;
@@ -370,12 +372,13 @@ export class CountryDialog {
 
     if (this._data.isView) {
       this.jsonCountryObject = AppUtil.toRawJSONText(this._data.object);
-      console.warn(this.jsonCountryObject);
+
     } else if (this._data && this._data.object) {
       this.isNewOrEdit = false;
       this.form = this._fb.group({
         name: [this._data.object.name, Validators.required],
       });
+
     } else if (this._data && !this._data.object) {
       this.form = this._fb.group({
         name: ['', Validators.required],
@@ -388,7 +391,7 @@ export class CountryDialog {
   }
 
   submit() {
-    if(this.form.valid) {
+    if (this.form.valid) {
       if (this.isNewOrEdit) {
         const newCountry: Country = {
           id: null,
@@ -406,13 +409,106 @@ export class CountryDialog {
           }
         });
       } else {
-        if(this._data.object.id) {
+        if (this._data.object.id) {
           const country = this._data.object;
           country.name = this.form.get('name').value;
 
           this._countryService.update(country).subscribe({
             next: (country) => {
               this.dismiss(country);
+            },
+            error: (error) => {
+              this._notification.showTimedErrorNotification(error.message);
+            }
+          });
+        }
+      }
+    }
+  }
+}
+
+@Component({
+  selector: 'engine-type-dialog',
+  imports: [
+    MatDialogTitle,
+    MatDialogContent,
+    MatDialogActions,
+    MatButton,
+    ReactiveFormsModule,
+    NgIf,
+    MatList,
+    MatListItem,
+    MatFormField,
+    MatInput,
+    MatLabel,
+    MatError
+  ],
+  templateUrl: 'engine-type-dialog.html',
+  styleUrls: ['engine-type-dialog.css'],
+})
+export class EngineTypeDialog {
+  private readonly _dialogRef = inject(MatDialogRef<EngineTypeDialog>);
+  private readonly _fb = inject(FormBuilder);
+  private readonly _data = inject<IDialogData<EngineType> | null>(MAT_DIALOG_DATA);
+  private readonly _engineTypeService: EngineTypeService = inject(EngineTypeService);
+  private readonly _notification = inject(NotificationService);
+
+  isView: boolean = true;
+  isNewOrEdit: boolean = true;
+  jsonCountryObject: string = '';
+  form: FormGroup;
+
+  constructor() {
+    this.isView = this._data.isView;
+
+    if (this._data.isView) {
+      console.warn(this._data.object);
+      this.jsonCountryObject = AppUtil.toRawJSONText(this._data.object);
+      console.warn(this.jsonCountryObject);
+
+    } else if (this._data && this._data.object) {
+      this.isNewOrEdit = false;
+      this.form = this._fb.group({
+        type: [this._data.object.type, Validators.required],
+      });
+
+    } else if (this._data && !this._data.object) {
+      this.form = this._fb.group({
+        type: ['', Validators.required],
+      });
+    }
+  }
+
+  dismiss(value: any) {
+    this._dialogRef.close(value);
+  }
+
+  submit() {
+    if (this.form.valid) {
+      if (this.isNewOrEdit) {
+        const newEngineType: EngineType = {
+          id: null,
+          type: this.form.get('type').value,
+        }
+
+        this._engineTypeService.create(newEngineType).subscribe({
+          next: (engineType) => {
+            console.log(engineType);
+            this.dismiss(engineType);
+          },
+          error: (error) => {
+            console.error(error);
+            this._notification.showTimedErrorNotification(error.message);
+          }
+        });
+      } else {
+        if (this._data.object.id) {
+          const engineType = this._data.object;
+          engineType.type = this.form.get('type').value;
+
+          this._engineTypeService.update(engineType).subscribe({
+            next: (engineType) => {
+              this.dismiss(engineType);
             },
             error: (error) => {
               this._notification.showTimedErrorNotification(error.message);

@@ -6,13 +6,15 @@ import {ContactUsPageComponent} from './components/contact-us-page/contact-us-pa
 import {CountryComponent} from './components/admin/country/country.component';
 import {AdminGuard} from './guards/admin.guard';
 import {NoAdminGuard} from './guards/no-admin.guard';
+import {EngineTypeComponent} from './components/admin/engine-type/engine-type.component';
 
 export const routes: Routes = [
-  { path: '', redirectTo: 'home', pathMatch: 'full' },
-  { path: 'home', component: LandingPageComponent, canActivate: [NoAdminGuard] },
-  { path: 'search', component: SearchPageComponent, canActivate: [NoAdminGuard] },
-  { path: 'contact', component: ContactUsPageComponent, canActivate: [NoAdminGuard] },
-  { path: 'admin/countryManagement', component: CountryComponent, canActivate: [AdminGuard] }
+  {path: '', redirectTo: 'home', pathMatch: 'full'},
+  {path: 'home', component: LandingPageComponent, canActivate: [NoAdminGuard]},
+  {path: 'search', component: SearchPageComponent, canActivate: [NoAdminGuard]},
+  {path: 'contact', component: ContactUsPageComponent, canActivate: [NoAdminGuard]},
+  {path: 'admin/countryManagement', component: CountryComponent, canActivate: [AdminGuard]},
+  {path: 'admin/engineTypeManagement', component: EngineTypeComponent, canActivate: [AdminGuard]},
 ];
 
 @NgModule({
@@ -20,4 +22,5 @@ export const routes: Routes = [
   exports: [RouterModule]
 })
 
-export class AppRoutingModule {}
+export class AppRoutingModule {
+}

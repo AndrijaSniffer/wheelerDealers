@@ -16,7 +16,7 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
     AppConstants.REGISTER_COMPANY,
     AppConstants.REFRESH_URL,
   ];
-  const methodsToAppendSlash = ['POST', 'PUT', 'DELETE'];
+  const shouldAppendSlash = !req.url.includes('auth');
 
   // Skip token logic for excluded URLs
   if (excludedUrls.some(url => req.url === url)) {
@@ -42,7 +42,7 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
         // Clone request with new token
         const authReq = req.clone({
           setHeaders: {Authorization: `Bearer ${jwtTokens.access}`},
-          url: methodsToAppendSlash.includes(req.method) ? `${req.url}/` : req.url
+          url: shouldAppendSlash ? `${req.url}/` : req.url
         });
         return next(authReq);
       }),
@@ -56,7 +56,7 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
     // Clone request with current token
     const authReq = req.clone({
       setHeaders: {Authorization: `Bearer ${token}`},
-      url: methodsToAppendSlash.includes(req.method) ? `${req.url}/` : req.url
+      url: shouldAppendSlash ? `${req.url}/` : req.url
     });
     return next(authReq);
   }

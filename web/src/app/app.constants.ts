@@ -21,4 +21,6 @@ export class AppConstants {
 
   static readonly COUNTRY_URL = AppConstants.SERVER_URL + 'country';
 
+  static readonly ENGINE_TYPE_URL = AppConstants.SERVER_URL + 'engineType';
+
 }

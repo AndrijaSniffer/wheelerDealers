@@ -90,4 +90,8 @@ export class NavBarComponent {
   logout() {
     this._appUser.logout();
   }
+
+  adminNavigate(route: string) {
+    this._router.navigate([`admin/${route}`]).then(() => {});
+  }
 }

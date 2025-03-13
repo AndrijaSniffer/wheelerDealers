@@ -175,7 +175,7 @@ class ManufacturerView(viewsets.ModelViewSet):
 
 
 class EngineTypeView(viewsets.ModelViewSet):
-    queryset = EngineType.objects.all()
+    queryset = EngineType.objects.all().order_by('engine_type')
     serializer_class = EngineTypeSerializer
     permission_classes = [IsAdminOrReadOnly]
 

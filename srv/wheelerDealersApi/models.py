@@ -55,8 +55,12 @@ class Country(models.Model):
 
 class EngineType(models.Model):
     engine_type = models.AutoField(primary_key=True, null=False)
-    type = models.CharField(max_length=255, null=False)
-    engine_emission_class = models.CharField(max_length=255, null=False, default='EURO6')
+    type = models.CharField(max_length=255, null=False, unique=True)
+
+
+class EmissionClass(models.Model):
+    emission_class = models.AutoField(primary_key=True, null=False)
+    class_name = models.CharField(max_length=255, null=False, unique=True)
 
 
 class ModelType(models.Model):
@@ -66,8 +70,11 @@ class ModelType(models.Model):
 
 class Transmission(models.Model):
     transmission = models.AutoField(primary_key=True, null=False)
-    gears = models.IntegerField(null=False)
+    gears = models.IntegerField(null=True)
     type = models.CharField(max_length=255, null=False)
+
+    class Meta:
+        unique_together = ('gears', 'type')
 
 
 class Fuel(models.Model):
@@ -106,6 +113,7 @@ class Manufacturer(models.Model):
 class Engine(models.Model):
     engine = models.AutoField(primary_key=True, null=False)
     engine_type = models.ForeignKey(EngineType, on_delete=models.RESTRICT, null=False)
+    emission_class = models.ForeignKey(EmissionClass, on_delete=models.RESTRICT, null=False)
     engine_code = models.CharField(max_length=255, null=False)
     horsepower = models.IntegerField(null=True)
     kilowatt = models.IntegerField(null=True)
@@ -148,6 +156,5 @@ class CarImage(models.Model):
     image = models.ForeignKey(Image, on_delete=models.RESTRICT, null=False)
     car = models.ForeignKey(Car, on_delete=models.RESTRICT, null=False)
     UniqueConstraint(fields=['image', 'car'], name='carImagePK')
-
 
 # endregion THE END
