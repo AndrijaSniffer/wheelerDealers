@@ -8,11 +8,11 @@
     <button mat-button (click)="adminNavigate('countryManagement')">Country</button>
     <button mat-button (click)="adminNavigate('engineTypeManagement')">Engine type</button>
     <button mat-button (click)="adminNavigate('emissionClassManagement')">Emission class</button>
-    <button mat-button>Model type</button>
-    <button mat-button>Transmission</button>
-    <button mat-button>Fuel</button>
-    <button mat-button>Interior</button>
-    <button mat-button>Drivetrain</button>
+    <button mat-button (click)="adminNavigate('modelTypeManagement')">Model type</button>
+    <button mat-button (click)="adminNavigate('transmissionManagement')">Transmission</button>
+    <button mat-button (click)="adminNavigate('fuelManagement')">Fuel</button>
+    <button mat-button (click)="adminNavigate('interiorManagement')">Interior</button>
+    <button mat-button (click)="adminNavigate('drivetrainManagement')">Drivetrain</button>
   </div>
   <span class="spacer"></span>
   <div *ngIf="!isLoggedIn">

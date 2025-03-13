@@ -72,8 +72,6 @@ export class EmissionClassComponent {
       if (result) {
         this._notification.showTimedNotification('New emission class has been created');
         this.getAll();
-      } else if (result !== undefined) {
-        this._notification.showTimedErrorNotification('Error creating emission class.');
       }
     });
   }
@@ -95,8 +93,6 @@ export class EmissionClassComponent {
       if (result) {
         this._notification.showTimedNotification('Emission class has been updated');
         this.getAll();
-      } else if (result !== undefined) {
-        this._notification.showTimedErrorNotification('Error updating emission class.');
       }
     });
   }

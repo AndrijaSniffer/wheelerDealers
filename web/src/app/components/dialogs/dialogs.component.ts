@@ -33,6 +33,8 @@ import {EngineType} from '../../classes/engine-type';
 import {EngineTypeService} from '../../services/engine-type.service';
 import {EmissionClass} from '../../classes/emission-class';
 import {EmissionClassService} from '../../services/emission-class.service';
+import {ModelType} from '../../classes/model-type';
+import {ModelTypeService} from '../../services/model-type.service';
 
 export interface IDialogData<T> {
   object: T,
@@ -407,7 +409,7 @@ export class CountryDialog {
           },
           error: (error) => {
             console.error(error);
-            this._notification.showTimedErrorNotification(error.message);
+            this._notification.showTimedErrorNotification(AppUtil.parseJsonErrorsToString(error.error));
           }
         });
       } else {
@@ -420,7 +422,7 @@ export class CountryDialog {
               this.dismiss(country);
             },
             error: (error) => {
-              this._notification.showTimedErrorNotification(error.message);
+              this._notification.showTimedErrorNotification(AppUtil.parseJsonErrorsToString(error.error));
             }
           });
         }
@@ -498,7 +500,7 @@ export class EngineTypeDialog {
           },
           error: (error) => {
             console.error(error);
-            this._notification.showTimedErrorNotification(error.message);
+            this._notification.showTimedErrorNotification(AppUtil.parseJsonErrorsToString(error.error));
           }
         });
       } else {
@@ -511,7 +513,7 @@ export class EngineTypeDialog {
               this.dismiss(engineType);
             },
             error: (error) => {
-              this._notification.showTimedErrorNotification(error.message);
+              this._notification.showTimedErrorNotification(AppUtil.parseJsonErrorsToString(error.error));
             }
           });
         }
@@ -589,7 +591,7 @@ export class EmissionClassDialog {
           },
           error: (error) => {
             console.error(error);
-            this._notification.showTimedErrorNotification(error.message);
+            this._notification.showTimedErrorNotification(AppUtil.parseJsonErrorsToString(error.error));
           }
         });
       } else {
@@ -602,7 +604,97 @@ export class EmissionClassDialog {
               this.dismiss(emissionClass);
             },
             error: (error) => {
-              this._notification.showTimedErrorNotification(error.message);
+              this._notification.showTimedErrorNotification(AppUtil.parseJsonErrorsToString(error.error));
+            }
+          });
+        }
+      }
+    }
+  }
+}
+
+@Component({
+  selector: 'model-type-dialog',
+  imports: [
+    MatDialogTitle,
+    MatDialogContent,
+    MatDialogActions,
+    MatButton,
+    ReactiveFormsModule,
+    NgIf,
+    MatList,
+    MatListItem,
+    MatFormField,
+    MatInput,
+    MatLabel,
+    MatError
+  ],
+  templateUrl: 'model-type-dialog.html',
+  styleUrl: 'model-type-dialog.css'
+})
+export class ModelTypeDialog {
+  private readonly _dialogRef = inject(MatDialogRef<ModelTypeDialog>);
+  private readonly _fb = inject(FormBuilder);
+  private readonly _data = inject<IDialogData<ModelType> | null>(MAT_DIALOG_DATA);
+  private readonly _modelTypeService: ModelTypeService = inject(ModelTypeService);
+  private readonly _notification = inject(NotificationService);
+
+  isView: boolean = true;
+  isNewOrEdit: boolean = true;
+  jsonCountryObject: string = '';
+  form: FormGroup;
+
+  constructor() {
+    this.isView = this._data.isView;
+
+    if (this._data.isView) {
+      this.jsonCountryObject = AppUtil.toRawJSONText(this._data.object);
+
+    } else if (this._data && this._data.object) {
+      this.isNewOrEdit = false;
+      this.form = this._fb.group({
+        type: [this._data.object.type, Validators.required],
+      });
+
+    } else if (this._data && !this._data.object) {
+      this.form = this._fb.group({
+        type: ['', Validators.required],
+      });
+    }
+  }
+
+  dismiss(value: any) {
+    this._dialogRef.close(value);
+  }
+
+  submit() {
+    if (this.form.valid) {
+      if (this.isNewOrEdit) {
+        const newModelType: ModelType = {
+          id: null,
+          type: this.form.get('type').value,
+        }
+
+        this._modelTypeService.create(newModelType).subscribe({
+          next: (emissionClass) => {
+            this.dismiss(emissionClass);
+          },
+          error: (error) => {
+            console.error(error);
+            this._notification.showTimedErrorNotification(AppUtil.parseJsonErrorsToString(error.error));
+          }
+        });
+      } else {
+        if (this._data.object.id) {
+          const modelType = this._data.object;
+          modelType.type = this.form.get('type').value;
+
+          this._modelTypeService.update(modelType).subscribe({
+            next: (emissionClass) => {
+              this.dismiss(emissionClass);
+            },
+            error: (error) => {
+              this._notification.showTimedErrorNotification(AppUtil.parseJsonErrorsToString(error.error));
             }
           });
         }

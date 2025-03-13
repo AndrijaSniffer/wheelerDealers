@@ -27,7 +27,7 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
   if (!token) {
     return next(req); // No token available, proceed without Authorization header
   }
-  console.warn(req.method, req.url, req.headers);
+  // console.warn(req.method, req.url, req.headers);
   // Check if token is expired
   if (Date.now() > appUser.tokenExpiration * 1000) {
     return authService.refreshUserSession(appUser.tokens.refresh).pipe(

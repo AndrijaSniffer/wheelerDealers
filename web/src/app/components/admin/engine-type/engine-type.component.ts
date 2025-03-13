@@ -77,8 +77,6 @@ export class EngineTypeComponent {
       if (result) {
         this._notification.showTimedNotification('New engine type successfully created!');
         this.getAll();
-      } else if (result !== undefined) {
-        this._notification.showTimedErrorNotification('Error creating engine type.');
       }
     });
   }
@@ -101,8 +99,6 @@ export class EngineTypeComponent {
       if (result) {
         this._notification.showTimedNotification('Engine type successfully updated!');
         this.getAll();
-      } else if (result !== undefined) {
-        this._notification.showTimedErrorNotification('Error updating engine.');
       }
     });
   }

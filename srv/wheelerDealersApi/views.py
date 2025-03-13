@@ -192,7 +192,7 @@ class EngineView(viewsets.ModelViewSet):
 
 
 class ModelTypeView(viewsets.ModelViewSet):
-    queryset = ModelType.objects.all()
+    queryset = ModelType.objects.all().order_by('model_type')
     serializer_class = ModelTypeSerializer
     permission_classes = [IsAdminOrReadOnly]
 

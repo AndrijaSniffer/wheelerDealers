@@ -25,4 +25,6 @@ export class AppConstants {
 
   static readonly EMISSION_CLASS_URL = AppConstants.SERVER_URL + 'emissionClass';
 
+  static readonly MODEL_TYPE_URL = AppConstants.SERVER_URL + 'modelType';
+
 }
