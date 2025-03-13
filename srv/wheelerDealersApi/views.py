@@ -222,7 +222,7 @@ class DrivetrainView(viewsets.ModelViewSet):
 
 
 class TransmissionView(viewsets.ModelViewSet):
-    queryset = Transmission.objects.all()
+    queryset = Transmission.objects.all().order_by('transmission')
     serializer_class = TransmissionSerializer
     permission_classes = [IsAdminOrReadOnly]
 

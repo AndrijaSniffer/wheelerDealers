@@ -9,6 +9,7 @@ import {NoAdminGuard} from './guards/no-admin.guard';
 import {EngineTypeComponent} from './components/admin/engine-type/engine-type.component';
 import {EmissionClassComponent} from './components/admin/emission-class/emission-class.component';
 import {ModelTypeComponent} from './components/admin/model-type/model-type.component';
+import {TransmissionComponent} from './components/admin/transmission/transmission.component';
 
 export const routes: Routes = [
   {path: '', redirectTo: 'home', pathMatch: 'full'},
@@ -19,6 +20,7 @@ export const routes: Routes = [
   {path: 'admin/engineTypeManagement', component: EngineTypeComponent, canActivate: [AdminGuard]},
   {path: 'admin/emissionClassManagement', component: EmissionClassComponent, canActivate: [AdminGuard]},
   {path: 'admin/modelTypeManagement', component: ModelTypeComponent, canActivate: [AdminGuard]},
+  {path: 'admin/transmissionManagement', component: TransmissionComponent, canActivate: [AdminGuard]},
 ];
 
 @NgModule({

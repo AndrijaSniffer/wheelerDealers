@@ -45,13 +45,14 @@ export class AppUtil {
 
     for (const key in object) {
       if (Object.prototype.hasOwnProperty.call(object, key)) {
-        const value = object[key as keyof T]; // Type assertion to keyof T
-        if (value !== null && value !== undefined) { // Skip null/undefined
-          // Convert value to string or handle Blob/File if needed
+        const value = object[key as keyof T];
+        if (value === null) {
+          formData.append(AppUtil.toSnakeCase(key), ''); // Send empty string for null
+        } else if (value !== undefined) { // Skip undefined
           if (typeof value === 'string' || value instanceof Blob || value instanceof File) {
             formData.append(AppUtil.toSnakeCase(key), value);
           } else {
-            formData.append(AppUtil.toSnakeCase(key), String(value)); // Fallback: coerce to string
+            formData.append(AppUtil.toSnakeCase(key), String(value));
           }
         }
       }

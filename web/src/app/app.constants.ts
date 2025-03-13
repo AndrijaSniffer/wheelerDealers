@@ -27,4 +27,6 @@ export class AppConstants {
 
   static readonly MODEL_TYPE_URL = AppConstants.SERVER_URL + 'modelType';
 
+  static readonly TRANSMISSION_URL = AppConstants.SERVER_URL + 'transmission';
+
 }

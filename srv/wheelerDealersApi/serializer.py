@@ -1,9 +1,8 @@
 from django.contrib.auth.password_validation import validate_password
+from rest_framework import serializers
 
 from srv import settings
 from wheelerDealersApi.models import *
-from rest_framework import serializers
-
 from wheelerDealersApi.models import User
 
 
@@ -127,6 +126,14 @@ class DrivetrainSerializer(serializers.ModelSerializer):
 
 
 class TransmissionSerializer(serializers.ModelSerializer):
+    gears = serializers.IntegerField(allow_null=True, required=False)  # Explicitly nullable
+
+    # Validate so that cannot be same type with null gears
+    def validate(self, data):
+        if Transmission.objects.filter(gears=data.get('gears'), type=data['type']).exists():
+            raise serializers.ValidationError("This gears-type combo already exists.")
+        return data
+
     class Meta:
         model = Transmission
         fields = '__all__'

@@ -35,6 +35,8 @@ import {EmissionClass} from '../../classes/emission-class';
 import {EmissionClassService} from '../../services/emission-class.service';
 import {ModelType} from '../../classes/model-type';
 import {ModelTypeService} from '../../services/model-type.service';
+import {Transmission} from '../../classes/transmission';
+import {TransmissionService} from '../../services/transmission.service';
 
 export interface IDialogData<T> {
   object: T,
@@ -690,6 +692,100 @@ export class ModelTypeDialog {
           modelType.type = this.form.get('type').value;
 
           this._modelTypeService.update(modelType).subscribe({
+            next: (emissionClass) => {
+              this.dismiss(emissionClass);
+            },
+            error: (error) => {
+              this._notification.showTimedErrorNotification(AppUtil.parseJsonErrorsToString(error.error));
+            }
+          });
+        }
+      }
+    }
+  }
+}
+
+@Component({
+  selector: 'transmission-dialog',
+  imports: [
+    MatDialogTitle,
+    MatDialogContent,
+    MatDialogActions,
+    MatButton,
+    ReactiveFormsModule,
+    NgIf,
+    MatList,
+    MatListItem,
+    MatFormField,
+    MatInput,
+    MatLabel,
+    MatError
+  ],
+  templateUrl: 'transmission-dialog.html',
+  styleUrl: 'transmission-dialog.css'
+})
+export class TransmissionDialog {
+  private readonly _dialogRef = inject(MatDialogRef<TransmissionDialog>);
+  private readonly _fb = inject(FormBuilder);
+  private readonly _data = inject<IDialogData<Transmission> | null>(MAT_DIALOG_DATA);
+  private readonly _transmissionService: TransmissionService = inject(TransmissionService);
+  private readonly _notification = inject(NotificationService);
+
+  isView: boolean = true;
+  isNewOrEdit: boolean = true;
+  jsonCountryObject: string = '';
+  form: FormGroup;
+
+  constructor() {
+    this.isView = this._data.isView;
+
+    if (this._data.isView) {
+      this.jsonCountryObject = AppUtil.toRawJSONText(this._data.object);
+
+    } else if (this._data && this._data.object) {
+      this.isNewOrEdit = false;
+      this.form = this._fb.group({
+        type: [this._data.object.type, Validators.required],
+        gears: [this._data.object.gears]
+      });
+
+    } else if (this._data && !this._data.object) {
+      this.form = this._fb.group({
+        type: ['', Validators.required],
+        gears: [0]
+      });
+    }
+  }
+
+  dismiss(value: any) {
+    this._dialogRef.close(value);
+  }
+
+  submit() {
+    if (this.form.valid) {
+      if (this.isNewOrEdit) {
+        const newTransmission: Transmission = {
+          id: null,
+          type: this.form.get('type').value,
+          gears: this.form.get('gears').value === 0 ? null : this.form.get('gears').value,
+        }
+
+        this._transmissionService.create(newTransmission).subscribe({
+          next: (transmission) => {
+            this.dismiss(transmission);
+          },
+          error: (error) => {
+            console.error(error);
+            this._notification.showTimedErrorNotification(AppUtil.parseJsonErrorsToString(error.error));
+          }
+        });
+      } else {
+        if (this._data.object.id) {
+          const transmission = this._data.object;
+          transmission.type = this.form.get('type').value;
+          transmission.gears = this.form.get('gears').value === 0 ? null : this.form.get('gears').value;
+
+          this._transmissionService.update(transmission).subscribe({
             next: (emissionClass) => {
               this.dismiss(emissionClass);
             },
