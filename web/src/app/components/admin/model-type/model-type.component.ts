@@ -109,12 +109,12 @@ export class ModelTypeComponent {
       if (result) {
         this._modelTypeService.delete(id).subscribe({
           next: _ => {
-            this._notification.showTimedNotification('Engine type successfully deleted!');
+            this._notification.showTimedNotification('Model type successfully deleted!');
             this.getAll();
           },
           error: err => {
             console.error(err);
-            this._notification.showTimedErrorNotification('Error deleting emission class.');
+            this._notification.showTimedErrorNotification('Error deleting model type.');
           }
         })
       }

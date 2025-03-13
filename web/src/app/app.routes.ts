@@ -10,6 +10,7 @@ import {EngineTypeComponent} from './components/admin/engine-type/engine-type.co
 import {EmissionClassComponent} from './components/admin/emission-class/emission-class.component';
 import {ModelTypeComponent} from './components/admin/model-type/model-type.component';
 import {TransmissionComponent} from './components/admin/transmission/transmission.component';
+import {FuelComponent} from './components/admin/fuel/fuel.component';
 
 export const routes: Routes = [
   {path: '', redirectTo: 'home', pathMatch: 'full'},
@@ -21,6 +22,7 @@ export const routes: Routes = [
   {path: 'admin/emissionClassManagement', component: EmissionClassComponent, canActivate: [AdminGuard]},
   {path: 'admin/modelTypeManagement', component: ModelTypeComponent, canActivate: [AdminGuard]},
   {path: 'admin/transmissionManagement', component: TransmissionComponent, canActivate: [AdminGuard]},
+  {path: 'admin/fuelManagement', component: FuelComponent, canActivate: [AdminGuard]},
 ];
 
 @NgModule({

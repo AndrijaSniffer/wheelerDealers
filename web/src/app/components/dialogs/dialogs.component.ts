@@ -37,6 +37,8 @@ import {ModelType} from '../../classes/model-type';
 import {ModelTypeService} from '../../services/model-type.service';
 import {Transmission} from '../../classes/transmission';
 import {TransmissionService} from '../../services/transmission.service';
+import {Fuel} from '../../classes/fuel';
+import {FuelService} from '../../services/fuel.service';
 
 export interface IDialogData<T> {
   object: T,
@@ -786,8 +788,98 @@ export class TransmissionDialog {
           transmission.gears = this.form.get('gears').value === 0 ? null : this.form.get('gears').value;
 
           this._transmissionService.update(transmission).subscribe({
-            next: (emissionClass) => {
-              this.dismiss(emissionClass);
+            next: (transmission) => {
+              this.dismiss(transmission);
+            },
+            error: (error) => {
+              this._notification.showTimedErrorNotification(AppUtil.parseJsonErrorsToString(error.error));
+            }
+          });
+        }
+      }
+    }
+  }
+}
+
+@Component({
+  selector: 'fuel-dialog',
+  imports: [
+    MatDialogTitle,
+    MatDialogContent,
+    MatDialogActions,
+    MatButton,
+    ReactiveFormsModule,
+    NgIf,
+    MatList,
+    MatListItem,
+    MatFormField,
+    MatInput,
+    MatLabel,
+    MatError
+  ],
+  templateUrl: 'fuel-dialog.html',
+  styleUrl: 'fuel-dialog.css'
+})
+export class FuelDialog {
+  private readonly _dialogRef = inject(MatDialogRef<FuelDialog>);
+  private readonly _fb = inject(FormBuilder);
+  private readonly _data = inject<IDialogData<Fuel> | null>(MAT_DIALOG_DATA);
+  private readonly _fuelService: FuelService = inject(FuelService);
+  private readonly _notification = inject(NotificationService);
+
+  isView: boolean = true;
+  isNewOrEdit: boolean = true;
+  jsonCountryObject: string = '';
+  form: FormGroup;
+
+  constructor() {
+    this.isView = this._data.isView;
+
+    if (this._data.isView) {
+      this.jsonCountryObject = AppUtil.toRawJSONText(this._data.object);
+
+    } else if (this._data && this._data.object) {
+      this.isNewOrEdit = false;
+      this.form = this._fb.group({
+        type: [this._data.object.type, Validators.required]
+      });
+
+    } else if (this._data && !this._data.object) {
+      this.form = this._fb.group({
+        type: ['', Validators.required]
+      });
+    }
+  }
+
+  dismiss(value: any) {
+    this._dialogRef.close(value);
+  }
+
+  submit() {
+    if (this.form.valid) {
+      if (this.isNewOrEdit) {
+        const newFuel: Fuel = {
+          id: null,
+          type: this.form.get('type').value
+        }
+
+        this._fuelService.create(newFuel).subscribe({
+          next: (fuel) => {
+            this.dismiss(fuel);
+          },
+          error: (error) => {
+            console.error(error);
+            this._notification.showTimedErrorNotification(AppUtil.parseJsonErrorsToString(error.error));
+          }
+        });
+      } else {
+        if (this._data.object.id) {
+          const fuel = this._data.object;
+          fuel.type = this.form.get('type').value;
+
+          this._fuelService.update(fuel).subscribe({
+            next: (fuel) => {
+              this.dismiss(fuel);
             },
             error: (error) => {
               this._notification.showTimedErrorNotification(AppUtil.parseJsonErrorsToString(error.error));

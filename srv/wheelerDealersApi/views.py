@@ -210,7 +210,7 @@ class ModelTypeModelView(viewsets.ModelViewSet):
 
 
 class FuelView(viewsets.ModelViewSet):
-    queryset = Fuel.objects.all()
+    queryset = Fuel.objects.all().order_by('fuel')
     serializer_class = FuelSerializer
     permission_classes = [IsAdminOrReadOnly]
 

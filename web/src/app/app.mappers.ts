@@ -3,6 +3,7 @@ import {EngineType} from './classes/engine-type';
 import {EmissionClass} from './classes/emission-class';
 import {ModelType} from './classes/model-type';
 import {Transmission} from './classes/transmission';
+import {Fuel} from './classes/fuel';
 
 export function mapToCountry(json: any): Country {
   return {
@@ -37,5 +38,12 @@ export function mapToTransmission(json: any): Transmission {
     id: json.transmission,
     type: json.type,
     gears: json.gears
+  }
+}
+
+export function mapToFuel(json: any): Fuel {
+  return {
+    id: json.fuel,
+    type: json.type,
   }
 }

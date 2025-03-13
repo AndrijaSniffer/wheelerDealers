@@ -29,4 +29,6 @@ export class AppConstants {
 
   static readonly TRANSMISSION_URL = AppConstants.SERVER_URL + 'transmission';
 
+  static readonly FUEL_URL = AppConstants.SERVER_URL + 'fuel';
+
 }
