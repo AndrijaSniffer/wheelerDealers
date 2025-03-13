@@ -102,6 +102,12 @@ class EngineTypeSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 
+class EmissionClassSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = EmissionClass
+        fields = '__all__'
+
+
 class ModelTypeSerializer(serializers.ModelSerializer):
     class Meta:
         model = ModelType

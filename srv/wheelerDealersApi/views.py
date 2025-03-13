@@ -163,7 +163,7 @@ class CompanyView(viewsets.ModelViewSet):
 
 
 class CountryView(viewsets.ModelViewSet):
-    queryset = Country.objects.all()
+    queryset = Country.objects.all().order_by('country')
     serializer_class = CountrySerializer
     permission_classes = [IsAdminOrReadOnly]
 
@@ -177,6 +177,11 @@ class ManufacturerView(viewsets.ModelViewSet):
 class EngineTypeView(viewsets.ModelViewSet):
     queryset = EngineType.objects.all().order_by('engine_type')
     serializer_class = EngineTypeSerializer
+    permission_classes = [IsAdminOrReadOnly]
+
+class EmissionClassView(viewsets.ModelViewSet):
+    queryset = EmissionClass.objects.all().order_by('emission_class')
+    serializer_class = EmissionClassSerializer
     permission_classes = [IsAdminOrReadOnly]
 
 
@@ -253,6 +258,7 @@ router.register(r'country', CountryView, 'country')
 router.register(r'drivetrain', DrivetrainView, 'drivetrain')
 router.register(r'manufacturer', ManufacturerView, 'manufacturer')
 router.register(r'engineType', EngineTypeView, 'engineType')
+router.register(r'emissionClass', EmissionClassView, 'emissionClass')
 router.register(r'engine', EngineView, 'engine')
 router.register(r'modelType', ModelTypeView, 'modelType')
 router.register(r'model', ModelView, 'model')

@@ -7,7 +7,7 @@
   <div *ngIf="isSuperuser && isLoggedIn">
     <button mat-button (click)="adminNavigate('countryManagement')">Country</button>
     <button mat-button (click)="adminNavigate('engineTypeManagement')">Engine type</button>
-    <button mat-button>Emission class</button>
+    <button mat-button (click)="adminNavigate('emissionClassManagement')">Emission class</button>
     <button mat-button>Model type</button>
     <button mat-button>Transmission</button>
     <button mat-button>Fuel</button>

@@ -39,4 +39,23 @@ export class AppUtil {
   static decodeJWTAccessToken(accessToken: string): AccessToken {
     return jwtDecode(accessToken) as AccessToken;
   }
+
+  static fromClassToFormData<T>(object: T): FormData {
+    const formData = new FormData();
+
+    for (const key in object) {
+      if (Object.prototype.hasOwnProperty.call(object, key)) {
+        const value = object[key as keyof T]; // Type assertion to keyof T
+        if (value !== null && value !== undefined) { // Skip null/undefined
+          // Convert value to string or handle Blob/File if needed
+          if (typeof value === 'string' || value instanceof Blob || value instanceof File) {
+            formData.append(AppUtil.toSnakeCase(key), value);
+          } else {
+            formData.append(AppUtil.toSnakeCase(key), String(value)); // Fallback: coerce to string
+          }
+        }
+      }
+    }
+    return formData;
+  }
 }

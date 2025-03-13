@@ -31,6 +31,8 @@ import {AppUtil} from '../../app.util';
 import {NotificationService} from '../../services/notification.service';
 import {EngineType} from '../../classes/engine-type';
 import {EngineTypeService} from '../../services/engine-type.service';
+import {EmissionClass} from '../../classes/emission-class';
+import {EmissionClassService} from '../../services/emission-class.service';
 
 export interface IDialogData<T> {
   object: T,
@@ -462,9 +464,7 @@ export class EngineTypeDialog {
     this.isView = this._data.isView;
 
     if (this._data.isView) {
-      console.warn(this._data.object);
       this.jsonCountryObject = AppUtil.toRawJSONText(this._data.object);
-      console.warn(this.jsonCountryObject);
 
     } else if (this._data && this._data.object) {
       this.isNewOrEdit = false;
@@ -509,6 +509,97 @@ export class EngineTypeDialog {
           this._engineTypeService.update(engineType).subscribe({
             next: (engineType) => {
               this.dismiss(engineType);
+            },
+            error: (error) => {
+              this._notification.showTimedErrorNotification(error.message);
+            }
+          });
+        }
+      }
+    }
+  }
+}
+
+@Component({
+  selector: 'emission-class-dialog',
+  imports: [
+    MatDialogTitle,
+    MatDialogContent,
+    MatDialogActions,
+    MatButton,
+    ReactiveFormsModule,
+    NgIf,
+    MatList,
+    MatListItem,
+    MatFormField,
+    MatInput,
+    MatLabel,
+    MatError
+  ],
+  templateUrl: 'emission-class-dialog.html',
+  styleUrl: 'emission-class-dialog.css'
+})
+export class EmissionClassDialog {
+  private readonly _dialogRef = inject(MatDialogRef<EmissionClassDialog>);
+  private readonly _fb = inject(FormBuilder);
+  private readonly _data = inject<IDialogData<EmissionClass> | null>(MAT_DIALOG_DATA);
+  private readonly _emissionClassService: EmissionClassService = inject(EmissionClassService);
+  private readonly _notification = inject(NotificationService);
+
+  isView: boolean = true;
+  isNewOrEdit: boolean = true;
+  jsonCountryObject: string = '';
+  form: FormGroup;
+
+  constructor() {
+    this.isView = this._data.isView;
+
+    if (this._data.isView) {
+      this.jsonCountryObject = AppUtil.toRawJSONText(this._data.object);
+
+    } else if (this._data && this._data.object) {
+      this.isNewOrEdit = false;
+      this.form = this._fb.group({
+        className: [this._data.object.className, Validators.required],
+      });
+
+    } else if (this._data && !this._data.object) {
+      this.form = this._fb.group({
+        className: ['', Validators.required],
+      });
+    }
+  }
+
+  dismiss(value: any) {
+    this._dialogRef.close(value);
+  }
+
+  submit() {
+    if (this.form.valid) {
+      if (this.isNewOrEdit) {
+        const newEmissionClass: EmissionClass = {
+          id: null,
+          className: this.form.get('className').value,
+        }
+
+        this._emissionClassService.create(newEmissionClass).subscribe({
+          next: (emissionClass) => {
+            console.log(emissionClass);
+            this.dismiss(emissionClass);
+          },
+          error: (error) => {
+            console.error(error);
+            this._notification.showTimedErrorNotification(error.message);
+          }
+        });
+      } else {
+        if (this._data.object.id) {
+          const emissionClass = this._data.object;
+          emissionClass.className = this.form.get('className').value;
+
+          this._emissionClassService.update(emissionClass).subscribe({
+            next: (emissionClass) => {
+              this.dismiss(emissionClass);
             },
             error: (error) => {
               this._notification.showTimedErrorNotification(error.message);

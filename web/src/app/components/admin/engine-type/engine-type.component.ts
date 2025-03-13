@@ -111,7 +111,7 @@ export class EngineTypeComponent {
     const engineTypeSelected = this.engineTypes.find(type => type.id === id);
 
     this._dialog.open(YesNoDialogComponent, {
-      data: `Are you sure you want to delete this country?\n${JSON.stringify(engineTypeSelected)}?`,
+      data: `Are you sure you want to delete this engine type?\n${JSON.stringify(engineTypeSelected)}`,
     }).afterClosed().subscribe((result: boolean) => {
       if (result) {
         this._engineTypeService.delete(id).subscribe({
@@ -119,8 +119,8 @@ export class EngineTypeComponent {
             this._notification.showTimedNotification('Engine type successfully deleted!');
             this.getAll();
           },
-          error: err => {
-            console.error(err);
+          error: () => {
+            this._notification.showTimedErrorNotification('Error deleting engine type.');
           }
         })
       }

@@ -7,6 +7,7 @@ import {CountryComponent} from './components/admin/country/country.component';
 import {AdminGuard} from './guards/admin.guard';
 import {NoAdminGuard} from './guards/no-admin.guard';
 import {EngineTypeComponent} from './components/admin/engine-type/engine-type.component';
+import {EmissionClassComponent} from './components/admin/emission-class/emission-class.component';
 
 export const routes: Routes = [
   {path: '', redirectTo: 'home', pathMatch: 'full'},
@@ -15,6 +16,7 @@ export const routes: Routes = [
   {path: 'contact', component: ContactUsPageComponent, canActivate: [NoAdminGuard]},
   {path: 'admin/countryManagement', component: CountryComponent, canActivate: [AdminGuard]},
   {path: 'admin/engineTypeManagement', component: EngineTypeComponent, canActivate: [AdminGuard]},
+  {path: 'admin/emissionClassManagement', component: EmissionClassComponent, canActivate: [AdminGuard]},
 ];
 
 @NgModule({
