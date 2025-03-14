@@ -216,7 +216,7 @@ class FuelView(viewsets.ModelViewSet):
 
 
 class DrivetrainView(viewsets.ModelViewSet):
-    queryset = Drivetrain.objects.all()
+    queryset = Drivetrain.objects.all().order_by('drivetrain')
     serializer_class = DrivetrainSerializer
     permission_classes = [IsAdminOrReadOnly]
 
@@ -228,7 +228,7 @@ class TransmissionView(viewsets.ModelViewSet):
 
 
 class InteriorView(viewsets.ModelViewSet):
-    queryset = Interior.objects.all()
+    queryset = Interior.objects.all().order_by('interior')
     serializer_class = InteriorSerializer
     permission_classes = [IsAdminOrReadOnly]
 

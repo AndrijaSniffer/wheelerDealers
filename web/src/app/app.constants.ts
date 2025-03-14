@@ -31,4 +31,6 @@ export class AppConstants {
 
   static readonly FUEL_URL = AppConstants.SERVER_URL + 'fuel';
 
+  static readonly INTERIOR_URL = AppConstants.SERVER_URL + 'interior';
+
 }

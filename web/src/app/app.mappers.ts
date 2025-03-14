@@ -4,6 +4,7 @@ import {EmissionClass} from './classes/emission-class';
 import {ModelType} from './classes/model-type';
 import {Transmission} from './classes/transmission';
 import {Fuel} from './classes/fuel';
+import {Interior} from './classes/interior';
 
 export function mapToCountry(json: any): Country {
   return {
@@ -45,5 +46,15 @@ export function mapToFuel(json: any): Fuel {
   return {
     id: json.fuel,
     type: json.type,
+  }
+}
+
+export function mapToInterior(json: any): Interior {
+  return {
+    id: json.interior,
+    doors: json.doors,
+    seats: json.seats,
+    color: json.color,
+    steeringWheelLeft: json.steering_wheel_left,
   }
 }

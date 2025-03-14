@@ -39,6 +39,9 @@ import {Transmission} from '../../classes/transmission';
 import {TransmissionService} from '../../services/transmission.service';
 import {Fuel} from '../../classes/fuel';
 import {FuelService} from '../../services/fuel.service';
+import {Interior} from '../../classes/interior';
+import {InteriorService} from '../../services/interior.service';
+import {MatCheckbox} from '@angular/material/checkbox';
 
 export interface IDialogData<T> {
   object: T,
@@ -880,6 +883,109 @@ export class FuelDialog {
           this._fuelService.update(fuel).subscribe({
             next: (fuel) => {
               this.dismiss(fuel);
+            },
+            error: (error) => {
+              this._notification.showTimedErrorNotification(AppUtil.parseJsonErrorsToString(error.error));
+            }
+          });
+        }
+      }
+    }
+  }
+}
+
+@Component({
+  selector: 'interior-dialog',
+  imports: [
+    MatDialogTitle,
+    MatDialogContent,
+    MatDialogActions,
+    MatButton,
+    ReactiveFormsModule,
+    NgIf,
+    MatList,
+    MatListItem,
+    MatFormField,
+    MatInput,
+    MatLabel,
+    MatError,
+    MatCheckbox
+  ],
+  templateUrl: 'interior-dialog.html',
+  styleUrl: 'interior-dialog.css'
+})
+export class InteriorDialog {
+  private readonly _dialogRef = inject(MatDialogRef<InteriorDialog>);
+  private readonly _fb = inject(FormBuilder);
+  private readonly _data = inject<IDialogData<Interior> | null>(MAT_DIALOG_DATA);
+  private readonly _interiorService: InteriorService = inject(InteriorService);
+  private readonly _notification = inject(NotificationService);
+
+  isView: boolean = true;
+  isNewOrEdit: boolean = true;
+  jsonCountryObject: string = '';
+  form: FormGroup;
+
+  constructor() {
+    this.isView = this._data.isView;
+
+    if (this._data.isView) {
+      this.jsonCountryObject = AppUtil.toRawJSONText(this._data.object);
+
+    } else if (this._data && this._data.object) {
+      this.isNewOrEdit = false;
+      this.form = this._fb.group({
+        doors: [this._data.object.doors, Validators.required],
+        seats: [this._data.object.seats, Validators.required],
+        steeringWheelLeft: this._data.object.steeringWheelLeft,
+        color: this._data.object.color,
+      });
+
+    } else if (this._data && !this._data.object) {
+      this.form = this._fb.group({
+        doors: [0, Validators.required],
+        seats: [0, Validators.required],
+        steeringWheelLeft: true,
+        color: '',
+      });
+    }
+  }
+
+  dismiss(value: any) {
+    this._dialogRef.close(value);
+  }
+
+  submit() {
+    if (this.form.valid) {
+      if (this.isNewOrEdit) {
+        const newInterior: Interior = {
+          id: null,
+          doors: this.form.get('doors').value,
+          seats: this.form.get('seats').value,
+          steeringWheelLeft: this.form.get('steeringWheelLeft').value,
+          color: this.form.get('color').value ? this.form.get('color').value : null
+        }
+
+        this._interiorService.create(newInterior).subscribe({
+          next: (interior) => {
+            this.dismiss(interior);
+          },
+          error: (error) => {
+            console.error(error);
+            this._notification.showTimedErrorNotification(AppUtil.parseJsonErrorsToString(error.error));
+          }
+        });
+      } else {
+        if (this._data.object.id) {
+          const interior = this._data.object;
+          interior.doors = this.form.get('doors').value;
+          interior.seats = this.form.get('seats').value;
+          interior.steeringWheelLeft = this.form.get('steeringWheelLeft').value;
+          interior.color = this.form.get('color').value ? this.form.get('color').value : null;
+
+          this._interiorService.update(interior).subscribe({
+            next: (interior) => {
+              this.dismiss(interior);
             },
             error: (error) => {
               this._notification.showTimedErrorNotification(AppUtil.parseJsonErrorsToString(error.error));
