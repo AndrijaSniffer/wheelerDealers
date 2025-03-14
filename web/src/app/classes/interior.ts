@@ -5,7 +5,6 @@ export class Interior {
   steeringWheelLeft: boolean;
   color: string | null;
 
-
   constructor(id: number | null, doors: number, seats: number, steeringWheelLeft: boolean, color: string | null) {
     this.id = id;
     this.doors = doors;

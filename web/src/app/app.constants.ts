@@ -33,4 +33,6 @@ export class AppConstants {
 
   static readonly INTERIOR_URL = AppConstants.SERVER_URL + 'interior';
 
+  static readonly DRIVETRAINS_URL = AppConstants.SERVER_URL + 'drivetrain';
+
 }

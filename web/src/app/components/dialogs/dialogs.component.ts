@@ -42,6 +42,8 @@ import {FuelService} from '../../services/fuel.service';
 import {Interior} from '../../classes/interior';
 import {InteriorService} from '../../services/interior.service';
 import {MatCheckbox} from '@angular/material/checkbox';
+import {Drivetrain} from '../../classes/drivetrain';
+import {DrivetrainService} from '../../services/drivetrain.service';
 
 export interface IDialogData<T> {
   object: T,
@@ -986,6 +988,96 @@ export class InteriorDialog {
           this._interiorService.update(interior).subscribe({
             next: (interior) => {
               this.dismiss(interior);
+            },
+            error: (error) => {
+              this._notification.showTimedErrorNotification(AppUtil.parseJsonErrorsToString(error.error));
+            }
+          });
+        }
+      }
+    }
+  }
+}
+
+@Component({
+  selector: 'drivetrain-dialog',
+  imports: [
+    MatDialogTitle,
+    MatDialogContent,
+    MatDialogActions,
+    MatButton,
+    ReactiveFormsModule,
+    NgIf,
+    MatList,
+    MatListItem,
+    MatFormField,
+    MatInput,
+    MatLabel,
+    MatError
+  ],
+  templateUrl: 'drivetrain-dialog.html',
+  styleUrl: 'drivetrain-dialog.css'
+})
+export class DrivetrainDialog {
+  private readonly _dialogRef = inject(MatDialogRef<DrivetrainDialog>);
+  private readonly _fb = inject(FormBuilder);
+  private readonly _data = inject<IDialogData<Drivetrain> | null>(MAT_DIALOG_DATA);
+  private readonly _drivetrainService: DrivetrainService = inject(DrivetrainService);
+  private readonly _notification = inject(NotificationService);
+
+  isView: boolean = true;
+  isNewOrEdit: boolean = true;
+  jsonCountryObject: string = '';
+  form: FormGroup;
+
+  constructor() {
+    this.isView = this._data.isView;
+
+    if (this._data.isView) {
+      this.jsonCountryObject = AppUtil.toRawJSONText(this._data.object);
+
+    } else if (this._data && this._data.object) {
+      this.isNewOrEdit = false;
+      this.form = this._fb.group({
+        type: [this._data.object.type, Validators.required]
+      });
+
+    } else if (this._data && !this._data.object) {
+      this.form = this._fb.group({
+        type: ['', Validators.required]
+      });
+    }
+  }
+
+  dismiss(value: any) {
+    this._dialogRef.close(value);
+  }
+
+  submit() {
+    if (this.form.valid) {
+      if (this.isNewOrEdit) {
+        const newDrivetrain: Drivetrain = {
+          id: null,
+          type: this.form.get('type').value
+        }
+
+        this._drivetrainService.create(newDrivetrain).subscribe({
+          next: (drivetrain) => {
+            this.dismiss(drivetrain);
+          },
+          error: (error) => {
+            console.error(error);
+            this._notification.showTimedErrorNotification(AppUtil.parseJsonErrorsToString(error.error));
+          }
+        });
+      } else {
+        if (this._data.object.id) {
+          const drivetrain = this._data.object;
+          drivetrain.type = this.form.get('type').value;
+
+          this._drivetrainService.update(drivetrain).subscribe({
+            next: (drivetrain) => {
+              this.dismiss(drivetrain);
             },
             error: (error) => {
               this._notification.showTimedErrorNotification(AppUtil.parseJsonErrorsToString(error.error));

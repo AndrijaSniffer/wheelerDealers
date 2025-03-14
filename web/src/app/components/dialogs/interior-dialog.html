@@ -11,7 +11,7 @@
         <mat-form-field appearance="fill" class="full-width">
           <mat-label>Number of doors</mat-label>
           <input matInput type="number" min="3" max="5" formControlName="doors" required/>
-          <mat-error *ngIf="form.get('className')?.hasError('required')">Number of doors are required.</mat-error>
+          <mat-error *ngIf="form.get('doors')?.hasError('required')">Number of doors are required.</mat-error>
         </mat-form-field>
       </mat-list-item>
 
@@ -19,7 +19,7 @@
         <mat-form-field appearance="fill" class="full-width">
           <mat-label>Number of seats</mat-label>
           <input matInput type="number" min="1" max="20" formControlName="seats" required/>
-          <mat-error *ngIf="form.get('className')?.hasError('required')">Number of seats is required.</mat-error>
+          <mat-error *ngIf="form.get('seats')?.hasError('required')">Number of seats is required.</mat-error>
         </mat-form-field>
       </mat-list-item>
 

@@ -5,6 +5,7 @@ import {ModelType} from './classes/model-type';
 import {Transmission} from './classes/transmission';
 import {Fuel} from './classes/fuel';
 import {Interior} from './classes/interior';
+import {Drivetrain} from './classes/drivetrain';
 
 export function mapToCountry(json: any): Country {
   return {
@@ -56,5 +57,12 @@ export function mapToInterior(json: any): Interior {
     seats: json.seats,
     color: json.color,
     steeringWheelLeft: json.steering_wheel_left,
+  }
+}
+
+export function mapToDrivetrain(json: any): Drivetrain {
+  return {
+    id: json.drivetrain,
+    type: json.type
   }
 }
