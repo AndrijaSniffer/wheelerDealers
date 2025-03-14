@@ -169,7 +169,7 @@ class CountryView(viewsets.ModelViewSet):
 
 
 class ManufacturerView(viewsets.ModelViewSet):
-    queryset = Manufacturer.objects.all()
+    queryset = Manufacturer.objects.all().order_by('manufacturer')
     serializer_class = ManufacturerSerializer
     permission_classes = [IsAdminOrReadOnly]
 

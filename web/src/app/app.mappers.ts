@@ -6,6 +6,7 @@ import {Transmission} from './classes/transmission';
 import {Fuel} from './classes/fuel';
 import {Interior} from './classes/interior';
 import {Drivetrain} from './classes/drivetrain';
+import {Manufacturer} from './classes/manufacturer';
 
 export function mapToCountry(json: any): Country {
   return {
@@ -64,5 +65,13 @@ export function mapToDrivetrain(json: any): Drivetrain {
   return {
     id: json.drivetrain,
     type: json.type
+  }
+}
+
+export function mapToManufacturer(json: any): Manufacturer {
+  return {
+    id: json.manufacturer,
+    name: json.name,
+    country: mapToCountry(json.country)
   }
 }

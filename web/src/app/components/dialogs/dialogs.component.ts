@@ -13,6 +13,7 @@ import {
   AbstractControl,
   FormBuilder,
   FormGroup,
+  FormsModule,
   ReactiveFormsModule,
   ValidationErrors,
   Validators
@@ -44,6 +45,9 @@ import {InteriorService} from '../../services/interior.service';
 import {MatCheckbox} from '@angular/material/checkbox';
 import {Drivetrain} from '../../classes/drivetrain';
 import {DrivetrainService} from '../../services/drivetrain.service';
+import {Manufacturer, ManufacturerDTO} from '../../classes/manufacturer';
+import {ManufacturerService} from '../../services/manufacturer.service';
+import {MatOption, MatSelect} from '@angular/material/select';
 
 export interface IDialogData<T> {
   object: T,
@@ -377,14 +381,14 @@ export class CountryDialog {
 
   isView: boolean = true;
   isNewOrEdit: boolean = true;
-  jsonCountryObject: string = '';
+  jsonCurrentObject: string = '';
   form: FormGroup;
 
   constructor() {
     this.isView = this._data.isView;
 
     if (this._data.isView) {
-      this.jsonCountryObject = AppUtil.toRawJSONText(this._data.object);
+      this.jsonCurrentObject = AppUtil.toRawJSONText(this._data.object);
 
     } else if (this._data && this._data.object) {
       this.isNewOrEdit = false;
@@ -468,14 +472,14 @@ export class EngineTypeDialog {
 
   isView: boolean = true;
   isNewOrEdit: boolean = true;
-  jsonCountryObject: string = '';
+  jsonCurrentObject: string = '';
   form: FormGroup;
 
   constructor() {
     this.isView = this._data.isView;
 
     if (this._data.isView) {
-      this.jsonCountryObject = AppUtil.toRawJSONText(this._data.object);
+      this.jsonCurrentObject = AppUtil.toRawJSONText(this._data.object);
 
     } else if (this._data && this._data.object) {
       this.isNewOrEdit = false;
@@ -559,14 +563,14 @@ export class EmissionClassDialog {
 
   isView: boolean = true;
   isNewOrEdit: boolean = true;
-  jsonCountryObject: string = '';
+  jsonCurrentObject: string = '';
   form: FormGroup;
 
   constructor() {
     this.isView = this._data.isView;
 
     if (this._data.isView) {
-      this.jsonCountryObject = AppUtil.toRawJSONText(this._data.object);
+      this.jsonCurrentObject = AppUtil.toRawJSONText(this._data.object);
 
     } else if (this._data && this._data.object) {
       this.isNewOrEdit = false;
@@ -650,14 +654,14 @@ export class ModelTypeDialog {
 
   isView: boolean = true;
   isNewOrEdit: boolean = true;
-  jsonCountryObject: string = '';
+  jsonCurrentObject: string = '';
   form: FormGroup;
 
   constructor() {
     this.isView = this._data.isView;
 
     if (this._data.isView) {
-      this.jsonCountryObject = AppUtil.toRawJSONText(this._data.object);
+      this.jsonCurrentObject = AppUtil.toRawJSONText(this._data.object);
 
     } else if (this._data && this._data.object) {
       this.isNewOrEdit = false;
@@ -740,14 +744,14 @@ export class TransmissionDialog {
 
   isView: boolean = true;
   isNewOrEdit: boolean = true;
-  jsonCountryObject: string = '';
+  jsonCurrentObject: string = '';
   form: FormGroup;
 
   constructor() {
     this.isView = this._data.isView;
 
     if (this._data.isView) {
-      this.jsonCountryObject = AppUtil.toRawJSONText(this._data.object);
+      this.jsonCurrentObject = AppUtil.toRawJSONText(this._data.object);
 
     } else if (this._data && this._data.object) {
       this.isNewOrEdit = false;
@@ -834,14 +838,14 @@ export class FuelDialog {
 
   isView: boolean = true;
   isNewOrEdit: boolean = true;
-  jsonCountryObject: string = '';
+  jsonCurrentObject: string = '';
   form: FormGroup;
 
   constructor() {
     this.isView = this._data.isView;
 
     if (this._data.isView) {
-      this.jsonCountryObject = AppUtil.toRawJSONText(this._data.object);
+      this.jsonCurrentObject = AppUtil.toRawJSONText(this._data.object);
 
     } else if (this._data && this._data.object) {
       this.isNewOrEdit = false;
@@ -925,14 +929,14 @@ export class InteriorDialog {
 
   isView: boolean = true;
   isNewOrEdit: boolean = true;
-  jsonCountryObject: string = '';
+  jsonCurrentObject: string = '';
   form: FormGroup;
 
   constructor() {
     this.isView = this._data.isView;
 
     if (this._data.isView) {
-      this.jsonCountryObject = AppUtil.toRawJSONText(this._data.object);
+      this.jsonCurrentObject = AppUtil.toRawJSONText(this._data.object);
 
     } else if (this._data && this._data.object) {
       this.isNewOrEdit = false;
@@ -1027,14 +1031,14 @@ export class DrivetrainDialog {
 
   isView: boolean = true;
   isNewOrEdit: boolean = true;
-  jsonCountryObject: string = '';
+  jsonCurrentObject: string = '';
   form: FormGroup;
 
   constructor() {
     this.isView = this._data.isView;
 
     if (this._data.isView) {
-      this.jsonCountryObject = AppUtil.toRawJSONText(this._data.object);
+      this.jsonCurrentObject = AppUtil.toRawJSONText(this._data.object);
 
     } else if (this._data && this._data.object) {
       this.isNewOrEdit = false;
@@ -1085,6 +1089,127 @@ export class DrivetrainDialog {
           });
         }
       }
+    }
+  }
+}
+
+@Component({
+  selector: 'manufacturer-dialog',
+  imports: [
+    MatDialogTitle,
+    MatDialogContent,
+    MatDialogActions,
+    MatButton,
+    ReactiveFormsModule,
+    NgIf,
+    MatList,
+    MatListItem,
+    MatFormField,
+    MatInput,
+    MatLabel,
+    MatError,
+    MatSelect,
+    FormsModule,
+    MatOption
+  ],
+  templateUrl: 'manufacturer-dialog.html',
+  styleUrl: 'manufacturer-dialog.css'
+})
+export class ManufacturerDialog {
+  private readonly _dialogRef = inject(MatDialogRef<ManufacturerDialog>);
+  private readonly _fb = inject(FormBuilder);
+  private readonly _data = inject<IDialogData<Manufacturer> | null>(MAT_DIALOG_DATA);
+  private readonly _manufacturerService: ManufacturerService = inject(ManufacturerService);
+  private readonly _countryService: CountryService = inject(CountryService);
+  private readonly _notification = inject(NotificationService);
+
+  isView: boolean = true;
+  isNewOrEdit: boolean = true;
+  jsonCurrentObject: string = '';
+  countries: Country[] = [];
+  form: FormGroup = this._fb.group({
+    name: ['', Validators.required],
+    country: [null, Validators.required]
+  });
+
+  constructor() {
+    this.isView = this._data?.isView ?? true;
+
+    if (this.isView) {
+      // View mode: Display raw JSON of the object
+      this.jsonCurrentObject = AppUtil.toRawJSONText(this._data?.object);
+      this.form.disable(); // Optionally disable the form in view mode
+    } else {
+      // Edit or New mode: Fetch countries and initialize form accordingly
+      this._countryService.getAll().subscribe({
+        next: (data) => {
+          this.countries = data;
+          if (this._data?.object) {
+            // Editing an existing manufacturer
+            this.isNewOrEdit = false;
+            this.form.patchValue({
+              name: this._data.object.name,
+              country: this._data.object.country.id
+            });
+          } else {
+            // Creating a new manufacturer
+            this.isNewOrEdit = true;
+            // Form is already initialized with defaults
+          }
+        },
+        error: (error) => {
+          console.error('Error fetching countries:', error);
+          this._notification.showTimedErrorNotification('Failed to load countries');
+        }
+      });
+    }
+  }
+
+  dismiss(value: any) {
+    this._dialogRef.close(value);
+  }
+
+  submit() {
+    if (this.form.valid) {
+      if (this.isNewOrEdit) {
+        // Create new manufacturer
+        const newManufacturer: ManufacturerDTO = {
+          id: null,
+          name: this.form.get('name')!.value,
+          country: this.form.get('country')!.value
+        };
+
+        this._manufacturerService.create(newManufacturer).subscribe({
+          next: (manufacturer) => {
+            this.dismiss(manufacturer);
+          },
+          error: (error) => {
+            console.error('Error creating manufacturer:', error);
+            this._notification.showTimedErrorNotification(AppUtil.parseJsonErrorsToString(error.error));
+          }
+        });
+      } else {
+        // Update existing manufacturer
+        if (this._data?.object?.id) {
+          const manufacturer: ManufacturerDTO = {
+            id: this._data.object.id,
+            name: this.form.get('name')!.value,
+            country: this.form.get('country')!.value
+          };
+
+          this._manufacturerService.update(manufacturer).subscribe({
+            next: (manufacturer) => {
+              this.dismiss(manufacturer);
+            },
+            error: (error) => {
+              console.error('Error updating manufacturer:', error);
+              this._notification.showTimedErrorNotification(AppUtil.parseJsonErrorsToString(error.error));
+            }
+          });
+        }
+      }
+    } else {
+      this._notification.showTimedErrorNotification('Please fill out all required fields');
     }
   }
 }

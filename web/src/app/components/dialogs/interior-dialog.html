@@ -2,7 +2,7 @@
 <mat-dialog-content>
   <div *ngIf="isView">
     <h3>Selected interior as JSON:<br></h3>
-    <pre>{{this.jsonCountryObject}}</pre>
+    <pre>{{this.jsonCurrentObject}}</pre>
   </div>
 
   <form *ngIf="!isView" [formGroup]="form">

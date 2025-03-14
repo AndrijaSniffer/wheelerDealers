@@ -35,4 +35,6 @@ export class AppConstants {
 
   static readonly DRIVETRAINS_URL = AppConstants.SERVER_URL + 'drivetrain';
 
+  static readonly MANUFACTURER_URL = AppConstants.SERVER_URL + 'manufacturer';
+
 }
