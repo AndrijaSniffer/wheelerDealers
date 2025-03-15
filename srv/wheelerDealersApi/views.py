@@ -198,13 +198,13 @@ class ModelTypeView(viewsets.ModelViewSet):
 
 
 class ModelView(viewsets.ModelViewSet):
-    queryset = Model.objects.all()
+    queryset = Model.objects.all().order_by('model')
     serializer_class = ModelSerializer
     permission_classes = [IsAdminOrReadOnly]
 
 
 class ModelTypeModelView(viewsets.ModelViewSet):
-    queryset = ModelTypeModel.objects.all()
+    queryset = ModelTypeModel.objects.all().order_by('model_type')
     serializer_class = ModelTypeModelSerializer
     permission_classes = [IsAdminOrReadOnly]
 
@@ -234,19 +234,19 @@ class InteriorView(viewsets.ModelViewSet):
 
 
 class ImageView(viewsets.ModelViewSet):
-    queryset = Image.objects.all()
+    queryset = Image.objects.all().order_by('image')
     serializer_class = ImageSerializer
     permission_classes = [IsAdminOrReadOnly]
 
 
 class CarImageView(viewsets.ModelViewSet):
-    queryset = CarImage.objects.all()
+    queryset = CarImage.objects.all().order_by('car_image')
     serializer_class = CarImageSerializer
     permission_classes = [IsAdminOrReadOnly]
 
 
 class CarView(viewsets.ModelViewSet):
-    queryset = Car.objects.all()
+    queryset = Car.objects.all().order_by('car')
     serializer_class = CarSerializer
     permission_classes = [IsAdminOrReadOnly]
 

@@ -50,6 +50,8 @@ import {ManufacturerService} from '../../services/manufacturer.service';
 import {MatOption, MatSelect} from '@angular/material/select';
 import {Engine, EngineDTO} from '../../classes/engine';
 import {EngineService} from '../../services/engine.service';
+import {Model, ModelDTO} from '../../classes/model';
+import {ModelService} from '../../services/model.service';
 
 export interface IDialogData<T> {
   object: T,
@@ -271,11 +273,9 @@ export class SignUpDialog {
         this.selectedFile = file;
         this.formCompany.patchValue({logo: file.name});
       } else {
-        console.warn(!this.isValidFile && this.selectedFile);
         this.isValidFile = false; // Mark as invalid
         this.selectedFile = null; // Reset selected file
         this.formCompany.patchValue({logo: ''}); // Clear the form control
-        console.warn(!this.isValidFile && this.selectedFile);
       }
     }
   }
@@ -1280,7 +1280,6 @@ export class EngineDialog {
 
               if (this._data?.object) {
                 // Editing an existing engine
-                console.warn(this._data.object);
                 this.isNewOrEdit = false;
                 this.form.patchValue({
                   engineType: this._data.object.engineType.id,
@@ -1356,6 +1355,149 @@ export class EngineDialog {
             },
             error: (error) => {
               console.error('Error updating engine:', error);
+              this._notification.showTimedErrorNotification(AppUtil.parseJsonErrorsToString(error.error));
+            }
+          });
+        }
+      }
+    } else {
+      this._notification.showTimedErrorNotification('Please fill out all required fields');
+    }
+  }
+}
+
+@Component({
+  selector: 'model-dialog',
+  imports: [
+    MatDialogTitle,
+    MatDialogContent,
+    MatDialogActions,
+    MatButton,
+    ReactiveFormsModule,
+    NgIf,
+    MatList,
+    MatListItem,
+    MatFormField,
+    MatInput,
+    MatLabel,
+    MatError,
+    MatSelect,
+    FormsModule,
+    MatOption
+  ],
+  templateUrl: 'model-dialog.html',
+  styleUrl: 'model-dialog.css'
+})
+export class ModelDialog {
+  private readonly _dialogRef = inject(MatDialogRef<ModelDialog>);
+  private readonly _fb = inject(FormBuilder);
+  private readonly _data = inject<IDialogData<Model> | null>(MAT_DIALOG_DATA);
+  private readonly _modelService: ModelService = inject(ModelService);
+  private readonly _engineService: EngineService = inject(EngineService);
+  private readonly _manufacturerService: ManufacturerService = inject(ManufacturerService);
+  private readonly _notification = inject(NotificationService);
+
+  isView: boolean = true;
+  isNewOrEdit: boolean = true;
+  jsonCurrentObject: string = '';
+  engines: Engine[] = [];
+  manufacturers: Manufacturer[] = [];
+  currentYear = new Date().getFullYear();
+
+  form: FormGroup = this._fb.group({
+    name: ['', Validators.required],
+    yearOfManufacture: [1930, Validators.required],
+    manufacture: [null, Validators.required],
+    engine: [null, Validators.required]
+  });
+
+  constructor() {
+    this.isView = this._data?.isView ?? true;
+
+    if (this.isView) {
+      // View mode: Display raw JSON of the object
+      this.jsonCurrentObject = AppUtil.toRawJSONText(this._data?.object);
+      this.form.disable(); // Optionally disable the form in view mode
+    } else {
+      // Edit or New mode: Fetch countries and initialize form accordingly
+      this._engineService.getAll().subscribe({
+        next: (data) => {
+          this.engines = data;
+          this._manufacturerService.getAll().subscribe({
+            next: (data) => {
+              this.manufacturers = data;
+
+              if (this._data?.object) {
+                // Editing an existing engine
+                this.isNewOrEdit = false;
+                this.form.patchValue({
+                  name: this._data.object.name,
+                  yearOfManufacture: this._data.object.yearOfManufacture,
+                  manufacture: this._data.object.manufacturer.id,
+                  engine: this._data.object.engine.id
+                });
+              } else {
+                // Creating a new manufacturer
+                this.isNewOrEdit = true;
+                // Form is already initialized with defaults
+              }
+            },
+            error: (error) => {
+              console.error('Error fetching manufacturers:', error);
+              this._notification.showTimedErrorNotification('Failed to load manufacturers');
+            }
+          });
+        },
+        error: (error) => {
+          console.error('Error fetching engine:', error);
+          this._notification.showTimedErrorNotification('Failed to load engine');
+        }
+      });
+    }
+  }
+
+  dismiss(value: any) {
+    this._dialogRef.close(value);
+  }
+
+  submit() {
+    if (this.form.valid) {
+      if (this.isNewOrEdit) {
+        // Create new manufacturer
+        const newModel: ModelDTO = {
+          id: null,
+          name: this.form.get('name').value,
+          yearOfManufacture: this.form.get('yearOfManufacture').value,
+          engine: this.form.get('engine').value,
+          manufacturer: this.form.get('manufacture').value
+        };
+
+        this._modelService.create(newModel).subscribe({
+          next: (model) => {
+            this.dismiss(model);
+          },
+          error: (error) => {
+            console.error('Error creating model:', error);
+            this._notification.showTimedErrorNotification(AppUtil.parseJsonErrorsToString(error.error));
+          }
+        });
+      } else {
+        // Update existing manufacturer
+        if (this._data?.object?.id) {
+          const model: ModelDTO = {
+            id: this._data.object.id,
+            name: this.form.get('name').value,
+            yearOfManufacture: this.form.get('yearOfManufacture').value,
+            engine: this.form.get('engine').value,
+            manufacturer: this.form.get('manufacture').value
+          };
+
+          this._modelService.update(model).subscribe({
+            next: (model) => {
+              this.dismiss(model);
+            },
+            error: (error) => {
+              console.error('Error updating model:', error);
               this._notification.showTimedErrorNotification(AppUtil.parseJsonErrorsToString(error.error));
             }
           });

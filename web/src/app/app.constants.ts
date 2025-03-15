@@ -39,4 +39,6 @@ export class AppConstants {
 
   static readonly ENGINE_URL = AppConstants.SERVER_URL + 'engine';
 
+  static readonly MODEL_URL = AppConstants.SERVER_URL + 'model';
+
 }

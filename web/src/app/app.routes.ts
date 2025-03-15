@@ -15,6 +15,7 @@ import {InteriorComponent} from './components/admin/interior/interior.component'
 import {DrivetrainComponent} from './components/admin/drivetrain/drivetrain.component';
 import {ManufacturerComponent} from './components/admin/manufacturer/manufacturer.component';
 import {EngineComponent} from './components/admin/engine/engine.component';
+import {ModelComponent} from './components/admin/model/model.component';
 
 export const routes: Routes = [
   {path: '', redirectTo: 'home', pathMatch: 'full'},
@@ -31,6 +32,7 @@ export const routes: Routes = [
   {path: 'admin/drivetrainManagement', component: DrivetrainComponent, canActivate: [AdminGuard]},
   {path: 'admin/manufacturerManagement', component: ManufacturerComponent, canActivate: [AdminGuard]},
   {path: 'admin/engineManagement', component: EngineComponent, canActivate: [AdminGuard]},
+  {path: 'admin/modelManagement', component: ModelComponent, canActivate: [AdminGuard]},
 ];
 
 @NgModule({

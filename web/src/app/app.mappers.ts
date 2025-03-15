@@ -8,6 +8,7 @@ import {Interior} from './classes/interior';
 import {Drivetrain} from './classes/drivetrain';
 import {Manufacturer} from './classes/manufacturer';
 import {Engine} from './classes/engine';
+import {Model} from './classes/model';
 
 export function mapToCountry(json: any): Country {
   return {
@@ -86,5 +87,15 @@ export function mapToEngine(json: any): Engine {
     horsepower: json.horsepower,
     kilowatt: json.kilowatt,
     volume: json.volume,
+  }
+}
+
+export function mapToModel(json: any): Model {
+  return {
+    id: json.model,
+    name: json.name,
+    yearOfManufacture: json.year_of_manufacture,
+    manufacturer: mapToManufacturer(json.manufacturer),
+    engine: mapToEngine(json.engine),
   }
 }
