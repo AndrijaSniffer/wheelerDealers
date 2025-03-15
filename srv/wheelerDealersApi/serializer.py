@@ -156,6 +156,7 @@ class EngineSerializer(serializers.ModelSerializer):
         # Customize how engine_type is displayed
         ret = super().to_representation(instance)
         ret['engine_type'] = EngineTypeSerializer(instance.engine_type).data
+        ret['emission_class'] = EmissionClassSerializer(instance.emission_class).data
         return ret
 
 

@@ -114,7 +114,7 @@ class Engine(models.Model):
     engine = models.AutoField(primary_key=True, null=False)
     engine_type = models.ForeignKey(EngineType, on_delete=models.RESTRICT, null=False)
     emission_class = models.ForeignKey(EmissionClass, on_delete=models.RESTRICT, null=False)
-    engine_code = models.CharField(max_length=255, null=False)
+    engine_code = models.CharField(max_length=255, null=False, unique=True)
     horsepower = models.IntegerField(null=True)
     kilowatt = models.IntegerField(null=True)
     volume = models.IntegerField(null=False)

@@ -157,7 +157,7 @@ def normalSearch(request):
 
 
 class CompanyView(viewsets.ModelViewSet):
-    queryset = Company.objects.all()
+    queryset = Company.objects.all().order_by('PIB')
     serializer_class = CompanySerializer
     permission_classes = [IsAdminOrReadOnly]
 
@@ -186,7 +186,7 @@ class EmissionClassView(viewsets.ModelViewSet):
 
 
 class EngineView(viewsets.ModelViewSet):
-    queryset = Engine.objects.all()
+    queryset = Engine.objects.all().order_by('engine')
     serializer_class = EngineSerializer
     permission_classes = [IsAdminOrReadOnly]
 

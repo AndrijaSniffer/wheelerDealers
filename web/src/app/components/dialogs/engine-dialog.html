@@ -1,0 +1,68 @@
+<h2 mat-dialog-title>Engine</h2>
+<mat-dialog-content>
+  <div *ngIf="isView">
+    <h3>Selected engine as JSON:<br></h3>
+    <pre>{{this.jsonCurrentObject}}</pre>
+  </div>
+
+  <form *ngIf="!isView" [formGroup]="form">
+    <mat-list class="form-list">
+      <mat-list-item>
+        <mat-form-field>
+          <mat-label>Engine type</mat-label>
+          <mat-select formControlName="engineType">
+            @for (engineType of engineTypes; track engineType) {
+              <mat-option [value]="engineType.id">{{engineType.type}}</mat-option>
+            }
+          </mat-select>
+        </mat-form-field>
+      </mat-list-item>
+
+      <mat-list-item>
+        <mat-form-field>
+          <mat-label>Manufacturers country</mat-label>
+          <mat-select formControlName="emissionClass">
+            @for (emissionClass of emissionClasses; track emissionClass) {
+              <mat-option [value]="emissionClass.id">{{emissionClass.className}}</mat-option>
+            }
+          </mat-select>
+        </mat-form-field>
+      </mat-list-item>
+
+      <mat-list-item>
+        <mat-form-field appearance="fill" class="full-width">
+          <mat-label>Code</mat-label>
+          <input matInput type="input" formControlName="engineCode" required/>
+          <mat-error *ngIf="form.get('engineCode')?.hasError('required')">Engine code is required.</mat-error>
+        </mat-form-field>
+      </mat-list-item>
+
+      <mat-list-item>
+        <mat-form-field appearance="fill" class="full-width">
+          <mat-label>Horsepower</mat-label>
+          <input matInput type="number" min="40" max="2300" formControlName="horsepower"/>
+        </mat-form-field>
+      </mat-list-item>
+
+      <mat-list-item>
+        <mat-form-field appearance="fill" class="full-width">
+          <mat-label>Kilowatt</mat-label>
+          <input matInput type="number" min="30" max="1715" formControlName="kilowatt"/>
+        </mat-form-field>
+      </mat-list-item>
+
+      <mat-list-item>
+        <mat-form-field appearance="fill" class="full-width">
+          <mat-label>Volume</mat-label>
+          <input matInput type="number" min="600" max="8400" formControlName="volume" required/>
+          <mat-error *ngIf="form.get('volume')?.hasError('required')">Volume is required.</mat-error>
+        </mat-form-field>
+      </mat-list-item>
+    </mat-list>
+  </form>
+</mat-dialog-content>
+<mat-dialog-actions>
+  <button (click)="dismiss(null)" *ngIf="!isView" mat-button>Cancel</button>
+  <button (click)="submit()" [disabled]="!form.valid" *ngIf="!isView" cdkFocusInitial mat-button>{{isNewOrEdit ? 'Create' : 'Edit'}}</button>
+  <button (click)="dismiss(null)" *ngIf="isView" cdkFocusInitial mat-button>Ok</button>
+</mat-dialog-actions>

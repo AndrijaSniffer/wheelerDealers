@@ -48,6 +48,8 @@ import {DrivetrainService} from '../../services/drivetrain.service';
 import {Manufacturer, ManufacturerDTO} from '../../classes/manufacturer';
 import {ManufacturerService} from '../../services/manufacturer.service';
 import {MatOption, MatSelect} from '@angular/material/select';
+import {Engine, EngineDTO} from '../../classes/engine';
+import {EngineService} from '../../services/engine.service';
 
 export interface IDialogData<T> {
   object: T,
@@ -1203,6 +1205,157 @@ export class ManufacturerDialog {
             },
             error: (error) => {
               console.error('Error updating manufacturer:', error);
+              this._notification.showTimedErrorNotification(AppUtil.parseJsonErrorsToString(error.error));
+            }
+          });
+        }
+      }
+    } else {
+      this._notification.showTimedErrorNotification('Please fill out all required fields');
+    }
+  }
+}
+
+@Component({
+  selector: 'engine-dialog',
+  imports: [
+    MatDialogTitle,
+    MatDialogContent,
+    MatDialogActions,
+    MatButton,
+    ReactiveFormsModule,
+    NgIf,
+    MatList,
+    MatListItem,
+    MatFormField,
+    MatInput,
+    MatLabel,
+    MatError,
+    MatSelect,
+    FormsModule,
+    MatOption
+  ],
+  templateUrl: 'engine-dialog.html',
+  styleUrl: 'engine-dialog.css'
+})
+export class EngineDialog {
+  private readonly _dialogRef = inject(MatDialogRef<EngineDialog>);
+  private readonly _fb = inject(FormBuilder);
+  private readonly _data = inject<IDialogData<Engine> | null>(MAT_DIALOG_DATA);
+  private readonly _engineService: EngineService = inject(EngineService);
+  private readonly _engineTypeService: EngineTypeService = inject(EngineTypeService);
+  private readonly _emissionClassService: EmissionClassService = inject(EmissionClassService);
+  private readonly _notification = inject(NotificationService);
+
+  isView: boolean = true;
+  isNewOrEdit: boolean = true;
+  jsonCurrentObject: string = '';
+  engineTypes: EngineType[] = [];
+  emissionClasses: EmissionClass[] = [];
+
+  form: FormGroup = this._fb.group({
+    engineType: [null, Validators.required],
+    emissionClass: [null, Validators.required],
+    engineCode: ['', Validators.required],
+    horsepower: [null],
+    kilowatt: [null],
+    volume: [600, Validators.required]
+  });
+
+  constructor() {
+    this.isView = this._data?.isView ?? true;
+
+    if (this.isView) {
+      // View mode: Display raw JSON of the object
+      this.jsonCurrentObject = AppUtil.toRawJSONText(this._data?.object);
+      this.form.disable(); // Optionally disable the form in view mode
+    } else {
+      // Edit or New mode: Fetch countries and initialize form accordingly
+      this._engineTypeService.getAll().subscribe({
+        next: (data) => {
+          this.engineTypes = data;
+          this._emissionClassService.getAll().subscribe({
+            next: (data) => {
+              this.emissionClasses = data;
+
+              if (this._data?.object) {
+                // Editing an existing engine
+                console.warn(this._data.object);
+                this.isNewOrEdit = false;
+                this.form.patchValue({
+                  engineType: this._data.object.engineType.id,
+                  emissionClass: this._data.object.emissionClass.id,
+                  engineCode: this._data.object.engineCode,
+                  horsepower: this._data.object.horsepower,
+                  kilowatt: this._data.object.kilowatt,
+                  volume: this._data.object.volume
+                });
+              } else {
+                // Creating a new manufacturer
+                this.isNewOrEdit = true;
+                // Form is already initialized with defaults
+              }
+            },
+            error: (error) => {
+              console.error('Error fetching emission classes:', error);
+              this._notification.showTimedErrorNotification('Failed to load emission classes');
+            }
+          });
+        },
+        error: (error) => {
+          console.error('Error fetching engine types:', error);
+          this._notification.showTimedErrorNotification('Failed to load engine types');
+        }
+      });
+    }
+  }
+
+  dismiss(value: any) {
+    this._dialogRef.close(value);
+  }
+
+  submit() {
+    if (this.form.valid) {
+      if (this.isNewOrEdit) {
+        // Create new manufacturer
+        const newEngine: EngineDTO = {
+          id: null,
+          engineType: this.form.get('engineType')!.value,
+          emissionClass: this.form.get('emissionClass')!.value,
+          engineCode: this.form.get('engineCode')!.value,
+          horsepower: this.form.get('horsepower')!.value !== 0 ? this.form.get('horsepower')!.value : null,
+          kilowatt: this.form.get('kilowatt')!.value !== 0 ? this.form.get('kilowatt')!.value : null,
+          volume: this.form.get('volume')!.value,
+        };
+
+        this._engineService.create(newEngine).subscribe({
+          next: (engine) => {
+            this.dismiss(engine);
+          },
+          error: (error) => {
+            console.error('Error creating engine:', error);
+            this._notification.showTimedErrorNotification(AppUtil.parseJsonErrorsToString(error.error));
+          }
+        });
+      } else {
+        // Update existing manufacturer
+        if (this._data?.object?.id) {
+          const engine: EngineDTO = {
+            id: this._data.object.id,
+            engineType: this.form.get('engineType')!.value,
+            emissionClass: this.form.get('emissionClass')!.value,
+            engineCode: this.form.get('engineCode')!.value,
+            horsepower: this.form.get('horsepower')!.value !== 0 ? this.form.get('horsepower')!.value : null,
+            kilowatt: this.form.get('kilowatt')!.value !== 0 ? this.form.get('kilowatt')!.value : null,
+            volume: this.form.get('volume')!.value,
+          };
+
+          this._engineService.update(engine).subscribe({
+            next: (manufacturer) => {
+              this.dismiss(manufacturer);
+            },
+            error: (error) => {
+              console.error('Error updating engine:', error);
               this._notification.showTimedErrorNotification(AppUtil.parseJsonErrorsToString(error.error));
             }
           });
