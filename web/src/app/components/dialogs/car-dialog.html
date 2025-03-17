@@ -1,0 +1,12 @@
+<h2 mat-dialog-title>Car</h2>
+<mat-dialog-content>
+  <div *ngIf="isView">
+    <h3>Selected car as JSON:<br></h3>
+    <pre>{{this.jsonCurrentObject}}</pre>
+  </div>
+</mat-dialog-content>
+<mat-dialog-actions>
+<!--  <button (click)="dismiss(null)" *ngIf="!isView" mat-button>Cancel</button>-->
+<!--  <button (click)="submit()" [disabled]="!form.valid" *ngIf="!isView" cdkFocusInitial mat-button>{{isNewOrEdit ? 'Create' : 'Edit'}}</button>-->
+  <button (click)="dismiss(null)" *ngIf="isView" cdkFocusInitial mat-button>Ok</button>
+</mat-dialog-actions>

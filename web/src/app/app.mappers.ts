@@ -9,6 +9,57 @@ import {Drivetrain} from './classes/drivetrain';
 import {Manufacturer} from './classes/manufacturer';
 import {Engine} from './classes/engine';
 import {Model} from './classes/model';
+import {Car} from './classes/car';
+import {Company} from './classes/company';
+import {User} from './classes/user';
+
+export function mapToCompany(json: any): Company {
+  return {
+    PIB: json.PIB,
+    address: json.address,
+    phone: json.phone,
+    logoUrl: json.logo_url,
+    websiteUrl: json.website_url
+  }
+}
+
+export function mapToUser(json: any): User {
+  // Handle string input by parsing it; otherwise, use as-is
+  const parsed = typeof json === 'string' ? JSON.parse(json) : json;
+
+  // Normalize company using mapToCompany
+  const companyJson = parsed.company; // Adjust this key if it's different (e.g., 'Company')
+  const company: Company | null = companyJson ? mapToCompany(companyJson) : null;
+
+  // Normalize fields with fallback for both naming conventions
+  const id = parsed.id ?? parsed.user_id;
+  const lastLogin = parsed.lastLogin ?? parsed.last_login;
+  const isSuperuser = parsed.isSuperuser ?? parsed.is_superuser;
+  const username = parsed.username ?? parsed.user_name;
+  const email = parsed.email;
+  const isStaff = parsed.isStaff ?? parsed.is_staff;
+  const isActive = parsed.isActive ?? parsed.is_active;
+  const dateJoined = parsed.dateJoined ?? parsed.date_joined;
+  const phone = parsed.phone ?? parsed.user_phone;
+  const address = parsed.address ?? parsed.user_address;
+  const isReseller = parsed.isReseller ?? parsed.is_reseller;
+
+  // Return a new User instance
+  return new User(
+    id,
+    company,
+    lastLogin,
+    isSuperuser,
+    username,
+    email,
+    isStaff,
+    isActive,
+    dateJoined,
+    phone,
+    address,
+    isReseller
+  );
+}
 
 export function mapToCountry(json: any): Country {
   return {
@@ -97,5 +148,21 @@ export function mapToModel(json: any): Model {
     yearOfManufacture: json.year_of_manufacture,
     manufacturer: mapToManufacturer(json.manufacturer),
     engine: mapToEngine(json.engine),
+  }
+}
+
+export function mapToCar(json: any): Car {
+  return {
+    id: json.car,
+    user: mapToUser(json.user),
+    model: mapToModel(json.model),
+    transmission: mapToTransmission(json.transmission),
+    fuel: mapToFuel(json.fuel),
+    interior: mapToInterior(json.interior),
+    price: json.price,
+    chassisNumber: json.chassis_number,
+    color: json.color,
+    isPreowned: json.is_preowned,
+    createdAt: json.created_at,
   }
 }

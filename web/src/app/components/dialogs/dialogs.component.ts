@@ -52,6 +52,7 @@ import {Engine, EngineDTO} from '../../classes/engine';
 import {EngineService} from '../../services/engine.service';
 import {Model, ModelDTO} from '../../classes/model';
 import {ModelService} from '../../services/model.service';
+import {Car} from '../../classes/car';
 
 export interface IDialogData<T> {
   object: T,
@@ -1507,4 +1508,111 @@ export class ModelDialog {
       this._notification.showTimedErrorNotification('Please fill out all required fields');
     }
   }
+}
+
+@Component({
+  selector: 'car-dialog',
+  imports: [
+    MatDialogTitle,
+    MatDialogContent,
+    MatDialogActions,
+    MatButton,
+    ReactiveFormsModule,
+    NgIf,
+    FormsModule
+  ],
+  templateUrl: 'car-dialog.html',
+  styleUrl: 'car-dialog.css'
+})
+export class CarDialog {
+  private readonly _dialogRef = inject(MatDialogRef<CarDialog>);
+  // private readonly _fb = inject(FormBuilder);
+  private readonly _data = inject<IDialogData<Car> | null>(MAT_DIALOG_DATA);
+  // private readonly _carService: CarService = inject(CarService);
+  // private readonly _authService: AuthService = inject(AuthService);
+  // private readonly _modelService: ModelService = inject(ModelService);
+  // private readonly _transmissionService: TransmissionService = inject(TransmissionService);
+  // private readonly _fuelService: FuelService = inject(FuelService);
+  // private readonly _interiorService: InteriorService = inject(InteriorService);
+  // private readonly _notification = inject(NotificationService);
+
+  isView: boolean = true;
+  isNewOrEdit: boolean = true;
+  jsonCurrentObject: string = '';
+  // engineTypes: EngineType[] = [];
+  // emissionClasses: EmissionClass[] = [];
+
+  // form: FormGroup = this._fb.group({
+  //   engineType: [null, Validators.required],
+  //   emissionClass: [null, Validators.required],
+  //   engineCode: ['', Validators.required],
+  //   horsepower: [null],
+  //   kilowatt: [null],
+  //   volume: [600, Validators.required]
+  // });
+
+  constructor() {
+    this.isView = this._data?.isView ?? true;
+
+    if (this.isView) {
+      // View mode: Display raw JSON of the object
+      this.jsonCurrentObject = AppUtil.toRawJSONText(this._data?.object);
+    }
+  }
+
+  dismiss(value: any) {
+    this._dialogRef.close(value);
+  }
+
+  // submit() {
+  //   if (this.form.valid) {
+  //     if (this.isNewOrEdit) {
+  //       // Create new manufacturer
+  //       const newEngine: EngineDTO = {
+  //         id: null,
+  //         engineType: this.form.get('engineType')!.value,
+  //         emissionClass: this.form.get('emissionClass')!.value,
+  //         engineCode: this.form.get('engineCode')!.value,
+  //         horsepower: this.form.get('horsepower')!.value !== 0 ? this.form.get('horsepower')!.value : null,
+  //         kilowatt: this.form.get('kilowatt')!.value !== 0 ? this.form.get('kilowatt')!.value : null,
+  //         volume: this.form.get('volume')!.value,
+  //       };
+  //
+  //       this._engineService.create(newEngine).subscribe({
+  //         next: (engine) => {
+  //           this.dismiss(engine);
+  //         },
+  //         error: (error) => {
+  //           console.error('Error creating engine:', error);
+  //           this._notification.showTimedErrorNotification(AppUtil.parseJsonErrorsToString(error.error));
+  //         }
+  //       });
+  //     } else {
+  //       // Update existing manufacturer
+  //       if (this._data?.object?.id) {
+  //         const engine: EngineDTO = {
+  //           id: this._data.object.id,
+  //           engineType: this.form.get('engineType')!.value,
+  //           emissionClass: this.form.get('emissionClass')!.value,
+  //           engineCode: this.form.get('engineCode')!.value,
+  //           horsepower: this.form.get('horsepower')!.value !== 0 ? this.form.get('horsepower')!.value : null,
+  //           kilowatt: this.form.get('kilowatt')!.value !== 0 ? this.form.get('kilowatt')!.value : null,
+  //           volume: this.form.get('volume')!.value,
+  //         };
+  //
+  //         this._engineService.update(engine).subscribe({
+  //           next: (manufacturer) => {
+  //             this.dismiss(manufacturer);
+  //           },
+  //           error: (error) => {
+  //             console.error('Error updating engine:', error);
+  //             this._notification.showTimedErrorNotification(AppUtil.parseJsonErrorsToString(error.error));
+  //           }
+  //         });
+  //       }
+  //     }
+  //   } else {
+  //     this._notification.showTimedErrorNotification('Please fill out all required fields');
+  //   }
+  // }
 }

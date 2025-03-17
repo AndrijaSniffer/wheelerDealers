@@ -1,0 +1,17 @@
+.main-container {
+  padding: 3vh 5vh 5vh;
+}
+
+.table-list-item {
+  height: auto !important;
+}
+
+.mat-column-id, .mat-column-user, .mat-column-model, .mat-column-transmission, .mat-column-fuel, .mat-column-interior,
+.mat-column-price, .mat-column-color, .mat-column-chassisNumber, .mat-column-isPreowned, .mat-column-createdAt,.mat-column-options {
+  width: 8.3% !important;
+  text-align: center !important;
+}
+
+.option-btn {
+  margin-right: 0.5vw;
+}

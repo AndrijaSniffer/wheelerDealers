@@ -1,8 +1,8 @@
 import {inject, Injectable} from '@angular/core';
 import {User} from './classes/user';
 import {Observable, Subject} from 'rxjs';
-import {UserFactory} from './factories/user.factory';
 import {Router} from '@angular/router';
+import {mapToUser} from './app.mappers';
 
 export interface JWTPair {
   refresh: string;
@@ -38,7 +38,7 @@ export class AppUser {
    * @param user It can be either JSON (string) or a User object from the session storage
    */
   set user(user: string | User) {
-    this._user = typeof user === 'string' ? UserFactory.create(user) : user instanceof User ? user : null;
+    this._user = typeof user === 'string' ? mapToUser(user) : user instanceof User ? user : null;
   }
 
   get tokenExpiration(): number {

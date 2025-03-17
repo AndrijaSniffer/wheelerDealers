@@ -240,7 +240,7 @@ class ImageView(viewsets.ModelViewSet):
 
 
 class CarImageView(viewsets.ModelViewSet):
-    queryset = CarImage.objects.all().order_by('car_image')
+    queryset = CarImage.objects.all().order_by('image')
     serializer_class = CarImageSerializer
     permission_classes = [IsAdminOrReadOnly]
 
