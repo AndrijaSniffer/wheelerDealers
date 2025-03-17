@@ -12,8 +12,9 @@ urlpatterns = [
     path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
     path('api/token/verify/', TokenVerifyView.as_view(), name='token_verify'),
     path('api/auth/create', views.createAccount, name='create_user'),
-    path('api/auth/user', views.getAllUsers, name='get_all_users'),
-    path('api/auth/user/<int:id>', views.getAllUsers, name='get_all_users'),
+    path('api/auth/users', views.getAllUsers, name='get_all_users'),
+    path('api/auth/user/<int:userID>', views.getUserById, name='get_user_by_id'),
+    path('api/auth/user/ban', views.banUserById, name='ban_user_by_id'),
     path('api/company', views.createCompany, name='create_company'),
     path('search/normal', views.normalSearch, name='normalSearch')
 ]

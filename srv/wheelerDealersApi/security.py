@@ -46,7 +46,7 @@ class IsUserSelf(BasePermission):
             raise PermissionDenied('Invalid or expired token.')
 
         # Compare with the requested ID
-        requested_id = view.kwargs.get('id')  # Extract ID from the URL
+        requested_id = view.kwargs.get('userID')  # Extract ID from the URL
         if requested_id and int(requested_id) == token_user_id:
             return True
 
