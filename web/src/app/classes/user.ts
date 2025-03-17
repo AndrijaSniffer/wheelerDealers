@@ -31,3 +31,19 @@ export class User {
     this.isReseller = isReseller;
   }
 }
+
+export interface UserDTO {
+  id: number | null;
+  PIB: number | null;
+  lastLogin: Date;
+  isSuperuser: boolean;
+  username: string;
+  password: string;
+  email: string;
+  isStaff: boolean;
+  isActive: boolean;
+  dateJoined: Date;
+  phone: string;
+  address: string;
+  isReseller: boolean;
+}

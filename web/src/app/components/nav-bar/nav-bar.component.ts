@@ -80,7 +80,7 @@ export class NavBarComponent {
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
         this._router.navigate(['/']).then(() => {
-          this._notification.showTimedNotification("Registered successfully!<br>You may log in now");
+          this._notification.showTimedNotification(`Registered successfully!\nYou may log in now`);
           this.openLoginDialog();
         });
       }

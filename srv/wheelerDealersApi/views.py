@@ -87,10 +87,25 @@ def getAllUsers(request):
 
 @api_view(['GET'])
 @permission_classes([IsUserSelf | permissions.IsAdminUser])
-def getAllUsers(request, id: int):
-    user = User.objects.get(pk=id)  # Fetch user by id
+def getUserById(request, userID: int):
+    user = User.objects.get(pk=userID)  # Fetch user by id
     serializer = UserSerializer(user, many=False)  # Serialize the queryset
     return Response(status=status.HTTP_200_OK, data=serializer.data)
+
+
+@api_view(['PUT'])
+@permission_classes([IsUserSelf | permissions.IsAdminUser])
+def banUserById(request):
+    try:
+        userID = request.data.get('id')
+        user = User.objects.get(pk=userID)  # Fetch user by id
+        user.is_active = False  # Set is_active to False
+        user.save()  # Save the change to the database
+        return Response({"success": True}, status=status.HTTP_200_OK)
+    except User.DoesNotExist:
+        return Response({"success": False}, status=status.HTTP_404_NOT_FOUND)
+    except Exception:
+        return Response({"success": False}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 
 @api_view(['GET'])
@@ -178,6 +193,7 @@ class EngineTypeView(viewsets.ModelViewSet):
     queryset = EngineType.objects.all().order_by('engine_type')
     serializer_class = EngineTypeSerializer
     permission_classes = [IsAdminOrReadOnly]
+
 
 class EmissionClassView(viewsets.ModelViewSet):
     queryset = EmissionClass.objects.all().order_by('emission_class')

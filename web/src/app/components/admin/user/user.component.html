@@ -1,0 +1,75 @@
+<div class="main-container">
+  <mat-list>
+    <!--    <mat-list-item>-->
+    <!--      <button (click)="new()" mat-button>-->
+    <!--        <mat-icon>add</mat-icon>-->
+    <!--        Add new-->
+    <!--      </button>-->
+    <!--    </mat-list-item>-->
+    <mat-list-item class="table-list-item">
+      <table [dataSource]="dataSource" mat-table>
+        <ng-container matColumnDef="id">
+          <th *matHeaderCellDef mat-header-cell> ID</th>
+          <td *matCellDef="let user" mat-cell> {{ user.id }}</td>
+        </ng-container>
+        <ng-container matColumnDef="username">
+          <th *matHeaderCellDef mat-header-cell> Username</th>
+          <td *matCellDef="let user" mat-cell> {{ user.username }}</td>
+        </ng-container>
+        <ng-container matColumnDef="PIB">
+          <th *matHeaderCellDef mat-header-cell> Company ID</th>
+          <td *matCellDef="let user" mat-cell> {{ user.PIB ? user.PIB.id : 'N/A' }}</td>
+        </ng-container>
+        <ng-container matColumnDef="email">
+          <th *matHeaderCellDef mat-header-cell> Email</th>
+          <td *matCellDef="let user" mat-cell> {{ user.email }}</td>
+        </ng-container>
+        <ng-container matColumnDef="isSuperuser">
+          <th *matHeaderCellDef mat-header-cell> Is admin</th>
+          <td *matCellDef="let user" mat-cell> {{ user.isSuperuser ? 'Yes' : 'No' }}</td>
+        </ng-container>
+        <ng-container matColumnDef="isActive">
+          <th *matHeaderCellDef mat-header-cell> Is currently active</th>
+          <td *matCellDef="let user" mat-cell> {{ user.isActive ? 'Yes' : 'No' }}</td>
+        </ng-container>
+        <ng-container matColumnDef="isReseller">
+          <th *matHeaderCellDef mat-header-cell> Is the user a reseller or a firm</th>
+          <td *matCellDef="let user" mat-cell> {{ user.isReseller ? 'Yes' : 'No' }}</td>
+        </ng-container>
+        <ng-container matColumnDef="phone">
+          <th *matHeaderCellDef mat-header-cell> Phone number</th>
+          <td *matCellDef="let user" mat-cell> {{ user.phone ? user.phone : 'N/A' }}</td>
+        </ng-container>
+        <ng-container matColumnDef="address">
+          <th *matHeaderCellDef mat-header-cell> User address</th>
+          <td *matCellDef="let user" mat-cell> {{ user.address ? user.address : 'N/A' }}</td>
+        </ng-container>
+        <ng-container matColumnDef="dateJoined">
+          <th *matHeaderCellDef mat-header-cell> Date joined</th>
+          <td *matCellDef="let user" mat-cell> {{ user.dateJoined | date:'dd/MM/yyyy HH:mm:ss' }}</td>
+        </ng-container>
+        <ng-container matColumnDef="lastLogin">
+          <th *matHeaderCellDef mat-header-cell> Last known login</th>
+          <td *matCellDef="let user" mat-cell> {{ user.lastLogin | date:'dd/MM/yyyy HH:mm:ss' }}</td>
+        </ng-container>
+        <ng-container matColumnDef="options">
+          <th *matHeaderCellDef mat-header-cell> Options</th>
+          <td *matCellDef="let user" mat-cell>
+            <!--            <button (click)="view(user.id)" class="option-btn" mat-mini-fab>-->
+            <!--              <mat-icon>visibility</mat-icon>-->
+            <!--            </button>-->
+            <!--            <button (click)="edit(user.id)" class="option-btn" mat-mini-fab>-->
+            <!--              <mat-icon>edit</mat-icon>-->
+            <!--            </button>-->
+            <button (click)="ban(user.id)" [disabled]="user.isSuperuser || !user.isActive" class="option-btn"
+                    mat-mini-fab>
+              <mat-icon>cancel</mat-icon>
+            </button>
+          </td>
+        </ng-container>
+        <tr *matHeaderRowDef="displayedColumns" mat-header-row></tr>
+        <tr *matRowDef="let row; columns: displayedColumns;" mat-row></tr>
+      </table>
+    </mat-list-item>
+  </mat-list>
+</div>

@@ -1,0 +1,14 @@
+.main-container {
+  padding: 3vh 20vh 20vh;
+}
+
+.table-list-item {
+  height: auto !important;
+}
+
+.mat-column-id, .mat-column-username, .mat-column-PIB, .mat-column-email, .mat-column-isSuperuser, .mat-column-isActive,
+.mat-column-isReseller, .mat-column-phone, .mat-column-address, .mat-column-dateJoined, .mat-column-lastLogin,
+.mat-column-options {
+  width: 8.3% !important;
+  text-align: center !important;
+}

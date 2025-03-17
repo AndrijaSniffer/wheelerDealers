@@ -5,18 +5,19 @@
   <button mat-button (click)="goToContact()">Contact us</button>
   </div>
   <div *ngIf="isSuperuser && isLoggedIn">
-    <button mat-button (click)="adminNavigate('countryManagement')">Country</button>
-    <button mat-button (click)="adminNavigate('engineTypeManagement')">Engine type</button>
-    <button mat-button (click)="adminNavigate('emissionClassManagement')">Emission class</button>
-    <button mat-button (click)="adminNavigate('modelTypeManagement')">Model type</button>
-    <button mat-button (click)="adminNavigate('transmissionManagement')">Transmission</button>
-    <button mat-button (click)="adminNavigate('fuelManagement')">Fuel</button>
-    <button mat-button (click)="adminNavigate('interiorManagement')">Interior</button>
-    <button mat-button (click)="adminNavigate('drivetrainManagement')">Drivetrain</button>
-    <button mat-button (click)="adminNavigate('manufacturerManagement')">Manufacturer</button>
-    <button mat-button (click)="adminNavigate('engineManagement')">Engine</button>
-    <button mat-button (click)="adminNavigate('modelManagement')">Model</button>
-    <button mat-button (click)="adminNavigate('carManagement')">Car</button>
+    <button mat-button (click)="adminNavigate('countryManagement')">Countries</button>
+    <button mat-button (click)="adminNavigate('engineTypeManagement')">Engine types</button>
+    <button mat-button (click)="adminNavigate('emissionClassManagement')">Emission classes</button>
+    <button mat-button (click)="adminNavigate('modelTypeManagement')">Model types</button>
+    <button mat-button (click)="adminNavigate('transmissionManagement')">Transmissions</button>
+    <button mat-button (click)="adminNavigate('fuelManagement')">Fuels</button>
+    <button mat-button (click)="adminNavigate('interiorManagement')">Interiors</button>
+    <button mat-button (click)="adminNavigate('drivetrainManagement')">Drivetrains</button>
+    <button mat-button (click)="adminNavigate('manufacturerManagement')">Manufacturers</button>
+    <button mat-button (click)="adminNavigate('engineManagement')">Engines</button>
+    <button mat-button (click)="adminNavigate('modelManagement')">Models</button>
+    <button mat-button (click)="adminNavigate('carManagement')">Cars</button>
+    <button mat-button (click)="adminNavigate('userManagement')">Users</button>
   </div>
   <span class="spacer"></span>
   <div *ngIf="!isLoggedIn">
