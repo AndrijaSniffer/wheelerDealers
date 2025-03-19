@@ -19,7 +19,8 @@ import {NotificationService} from '../../../services/notification.service';
 import {EngineTypeService} from '../../../services/engine-type.service';
 import {MatDialog} from '@angular/material/dialog';
 import {EngineType} from '../../../classes/engine-type';
-import {EngineTypeDialog, YesNoDialogComponent} from '../../dialogs/dialogs.component';
+import {YesNoDialogComponent} from '../../dialogs/dialogs.component';
+import {EngineTypeDialog} from '../../dialogs/engine-type/engine-type-dialog';
 
 @Component({
   selector: 'app-engine-type',

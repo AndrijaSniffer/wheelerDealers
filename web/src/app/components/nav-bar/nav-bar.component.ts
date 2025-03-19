@@ -3,11 +3,12 @@ import {MatToolbar} from '@angular/material/toolbar';
 import {MatButton} from '@angular/material/button';
 import {Router} from '@angular/router';
 import {MatDialog} from '@angular/material/dialog';
-import {LoginDialog, SignUpDialog} from '../dialogs/dialogs.component';
 import {NotificationService} from '../../services/notification.service';
 import {AppUser} from '../../app.user';
 import {NgIf} from '@angular/common';
 import {AuthService} from '../../services/auth.service';
+import {LoginDialog} from '../dialogs/login/login-dialog';
+import {SignUpDialog} from '../dialogs/sign-up/sign-up-dialog';
 
 @Component({
   selector: 'app-nav-bar',

@@ -16,7 +16,8 @@ import {MatDialog} from '@angular/material/dialog';
 import {AppUtil} from '../../../app.util';
 import {TransmissionService} from '../../../services/transmission.service';
 import {Transmission} from '../../../classes/transmission';
-import {TransmissionDialog, YesNoDialogComponent} from '../../dialogs/dialogs.component';
+import {YesNoDialogComponent} from '../../dialogs/dialogs.component';
+import {TransmissionDialog} from '../../dialogs/transmission/transmission-dialog';
 
 @Component({
   selector: 'app-transmission',

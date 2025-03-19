@@ -15,7 +15,8 @@ import {NotificationService} from '../../../services/notification.service';
 import {MatDialog} from '@angular/material/dialog';
 import {EmissionClassService} from '../../../services/emission-class.service';
 import {EmissionClass} from '../../../classes/emission-class';
-import {EmissionClassDialog, YesNoDialogComponent} from '../../dialogs/dialogs.component';
+import {YesNoDialogComponent} from '../../dialogs/dialogs.component';
+import {EmissionClassDialog} from '../../dialogs/emission-class/emission-class-dialog';
 
 @Component({
   selector: 'app-emission-class',

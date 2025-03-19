@@ -14,9 +14,10 @@ import {MatList, MatListItem} from '@angular/material/list';
 import {NotificationService} from '../../../services/notification.service';
 import {MatDialog} from '@angular/material/dialog';
 import {AppUtil} from '../../../app.util';
-import {DrivetrainDialog, YesNoDialogComponent} from '../../dialogs/dialogs.component';
+import {YesNoDialogComponent} from '../../dialogs/dialogs.component';
 import {DrivetrainService} from '../../../services/drivetrain.service';
 import {Drivetrain} from '../../../classes/drivetrain';
+import {DrivetrainDialog} from '../../dialogs/drivetrain/drivetrain-dialog';
 
 @Component({
   selector: 'app-drivetrain',

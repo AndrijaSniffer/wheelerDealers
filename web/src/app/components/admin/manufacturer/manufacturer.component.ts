@@ -16,7 +16,8 @@ import {MatDialog} from '@angular/material/dialog';
 import {AppUtil} from '../../../app.util';
 import {ManufacturerService} from '../../../services/manufacturer.service';
 import {Manufacturer} from '../../../classes/manufacturer';
-import {ManufacturerDialog, YesNoDialogComponent} from '../../dialogs/dialogs.component';
+import {YesNoDialogComponent} from '../../dialogs/dialogs.component';
+import {ManufacturerDialog} from '../../dialogs/manufacturer/manufacturer-dialog';
 
 @Component({
   selector: 'app-manufacturer',

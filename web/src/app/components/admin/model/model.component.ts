@@ -14,9 +14,10 @@ import {MatList, MatListItem} from '@angular/material/list';
 import {NotificationService} from '../../../services/notification.service';
 import {MatDialog} from '@angular/material/dialog';
 import {AppUtil} from '../../../app.util';
-import {ModelDialog, YesNoDialogComponent} from '../../dialogs/dialogs.component';
+import {YesNoDialogComponent} from '../../dialogs/dialogs.component';
 import {ModelService} from '../../../services/model.service';
 import {Model} from '../../../classes/model';
+import {ModelDialog} from '../../dialogs/model/model-dialog';
 
 @Component({
   selector: 'app-model',

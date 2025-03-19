@@ -16,7 +16,8 @@ import {MatDialog} from '@angular/material/dialog';
 import {ModelTypeService} from '../../../services/model-type.service';
 import {ModelType} from '../../../classes/model-type';
 import {AppUtil} from '../../../app.util';
-import {ModelTypeDialog, YesNoDialogComponent} from '../../dialogs/dialogs.component';
+import {YesNoDialogComponent} from '../../dialogs/dialogs.component';
+import {ModelTypeDialog} from '../../dialogs/model-type/model-type-dialog';
 
 @Component({
   selector: 'app-model-type',

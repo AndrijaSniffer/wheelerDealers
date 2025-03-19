@@ -18,8 +18,9 @@ import {Country} from '../../../classes/country';
 import {CountryService} from '../../../services/country.service';
 import {MatIcon} from '@angular/material/icon';
 import {MatDialog} from '@angular/material/dialog';
-import {CountryDialog, YesNoDialogComponent} from '../../dialogs/dialogs.component';
+import {YesNoDialogComponent} from '../../dialogs/dialogs.component';
 import {NotificationService} from '../../../services/notification.service';
+import {CountryDialog} from '../../dialogs/country/country-dialog';
 
 @Component({
   selector: 'app-country',

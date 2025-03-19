@@ -14,9 +14,10 @@ import {MatList, MatListItem} from '@angular/material/list';
 import {NotificationService} from '../../../services/notification.service';
 import {MatDialog} from '@angular/material/dialog';
 import {AppUtil} from '../../../app.util';
-import {InteriorDialog, YesNoDialogComponent} from '../../dialogs/dialogs.component';
+import {YesNoDialogComponent} from '../../dialogs/dialogs.component';
 import {InteriorService} from '../../../services/interior.service';
 import {Interior} from '../../../classes/interior';
+import {InteriorDialog} from '../../dialogs/interior/interior-dialog';
 
 @Component({
   selector: 'app-interior',
