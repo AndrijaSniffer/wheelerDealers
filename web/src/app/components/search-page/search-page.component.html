@@ -1,1 +1,241 @@
-<p>search-page works!</p>
+<div class="container-fluid text-center">
+  <h1>Search</h1>
+  <div class="row">
+    <div class="col">
+      <div class="container-sm text-center">
+        <form [formGroup]="searchForm">
+          <div class="row">
+            <div class="col"></div>
+            <div class="col-3">
+              <mat-form-field>
+                <mat-label>Manufacturer</mat-label>
+                <mat-select formControlName="manufacturer">
+                  @for (manufacturer of manufacturers; track manufacturer) {
+                    <mat-option [value]="manufacturer.id">{{ manufacturer.name }}</mat-option>
+                  }
+                </mat-select>
+              </mat-form-field>
+            </div>
+            <div class="col-3">
+              <mat-form-field>
+                <mat-label>Model</mat-label>
+                <mat-select formControlName="model">
+                  @for (model of models; track model) {
+                    <mat-option [value]="model.id">{{ model.name }}</mat-option>
+                  }
+                </mat-select>
+              </mat-form-field>
+            </div>
+            <div class="col-3">
+              <mat-form-field appearance="fill" class="full-width">
+                <mat-label>Price to</mat-label>
+                <input formControlName="priceTo" matInput type="number"/>
+              </mat-form-field>
+            </div>
+            <div class="col"></div>
+          </div>
+          <div class="row">
+            <div class="col"></div>
+            <div class="col-9">
+              <div class="accordion" id="accordionAdvanced">
+                <div class="accordion-item">
+                  <h2 class="accordion-header">
+                    <button aria-controls="collapseAdvanced" aria-expanded="false" class="accordion-button collapsed"
+                            data-bs-target="#collapseAdvanced" data-bs-toggle="collapse" type="button">
+                      Advanced search
+                    </button>
+                  </h2>
+                </div>
+                <div class="accordion-collapse collapse" data-bs-parent="#accordionAdvanced" id="collapseAdvanced">
+                  <div class="accordion-body">
+                    <div class="row">
+                      <div class="col">
+                        <mat-form-field appearance="fill" class="full-width">
+                          <mat-label>Price from</mat-label>
+                          <input formControlName="priceFrom" matInput type="number"/>
+                        </mat-form-field>
+                      </div>
+                      <div class="col">
+                        <mat-form-field>
+                          <mat-label>Transmission</mat-label>
+                          <mat-select formControlName="transmission">
+                            @for (transmission of transmissions; track transmission) {
+                              <mat-option [value]="transmission.id">{{ transmission.type }}</mat-option>
+                            }
+                          </mat-select>
+                        </mat-form-field>
+                      </div>
+                      <div class="col">
+                        <mat-form-field>
+                          <mat-label>Fuel</mat-label>
+                          <mat-select formControlName="fuel">
+                            @for (fuel of fuel; track fuel) {
+                              <mat-option [value]="fuel.id">{{ fuel.type }}</mat-option>
+                            }
+                          </mat-select>
+                        </mat-form-field>
+                      </div>
+                    </div>
+
+                    <div class="row">
+                      <div class="col">
+                        <mat-form-field appearance="fill" class="full-width">
+                          <mat-label>Engine volume</mat-label>
+                          <input formControlName="volume" matInput type="number"/>
+                        </mat-form-field>
+                      </div>
+                      <div class="col">
+                        <mat-form-field appearance="fill" class="full-width">
+                          <mat-label>Horsepower from</mat-label>
+                          <input formControlName="horsepowerFrom" matInput type="number"/>
+                        </mat-form-field>
+                      </div>
+                      <div class="col">
+                        <mat-form-field appearance="fill" class="full-width">
+                          <mat-label>Horsepower to</mat-label>
+                          <input formControlName="horsepowerTo" matInput type="number"/>
+                        </mat-form-field>
+                      </div>
+                    </div>
+
+                    <div class="row">
+                      <div class="col">
+                        <mat-form-field appearance="fill" class="full-width">
+                          <mat-label>Kilowatt from</mat-label>
+                          <input formControlName="kilowattFrom" matInput type="number"/>
+                        </mat-form-field>
+                      </div>
+                      <div class="col">
+                        <mat-form-field appearance="fill" class="full-width">
+                          <mat-label>Kilowatt to</mat-label>
+                          <input formControlName="kilowattTo" matInput type="number"/>
+                        </mat-form-field>
+                      </div>
+                      <div class="col">
+                        <mat-form-field>
+                          <mat-label>Car color</mat-label>
+                          <mat-select formControlName="carColor">
+                            @for (carColor of carColors; track carColors) {
+                              <mat-option [value]="carColor">{{ carColor }}</mat-option>
+                            }
+                          </mat-select>
+                        </mat-form-field>
+                      </div>
+                    </div>
+
+                    <div class="row">
+                      <div class="col-6">
+                        <p>
+                          <mat-checkbox formControlName="isPreowned">Is the car preowned?</mat-checkbox>
+                        </p>
+                      </div>
+                      <div class="col-6">
+                        <p>
+                          <mat-checkbox formControlName="steeringWheelLeft">Is the steering wheel on the left side?
+                          </mat-checkbox>
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col"></div>
+          </div>
+        </form>
+        <div class="row search-button-row">
+          <div class="col"></div>
+          <div class="col-9 text-end">
+            <button mat-stroked-button>Search
+              <mat-icon>search</mat-icon>
+            </button>
+          </div>
+          <div class="col"></div>
+        </div>
+      </div>
+      <mat-divider></mat-divider>
+      <div class="row text-center">
+        <div class="col">
+          <div class="card mx-auto" style="width: 16vw;">
+            <img alt="Picture of a car" class="card-img-top" height="390" ngSrc="/No-Image-Placeholder.png" width="481">
+            <div class="card-body">
+              <h5 class="card-title">{{ mockupCar.model.manufacturer.name }} {{ mockupCar.model.name }}
+                : {{ mockupCar.model.yearOfManufacture }}</h5>
+                <ul class="list-group list-group-flush">
+                  <li class="list-group-item">Horsepower: {{mockupCar.model.engine.horsepower}} HP</li>
+                  <li class="list-group-item">Fuel type: {{mockupCar.fuel.type}}</li>
+                  <li class="list-group-item">Drivetrain: </li>
+                  <li class="list-group-item">Price: {{mockupCar.price}}&euro;</li>
+                </ul>
+              <a class="btn btn-primary" href="#">Full details!</a>
+            </div>
+          </div>
+        </div>
+        <div class="col">
+          <div class="card mx-auto" style="width: 16vw;">
+            <img alt="Picture of a car" class="card-img-top" height="390" ngSrc="/No-Image-Placeholder.png" width="481">
+            <div class="card-body">
+              <h5 class="card-title">{{ mockupCar.model.manufacturer.name }} {{ mockupCar.model.name }}
+                : {{ mockupCar.model.yearOfManufacture }}</h5>
+              <ul class="list-group list-group-flush">
+                <li class="list-group-item">Horsepower: {{mockupCar.model.engine.horsepower}} HP</li>
+                <li class="list-group-item">Fuel type: {{mockupCar.fuel.type}}</li>
+                <li class="list-group-item">Drivetrain: </li>
+                <li class="list-group-item">Price: {{mockupCar.price}}&euro;</li>
+              </ul>
+              <a class="btn btn-primary" href="#">Full details!</a>
+            </div>
+          </div>
+        </div>
+        <div class="col">
+          <div class="card mx-auto" style="width: 16vw;">
+            <img alt="Picture of a car" class="card-img-top" height="390" ngSrc="/No-Image-Placeholder.png" width="481">
+            <div class="card-body">
+              <h5 class="card-title">{{ mockupCar.model.manufacturer.name }} {{ mockupCar.model.name }}
+                : {{ mockupCar.model.yearOfManufacture }}</h5>
+              <ul class="list-group list-group-flush">
+                <li class="list-group-item">Horsepower: {{mockupCar.model.engine.horsepower}} HP</li>
+                <li class="list-group-item">Fuel type: {{mockupCar.fuel.type}}</li>
+                <li class="list-group-item">Drivetrain: </li>
+                <li class="list-group-item">Price: {{mockupCar.price}}&euro;</li>
+              </ul>
+              <a class="btn btn-primary" href="#">Full details!</a>
+            </div>
+          </div>
+        </div>
+        <div class="col">
+          <div class="card mx-auto" style="width: 16vw;">
+            <img alt="Picture of a car" class="card-img-top" height="390" ngSrc="/No-Image-Placeholder.png" width="481">
+            <div class="card-body">
+              <h5 class="card-title">{{ mockupCar.model.manufacturer.name }} {{ mockupCar.model.name }}
+                : {{ mockupCar.model.yearOfManufacture }}</h5>
+              <ul class="list-group list-group-flush">
+                <li class="list-group-item">Horsepower: {{mockupCar.model.engine.horsepower}} HP</li>
+                <li class="list-group-item">Fuel type: {{mockupCar.fuel.type}}</li>
+                <li class="list-group-item">Drivetrain: </li>
+                <li class="list-group-item">Price: {{mockupCar.price}}&euro;</li>
+              </ul>
+              <a class="btn btn-primary" href="#">Full details!</a>
+            </div>
+          </div>
+        </div>
+        <div class="col">
+          <div class="card mx-auto" style="width: 16vw;">
+            <img alt="Picture of a car" class="card-img-top" height="390" ngSrc="/No-Image-Placeholder.png" width="481">
+            <div class="card-body">
+              <h5 class="card-title">{{ mockupCar.model.manufacturer.name }} {{ mockupCar.model.name }}
+                : {{ mockupCar.model.yearOfManufacture }}</h5>
+              <ul class="list-group list-group-flush">
+                <li class="list-group-item">Horsepower: {{mockupCar.model.engine.horsepower}} HP</li>
+                <li class="list-group-item">Fuel type: {{mockupCar.fuel.type}}</li>
+                <li class="list-group-item">Drivetrain: </li>
+                <li class="list-group-item">Price: {{mockupCar.price}}&euro;</li>
+              </ul>
+              <a class="btn btn-primary" href="#">Full details!</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
