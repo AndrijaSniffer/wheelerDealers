@@ -7,7 +7,6 @@ from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
 
-from srv import settings
 from wheelerDealersApi.security import IsAdminOrReadOnly, IsUserSelf
 from wheelerDealersApi.serializer import *
 
@@ -17,7 +16,7 @@ router = routers.DefaultRouter()
 @csrf_exempt
 @api_view(['POST'])
 @permission_classes([AllowAny])
-def createAccount(request):
+def create_account(request):
     user = User.objects.filter(is_superuser=True).first()
     admin_exists = bool(user)  # True if admin exists, False if not
 
@@ -47,7 +46,7 @@ def createAccount(request):
 @csrf_exempt
 @api_view(['POST'])
 @permission_classes([AllowAny])
-def createCompany(request):
+def create_company(request):
     logo_name = None
     if request.FILES.get('logo'):
         logo_image = request.FILES['logo']
@@ -79,7 +78,7 @@ def createCompany(request):
 @csrf_exempt
 @api_view(['GET'])
 @permission_classes([permissions.IsAdminUser])
-def getAllUsers(request):
+def get_all_users(request):
     users = User.objects.all()  # Fetch all users
     serializer = UserSerializer(users, many=True)  # Serialize the queryset
     return Response(status=status.HTTP_200_OK, data=serializer.data)
@@ -87,15 +86,25 @@ def getAllUsers(request):
 
 @api_view(['GET'])
 @permission_classes([IsUserSelf | permissions.IsAdminUser])
-def getUserById(request, userID: int):
+def get_user_by_id(request, userID: int):
     user = User.objects.get(pk=userID)  # Fetch user by id
     serializer = UserSerializer(user, many=False)  # Serialize the queryset
     return Response(status=status.HTTP_200_OK, data=serializer.data)
 
 
+@api_view(['GET'])
+@permission_classes([AllowAny])
+def get_all_car_color(request):
+    colors = Car.objects.all().values_list('color', flat=True).distinct()
+    color_list = [{"color": color} for color in colors if color]  # Exclude None/empty values
+
+    # Return the formatted data as a JSON response
+    return Response(color_list)
+
+
 @api_view(['PUT'])
 @permission_classes([IsUserSelf | permissions.IsAdminUser])
-def banUserById(request):
+def ban_user_by_id(request):
     try:
         userID = request.data.get('id')
         user = User.objects.get(pk=userID)  # Fetch user by id
@@ -110,7 +119,7 @@ def banUserById(request):
 
 @api_view(['GET'])
 @permission_classes([AllowAny])
-def normalSearch(request):
+def car_search(request):
     if request.method == 'GET':
         search = request.GET
 
@@ -130,7 +139,7 @@ def normalSearch(request):
         kw_from = search.get('kw_from', None)
         kw_to = search.get('kw_to', None)
         car_color = search.get('car_color', None)
-        left_side_steering_wheel = search.get('left_side_steering_wheel', None)
+        steering_wheel_left = search.get('steering_wheel_left', None)
 
         if id_manufacturer:
             filters &= Q(model__manufacturer=id_manufacturer)
@@ -160,10 +169,13 @@ def normalSearch(request):
             filters &= Q(engine__kilowatt__lte=kw_to)
         if car_color:
             filters &= Q(color=car_color)
-        if left_side_steering_wheel is not None:
-            filters &= Q(interior__left_side_steering_wheel=left_side_steering_wheel)
+        if steering_wheel_left is not None:
+            filters &= Q(interior__steering_wheel_left=steering_wheel_left)
 
+        # Combine all filters and filter by active users in one query
+        filters &= Q(user__is_active=True)
         cars = Car.objects.filter(filters).distinct()
+
         serializer = CarSerializer(cars, many=True)  # Pass queryset to the serializer
 
         return Response(status=status.HTTP_200_OK, data=serializer.data)
@@ -238,7 +250,7 @@ class DrivetrainView(viewsets.ModelViewSet):
 
 
 class TransmissionView(viewsets.ModelViewSet):
-    queryset = Transmission.objects.all().order_by('transmission')
+    queryset = Transmission.objects.all().order_by('-gears')
     serializer_class = TransmissionSerializer
     permission_classes = [IsAdminOrReadOnly]
 

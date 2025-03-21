@@ -47,4 +47,6 @@ export class AppConstants {
 
   static readonly CAR_URL = AppConstants.SERVER_URL + 'car';
 
+  static readonly SEARCH_URL = AppConstants.SERVER_URL + 'search';
+
 }

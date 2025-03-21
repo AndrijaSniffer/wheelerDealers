@@ -10,3 +10,15 @@ body {
   color: #e6ac00 !important;
   background-color: #212121;
 }
+
+.btn-primary {
+  border-color: transparent;
+  background-color: #ffca2b !important;
+  color: #000000 !important;
+}
+
+.btn-primary:hover {
+  border-color: transparent;
+  background-color: #6d5918 !important;
+  color: #ffffff !important;
+}

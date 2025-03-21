@@ -213,6 +213,7 @@ class CarSerializer(serializers.ModelSerializer):
     transmission = serializers.PrimaryKeyRelatedField(queryset=Transmission.objects.all())
     fuel = serializers.PrimaryKeyRelatedField(queryset=Fuel.objects.all())
     interior = serializers.PrimaryKeyRelatedField(queryset=Interior.objects.all())
+    drivetrain = serializers.PrimaryKeyRelatedField(queryset=Drivetrain.objects.all())
     images = serializers.SerializerMethodField()
 
     class Meta:
@@ -231,6 +232,7 @@ class CarSerializer(serializers.ModelSerializer):
         ret['transmission'] = TransmissionSerializer(instance.transmission).data
         ret['fuel'] = FuelSerializer(instance.fuel).data
         ret['interior'] = InteriorSerializer(instance.interior).data
+        ret['drivetrain'] = DrivetrainSerializer(instance.drivetrain).data
         return ret
 
 
