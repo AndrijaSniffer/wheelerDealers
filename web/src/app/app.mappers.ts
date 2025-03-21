@@ -159,6 +159,7 @@ export function mapToCar(json: any): Car {
     transmission: mapToTransmission(json.transmission),
     fuel: mapToFuel(json.fuel),
     interior: mapToInterior(json.interior),
+    drivetrain: mapToDrivetrain(json.drivetrain),
     price: json.price,
     chassisNumber: json.chassis_number,
     color: json.color,

@@ -32,6 +32,10 @@
           <th *matHeaderCellDef mat-header-cell> Interior color</th>
           <td *matCellDef="let car" mat-cell> {{ car.interior.color }}</td>
         </ng-container>
+        <ng-container matColumnDef="drivetrain">
+          <th *matHeaderCellDef mat-header-cell> Car drivetrain</th>
+          <td *matCellDef="let car" mat-cell> {{ car.drivetrain.type }}</td>
+        </ng-container>
         <ng-container matColumnDef="price">
           <th *matHeaderCellDef mat-header-cell> Price</th>
           <td *matCellDef="let car" mat-cell> {{ car.price }}</td>
@@ -50,7 +54,7 @@
         </ng-container>
         <ng-container matColumnDef="createdAt">
           <th *matHeaderCellDef mat-header-cell> Car post created at</th>
-          <td *matCellDef="let car" mat-cell> {{ car.createdAt }}</td>
+          <td *matCellDef="let car" mat-cell> {{ car.createdAt | date: 'dd/mm/yyyy  hh:mm:ss' }}</td>
         </ng-container>
         <ng-container matColumnDef="options">
           <th *matHeaderCellDef mat-header-cell> Options</th>

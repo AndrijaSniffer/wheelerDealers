@@ -116,11 +116,11 @@ def normalSearch(request):
 
         filters = Q()
 
-        id_manufacturer = search.get('id_manufacturer', None)
-        id_model = search.get('id_model', None)
-        id_transmission = search.get('id_transmission', None)
-        id_fuel = search.get('id_fuel', None)
-        id_drive = search.get('id_drive', None)
+        id_manufacturer = search.get('manufacturer', None)
+        id_model = search.get('model', None)
+        id_transmission = search.get('transmission', None)
+        id_fuel = search.get('fuel', None)
+        id_drive = search.get('drivetrain', None)
         is_preowned = search.get('is_preowned', None)
         price_from = search.get('price_from', None)
         price_to = search.get('price_to', None)

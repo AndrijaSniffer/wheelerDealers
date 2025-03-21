@@ -114,6 +114,7 @@ export class SearchPageComponent {
     },
     transmission: {id: 1, gears: 5, type: 'Manual'},
     interior: {id: 1, color: 'Black', steeringWheelLeft: true, seats: 5, doors: 3},
+    drivetrain: {id: 1, type: 'FWD'},
     user: {
       id: 1,
       isSuperuser: false,

@@ -7,8 +7,9 @@
 }
 
 .mat-column-id, .mat-column-user, .mat-column-model, .mat-column-transmission, .mat-column-fuel, .mat-column-interior,
-.mat-column-price, .mat-column-color, .mat-column-chassisNumber, .mat-column-isPreowned, .mat-column-createdAt,.mat-column-options {
-  width: 8.3% !important;
+.mat-column-drivetrain, .mat-column-price, .mat-column-color, .mat-column-chassisNumber, .mat-column-isPreowned,
+.mat-column-createdAt,.mat-column-options {
+  width: 7.69% !important;
   text-align: center !important;
 }
 

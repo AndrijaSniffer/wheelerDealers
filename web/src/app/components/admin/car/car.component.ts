@@ -18,6 +18,7 @@ import {YesNoDialogComponent} from '../../dialogs/dialogs.component';
 import {CarService} from '../../../services/car.service';
 import {Car} from '../../../classes/car';
 import {EngineDialog} from '../../dialogs/engine/engine-dialog';
+import {DatePipe} from '@angular/common';
 
 @Component({
   selector: 'app-car',
@@ -35,7 +36,8 @@ import {EngineDialog} from '../../dialogs/engine/engine-dialog';
     MatRow,
     MatRowDef,
     MatTable,
-    MatHeaderCellDef
+    MatHeaderCellDef,
+    DatePipe
   ],
   templateUrl: './car.component.html',
   styleUrl: './car.component.css'
@@ -45,8 +47,8 @@ export class CarComponent {
   private readonly _carService = inject(CarService);
   private readonly _dialog = inject(MatDialog);
 
-  displayedColumns = ['id', 'user', 'model', 'transmission', 'fuel', 'interior', 'price', 'color', 'chassisNumber',
-    'isPreowned', 'createdAt', 'options'];
+  displayedColumns = ['id', 'user', 'model', 'transmission', 'fuel', 'interior', 'drivetrain', 'price', 'color',
+    'chassisNumber', 'isPreowned', 'createdAt', 'options'];
   dataSource: MatTableDataSource<Car>;
   private cars: Car[];
 
