@@ -12,7 +12,7 @@ import {MatIcon} from '@angular/material/icon';
 import {Transmission} from '../../classes/transmission';
 import {Fuel} from '../../classes/fuel';
 import {MatCheckbox} from '@angular/material/checkbox';
-import {NgOptimizedImage} from '@angular/common';
+import {NgForOf, NgOptimizedImage} from '@angular/common';
 import {Car} from '../../classes/car';
 import {ManufacturerService} from '../../services/manufacturer.service';
 import {ModelService} from '../../services/model.service';
@@ -52,7 +52,8 @@ export interface ISearchParameters {
     MatButton,
     MatIcon,
     MatCheckbox,
-    NgOptimizedImage
+    NgOptimizedImage,
+    NgForOf
   ],
   templateUrl: './search-page.component.html',
   styleUrl: './search-page.component.css'
@@ -63,48 +64,9 @@ export class SearchPageComponent {
   transmissions: Transmission[] = [];
   fuel: Fuel[] = [];
   carColors: string[] = [];
-  mockupCar: Car = {
-    id: 1,
-    isPreowned: true,
-    color: 'Blue',
-    price: 2000,
-    chassisNumber: 'asdasd',
-    createdAt: new Date(),
-    fuel: {id: 1, type: 'Petrol'},
-    model: {
-      id: 1,
-      name: 'Civic',
-      yearOfManufacture: 2000,
-      manufacturer: {id: 1, name: 'Honda', country: {id: 1, name: 'Japan'}},
-      engine: {
-        id: 1,
-        engineCode: 'asdd',
-        volume: 12,
-        kilowatt: 12,
-        horsepower: 12,
-        emissionClass: {id: 1, className: 'EURO6'},
-        engineType: {id: 1, type: 'Internal combustion'}
-      }
-    },
-    transmission: {id: 1, gears: 5, type: 'Manual'},
-    interior: {id: 1, color: 'Black', steeringWheelLeft: true, seats: 5, doors: 3},
-    drivetrain: {id: 1, type: 'FWD'},
-    user: {
-      id: 1,
-      isSuperuser: false,
-      username: 'aaaa',
-      address: 'aasd',
-      email: 'asd',
-      isActive: true,
-      isReseller: false,
-      isStaff: false,
-      PIB: null,
-      dateJoined: new Date(),
-      lastLogin: new Date(),
-      password: null,
-      phone: 'asdasd'
-    }
-  };
+  cars: Car[] = [];
+  carsToDisplay: [Car[]] = [[]];
+  numberOfRows: number = 0;
   private readonly _manufacturerService: ManufacturerService = inject(ManufacturerService);
   private readonly _modelService: ModelService = inject(ModelService);
   private readonly _transmissionService: TransmissionService = inject(TransmissionService);
@@ -137,7 +99,11 @@ export class SearchPageComponent {
   fillInFilterFields() {
     this._manufacturerService.getAll().subscribe({
       next: data => {
-        this.manufacturers = data;
+        this.manufacturers[0] = {id: 0, name: 'None', country: null};
+
+        data.forEach((manufacturer: Manufacturer) => {
+          this.manufacturers.push(manufacturer);
+        });
       },
       error: err => {
         console.error(err);
@@ -147,7 +113,11 @@ export class SearchPageComponent {
 
     this._modelService.getAll().subscribe({
       next: data => {
-        this.models = data;
+        this.models[0] = {id: 0, name: 'None', engine: null, manufacturer: null, yearOfManufacture: null};
+
+        data.forEach((model: Model) => {
+          this.models.push(model);
+        });
       },
       error: err => {
         console.error(err);
@@ -157,7 +127,11 @@ export class SearchPageComponent {
 
     this._transmissionService.getAll().subscribe({
       next: data => {
-        this.transmissions = data;
+        this.transmissions[0] = {id: 0, type: 'None', gears: null};
+
+        data.forEach((transmission: Transmission) => {
+          this.transmissions.push(transmission);
+        })
       },
       error: err => {
         console.error(err);
@@ -167,7 +141,11 @@ export class SearchPageComponent {
 
     this._fuelService.getAll().subscribe({
       next: data => {
-        this.fuel = data;
+        this.fuel[0] = {id: 0, type: 'None'};
+
+        data.forEach((fuel: Fuel) => {
+          this.fuel.push(fuel);
+        })
       },
       error: err => {
         console.error(err);
@@ -177,6 +155,8 @@ export class SearchPageComponent {
 
     this._carService.getAllColor().subscribe({
       next: data => {
+        this.carColors[0] = 'None';
+
         data.forEach((colorJson) => {
           this.carColors.push(colorJson.color);
         });
@@ -191,13 +171,13 @@ export class SearchPageComponent {
   defaultSearch() {
     this._carService.getAll().subscribe({
       next: data => {
-        console.warn('Cars:', data);
+        this.prepareCarsForDisplay(data);
       },
       error: err => {
         console.error(err);
-        this._notifications.showTimedErrorNotification(AppUtil.parseJsonErrorsToString(err.error))
+        this._notifications.showTimedErrorNotification(AppUtil.parseJsonErrorsToString(err.error));
       }
-    })
+    });
   }
 
   submitSearch() {
@@ -217,10 +197,44 @@ export class SearchPageComponent {
       steeringWheelLeft: this.searchForm.get('steeringWheelLeft').value ? 1 : 0
     }
 
+    Object.entries(searchParameters).forEach(([key, value]) => {
+      if(value === 0 && key !== 'isPreowned' && key !== 'steeringWheelLeft') searchParameters[key] = null;
+    });
+
     this._carService.parametrizedSearch(searchParameters).subscribe({
       next: data => {
-        console.warn(data);
+        this.prepareCarsForDisplay(data);
+
+        console.log("Cars to display:", this.carsToDisplay);
+      },
+      error: err => {
+        this._notifications.showTimedErrorNotification(AppUtil.parseJsonErrorsToString(err.error));
       }
     })
+  }
+
+  resetForm(){
+    this.searchForm.reset({isPreowned: true, steeringWheelLeft: true});
+    this.defaultSearch();
+  }
+
+  private prepareCarsForDisplay(data: Car[]){
+    this.cars = data;
+
+    this.numberOfRows = Math.ceil(this.cars.length / 5);
+
+    if(this.numberOfRows == 0) this.carsToDisplay = [[]];
+
+    for (let i = 0; i < this.numberOfRows; i++) {
+      const start = i * 5;
+      const end = Math.min(start + 5, this.cars.length); // Don’t exceed array length
+      const rowOfCars = this.cars.slice(start, end);
+
+      if(start === 0){
+        this.carsToDisplay = [rowOfCars];
+      }else{
+        this.carsToDisplay.push(rowOfCars);
+      }
+    }
   }
 }

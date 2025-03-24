@@ -60,7 +60,9 @@
                           <mat-label>Transmission</mat-label>
                           <mat-select formControlName="transmission">
                             @for (transmission of transmissions; track transmission) {
-                              <mat-option [value]="transmission.id">{{transmission.gears ? transmission.gears + ' - speed ': 'Any '}}{{ transmission.type }}</mat-option>
+                              <mat-option
+                                [value]="transmission.id">{{ transmission.gears ? transmission.gears + ' - speed ' : 'Any ' }}{{ transmission.type }}
+                              </mat-option>
                             }
                           </mat-select>
                         </mat-form-field>
@@ -115,7 +117,7 @@
                         <mat-form-field>
                           <mat-label>Car color</mat-label>
                           <mat-select formControlName="carColor">
-                            @for (carColor of carColors; track carColors) {
+                            @for (carColor of carColors; track carColor) {
                               <mat-option [value]="carColor">{{ carColor }}</mat-option>
                             }
                           </mat-select>
@@ -146,6 +148,9 @@
         <div class="row search-button-row">
           <div class="col"></div>
           <div class="col-9 text-end">
+            <button style="margin-right: 1vw" (click)="resetForm()" mat-stroked-button>Reset form
+              <mat-icon>restart_alt</mat-icon>
+            </button>
             <button (click)="submitSearch()" mat-stroked-button>Search
               <mat-icon>search</mat-icon>
             </button>
@@ -154,82 +159,18 @@
         </div>
       </div>
       <mat-divider></mat-divider>
-      <div class="row text-center">
-        <div class="col">
+      <div *ngFor="let rowOfCars of carsToDisplay" class="row row-cols-5 text-center">
+        <div *ngFor="let car of rowOfCars" class="col">
           <div class="card mx-auto" style="width: 16vw;">
-            <img alt="Picture of a car" class="card-img-top" ngSrc="/No-Image-Placeholder.png" height="390" width="481">
+            <img alt="Picture of a car" class="card-img-top" height="390" priority ngSrc="/No-Image-Placeholder.png" width="481">
             <div class="card-body">
-              <h5 class="card-title">{{ mockupCar.model.manufacturer.name }} {{ mockupCar.model.name }}
-                <br/> Year: {{ mockupCar.model.yearOfManufacture }}</h5>
-                <ul class="list-group list-group-flush">
-                  <li class="list-group-item">Horsepower: {{mockupCar.model.engine.horsepower}} HP</li>
-                  <li class="list-group-item">Fuel type: {{mockupCar.fuel.type}}</li>
-                  <li class="list-group-item">Drivetrain: {{mockupCar.drivetrain.type}}</li>
-                  <li class="list-group-item">Price: {{mockupCar.price}}&euro;</li>
-                </ul>
-              <a class="btn btn-primary" href="#">Full details!</a>
-            </div>
-          </div>
-        </div>
-        <div class="col">
-          <div class="card mx-auto" style="width: 16vw;">
-            <img alt="Picture of a car" class="card-img-top" ngSrc="/No-Image-Placeholder.png" height="390" width="481">
-            <div class="card-body">
-              <h5 class="card-title">{{ mockupCar.model.manufacturer.name }} {{ mockupCar.model.name }}
-                <br/> Year: {{ mockupCar.model.yearOfManufacture }}</h5>
+              <h5 class="card-title">{{ car.model.manufacturer.name }} {{ car.model.name }}
+                <br/> Year: {{ car.model.yearOfManufacture }}.</h5>
               <ul class="list-group list-group-flush">
-                <li class="list-group-item">Horsepower: {{mockupCar.model.engine.horsepower}} HP</li>
-                <li class="list-group-item">Fuel type: {{mockupCar.fuel.type}}</li>
-                <li class="list-group-item">Drivetrain: {{mockupCar.drivetrain.type}}</li>
-                <li class="list-group-item">Price: {{mockupCar.price}}&euro;</li>
-              </ul>
-              <a class="btn btn-primary" href="#">Full details!</a>
-            </div>
-          </div>
-        </div>
-        <div class="col">
-          <div class="card mx-auto" style="width: 16vw;">
-            <img alt="Picture of a car" class="card-img-top" ngSrc="/No-Image-Placeholder.png" height="390" width="481">
-            <div class="card-body">
-              <h5 class="card-title">{{ mockupCar.model.manufacturer.name }} {{ mockupCar.model.name }}
-                <br/> Year: {{ mockupCar.model.yearOfManufacture }}</h5>
-              <ul class="list-group list-group-flush">
-                <li class="list-group-item">Horsepower: {{mockupCar.model.engine.horsepower}} HP</li>
-                <li class="list-group-item">Fuel type: {{mockupCar.fuel.type}}</li>
-                <li class="list-group-item">Drivetrain: {{mockupCar.drivetrain.type}}</li>
-                <li class="list-group-item">Price: {{mockupCar.price}}&euro;</li>
-              </ul>
-              <a class="btn btn-primary" href="#">Full details!</a>
-            </div>
-          </div>
-        </div>
-        <div class="col">
-          <div class="card mx-auto" style="width: 16vw;">
-            <img alt="Picture of a car" class="card-img-top" ngSrc="/No-Image-Placeholder.png" height="390" width="481">
-            <div class="card-body">
-              <h5 class="card-title">{{ mockupCar.model.manufacturer.name }} {{ mockupCar.model.name }}
-                <br/> Year: {{ mockupCar.model.yearOfManufacture }}</h5>
-              <ul class="list-group list-group-flush">
-                <li class="list-group-item">Horsepower: {{mockupCar.model.engine.horsepower}} HP</li>
-                <li class="list-group-item">Fuel type: {{mockupCar.fuel.type}}</li>
-                <li class="list-group-item">Drivetrain: {{mockupCar.drivetrain.type}}</li>
-                <li class="list-group-item">Price: {{mockupCar.price}}&euro;</li>
-              </ul>
-              <a class="btn btn-primary" href="#">Full details!</a>
-            </div>
-          </div>
-        </div>
-        <div class="col">
-          <div class="card mx-auto" style="width: 16vw;">
-            <img alt="Picture of a car" class="card-img-top" ngSrc="/No-Image-Placeholder.png" height="390" width="481">
-            <div class="card-body">
-              <h5 class="card-title">{{ mockupCar.model.manufacturer.name }} {{ mockupCar.model.name }}
-                <br/> Year: {{ mockupCar.model.yearOfManufacture }}</h5>
-              <ul class="list-group list-group-flush">
-                <li class="list-group-item">Horsepower: {{mockupCar.model.engine.horsepower}} HP</li>
-                <li class="list-group-item">Fuel type: {{mockupCar.fuel.type}}</li>
-                <li class="list-group-item">Drivetrain: {{mockupCar.drivetrain.type}}</li>
-                <li class="list-group-item">Price: {{mockupCar.price}}&euro;</li>
+                <li class="list-group-item">Horsepower: {{ car.model.engine.horsepower }} HP</li>
+                <li class="list-group-item">Fuel type: {{ car.fuel.type }}</li>
+                <li class="list-group-item">Drivetrain: {{ car.drivetrain.type }}</li>
+                <li class="list-group-item">Price: {{ car.price }}&euro;</li>
               </ul>
               <a class="btn btn-primary" href="#">Full details!</a>
             </div>

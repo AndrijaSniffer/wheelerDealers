@@ -1,3 +1,15 @@
+.row-cols-5 > .col {
+  margin-bottom: 2vh;
+}
+
+.row-cols-5 > .col:first-child {
+  padding-left: 3vw;
+}
+
+.row-cols-5 > .col:last-child {
+  padding-right: 3vw;
+}
+
 .mat-divider {
   margin: 5vh;
 }

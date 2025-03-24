@@ -45,6 +45,8 @@ export class CarService {
 
     console.warn(paramsString);
 
-    return this._http.get<Car[]>(`${AppConstants.SEARCH_URL}/normal?${paramsString}`);
+    return this._http.get<Car[]>(`${AppConstants.SEARCH_URL}/normal?${paramsString}`).pipe(
+      map((response: Car[]) => response.map(mapToCar))
+    );
   }
 }
