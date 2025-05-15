@@ -36,7 +36,7 @@ import {BaseDialog} from '../base-dialog';
     MatError
   ],
   templateUrl: 'model-type-dialog.html',
-  styleUrl: 'model-type-dialog.css'
+  styleUrls: ['model-type-dialog.css', '../dialogs.component.css']
 })
 export class ModelTypeDialog extends BaseDialog<ModelType> {
   private readonly _modelTypeService: ModelTypeService = inject(ModelTypeService);

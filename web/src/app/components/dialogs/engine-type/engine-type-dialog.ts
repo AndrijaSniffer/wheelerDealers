@@ -36,7 +36,7 @@ import {BaseDialog} from '../base-dialog';
     MatError
   ],
   templateUrl: 'engine-type-dialog.html',
-  styleUrls: ['engine-type-dialog.css'],
+  styleUrls: ['engine-type-dialog.css', '../dialogs.component.css'],
 })
 export class EngineTypeDialog extends BaseDialog<EngineType> {
   private readonly _engineTypeService: EngineTypeService = inject(EngineTypeService);

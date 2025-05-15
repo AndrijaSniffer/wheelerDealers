@@ -36,7 +36,7 @@ import {BaseDialog} from '../base-dialog';
     MatError
   ],
   templateUrl: 'transmission-dialog.html',
-  styleUrl: 'transmission-dialog.css'
+  styleUrls: ['transmission-dialog.css', '../dialogs.component.css']
 })
 export class TransmissionDialog extends BaseDialog<Transmission> {
   private readonly _transmissionService: TransmissionService = inject(TransmissionService);
