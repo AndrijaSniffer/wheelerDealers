@@ -7,7 +7,7 @@ from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
 
-from wheelerDealersApi.security import IsAdminOrReadOnly, IsUserSelf
+from wheelerDealersApi.security import IsAdminOrReadOnly, IsUserSelf, CarPermission
 from wheelerDealersApi.serializer import *
 
 router = routers.DefaultRouter()
@@ -86,8 +86,8 @@ def get_all_users(request):
 
 @api_view(['GET'])
 @permission_classes([IsUserSelf | permissions.IsAdminUser])
-def get_user_by_id(request, userID: int):
-    user = User.objects.get(pk=userID)  # Fetch user by id
+def get_user_by_id(request, user_id: int):
+    user = User.objects.get(pk=user_id)  # Fetch user by id
     serializer = UserSerializer(user, many=False)  # Serialize the queryset
     return Response(status=status.HTTP_200_OK, data=serializer.data)
 
@@ -100,6 +100,17 @@ def get_all_car_color(request):
 
     # Return the formatted data as a JSON response
     return Response(color_list)
+
+
+@api_view(['GET'])
+@permission_classes([AllowAny])
+def get_models_by_manufacturer_id(request):
+    manufacturer_id = request.query_params.get('manufacturer_id')
+    if manufacturer_id is not None:
+        models = Model.objects.filter(manufacturer=manufacturer_id)
+        serializer = ModelSerializer(models, many=True)
+        return Response(status=status.HTTP_200_OK, data=serializer.data)
+    return Response(status=status.HTTP_400_BAD_REQUEST, data={'error': 'manufacturer_id is required'})
 
 
 @api_view(['PUT'])
@@ -276,7 +287,7 @@ class CarImageView(viewsets.ModelViewSet):
 class CarView(viewsets.ModelViewSet):
     queryset = Car.objects.all().order_by('car')
     serializer_class = CarSerializer
-    permission_classes = [IsAdminOrReadOnly]
+    permission_classes = [CarPermission]
 
 
 # region Router

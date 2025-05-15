@@ -45,7 +45,11 @@ export class AppConstants {
 
   static readonly MODEL_URL = AppConstants.SERVER_URL + 'model';
 
+  static readonly MODEL_BY_MANUFACTURER_ID = AppConstants.MODEL_URL + '/byManufacturerId';
+
   static readonly CAR_URL = AppConstants.SERVER_URL + 'car';
+
+  static readonly CAR_COLORS_URL = AppConstants.CAR_URL + '/colors';
 
   static readonly SEARCH_URL = AppConstants.SERVER_URL + 'search';
 

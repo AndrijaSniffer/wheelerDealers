@@ -1,24 +1,25 @@
 <h2 mat-dialog-title>Country</h2>
 <mat-dialog-content>
-    <div *ngIf="isView">
-        <h3>Selected country as JSON:<br></h3>
-        <pre>{{this.jsonCurrentObject}}</pre>
-    </div>
+  <div *ngIf="isView">
+    <h3>Selected country as JSON:<br></h3>
+    <pre>{{ this.jsonCurrentObject }}</pre>
+  </div>
 
-    <form *ngIf="!isView" [formGroup]="form">
-        <mat-list class="form-list">
-            <mat-list-item>
-              <mat-form-field appearance="fill" class="full-width">
-                <mat-label>Country name</mat-label>
-                <input matInput type="input" formControlName="name" required/>
-                <mat-error *ngIf="form.get('name')?.hasError('required')">Name is required.</mat-error>
-              </mat-form-field>
-            </mat-list-item>
-        </mat-list>
-    </form>
+  <form *ngIf="!isView" [formGroup]="form">
+    <mat-list class="form-list">
+      <mat-list-item>
+        <mat-form-field appearance="fill" class="full-width">
+          <mat-label>Country name</mat-label>
+          <input (keyup.enter)="submit()" cdkFocusInitial formControlName="name" matInput required type="input"/>
+          <mat-error *ngIf="form.get('name')?.errors?.['required']">Country name is required.</mat-error>
+        </mat-form-field>
+      </mat-list-item>
+    </mat-list>
+  </form>
 </mat-dialog-content>
 <mat-dialog-actions>
-    <button (click)="dismiss(null)" *ngIf="!isView" mat-button>Cancel</button>
-    <button (click)="submit()" [disabled]="!form.valid" *ngIf="!isView" cdkFocusInitial mat-button>{{isNewOrEdit ? 'Create' : 'Edit'}}</button>
-    <button (click)="dismiss(null)" *ngIf="isView" cdkFocusInitial mat-button>Ok</button>
+  <button (click)="dismiss(null)" *ngIf="!isView" mat-button>Cancel</button>
+  <button (click)="submit()" *ngIf="!isView" [disabled]="!form.valid" mat-button>{{ isNewOrEdit ? 'Create' : 'Edit' }}
+  </button>
+  <button (click)="dismiss(null)" *ngIf="isView" mat-button>Ok</button>
 </mat-dialog-actions>

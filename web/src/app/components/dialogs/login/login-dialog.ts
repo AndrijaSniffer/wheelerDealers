@@ -48,6 +48,8 @@ export class LoginDialog {
 
       if (isLoggedIn) {
         this._dialogRef.close(true);
+      } else {
+        this._dialogRef.close(false);
       }
     }
   }

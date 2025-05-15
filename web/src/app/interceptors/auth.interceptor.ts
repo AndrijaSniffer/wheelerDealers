@@ -10,16 +10,21 @@ import {AppUtil} from '../app.util';
 export const authInterceptor: HttpInterceptorFn = (req, next) => {
   const appUser = inject(AppUser);
   const authService = inject(AuthService);
-  const excludedUrls = [
+  const excludedTokenUrls = [
     AppConstants.LOGIN_URL,
     AppConstants.REGISTER_USER,
     AppConstants.REGISTER_COMPANY,
     AppConstants.REFRESH_URL,
+    AppConstants.MODEL_BY_MANUFACTURER_ID,
+    AppConstants.CAR_COLORS_URL
   ];
-  const shouldAppendSlash = !req.url.includes('auth');
+  const excludedSlashUrls = Array.from(excludedTokenUrls);
+  excludedSlashUrls.push(AppConstants.USER_URL);
+
+  const shouldAppendSlash = (!excludedSlashUrls.some(url => req.url.startsWith(url)));
 
   // Skip token logic for excluded URLs
-  if (excludedUrls.some(url => req.url === url)) {
+  if (excludedTokenUrls.some(url => req.url === url)) {
     return next(req);
   }
 

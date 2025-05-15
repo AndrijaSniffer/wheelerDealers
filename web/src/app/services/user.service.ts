@@ -15,7 +15,6 @@ export class UserService {
     return new Promise<JSON>((resolve, reject) => {
       this._http.get((AppConstants.USER_URL + `/${userId}`)).subscribe({
         next: (response: JSON) => {
-          console.warn(response);
           resolve(response);
         },
         error: error => {

@@ -2,11 +2,119 @@
 <mat-dialog-content>
   <div *ngIf="isView">
     <h3>Selected car as JSON:<br></h3>
-    <pre>{{this.jsonCurrentObject}}</pre>
+    <pre>{{ this.jsonCurrentObject }}</pre>
   </div>
+
+  <form *ngIf="!isView" [formGroup]="form">
+    <mat-list class="form-list">
+      <mat-list-item>
+        <mat-form-field>
+          <mat-label>Manufacturer</mat-label>
+          <mat-select (selectionChange)="updateModel($event)" formControlName="manufacturer">
+            @for (manufacturer of manufacturers; track manufacturer) {
+              <mat-option [value]="manufacturer.id">{{ manufacturer.name }}</mat-option>
+            }
+          </mat-select>
+        </mat-form-field>
+      </mat-list-item>
+
+      <mat-list-item>
+        <mat-form-field>
+          <mat-label>Model</mat-label>
+          <mat-select formControlName="model">
+            @for (model of models; track model) {
+              <mat-option [value]="model.id">{{model.yearOfManufacture}} {{ model.name }} {{ model.engine.volume | convertEngineVolume }}
+              </mat-option>
+            }
+          </mat-select>
+        </mat-form-field>
+      </mat-list-item>
+
+      <mat-list-item>
+        <mat-form-field>
+          <mat-label>Transmission</mat-label>
+          <mat-select formControlName="transmission">
+            @for (transmission of transmissions; track transmission) {
+              <mat-option
+                [value]="transmission.id">{{ transmission.type }} {{ transmission.gears ? transmission.gears + "-speed" : "" }}
+              </mat-option>
+            }
+          </mat-select>
+        </mat-form-field>
+      </mat-list-item>
+
+      <mat-list-item>
+        <mat-form-field>
+          <mat-label>Fuel</mat-label>
+          <mat-select formControlName="fuel">
+            @for (fuel of fuel; track fuel) {
+              <mat-option [value]="fuel.id">{{ fuel.type }}</mat-option>
+            }
+          </mat-select>
+        </mat-form-field>
+      </mat-list-item>
+
+      <mat-list-item>
+        <mat-form-field>
+          <mat-label>Interior</mat-label>
+          <mat-select formControlName="interior">
+            @for (interior of interiors; track interior) {
+              <mat-option [value]="interior.id">Doors: {{ interior.doors }}; Seats: {{ interior.seats }};
+                Color: {{ interior.color }}; Steering wheel: {{ interior.steeringWheelLeft ? "Left" : "Right" }};
+              </mat-option>
+            }
+          </mat-select>
+        </mat-form-field>
+        <button mat-icon-button>
+          <mat-icon>add_circle</mat-icon>
+        </button>
+      </mat-list-item>
+
+      <mat-list-item>
+        <mat-form-field>
+          <mat-label>Drivetrain</mat-label>
+          <mat-select formControlName="drivetrain">
+            @for (drivetrain of drivetrains; track drivetrain) {
+              <mat-option [value]="drivetrain.id">{{ drivetrain.type }}</mat-option>
+            }
+          </mat-select>
+        </mat-form-field>
+      </mat-list-item>
+
+      <mat-list-item>
+        <mat-form-field appearance="fill" class="full-width">
+          <mat-label>Price (in euros)</mat-label>
+          <input formControlName="price" matInput min="100" required type="number"/>
+          <mat-error *ngIf="form.get('price')?.hasError('required')">Price is required.</mat-error>
+        </mat-form-field>
+      </mat-list-item>
+
+      <mat-list-item>
+        <mat-form-field appearance="fill" class="full-width">
+          <mat-label>Color</mat-label>
+          <input formControlName="color" matInput type="input"/>
+        </mat-form-field>
+      </mat-list-item>
+
+      <mat-list-item>
+        <mat-form-field appearance="fill" class="full-width">
+          <mat-label>Chassis number</mat-label>
+          <input formControlName="chassisNumber" matInput type="input"/>
+        </mat-form-field>
+      </mat-list-item>
+
+      <mat-list-item>
+        <p>
+          <mat-checkbox formControlName="isPreowned">Is the car preowned?</mat-checkbox>
+        </p>
+      </mat-list-item>
+    </mat-list>
+  </form>
 </mat-dialog-content>
 <mat-dialog-actions>
-<!--  <button (click)="dismiss(null)" *ngIf="!isView" mat-button>Cancel</button>-->
-<!--  <button (click)="submit()" [disabled]="!form.valid" *ngIf="!isView" cdkFocusInitial mat-button>{{isNewOrEdit ? 'Create' : 'Edit'}}</button>-->
+  <button (click)="dismiss(null)" *ngIf="!isView" mat-button>Cancel</button>
+  <button (click)="submit()" *ngIf="!isView" [disabled]="!form.valid" cdkFocusInitial
+          mat-button>{{ isNewOrEdit ? 'Create' : 'Edit' }}
+  </button>
   <button (click)="dismiss(null)" *ngIf="isView" cdkFocusInitial mat-button>Ok</button>
 </mat-dialog-actions>

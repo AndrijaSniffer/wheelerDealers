@@ -9,6 +9,7 @@ import {NgIf} from '@angular/common';
 import {AuthService} from '../../services/auth.service';
 import {LoginDialog} from '../dialogs/login/login-dialog';
 import {SignUpDialog} from '../dialogs/sign-up/sign-up-dialog';
+import {CarDialog} from '../dialogs/car/car-dialog';
 
 @Component({
   selector: 'app-nav-bar',
@@ -94,5 +95,16 @@ export class NavBarComponent {
 
   adminNavigate(route: string) {
     this._router.navigate([`admin/${route}`]).then(() => {});
+  }
+
+  temporaryCarAdd(){
+    this._dialog.open(CarDialog, {
+      minWidth: '20vw',
+      data: {object: null, isView: false}
+    }).afterClosed().subscribe(result => {
+      if (result) {
+        this._notification.showTimedNotification('Car successfully posted!');
+      }
+    })
   }
 }

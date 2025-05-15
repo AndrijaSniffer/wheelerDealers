@@ -20,7 +20,7 @@
 
       <mat-list-item>
         <mat-form-field>
-          <mat-label>Manufacturers country</mat-label>
+          <mat-label>Emission class</mat-label>
           <mat-select formControlName="emissionClass">
             @for (emissionClass of emissionClasses; track emissionClass) {
               <mat-option [value]="emissionClass.id">{{emissionClass.className}}</mat-option>

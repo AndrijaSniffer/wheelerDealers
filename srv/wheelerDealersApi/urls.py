@@ -13,11 +13,12 @@ urlpatterns = [
     path('api/token/verify/', TokenVerifyView.as_view(), name='token_verify'),
     path('api/auth/create', views.create_account, name='create_user'),
     path('api/auth/users', views.get_all_users, name='get_all_users'),
-    path('api/auth/user/<int:userID>', views.get_user_by_id, name='get_user_by_id'),
+    path('api/auth/user/<int:user_id>', views.get_user_by_id, name='get_user_by_id'),
     path('api/auth/user/ban', views.ban_user_by_id, name='ban_user_by_id'),
     path('api/company', views.create_company, name='create_company'),
-    path('search/normal', views.car_search, name='normalSearch'),
-    path('car/colors', views.get_all_car_color, name='getAllCarColor')
+    path('search/normal', views.car_search, name='normal_search'),
+    path('car/colors', views.get_all_car_color, name='get_all_car_color'),
+    path('model/byManufacturerId', views.get_models_by_manufacturer_id, name='get_model_by_manufacturer_id'),
 ]
 
 if settings.DEBUG:

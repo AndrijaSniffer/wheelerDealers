@@ -46,8 +46,40 @@ class IsUserSelf(BasePermission):
             raise PermissionDenied('Invalid or expired token.')
 
         # Compare with the requested ID
-        requested_id = view.kwargs.get('userID')  # Extract ID from the URL
+        requested_id = view.kwargs.get('user_id')  # Extract ID from the URL
         if requested_id and int(requested_id) == token_user_id:
             return True
 
+        return False
+
+
+class CarPermission(BasePermission):
+    """
+    Custom permission class for car-related views:
+    - Allows anyone (even unregistered users) to use GET.
+    - Allows registered non-admin users to POST (create) cars, which will be owned by them.
+    - Allows registered users to PUT (update) and DELETE only their own cars.
+    - Allows admins to GET and DELETE any car, but not POST or PUT.
+    """
+
+    def has_permission(self, request, view):
+        # Allow safe methods (GET, HEAD, OPTIONS) for everyone
+        if request.method in SAFE_METHODS:
+            return True
+        # For POST (create), allow only authenticated non-admin users
+        if view.action == 'create':
+            return request.user.is_authenticated and not request.user.is_superuser
+        # For PUT and DELETE, defer to has_object_permission
+        return True
+
+    def has_object_permission(self, request, view, obj):
+        # Allow safe methods (GET) for everyone
+        if request.method in SAFE_METHODS:
+            return True
+        # For PUT (update), allow only the car's owner
+        if view.action in ['update', 'partial_update']:
+            return obj.user == request.user
+        # For DELETE, allow the owner or an admin
+        if view.action == 'destroy':
+            return obj.user == request.user or request.user.is_superuser
         return False

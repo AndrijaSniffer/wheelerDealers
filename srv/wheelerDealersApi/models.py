@@ -146,7 +146,7 @@ class Car(models.Model):
     fuel = models.ForeignKey(Fuel, on_delete=models.RESTRICT, null=False)
     interior = models.ForeignKey(Interior, on_delete=models.RESTRICT, null=False)
     drivetrain = models.ForeignKey(Drivetrain, on_delete=models.RESTRICT, null=False)
-    price = models.DecimalField(null=False, max_digits=6, decimal_places=2)
+    price = models.DecimalField(null=False, max_digits=10, decimal_places=2)
     color = models.CharField(max_length=255, null=True)
     chassis_number = models.CharField(max_length=255, null=True)
     is_preowned = models.BooleanField(null=False, default=True)

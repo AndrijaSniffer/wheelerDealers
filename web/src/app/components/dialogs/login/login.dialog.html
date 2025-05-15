@@ -5,14 +5,14 @@
       <mat-grid-tile>
         <mat-form-field appearance="fill">
           <mat-label>Username</mat-label>
-          <input matInput formControlName="username" required/>
+          <input matInput formControlName="username" (keyup.enter)="submit()" required/>
         </mat-form-field>
       </mat-grid-tile>
 
       <mat-grid-tile>
         <mat-form-field appearance="fill">
           <mat-label>Password</mat-label>
-          <input matInput type="password" formControlName="password" required/>
+          <input matInput type="password" formControlName="password" (keyup.enter)="submit()" required/>
         </mat-form-field>
       </mat-grid-tile>
 

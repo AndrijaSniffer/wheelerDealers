@@ -10,14 +10,14 @@
       <mat-list-item>
         <mat-form-field appearance="fill" class="full-width">
           <mat-label>Type</mat-label>
-          <input formControlName="type" matInput type="input" required/>
-          <mat-error *ngIf="form.get('type')?.hasError('required')">Type is required.</mat-error>
+          <input (keyup.enter)="submit()" cdkFocusInitial formControlName="type" matInput required type="input"/>
+          <mat-error *ngIf="form.get('type')?.errors?.['required']">Transmission type is required.</mat-error>
         </mat-form-field>
       </mat-list-item>
       <mat-list-item>
         <mat-form-field appearance="fill" class="full-width">
           <mat-label>Number of gears</mat-label>
-          <input formControlName="gears" min="0" matInput type="number"/>
+          <input (keyup.enter)="submit()" formControlName="gears" matInput min="0" type="number"/>
         </mat-form-field>
       </mat-list-item>
     </mat-list>
@@ -25,8 +25,8 @@
 </mat-dialog-content>
 <mat-dialog-actions>
   <button (click)="dismiss(null)" *ngIf="!isView" mat-button>Cancel</button>
-  <button (click)="submit()" *ngIf="!isView" [disabled]="!form.valid" cdkFocusInitial
+  <button (click)="submit()" *ngIf="!isView" [disabled]="!form.valid"
           mat-button>{{ isNewOrEdit ? 'Create' : 'Edit' }}
   </button>
-  <button (click)="dismiss(null)" *ngIf="isView" cdkFocusInitial mat-button>Ok</button>
+  <button (click)="dismiss(null)" *ngIf="isView" mat-button>Ok</button>
 </mat-dialog-actions>
