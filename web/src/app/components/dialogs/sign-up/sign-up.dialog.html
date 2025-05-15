@@ -6,45 +6,45 @@
       <form [formGroup]="formUser">
         <mat-list>
           <mat-list-item class="input-list-item">
-            <mat-form-field appearance="fill" class="full-width">
+            <mat-form-field appearance="fill" >
               <mat-label>Username</mat-label>
-              <input matInput type="input" formControlName="username" required/>
-              <mat-error *ngIf="formUser.get('username')?.hasError('required')">Username is required.</mat-error>
+              <input cdkFocusInitial formControlName="username" matInput required type="input"/>
+              <mat-error *ngIf="formUser.get('username')?.errors?.['required']">Username is required.</mat-error>
             </mat-form-field>
           </mat-list-item>
           <mat-list-item class="input-list-item">
-            <mat-form-field appearance="fill" class="full-width">
+            <mat-form-field appearance="fill" >
               <mat-label>Email</mat-label>
-              <input matInput type="email" formControlName="email" required/>
-              <mat-error *ngIf="formUser.get('email')?.hasError('required')">Email is required.</mat-error>
-              <mat-error *ngIf="formUser.get('email')?.hasError('email')">Please enter a valid email address.
+              <input formControlName="email" matInput required type="email"/>
+              <mat-error *ngIf="formUser.get('email')?.errors?.['required']">Email is required.</mat-error>
+              <mat-error *ngIf="formUser.get('email')?.errors?.['email']">Please enter a valid email address.
               </mat-error>
             </mat-form-field>
           </mat-list-item>
           <mat-list-item class="input-list-item">
-            <mat-form-field appearance="fill" class="full-width">
+            <mat-form-field appearance="fill" >
               <mat-label>Password</mat-label>
-              <input matInput type="password" formControlName="password" required/>
-              <mat-error *ngIf="formUser.get('password')?.hasError('required')">Password is required.</mat-error>
+              <input formControlName="password" matInput required type="password"/>
+              <mat-error *ngIf="formUser.get('password')?.errors?.['required']">Password is required.</mat-error>
             </mat-form-field>
           </mat-list-item>
           <mat-list-item class="input-list-item">
-            <mat-form-field appearance="fill" class="full-width">
+            <mat-form-field appearance="fill" >
               <mat-label>Confirm password</mat-label>
-              <input matInput type="password" formControlName="confirmPassword" required/>
+              <input formControlName="confirmPassword" matInput required type="password"/>
               <mat-error *ngIf="hasPasswordMismatchError()">Passwords do not match</mat-error>
             </mat-form-field>
           </mat-list-item>
           <mat-list-item class="input-list-item">
-            <mat-form-field appearance="fill" class="full-width">
+            <mat-form-field appearance="fill" >
               <mat-label>Phone</mat-label>
-              <input matInput type="number" formControlName="phone"/>
+              <input formControlName="phone" matInput type="number"/>
             </mat-form-field>
           </mat-list-item>
           <mat-list-item class="input-list-item">
-            <mat-form-field appearance="fill" class="full-width">
+            <mat-form-field appearance="fill" >
               <mat-label>Address</mat-label>
-              <input matInput type="text" formControlName="address"/>
+              <input formControlName="address" matInput type="text"/>
             </mat-form-field>
           </mat-list-item>
           <mat-list-item>
@@ -52,8 +52,8 @@
           </mat-list-item>
           <mat-list-item>
             <mat-radio-group
-              formControlName="isCompanyRequired"
               (change)="onIsCompanyRequiredChange($event.value)"
+              formControlName="isCompanyRequired"
               fxLayout="row"
               fxLayoutGap="20px">
               <mat-radio-button [disabled]="!formUser.valid" value="yes">Yes</mat-radio-button>
@@ -70,13 +70,13 @@
         <mat-list>
           <!-- PIB Field -->
           <mat-list-item class="input-list-item">
-            <mat-form-field appearance="fill" class="full-width">
+            <mat-form-field appearance="fill" >
               <mat-label>PIB</mat-label>
-              <input matInput type="number" formControlName="PIB" placeholder="Enter exactly 9 digits" required/>
-              <mat-error *ngIf="formCompany.get('PIB')?.hasError('required')">
+              <input formControlName="PIB" matInput placeholder="Enter exactly 9 digits" required type="number"/>
+              <mat-error *ngIf="formCompany.get('PIB')?.errors?.['required']">
                 PIB is required.
               </mat-error>
-              <mat-error *ngIf="formCompany.get('PIB')?.hasError('pattern')">
+              <mat-error *ngIf="formCompany.get('PIB')?.errors?.['pattern']">
                 Must be exactly 9 digits.
               </mat-error>
             </mat-form-field>
@@ -84,10 +84,10 @@
 
           <!-- Address Field -->
           <mat-list-item class="input-list-item">
-            <mat-form-field appearance="fill" class="full-width">
+            <mat-form-field appearance="fill" >
               <mat-label>Address</mat-label>
-              <input matInput type="text" formControlName="address" placeholder="Enter your address" required/>
-              <mat-error *ngIf="formCompany.get('address')?.hasError('required')">
+              <input formControlName="address" matInput placeholder="Enter your address" required type="text"/>
+              <mat-error *ngIf="formCompany.get('address')?.errors?.['required']">
                 Address is required.
               </mat-error>
             </mat-form-field>
@@ -95,10 +95,10 @@
 
           <!-- Phone Field -->
           <mat-list-item class="input-list-item">
-            <mat-form-field appearance="fill" class="full-width">
+            <mat-form-field appearance="fill" >
               <mat-label>Phone</mat-label>
-              <input matInput type="number" formControlName="phone" placeholder="Enter your phone number" required/>
-              <mat-error *ngIf="formCompany.get('phone')?.hasError('required')">
+              <input formControlName="phone" matInput placeholder="Enter your phone number" required type="number"/>
+              <mat-error *ngIf="formCompany.get('phone')?.errors?.['required']">
                 Phone number is required.
               </mat-error>
             </mat-form-field>
@@ -107,10 +107,10 @@
           <!-- Logo (File Upload) -->
           <mat-list-item class="input-list-item">
             <mat-label>Choose company logo (optional)</mat-label>
-            <input #logoInput hidden="hidden" type="file" (change)="onFileSelected($event)" accept=".png, .jpg, .jpeg"/>
-            <input hidden="hidden" type="text" formControlName="logo"/>
+            <input #logoInput (change)="onFileSelected($event)" accept=".png, .jpg, .jpeg" hidden="hidden" type="file"/>
+            <input formControlName="logo" hidden="hidden" type="text"/>
             <br>
-            <button mat-raised-button color="primary" (click)="logoInput.click()">Browse</button>
+            <button (click)="logoInput.click()" color="primary" mat-raised-button>Browse</button>
             <br>
             <span *ngIf="this.selectedFile && isValidFile">
               Selected File: {{ this.selectedFile?.name }}
@@ -122,10 +122,10 @@
 
           <!-- Website URL (Text Input) -->
           <mat-list-item class="input-list-item">
-            <mat-form-field appearance="fill" class="full-width">
+            <mat-form-field appearance="fill" >
               <mat-label>Website URL</mat-label>
-              <input matInput type="text" formControlName="websiteUrl" placeholder="Enter your website URL"/>
-              <mat-error *ngIf="formCompany.get('websiteUrl')?.hasError('pattern')">
+              <input formControlName="websiteUrl" matInput placeholder="Enter your website URL" type="text"/>
+              <mat-error *ngIf="formCompany.get('websiteUrl')?.errors?.['pattern']">
                 Invalid URL format.
               </mat-error>
             </mat-form-field>
@@ -134,8 +134,8 @@
       </form>
 
       <div>
-        <button mat-raised-button [disabled]="!this.formCompany.valid || (this.selectedFile && !this.isValidFile)"
-                color="primary" (click)="onLastStep()">Next
+        <button (click)="onLastStep()" [disabled]="!this.formCompany.valid || (this.selectedFile && !this.isValidFile)"
+                color="primary" mat-raised-button>Next
         </button>
       </div>
     </mat-step>
@@ -161,8 +161,8 @@
         </mat-list>
       </div>
       <div>
-        <button mat-raised-button (click)="onReset()">Reset</button>
-        <button mat-raised-button color="primary" (click)="onConfirm()">Confirm</button>
+        <button (click)="onReset()" mat-raised-button>Reset</button>
+        <button (click)="onConfirm()" color="primary" mat-raised-button>Confirm</button>
       </div>
     </mat-step>
   </mat-stepper>

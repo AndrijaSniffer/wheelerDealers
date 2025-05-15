@@ -36,7 +36,7 @@ import {BaseDialog} from '../base-dialog';
     MatError
   ],
   templateUrl: 'fuel-dialog.html',
-  styleUrl: 'fuel-dialog.css'
+  styleUrls: ['fuel-dialog.css', '../dialogs.component.css']
 })
 export class FuelDialog extends BaseDialog<Fuel> {
   private readonly _fuelService: FuelService = inject(FuelService);

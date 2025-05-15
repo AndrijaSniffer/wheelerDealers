@@ -8,7 +8,7 @@
   <form *ngIf="!isView" [formGroup]="form">
     <mat-list class="form-list">
       <mat-list-item>
-        <mat-form-field appearance="fill" class="full-width">
+        <mat-form-field appearance="fill" >
           <mat-label>Engine type</mat-label>
           <input matInput type="input" formControlName="type" (keyup.enter)="submit()" cdkFocusInitial required/>
           <mat-error *ngIf="form.get('type')?.errors?.['required']">Engine type is required.</mat-error>

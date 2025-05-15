@@ -42,7 +42,7 @@ import {BaseDialog} from '../base-dialog';
     MatOption
   ],
   templateUrl: 'manufacturer-dialog.html',
-  styleUrl: 'manufacturer-dialog.css'
+  styleUrls: ['manufacturer-dialog.css', '../dialogs.component.css']
 })
 export class ManufacturerDialog extends BaseDialog<Manufacturer> {
   countries: Country[] = [];

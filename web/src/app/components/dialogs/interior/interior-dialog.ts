@@ -38,7 +38,7 @@ import {BaseDialog} from '../base-dialog';
     MatCheckbox
   ],
   templateUrl: 'interior-dialog.html',
-  styleUrl: 'interior-dialog.css'
+  styleUrls: ['interior-dialog.css', '../dialogs.component.css']
 })
 export class InteriorDialog extends BaseDialog<Interior> {
   private readonly _interiorService: InteriorService = inject(InteriorService);

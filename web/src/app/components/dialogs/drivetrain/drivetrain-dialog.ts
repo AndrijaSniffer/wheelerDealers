@@ -36,7 +36,7 @@ import {BaseDialog} from '../base-dialog';
     MatError
   ],
   templateUrl: 'drivetrain-dialog.html',
-  styleUrl: 'drivetrain-dialog.css'
+  styleUrls: ['drivetrain-dialog.css', '../dialogs.component.css']
 })
 export class DrivetrainDialog extends BaseDialog<Drivetrain> {
   private readonly _drivetrainService: DrivetrainService = inject(DrivetrainService);

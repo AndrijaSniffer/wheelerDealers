@@ -44,7 +44,7 @@ import {BaseDialog} from '../base-dialog';
     MatOption
   ],
   templateUrl: 'model-dialog.html',
-  styleUrl: 'model-dialog.css'
+  styleUrls: ['model-dialog.css', '../dialogs.component.css']
 })
 export class ModelDialog extends BaseDialog<Model> {
   engines: Engine[] = [];

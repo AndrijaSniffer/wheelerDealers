@@ -14,7 +14,6 @@ import {IDialogData} from '../dialogs.component';
 import {BaseDialog} from '../base-dialog';
 import {NotificationService} from '../../../services/notification.service';
 import {CarService} from '../../../services/car.service';
-import {AuthService} from '../../../services/auth.service';
 import {ModelService} from '../../../services/model.service';
 import {TransmissionService} from '../../../services/transmission.service';
 import {FuelService} from '../../../services/fuel.service';
@@ -62,7 +61,7 @@ import {AppUser} from '../../../app.user';
     MatCheckbox
   ],
   templateUrl: 'car-dialog.html',
-  styleUrl: 'car-dialog.css'
+  styleUrls: ['car-dialog.css', '../dialogs.component.css']
 })
 export class CarDialog extends BaseDialog<Car> {
   manufacturers: Manufacturer[] = [];
@@ -72,7 +71,6 @@ export class CarDialog extends BaseDialog<Car> {
   interiors: Interior[] = [];
   drivetrains: Drivetrain[] = [];
   private readonly _carService: CarService = inject(CarService);
-  private readonly _authService: AuthService = inject(AuthService);
   private readonly _appUser: AppUser = inject(AppUser);
   private readonly _manufacturerService: ManufacturerService = inject(ManufacturerService);
   private readonly _modelService: ModelService = inject(ModelService);
