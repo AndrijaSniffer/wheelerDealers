@@ -1,7 +1,7 @@
-import { Transmission } from './transmission';
+import { TransmissionType } from './transmissionType';
 
 describe('Transmission', () => {
   it('should create an instance', () => {
-    expect(new Transmission()).toBeTruthy();
+    expect(new TransmissionType()).toBeTruthy();
   });
 });

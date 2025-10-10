@@ -42,6 +42,7 @@ import {EngineTypeDialog} from '../../dialogs/engine-type/engine-type-dialog';
     MatHeaderCellDef
   ],
   templateUrl: './engine-type.component.html',
+  standalone: true,
   styleUrl: './engine-type.component.css'
 })
 export class EngineTypeComponent {

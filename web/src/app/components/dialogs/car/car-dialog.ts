@@ -6,7 +6,7 @@ import {
   MatDialogRef,
   MatDialogTitle
 } from '@angular/material/dialog';
-import {MatButton, MatIconButton} from '@angular/material/button';
+import {MatButton} from '@angular/material/button';
 import {FormBuilder, FormsModule, ReactiveFormsModule, Validators} from '@angular/forms';
 import {NgIf} from '@angular/common';
 import {Car, CarDTO} from '../../../classes/car';
@@ -15,9 +15,8 @@ import {BaseDialog} from '../base-dialog';
 import {NotificationService} from '../../../services/notification.service';
 import {CarService} from '../../../services/car.service';
 import {ModelService} from '../../../services/model.service';
-import {TransmissionService} from '../../../services/transmission.service';
+import {TransmissionTypeService} from '../../../services/transmission-type.service';
 import {FuelService} from '../../../services/fuel.service';
-import {InteriorService} from '../../../services/interior.service';
 import {MatError, MatFormField, MatLabel} from '@angular/material/form-field';
 import {MatInput} from '@angular/material/input';
 import {MatList, MatListItem} from '@angular/material/list';
@@ -25,17 +24,18 @@ import {MatOption} from '@angular/material/core';
 import {MatSelect, MatSelectChange} from '@angular/material/select';
 import {DrivetrainService} from '../../../services/drivetrain.service';
 import {Model} from '../../../classes/model';
-import {Transmission} from '../../../classes/transmission';
+import {TransmissionType} from '../../../classes/transmissionType';
 import {Fuel} from '../../../classes/fuel';
-import {Interior} from '../../../classes/interior';
 import {Drivetrain} from '../../../classes/drivetrain';
 import {ManufacturerService} from '../../../services/manufacturer.service';
 import {Manufacturer} from '../../../classes/manufacturer';
-import {ConvertEngineVolumePipe} from '../../../pipes/convert-engine-volume.pipe';
-import {MatIcon} from '@angular/material/icon';
 import {MatCheckbox} from '@angular/material/checkbox';
 import {AppUtil} from '../../../app.util';
 import {AppUser} from '../../../app.user';
+import {EngineTypeService} from '../../../services/engine-type.service';
+import {EmissionClassService} from '../../../services/emission-class.service';
+import {EngineType} from '../../../classes/engine-type';
+import {EmissionClass} from '../../../classes/emission-class';
 
 @Component({
   selector: 'car-dialog',
@@ -55,29 +55,31 @@ import {AppUser} from '../../../app.user';
     MatListItem,
     MatOption,
     MatSelect,
-    ConvertEngineVolumePipe,
-    MatIconButton,
-    MatIcon,
     MatCheckbox
   ],
   templateUrl: 'car-dialog.html',
+  standalone: true,
   styleUrls: ['car-dialog.css', '../dialogs.component.css']
 })
 export class CarDialog extends BaseDialog<Car> {
   manufacturers: Manufacturer[] = [];
   models: Model[] = [];
-  transmissions: Transmission[] = [];
-  fuel: Fuel[] = [];
-  interiors: Interior[] = [];
+  transmissionTypes: TransmissionType[] = [];
+  fuels: Fuel[] = [];
   drivetrains: Drivetrain[] = [];
+  engineTypes: EngineType[] = [];
+  emissionClasses: EmissionClass[] = [];
+  currentYear = new Date().getFullYear();
+
   private readonly _carService: CarService = inject(CarService);
   private readonly _appUser: AppUser = inject(AppUser);
   private readonly _manufacturerService: ManufacturerService = inject(ManufacturerService);
   private readonly _modelService: ModelService = inject(ModelService);
-  private readonly _transmissionService: TransmissionService = inject(TransmissionService);
+  private readonly _transmissionTypeService: TransmissionTypeService = inject(TransmissionTypeService);
   private readonly _fuelService: FuelService = inject(FuelService);
-  private readonly _interiorService: InteriorService = inject(InteriorService);
   private readonly _drivetrainService: DrivetrainService = inject(DrivetrainService);
+  private readonly _engineTypeService: EngineTypeService = inject(EngineTypeService);
+  private readonly _emissionClassService: EmissionClassService = inject(EmissionClassService);
 
   constructor(
     dialogRef: MatDialogRef<CarDialog>,
@@ -89,59 +91,96 @@ export class CarDialog extends BaseDialog<Car> {
 
     this.form = fb.group({
       manufacturer: [null, Validators.required],
-      model: [null, Validators.required,],
-      transmission: [null, Validators.required],
+      model: [null, Validators.required],
+      transmissionType: [null, Validators.required],
+      engineType: [null, Validators.required],
+      emissionClass: [null, Validators.required],
       fuel: [null, Validators.required],
-      interior: [null, Validators.required],
       drivetrain: [null, Validators.required],
-      price: [100.00, Validators.required],
-      color: [null],
+      year: [this.currentYear, [Validators.required, Validators.min(1900), Validators.max(this.currentYear + 1)]],
+      horsepower: [null, [Validators.required, Validators.min(1)]],
+      kilowatt: [{value: null, disabled: true}, [Validators.required, Validators.min(1)]],
+      engineVolume: [null, [Validators.required, Validators.min(1)]],
+      transmissionGears: [1, Validators.min(1)],
+      doors: [null, [Validators.required, Validators.min(2), Validators.max(7)]],
+      seats: [null, [Validators.required, Validators.min(1), Validators.max(12)]],
+      steeringWheelLeft: [true, Validators.required],
+      interiorColor: [null],
+      price: [100.00, [Validators.required, Validators.min(0)]],
+      exteriorColor: [null],
       chassisNumber: [null],
       isPreowned: [true, Validators.required]
     });
 
     this.form.get('model')?.disable();
 
+    // Auto-calculate kW from HP
+    this.form.get('horsepower')?.valueChanges.subscribe(hp => {
+      if (hp) {
+        const kw = Math.round(hp * 0.7355);
+        this.form.get('kilowatt')?.patchValue(kw, {emitEvent: false});
+      }
+    });
+
     if (this.isView) {
       // View mode: Display raw JSON of the object
       this.jsonCurrentObject = AppUtil.toRawJSONText(dialogData?.object);
-      this.form.disable(); // Optionally disable the form in view mode
+      this.form.disable();
     } else {
       this._manufacturerService.getAll().subscribe({
         next: manufacturers => {
           this.manufacturers = manufacturers;
 
-          this._transmissionService.getAll().subscribe({
-            next: transmissions => {
-              this.transmissions = transmissions;
+          this._transmissionTypeService.getAll().subscribe({
+            next: transmissionTypes => {
+              this.transmissionTypes = transmissionTypes;
 
               this._fuelService.getAll().subscribe({
-                next: fuel => {
-                  this.fuel = fuel;
+                next: fuels => {
+                  this.fuels = fuels;
 
-                  this._interiorService.getAll().subscribe({
-                    next: interiors => {
-                      this.interiors = interiors;
+                  this._drivetrainService.getAll().subscribe({
+                    next: drivetrains => {
+                      this.drivetrains = drivetrains;
 
-                      this._drivetrainService.getAll().subscribe({
-                        next: drivetrains => {
-                          this.drivetrains = drivetrains;
+                      this._engineTypeService.getAll().subscribe({
+                        next: engineTypes => {
+                          this.engineTypes = engineTypes;
 
-                          if (dialogData.object) {
-                            this.models.push(dialogData.object.model);
-                            this.form.patchValue({
-                              manufacturer: dialogData.object.model.manufacturer.id,
-                              model: dialogData.object.model.id,
-                              transmission: dialogData.object.transmission.id,
-                              fuel: dialogData.object.fuel.id,
-                              interior: dialogData.object.interior.id,
-                              drivetrain: dialogData.object.drivetrain.id,
-                              price: dialogData.object.price,
-                              color: dialogData.object.color,
-                              chassisNumber: dialogData.object.chassisNumber,
-                              isPreowned: dialogData.object.isPreowned
-                            });
-                          }
+                          this._emissionClassService.getAll().subscribe({
+                            next: emissionClasses => {
+                              this.emissionClasses = emissionClasses;
+
+                              if (dialogData?.object) {
+                                this.isNewOrEdit = false;
+                                this.models.push(dialogData.object.model);
+                                this.form.patchValue({
+                                  manufacturer: dialogData.object.model.manufacturer.id,
+                                  model: dialogData.object.model.id,
+                                  transmissionType: dialogData.object.transmissionType.id,
+                                  engineType: dialogData.object.engineType.id,
+                                  emissionClass: dialogData.object.emissionClass.id,
+                                  fuel: dialogData.object.fuel.id,
+                                  drivetrain: dialogData.object.drivetrain.id,
+                                  year: dialogData.object.year,
+                                  horsepower: dialogData.object.horsepower,
+                                  kilowatt: dialogData.object.kilowatt,
+                                  engineVolume: dialogData.object.engineVolume,
+                                  transmissionGears: dialogData.object.transmissionGears,
+                                  doors: dialogData.object.doors,
+                                  seats: dialogData.object.seats,
+                                  steeringWheelLeft: dialogData.object.steeringWheelLeft,
+                                  interiorColor: dialogData.object.interiorColor,
+                                  price: dialogData.object.price,
+                                  exteriorColor: dialogData.object.exteriorColor,
+                                  chassisNumber: dialogData.object.chassisNumber,
+                                  isPreowned: dialogData.object.isPreowned
+                                });
+                              } else {
+                                this.isNewOrEdit = true;
+                              }
+                            }
+                          });
                         }
                       });
                     }
@@ -165,26 +204,38 @@ export class CarDialog extends BaseDialog<Car> {
   }
 
   submit() {
-    if(this.form.valid){
-      if(this.isNewOrEdit){
-        const newCar: CarDTO = {
-          id: null,
-          model: this.form.get('model')!.value,
-          user: this._appUser.user.id,
-          transmission: this.form.get('transmission')!.value,
-          drivetrain: this.form.get('drivetrain')!.value,
-          fuel: this.form.get('fuel')!.value,
-          color: this.form.get('color')!.value,
-          chassisNumber: this.form.get('chassisNumber')!.value,
-          interior: this.form.get('interior')!.value,
-          price: this.form.get('price')!.value,
-          isPreowned: this.form.get('isPreowned')!.value,
-          createdAt: new Date()
-        };
+    if (this.form.valid) {
+      const formData = this.form.getRawValue();  // Gets all fields including disabled ones
 
-        console.warn(newCar);
+      const carDTO: CarDTO = {
+        id: this.isNewOrEdit ? null : this.dialogData?.object?.id ?? null,
+        model: formData.model,
+        user: this._appUser.user.id,
+        transmissionType: formData.transmissionType,
+        engineType: formData.engineType,
+        emissionClass: formData.emissionClass,
+        drivetrain: formData.drivetrain,
+        fuel: formData.fuel,
+        year: formData.year,
+        horsepower: formData.horsepower,
+        kilowatt: formData.kilowatt,
+        engineVolume: formData.engineVolume,
+        transmissionGears: formData.transmissionGears,
+        doors: formData.doors,
+        seats: formData.seats,
+        steeringWheelLeft: formData.steeringWheelLeft,
+        interiorColor: formData.interiorColor,
+        exteriorColor: formData.exteriorColor,
+        chassisNumber: formData.chassisNumber,
+        price: formData.price,
+        isPreowned: formData.isPreowned,
+        createdAt: this.isNewOrEdit ? new Date() : this.dialogData?.object?.createdAt ?? new Date()
+      };
 
-        this._carService.create(newCar).subscribe({
+      console.warn(carDTO);
+
+      if (this.isNewOrEdit) {
+        this._carService.create(carDTO).subscribe({
           next: car => {
             this.dismiss(car);
           },
@@ -192,8 +243,20 @@ export class CarDialog extends BaseDialog<Car> {
             console.error('Error creating car:', error);
             this.notification.showTimedErrorNotification(AppUtil.parseJsonErrorsToString(error.error));
           }
-        })
+        });
+      } else {
+        this._carService.update(carDTO).subscribe({
+          next: car => {
+            this.dismiss(car);
+          },
+          error: (error) => {
+            console.error('Error updating car:', error);
+            this.notification.showTimedErrorNotification(AppUtil.parseJsonErrorsToString(error.error));
+          }
+        });
       }
+    } else {
+      this.notification.showTimedErrorNotification('Please fill out all required fields');
     }
   }
 }

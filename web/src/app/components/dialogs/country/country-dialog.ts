@@ -37,6 +37,7 @@ import {BaseDialog} from '../base-dialog';
   ],
   templateUrl: 'country.dialog.html',
   styleUrls: ['country.dialog.css', '../dialogs.component.css'],
+  standalone: true
 })
 export class CountryDialog extends BaseDialog<Country> {
   private readonly _countryService: CountryService = inject(CountryService);

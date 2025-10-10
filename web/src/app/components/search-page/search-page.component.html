@@ -59,9 +59,9 @@
                         <mat-form-field>
                           <mat-label>Transmission</mat-label>
                           <mat-select formControlName="transmission">
-                            @for (transmission of transmissions; track transmission) {
+                            @for (transmissionType of transmissions; track transmissionType) {
                               <mat-option
-                                [value]="transmission.id">{{ transmission.gears ? transmission.gears + ' - speed ' : 'Any ' }}{{ transmission.type }}
+                                [value]="transmissionType.id">{{ transmissionType.type }}
                               </mat-option>
                             }
                           </mat-select>
@@ -164,10 +164,9 @@
           <div class="card mx-auto" style="width: 16vw;">
             <img alt="Picture of a car" class="card-img-top" height="390" priority ngSrc="/No-Image-Placeholder.png" width="481">
             <div class="card-body">
-              <h5 class="card-title">{{ car.model.manufacturer.name }} {{ car.model.name }}
-                <br/> Year: {{ car.model.yearOfManufacture }}.</h5>
+              <h5 class="card-title">{{ car.model.manufacturer.name }} {{ car.model.name }}</h5>
               <ul class="list-group list-group-flush">
-                <li class="list-group-item">Horsepower: {{ car.model.engine.horsepower }} HP</li>
+<!--                <li class="list-group-item">Horsepower: {{ car.model.engine.horsepower }} HP</li>-->
                 <li class="list-group-item">Fuel type: {{ car.fuel.type }}</li>
                 <li class="list-group-item">Drivetrain: {{ car.drivetrain.type }}</li>
                 <li class="list-group-item">Price: {{ car.price }}&euro;</li>

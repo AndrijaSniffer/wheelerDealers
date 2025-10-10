@@ -22,6 +22,7 @@ export interface IDialogData<T> {
     MatDialogActions,
     MatButton
   ],
+  standalone: true,
   styles: ''
 })
 export class YesNoDialogComponent {

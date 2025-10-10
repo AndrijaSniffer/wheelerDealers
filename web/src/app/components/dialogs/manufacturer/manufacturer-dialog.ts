@@ -42,6 +42,7 @@ import {BaseDialog} from '../base-dialog';
     MatOption
   ],
   templateUrl: 'manufacturer-dialog.html',
+  standalone: true,
   styleUrls: ['manufacturer-dialog.css', '../dialogs.component.css']
 })
 export class ManufacturerDialog extends BaseDialog<Manufacturer> {

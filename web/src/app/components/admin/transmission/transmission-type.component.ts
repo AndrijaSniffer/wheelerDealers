@@ -14,13 +14,13 @@ import {MatList, MatListItem} from '@angular/material/list';
 import {NotificationService} from '../../../services/notification.service';
 import {MatDialog} from '@angular/material/dialog';
 import {AppUtil} from '../../../app.util';
+import {TransmissionTypeService} from '../../../services/transmission-type.service';
+import {TransmissionType} from '../../../classes/transmissionType';
 import {YesNoDialogComponent} from '../../dialogs/dialogs.component';
-import {InteriorService} from '../../../services/interior.service';
-import {Interior} from '../../../classes/interior';
-import {InteriorDialog} from '../../dialogs/interior/interior-dialog';
+import {TransmissionDialog} from '../../dialogs/transmission/transmission-dialog';
 
 @Component({
-  selector: 'app-interior',
+  selector: 'app-transmission',
   imports: [
     MatButton,
     MatCell,
@@ -38,27 +38,28 @@ import {InteriorDialog} from '../../dialogs/interior/interior-dialog';
     MatTable,
     MatHeaderCellDef
   ],
-  templateUrl: './interior.component.html',
-  styleUrl: './interior.component.css'
+  templateUrl: './transmission-type.component.html',
+  standalone: true,
+  styleUrl: './transmission-type.component.css'
 })
-export class InteriorComponent {
+export class TransmissionTypeComponent {
   private readonly _notification = inject(NotificationService);
-  private readonly _interiorService = inject(InteriorService);
+  private readonly _transmissionService = inject(TransmissionTypeService);
   private readonly _dialog = inject(MatDialog);
 
-  displayedColumns = ['id', 'doors', 'seats', 'steeringWheelLeft', 'color', 'options'];
-  dataSource: MatTableDataSource<Interior>;
-  private interiors: Interior[];
+  displayedColumns = ['id', 'type', 'options'];
+  dataSource: MatTableDataSource<TransmissionType>;
+  private transmissionTypes: TransmissionType[];
 
   constructor() {
     this.getAll();
   }
 
   getAll() {
-    this._interiorService.getAll().subscribe({
+    this._transmissionService.getAll().subscribe({
       next: data => {
-        this.interiors = data;
-        this.dataSource = new MatTableDataSource(this.interiors);
+        this.transmissionTypes = data;
+        this.dataSource = new MatTableDataSource(this.transmissionTypes);
       },
       error: err => {
         console.error(err);
@@ -68,54 +69,52 @@ export class InteriorComponent {
   }
 
   new() {
-    this._dialog.open(InteriorDialog, {
+    this._dialog.open(TransmissionDialog, {
       data: {object: null, isView: false}
     }).afterClosed().subscribe(result => {
-      console.warn(result);
       if (result) {
-        this._notification.showTimedNotification('New interior was successfully created!');
+        this._notification.showTimedNotification('New transmission successfully created!');
         this.getAll();
       }
     });
   }
 
   view(id: number) {
-    const selectedInterior = this.interiors.find(i => i.id === id);
+    const selectedTransmission: TransmissionType = this.transmissionTypes.find((t) => t.id === id);
 
-    this._dialog.open(InteriorDialog, {
-      data: {object: selectedInterior, isView: true}
+    this._dialog.open(TransmissionDialog, {
+      data: {object: selectedTransmission, isView: true}
     }).afterClosed().subscribe(() => {});
   }
 
   edit(id: number) {
-    const selectedInterior = this.interiors.find(i => i.id === id);
+    const selectedTransmission: TransmissionType = this.transmissionTypes.find((t) => t.id === id);
 
-    this._dialog.open(InteriorDialog, {
-      data: {object: selectedInterior, isView: false}
+    this._dialog.open(TransmissionDialog, {
+      data: {object: selectedTransmission, isView: false}
     }).afterClosed().subscribe(result => {
-      console.warn(result);
       if (result) {
-        this._notification.showTimedNotification('Interior was successfully updated!');
+        this._notification.showTimedNotification('Transmission successfully updated!');
         this.getAll();
       }
     });
   }
 
   delete(id: number) {
-    const selectedInterior = this.interiors.find(i => i.id === id);
+    const selectedTransmission: TransmissionType = this.transmissionTypes.find((t) => t.id === id);
 
     this._dialog.open(YesNoDialogComponent, {
-      data: `Are you sure you want to delete this interior?\n${JSON.stringify(selectedInterior)}`,
+      data: `Are you sure you want to delete this transmission?\n${JSON.stringify(selectedTransmission)}`,
     }).afterClosed().subscribe((result: boolean) => {
       if (result) {
-        this._interiorService.delete(id).subscribe({
+        this._transmissionService.delete(id).subscribe({
           next: _ => {
-            this._notification.showTimedNotification('Interior successfully deleted!');
+            this._notification.showTimedNotification('Transmission successfully deleted!');
             this.getAll();
           },
           error: err => {
             console.error(err);
-            this._notification.showTimedErrorNotification('Error deleting interior.');
+            this._notification.showTimedErrorNotification('Error deleting transmission.');
           }
         })
       }

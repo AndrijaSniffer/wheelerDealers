@@ -39,6 +39,7 @@ import {ModelDialog} from '../../dialogs/model/model-dialog';
     MatHeaderCellDef
   ],
   templateUrl: './model.component.html',
+  standalone: true,
   styleUrl: './model.component.css'
 })
 export class ModelComponent {

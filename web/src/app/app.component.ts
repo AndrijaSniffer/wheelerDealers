@@ -9,6 +9,7 @@ import {AppUtil} from './app.util';
   selector: 'app-root',
   imports: [RouterOutlet, NavBarComponent, FooterComponent],
   templateUrl: './app.component.html',
+  standalone: true,
   styleUrl: './app.component.css'
 })
 export class AppComponent {

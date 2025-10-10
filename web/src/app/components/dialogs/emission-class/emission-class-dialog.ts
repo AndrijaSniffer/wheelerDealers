@@ -36,6 +36,7 @@ import {BaseDialog} from '../base-dialog';
     MatError
   ],
   templateUrl: 'emission-class-dialog.html',
+  standalone: true,
   styleUrls: ['emission-class-dialog.css', '../dialogs.component.css']
 })
 export class EmissionClassDialog extends BaseDialog<EmissionClass> {

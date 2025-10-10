@@ -12,8 +12,8 @@ import {NgIf} from '@angular/common';
 import {MatList, MatListItem} from '@angular/material/list';
 import {MatError, MatFormField, MatLabel} from '@angular/material/form-field';
 import {MatInput} from '@angular/material/input';
-import {Transmission} from '../../../classes/transmission';
-import {TransmissionService} from '../../../services/transmission.service';
+import {TransmissionType} from '../../../classes/transmissionType';
+import {TransmissionTypeService} from '../../../services/transmission-type.service';
 import {NotificationService} from '../../../services/notification.service';
 import {AppUtil} from '../../../app.util';
 import {IDialogData} from '../dialogs.component';
@@ -36,15 +36,16 @@ import {BaseDialog} from '../base-dialog';
     MatError
   ],
   templateUrl: 'transmission-dialog.html',
+  standalone: true,
   styleUrls: ['transmission-dialog.css', '../dialogs.component.css']
 })
-export class TransmissionDialog extends BaseDialog<Transmission> {
-  private readonly _transmissionService: TransmissionService = inject(TransmissionService);
+export class TransmissionDialog extends BaseDialog<TransmissionType> {
+  private readonly _transmissionService: TransmissionTypeService = inject(TransmissionTypeService);
 
   constructor(
     dialogRef: MatDialogRef<TransmissionDialog>,
     fb: FormBuilder,
-    @Inject(MAT_DIALOG_DATA) dialogData: IDialogData<Transmission> | null,
+    @Inject(MAT_DIALOG_DATA) dialogData: IDialogData<TransmissionType> | null,
     notification: NotificationService
   ) {
     super(dialogRef, fb, dialogData, notification);
@@ -52,8 +53,7 @@ export class TransmissionDialog extends BaseDialog<Transmission> {
     if (dialogData && dialogData.object) {
       this.isNewOrEdit = false;
       this.form = fb.group({
-        type: [dialogData.object.type, Validators.required],
-        gears: [dialogData.object.gears]
+        type: [dialogData.object.type, Validators.required]
       });
 
     } else if (dialogData && !dialogData.object) {
@@ -67,10 +67,9 @@ export class TransmissionDialog extends BaseDialog<Transmission> {
   submit() {
     if (this.form.valid) {
       if (this.isNewOrEdit) {
-        const newTransmission: Transmission = {
+        const newTransmission: TransmissionType = {
           id: null,
-          type: this.form.get('type').value,
-          gears: this.form.get('gears').value === 0 ? null : this.form.get('gears').value,
+          type: this.form.get('type').value
         }
 
         this._transmissionService.create(newTransmission).subscribe({
@@ -86,7 +85,6 @@ export class TransmissionDialog extends BaseDialog<Transmission> {
         if (this.dialogData.object.id) {
           const transmission = this.dialogData.object;
           transmission.type = this.form.get('type').value;
-          transmission.gears = this.form.get('gears').value === 0 ? null : this.form.get('gears').value;
 
           this._transmissionService.update(transmission).subscribe({
             next: (transmission) => {

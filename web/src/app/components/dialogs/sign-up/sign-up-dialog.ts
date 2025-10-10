@@ -41,6 +41,7 @@ import {User} from '../../../classes/user';
     NgForOf
   ],
   templateUrl: 'sign-up.dialog.html',
+  standalone: true,
   styleUrls: ['sign-up.dialog.css']
 })
 export class SignUpDialog {

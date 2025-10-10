@@ -1,37 +1,78 @@
 import {User} from './user';
 import {Model} from './model';
-import {Transmission} from './transmission';
+import {TransmissionType} from './transmissionType';
 import {Fuel} from './fuel';
-import {Interior} from './interior';
 import {Drivetrain} from './drivetrain';
+import {EngineType} from './engine-type';
+import {EmissionClass} from './emission-class';
 
 export class Car {
   id: number | null;
   user: User;
   model: Model;
-  transmission: Transmission;
+  transmissionType: TransmissionType;
+  engineType: EngineType;
+  emissionClass: EmissionClass;
   fuel: Fuel;
-  interior: Interior;
   drivetrain: Drivetrain;
+  year: number;
+  horsepower: number;
+  kilowatt: number;
+  engineVolume: number;
+  transmissionGears: number | null;
+  doors: number;
+  seats: number;
+  steeringWheelLeft: boolean;
+  interiorColor: string | null;
   price: number;
-  color: string | null;
+  exteriorColor: string | null;
   chassisNumber: string | null;
   isPreowned: boolean;
   createdAt: Date;
 
-
-  constructor(id: number | null, user: User, model: Model, transmission: Transmission, fuel: Fuel, interior: Interior,
-              drivetrain: Drivetrain, price: number, color: string | null, chassisNumber: string | null,
-              isPreowned: boolean, createdAt: Date) {
+  constructor(
+    id: number | null,
+    user: User,
+    model: Model,
+    transmissionType: TransmissionType,
+    engineType: EngineType,
+    emissionClass: EmissionClass,
+    fuel: Fuel,
+    drivetrain: Drivetrain,
+    year: number,
+    horsepower: number,
+    kilowatt: number,
+    engineVolume: number,
+    transmissionGears: number,
+    doors: number,
+    seats: number,
+    steeringWheelLeft: boolean,
+    interiorColor: string | null,
+    price: number,
+    exteriorColor: string | null,
+    chassisNumber: string | null,
+    isPreowned: boolean,
+    createdAt: Date
+  ) {
     this.id = id;
     this.user = user;
     this.model = model;
-    this.transmission = transmission;
+    this.transmissionType = transmissionType;
+    this.engineType = engineType;
+    this.emissionClass = emissionClass;
     this.fuel = fuel;
-    this.interior = interior;
     this.drivetrain = drivetrain;
+    this.year = year;
+    this.horsepower = horsepower;
+    this.kilowatt = kilowatt;
+    this.engineVolume = engineVolume;
+    this.transmissionGears = transmissionGears;
+    this.doors = doors;
+    this.seats = seats;
+    this.steeringWheelLeft = steeringWheelLeft;
+    this.interiorColor = interiorColor;
     this.price = price;
-    this.color = color;
+    this.exteriorColor = exteriorColor;
     this.chassisNumber = chassisNumber;
     this.isPreowned = isPreowned;
     this.createdAt = createdAt;
@@ -42,12 +83,22 @@ export interface CarDTO {
   id: number | null;
   user: number;
   model: number;
-  transmission: number;
+  transmissionType: number;
+  engineType: number;
+  emissionClass: number;
   fuel: number;
-  interior: number;
   drivetrain: number;
+  year: number;
+  horsepower: number;
+  kilowatt: number;
+  engineVolume: number;
+  transmissionGears: number | null;
+  doors: number;
+  seats: number;
+  steeringWheelLeft: boolean;
+  interiorColor: string | null;
   price: number;
-  color: string | null;
+  exteriorColor: string | null;
   chassisNumber: string | null;
   isPreowned: boolean;
   createdAt: Date;

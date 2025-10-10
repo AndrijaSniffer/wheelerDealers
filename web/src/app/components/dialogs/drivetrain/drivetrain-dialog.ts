@@ -36,6 +36,7 @@ import {BaseDialog} from '../base-dialog';
     MatError
   ],
   templateUrl: 'drivetrain-dialog.html',
+  standalone: true,
   styleUrls: ['drivetrain-dialog.css', '../dialogs.component.css']
 })
 export class DrivetrainDialog extends BaseDialog<Drivetrain> {

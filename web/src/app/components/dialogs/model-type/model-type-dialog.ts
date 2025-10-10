@@ -36,6 +36,7 @@ import {BaseDialog} from '../base-dialog';
     MatError
   ],
   templateUrl: 'model-type-dialog.html',
+  standalone: true,
   styleUrls: ['model-type-dialog.css', '../dialogs.component.css']
 })
 export class ModelTypeDialog extends BaseDialog<ModelType> {

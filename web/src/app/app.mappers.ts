@@ -2,12 +2,10 @@ import {Country} from './classes/country';
 import {EngineType} from './classes/engine-type';
 import {EmissionClass} from './classes/emission-class';
 import {ModelType} from './classes/model-type';
-import {Transmission} from './classes/transmission';
+import {TransmissionType} from './classes/transmissionType';
 import {Fuel} from './classes/fuel';
-import {Interior} from './classes/interior';
 import {Drivetrain} from './classes/drivetrain';
 import {Manufacturer} from './classes/manufacturer';
-import {Engine} from './classes/engine';
 import {Model} from './classes/model';
 import {Car} from './classes/car';
 import {Company} from './classes/company';
@@ -89,11 +87,10 @@ export function mapToModelType(json: any): ModelType {
   };
 }
 
-export function mapToTransmission(json: any): Transmission {
+export function mapToTransmissionType(json: any): TransmissionType {
   return {
     id: json.transmission,
-    type: json.type,
-    gears: json.gears
+    type: json.type
   }
 }
 
@@ -101,16 +98,6 @@ export function mapToFuel(json: any): Fuel {
   return {
     id: json.fuel,
     type: json.type,
-  }
-}
-
-export function mapToInterior(json: any): Interior {
-  return {
-    id: json.interior,
-    doors: json.doors,
-    seats: json.seats,
-    color: json.color,
-    steeringWheelLeft: json.steering_wheel_left,
   }
 }
 
@@ -129,25 +116,11 @@ export function mapToManufacturer(json: any): Manufacturer {
   }
 }
 
-export function mapToEngine(json: any): Engine {
-  return {
-    id: json.engine,
-    engineType: mapToEngineType(json.engine_type),
-    emissionClass: mapToEmissionClass(json.emission_class),
-    engineCode: json.engine_code,
-    horsepower: json.horsepower,
-    kilowatt: json.kilowatt,
-    volume: json.volume,
-  }
-}
-
 export function mapToModel(json: any): Model {
   return {
     id: json.model,
     name: json.name,
-    yearOfManufacture: json.year_of_manufacture,
     manufacturer: mapToManufacturer(json.manufacturer),
-    engine: mapToEngine(json.engine),
   }
 }
 
@@ -156,13 +129,12 @@ export function mapToCar(json: any): Car {
     id: json.car,
     user: mapToUser(json.user),
     model: mapToModel(json.model),
-    transmission: mapToTransmission(json.transmission),
+    transmissionType: mapToTransmissionType(json.transmission),
     fuel: mapToFuel(json.fuel),
-    interior: mapToInterior(json.interior),
     drivetrain: mapToDrivetrain(json.drivetrain),
     price: json.price,
     chassisNumber: json.chassis_number,
-    color: json.color,
+    exteriorColor: json.exterior_color,
     isPreowned: json.is_preowned,
     createdAt: json.created_at,
   }

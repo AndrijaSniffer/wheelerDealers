@@ -125,40 +125,10 @@ class DrivetrainSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 
-class TransmissionSerializer(serializers.ModelSerializer):
-    gears = serializers.IntegerField(allow_null=True, required=False)  # Explicitly nullable
-
-    # Validate so that cannot be same type with null gears
-    def validate(self, data):
-        if Transmission.objects.filter(gears=data.get('gears'), type=data['type']).exists():
-            raise serializers.ValidationError("This gears-type combo already exists.")
-        return data
-
+class TransmissionTypeSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Transmission
+        model = TransmissionType
         fields = '__all__'
-
-
-class InteriorSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Interior
-        fields = '__all__'
-
-
-class EngineSerializer(serializers.ModelSerializer):
-    engine_type = serializers.PrimaryKeyRelatedField(queryset=EngineType.objects.all())
-
-    class Meta:
-        model = Engine
-        fields = '__all__'
-
-    def to_representation(self, instance):
-        # Customize how engine_type is displayed
-        ret = super().to_representation(instance)
-        ret['engine_type'] = EngineTypeSerializer(instance.engine_type).data
-        ret['emission_class'] = EmissionClassSerializer(instance.emission_class).data
-        return ret
-
 
 class ManufacturerSerializer(serializers.ModelSerializer):
     country = serializers.PrimaryKeyRelatedField(queryset=Country.objects.all())
@@ -176,7 +146,6 @@ class ManufacturerSerializer(serializers.ModelSerializer):
 
 class ModelSerializer(serializers.ModelSerializer):
     manufacturer = serializers.PrimaryKeyRelatedField(queryset=Manufacturer.objects.all())
-    engine = serializers.PrimaryKeyRelatedField(queryset=Engine.objects.all())
     model_types = serializers.SerializerMethodField()
 
     class Meta:
@@ -191,9 +160,8 @@ class ModelSerializer(serializers.ModelSerializer):
         return ModelTypeSerializer(model_types, many=True).data
 
     def to_representation(self, instance):
-        # Customize how manufacturer and engine are displayed
+        # Customize how manufacturer is displayed
         ret = super().to_representation(instance)
-        ret['engine'] = EngineSerializer(instance.engine).data
         ret['manufacturer'] = ManufacturerSerializer(instance.manufacturer).data
         return ret
 
@@ -210,10 +178,11 @@ class ModelTypeModelSerializer(serializers.ModelSerializer):
 class CarSerializer(serializers.ModelSerializer):
     user = serializers.PrimaryKeyRelatedField(queryset=User.objects.all())
     model = serializers.PrimaryKeyRelatedField(queryset=Model.objects.all())
-    transmission = serializers.PrimaryKeyRelatedField(queryset=Transmission.objects.all())
+    transmission_type = serializers.PrimaryKeyRelatedField(queryset=TransmissionType.objects.all())
     fuel = serializers.PrimaryKeyRelatedField(queryset=Fuel.objects.all())
-    interior = serializers.PrimaryKeyRelatedField(queryset=Interior.objects.all())
     drivetrain = serializers.PrimaryKeyRelatedField(queryset=Drivetrain.objects.all())
+    engine_type = serializers.PrimaryKeyRelatedField(queryset=EngineType.objects.all())
+    emission_class = serializers.PrimaryKeyRelatedField(queryset=EmissionClass.objects.all())
     images = serializers.SerializerMethodField()
 
     class Meta:
@@ -221,28 +190,23 @@ class CarSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
     def get_images(self, obj):
-        car_images = CarImage.objects.filter(car=obj)
-        images = [ci.image for ci in car_images]
+        # Direct relationship now - images have car FK
+        images = Image.objects.filter(car=obj)
         return ImageSerializer(images, many=True).data
 
     def to_representation(self, instance):
         ret = super().to_representation(instance)
         ret['user'] = UserSerializer(instance.user).data
         ret['model'] = ModelSerializer(instance.model).data
-        ret['transmission'] = TransmissionSerializer(instance.transmission).data
+        ret['transmission_type'] = TransmissionTypeSerializer(instance.transmission_type).data
         ret['fuel'] = FuelSerializer(instance.fuel).data
-        ret['interior'] = InteriorSerializer(instance.interior).data
         ret['drivetrain'] = DrivetrainSerializer(instance.drivetrain).data
+        ret['engine_type'] = EngineTypeSerializer(instance.engine_type).data
+        ret['emission_class'] = EmissionClassSerializer(instance.emission_class).data
         return ret
 
 
 class ImageSerializer(serializers.ModelSerializer):
     class Meta:
         model = Image
-        fields = '__all__'
-
-
-class CarImageSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = CarImage
         fields = '__all__'

@@ -9,14 +9,14 @@ import {Model} from '../../classes/model';
 import {MatInput} from '@angular/material/input';
 import {MatButton} from '@angular/material/button';
 import {MatIcon} from '@angular/material/icon';
-import {Transmission} from '../../classes/transmission';
+import {TransmissionType} from '../../classes/transmissionType';
 import {Fuel} from '../../classes/fuel';
 import {MatCheckbox} from '@angular/material/checkbox';
 import {NgForOf, NgOptimizedImage} from '@angular/common';
 import {Car} from '../../classes/car';
 import {ManufacturerService} from '../../services/manufacturer.service';
 import {ModelService} from '../../services/model.service';
-import {TransmissionService} from '../../services/transmission.service';
+import {TransmissionTypeService} from '../../services/transmission-type.service';
 import {FuelService} from '../../services/fuel.service';
 import {CarService} from '../../services/car.service';
 import {NotificationService} from '../../services/notification.service';
@@ -56,12 +56,13 @@ export interface ISearchParameters {
     NgForOf
   ],
   templateUrl: './search-page.component.html',
+  standalone: true,
   styleUrl: './search-page.component.css'
 })
 export class SearchPageComponent {
   manufacturers: Manufacturer[] = [];
   models: Model[] = [];
-  transmissions: Transmission[] = [];
+  transmissions: TransmissionType[] = [];
   fuel: Fuel[] = [];
   carColors: string[] = [];
   cars: Car[] = [];
@@ -69,7 +70,7 @@ export class SearchPageComponent {
   numberOfRows: number = 0;
   private readonly _manufacturerService: ManufacturerService = inject(ManufacturerService);
   private readonly _modelService: ModelService = inject(ModelService);
-  private readonly _transmissionService: TransmissionService = inject(TransmissionService);
+  private readonly _transmissionService: TransmissionTypeService = inject(TransmissionTypeService);
   private readonly _fuelService: FuelService = inject(FuelService);
   private readonly _carService: CarService = inject(CarService);
   private readonly _notifications: NotificationService = inject(NotificationService);
@@ -113,7 +114,7 @@ export class SearchPageComponent {
 
     this._modelService.getAll().subscribe({
       next: data => {
-        this.models[0] = {id: 0, name: 'None', engine: null, manufacturer: null, yearOfManufacture: null};
+        this.models[0] = {id: 0, name: 'None', manufacturer: null};
 
         data.forEach((model: Model) => {
           this.models.push(model);
@@ -127,9 +128,9 @@ export class SearchPageComponent {
 
     this._transmissionService.getAll().subscribe({
       next: data => {
-        this.transmissions[0] = {id: 0, type: 'None', gears: null};
+        this.transmissions[0] = {id: 0, type: 'None'};
 
-        data.forEach((transmission: Transmission) => {
+        data.forEach((transmission: TransmissionType) => {
           this.transmissions.push(transmission);
         })
       },

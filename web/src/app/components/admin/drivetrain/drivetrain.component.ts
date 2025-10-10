@@ -39,6 +39,7 @@ import {DrivetrainDialog} from '../../dialogs/drivetrain/drivetrain-dialog';
     MatHeaderCellDef
   ],
   templateUrl: './drivetrain.component.html',
+  standalone: true,
   styleUrl: './drivetrain.component.css'
 })
 export class DrivetrainComponent {

@@ -15,10 +15,8 @@ import {MatInput} from '@angular/material/input';
 import {MatOption, MatSelect} from '@angular/material/select';
 import {Model, ModelDTO} from '../../../classes/model';
 import {ModelService} from '../../../services/model.service';
-import {EngineService} from '../../../services/engine.service';
 import {ManufacturerService} from '../../../services/manufacturer.service';
 import {NotificationService} from '../../../services/notification.service';
-import {Engine} from '../../../classes/engine';
 import {Manufacturer} from '../../../classes/manufacturer';
 import {AppUtil} from '../../../app.util';
 import {IDialogData} from '../dialogs.component';
@@ -44,14 +42,12 @@ import {BaseDialog} from '../base-dialog';
     MatOption
   ],
   templateUrl: 'model-dialog.html',
+  standalone: true,
   styleUrls: ['model-dialog.css', '../dialogs.component.css']
 })
 export class ModelDialog extends BaseDialog<Model> {
-  engines: Engine[] = [];
   manufacturers: Manufacturer[] = [];
-  currentYear = new Date().getFullYear();
   private readonly _modelService: ModelService = inject(ModelService);
-  private readonly _engineService: EngineService = inject(EngineService);
   private readonly _manufacturerService: ManufacturerService = inject(ManufacturerService);
 
   constructor(
@@ -64,9 +60,7 @@ export class ModelDialog extends BaseDialog<Model> {
 
     this.form = this.fb.group({
       name: ['', Validators.required],
-      yearOfManufacture: [1930, Validators.required],
-      manufacture: [null, Validators.required],
-      engine: [null, Validators.required]
+      manufacture: [null, Validators.required]
     });
 
     if (this.isView) {
@@ -74,38 +68,27 @@ export class ModelDialog extends BaseDialog<Model> {
       this.jsonCurrentObject = AppUtil.toRawJSONText(dialogData?.object);
       this.form.disable(); // Optionally disable the form in view mode
     } else {
-      // Edit or New mode: Fetch countries and initialize form accordingly
-      this._engineService.getAll().subscribe({
+      // Edit or New mode: Fetch manufacturers and initialize form accordingly
+      this._manufacturerService.getAll().subscribe({
         next: (data) => {
-          this.engines = data;
-          this._manufacturerService.getAll().subscribe({
-            next: (data) => {
-              this.manufacturers = data;
+          this.manufacturers = data;
 
-              if (dialogData?.object) {
-                // Editing an existing engine
-                this.isNewOrEdit = false;
-                this.form.patchValue({
-                  name: dialogData.object.name,
-                  yearOfManufacture: dialogData.object.yearOfManufacture,
-                  manufacture: dialogData.object.manufacturer.id,
-                  engine: dialogData.object.engine.id
-                });
-              } else {
-                // Creating a new manufacturer
-                this.isNewOrEdit = true;
-                // Form is already initialized with defaults
-              }
-            },
-            error: (error) => {
-              console.error('Error fetching manufacturers:', error);
-              notification.showTimedErrorNotification('Failed to load manufacturers');
-            }
-          });
+          if (dialogData?.object) {
+            // Editing an existing model
+            this.isNewOrEdit = false;
+            this.form.patchValue({
+              name: dialogData.object.name,
+              manufacture: dialogData.object.manufacturer.id
+            });
+          } else {
+            // Creating a new model
+            this.isNewOrEdit = true;
+            // Form is already initialized with defaults
+          }
         },
         error: (error) => {
-          console.error('Error fetching engine:', error);
-          notification.showTimedErrorNotification('Failed to load engine');
+          console.error('Error fetching manufacturers:', error);
+          notification.showTimedErrorNotification('Failed to load manufacturers');
         }
       });
     }
@@ -114,12 +97,10 @@ export class ModelDialog extends BaseDialog<Model> {
   submit() {
     if (this.form.valid) {
       if (this.isNewOrEdit) {
-        // Create new manufacturer
+        // Create new model
         const newModel: ModelDTO = {
           id: null,
           name: this.form.get('name').value,
-          yearOfManufacture: this.form.get('yearOfManufacture').value,
-          engine: this.form.get('engine').value,
           manufacturer: this.form.get('manufacture').value
         };
 
@@ -133,13 +114,11 @@ export class ModelDialog extends BaseDialog<Model> {
           }
         });
       } else {
-        // Update existing manufacturer
+        // Update existing model
         if (this.dialogData?.object?.id) {
           const model: ModelDTO = {
             id: this.dialogData.object.id,
             name: this.form.get('name').value,
-            yearOfManufacture: this.form.get('yearOfManufacture').value,
-            engine: this.form.get('engine').value,
             manufacturer: this.form.get('manufacture').value
           };
 

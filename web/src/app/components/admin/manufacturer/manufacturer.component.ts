@@ -39,6 +39,7 @@ import {ManufacturerDialog} from '../../dialogs/manufacturer/manufacturer-dialog
     MatHeaderCellDef
   ],
   templateUrl: './manufacturer.component.html',
+  standalone: true,
   styleUrl: './manufacturer.component.css'
 })
 export class ManufacturerComponent {

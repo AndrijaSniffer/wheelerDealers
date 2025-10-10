@@ -36,6 +36,7 @@ import {BaseDialog} from '../base-dialog';
     MatError
   ],
   templateUrl: 'fuel-dialog.html',
+  standalone: true,
   styleUrls: ['fuel-dialog.css', '../dialogs.component.css']
 })
 export class FuelDialog extends BaseDialog<Fuel> {

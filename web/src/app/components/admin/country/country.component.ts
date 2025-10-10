@@ -42,6 +42,7 @@ import {CountryDialog} from '../../dialogs/country/country-dialog';
     MatMiniFabButton
   ],
   templateUrl: './country.component.html',
+  standalone: true,
   styleUrl: './country.component.css'
 })
 export class CountryComponent {

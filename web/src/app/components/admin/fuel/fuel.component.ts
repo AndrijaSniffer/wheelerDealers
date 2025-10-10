@@ -39,6 +39,7 @@ import {FuelDialog} from '../../dialogs/fuel/fuel-dialog';
     MatHeaderCellDef
   ],
   templateUrl: './fuel.component.html',
+  standalone: true,
   styleUrl: './fuel.component.css'
 })
 export class FuelComponent {

@@ -39,6 +39,7 @@ import {DatePipe} from '@angular/common';
     DatePipe
   ],
   templateUrl: './user.component.html',
+  standalone: true,
   styleUrl: './user.component.css'
 })
 export class UserComponent {

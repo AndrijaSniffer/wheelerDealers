@@ -38,6 +38,7 @@ import {EmissionClassDialog} from '../../dialogs/emission-class/emission-class-d
     MatHeaderCellDef
   ],
   templateUrl: './emission-class.component.html',
+  standalone: true,
   styleUrl: './emission-class.component.css'
 })
 export class EmissionClassComponent {

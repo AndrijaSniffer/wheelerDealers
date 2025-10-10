@@ -22,6 +22,7 @@ import {AuthService} from '../../../services/auth.service';
     MatGridTile
   ],
   templateUrl: 'login.dialog.html',
+  standalone: true,
   styleUrl: 'login.dialog.css'
 })
 export class LoginDialog {

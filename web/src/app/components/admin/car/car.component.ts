@@ -17,7 +17,6 @@ import {AppUtil} from '../../../app.util';
 import {YesNoDialogComponent} from '../../dialogs/dialogs.component';
 import {CarService} from '../../../services/car.service';
 import {Car} from '../../../classes/car';
-import {EngineDialog} from '../../dialogs/engine/engine-dialog';
 import {DatePipe} from '@angular/common';
 
 @Component({
@@ -40,6 +39,7 @@ import {DatePipe} from '@angular/common';
     DatePipe
   ],
   templateUrl: './car.component.html',
+  standalone: true,
   styleUrl: './car.component.css'
 })
 export class CarComponent {
@@ -84,11 +84,6 @@ export class CarComponent {
 
   view(id: number) {
     const selectedCar = this.cars.find(c => c.id === id);
-
-    this._dialog.open(EngineDialog, {
-      data: {object: selectedCar, isView: true}
-    }).afterClosed().subscribe(() => {
-    });
   }
 
   // edit(id: number) {

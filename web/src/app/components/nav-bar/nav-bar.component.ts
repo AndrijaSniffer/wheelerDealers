@@ -19,6 +19,7 @@ import {CarDialog} from '../dialogs/car/car-dialog';
     NgIf
   ],
   templateUrl: './nav-bar.component.html',
+  standalone: true,
   styleUrl: './nav-bar.component.css'
 })
 export class NavBarComponent {
