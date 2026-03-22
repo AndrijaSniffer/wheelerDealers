@@ -1,0 +1,53 @@
+<div class="profile-container">
+  <h2>My Profile</h2>
+
+  <div class="profile-info">
+    <p><strong>Username:</strong> {{ user.username }}</p>
+    <p><strong>Member since:</strong> {{ user.dateJoined | date:'dd/MM/yyyy' }}</p>
+    @if (isDealership) {
+      <p><strong>Account type:</strong> Dealership</p>
+    } @else if (user.isReseller) {
+      <p><strong>Account type:</strong> Reseller</p>
+    } @else {
+      <p><strong>Account type:</strong> Regular user</p>
+    }
+  </div>
+
+  <mat-divider></mat-divider>
+
+  <form [formGroup]="profileForm" class="profile-form">
+    <h3>Edit Information</h3>
+
+    <mat-form-field appearance="fill">
+      <mat-label>Email</mat-label>
+      <input formControlName="email" matInput type="email"/>
+    </mat-form-field>
+
+    <mat-form-field appearance="fill">
+      <mat-label>Phone number</mat-label>
+      <input formControlName="phone" matInput type="text"/>
+    </mat-form-field>
+
+    <mat-form-field appearance="fill">
+      <mat-label>Address</mat-label>
+      <input formControlName="address" matInput type="text"/>
+    </mat-form-field>
+
+    <div *ngIf="!isDealership" class="reseller-toggle">
+      <mat-checkbox formControlName="isReseller">I am a car reseller</mat-checkbox>
+      <p class="hint-text">Resellers must have a phone number and address on file.</p>
+    </div>
+
+    <button (click)="onSave()" mat-raised-button color="primary">Save changes</button>
+  </form>
+
+  <div *ngIf="isDealership" class="company-section">
+    <mat-divider></mat-divider>
+    <h3>Company Information</h3>
+    <p><strong>PIB (Government Code):</strong> {{ user.PIB.PIB }}</p>
+    <p><strong>Company address:</strong> {{ user.PIB.address }}</p>
+    <p><strong>Company phone:</strong> {{ user.PIB.phone }}</p>
+    <p *ngIf="user.PIB.websiteUrl"><strong>Website:</strong> {{ user.PIB.websiteUrl }}</p>
+    <p class="hint-text">Company information cannot be changed. Contact support for corrections.</p>
+  </div>
+</div>

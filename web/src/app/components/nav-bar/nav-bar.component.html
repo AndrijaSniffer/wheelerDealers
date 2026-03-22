@@ -1,10 +1,21 @@
 <mat-toolbar color="primary" role="heading">
-  <div *ngIf="!isSuperuser && (isLoggedIn || !isLoggedIn)">
+  <!-- Guest and regular User nav -->
+  <div *ngIf="!isSuperuser && !isDealership">
     <button (click)="goToHome()" mat-button>Home</button>
     <button (click)="goToSearch()" mat-button>Search</button>
     <button (click)="goToContact()" mat-button>Contact us</button>
     <button *ngIf="isLoggedIn" (click)="temporaryCarAdd()" mat-raised-button>Add car</button>
+    <button *ngIf="isLoggedIn" (click)="goToProfile()" mat-button>My Profile</button>
   </div>
+
+  <!-- Dealership nav -->
+  <div *ngIf="isDealership && isLoggedIn">
+    <button (click)="dealershipNavigate('dashboard')" mat-button>Dashboard</button>
+    <button (click)="dealershipNavigate('inventory')" mat-button>Inventory</button>
+    <button (click)="goToProfile()" mat-button>My Profile</button>
+  </div>
+
+  <!-- Admin nav -->
   <div *ngIf="isSuperuser && isLoggedIn">
     <button (click)="adminNavigate('countryManagement')" mat-button>Countries</button>
     <button (click)="adminNavigate('engineTypeManagement')" mat-button>Engine types</button>
@@ -12,15 +23,15 @@
     <button (click)="adminNavigate('modelTypeManagement')" mat-button>Model types</button>
     <button (click)="adminNavigate('transmissionManagement')" mat-button>Transmissions</button>
     <button (click)="adminNavigate('fuelManagement')" mat-button>Fuels</button>
-<!--    <button (click)="adminNavigate('interiorManagement')" mat-button>Interiors</button>-->
     <button (click)="adminNavigate('drivetrainManagement')" mat-button>Drivetrains</button>
     <button (click)="adminNavigate('manufacturerManagement')" mat-button>Manufacturers</button>
-<!--    <button (click)="adminNavigate('engineManagement')" mat-button>Engines</button>-->
     <button (click)="adminNavigate('modelManagement')" mat-button>Models</button>
     <button (click)="adminNavigate('carManagement')" mat-button>Cars</button>
     <button (click)="adminNavigate('userManagement')" mat-button>Users</button>
   </div>
+
   <span class="spacer"></span>
+
   <div *ngIf="!isLoggedIn">
     <button (click)="openLoginDialog()" mat-button>Login</button>
     <button (click)="openSignUpDialog()" mat-button>Sign up</button>

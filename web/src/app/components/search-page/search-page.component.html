@@ -57,7 +57,7 @@
                       </div>
                       <div class="col">
                         <mat-form-field>
-                          <mat-label>Transmission</mat-label>
+                          <mat-label>Transmission type</mat-label>
                           <mat-select formControlName="transmission">
                             @for (transmissionType of transmissions; track transmissionType) {
                               <mat-option
@@ -116,11 +116,7 @@
                       <div class="col">
                         <mat-form-field>
                           <mat-label>Car color</mat-label>
-                          <mat-select formControlName="carColor">
-                            @for (carColor of carColors; track carColor) {
-                              <mat-option [value]="carColor">{{ carColor }}</mat-option>
-                            }
-                          </mat-select>
+                          <input formControlName="carColor" matInput/>
                         </mat-form-field>
                       </div>
                     </div>

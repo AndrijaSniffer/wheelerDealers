@@ -1,0 +1,34 @@
+.profile-container {
+  max-width: 600px;
+  margin: 2rem auto;
+  padding: 0 1rem;
+}
+
+.profile-info {
+  margin: 1rem 0;
+}
+
+.profile-form {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin: 1.5rem 0;
+}
+
+.profile-form mat-form-field {
+  width: 100%;
+}
+
+.reseller-toggle {
+  margin: 0.5rem 0;
+}
+
+.hint-text {
+  font-size: 0.8rem;
+  color: #888;
+  margin-top: 0.25rem;
+}
+
+.company-section {
+  margin-top: 1.5rem;
+}

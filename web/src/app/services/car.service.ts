@@ -19,8 +19,8 @@ export class CarService {
     );
   }
 
-  getAllColor(): Observable<{color: string}[]> {
-    return this._http.get<{color: string}[]>(`${AppConstants.CAR_URL}/colors`);
+  getAllColor(): Observable<{ color: string }[]> {
+    return this._http.get<{ color: string }[]>(`${AppConstants.CAR_URL}/colors`);
   }
 
   create(car: CarDTO): Observable<Car> {
@@ -38,15 +38,20 @@ export class CarService {
   parametrizedSearch(params: ISearchParameters): Observable<Car[]> {
     let paramsString: string = '';
     Object.entries(params).map(([key, value]) => {
-      if (params[key] !== null){
+      if (params[key] !== null) {
         paramsString += `${AppUtil.toSnakeCase(key)}=${value}&`;
       }
     });
-
-    console.warn(paramsString);
 
     return this._http.get<Car[]>(`${AppConstants.SEARCH_URL}/normal?${paramsString}`).pipe(
       map((response: Car[]) => response.map(mapToCar))
     );
   }
+
+  getByUserId(userId: number): Observable<Car[]> {
+    return this._http.get<any[]>(`${AppConstants.USER_URL}/${userId}/cars`).pipe(
+      map((response: any[]) => response.map(mapToCar))
+    );
+  }
+
 }

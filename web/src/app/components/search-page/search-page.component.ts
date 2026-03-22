@@ -25,15 +25,15 @@ import {AppUtil} from '../../app.util';
 export interface ISearchParameters {
   manufacturer: number | null;
   model: number | null;
-  transmission: number | null;
+  transmissionType: number | null;
   fuel: number | null;
-  carColor: string | null;
+  exteriorColor: string | null;
   priceFrom: number | null;
   priceTo: number | null;
-  horsepowerFrom: number | null;
-  horsepowerTo: number | null;
-  kilowattFrom: number | null;
-  kilowattTo: number | null;
+  hpFrom: number | null;
+  hpTo: number | null;
+  kwFrom: number | null;
+  kwTo: number | null;
   isPreowned: number | null;
   steeringWheelLeft: number | null;
 }
@@ -64,7 +64,6 @@ export class SearchPageComponent {
   models: Model[] = [];
   transmissions: TransmissionType[] = [];
   fuel: Fuel[] = [];
-  carColors: string[] = [];
   cars: Car[] = [];
   carsToDisplay: [Car[]] = [[]];
   numberOfRows: number = 0;
@@ -100,7 +99,7 @@ export class SearchPageComponent {
   fillInFilterFields() {
     this._manufacturerService.getAll().subscribe({
       next: data => {
-        this.manufacturers[0] = {id: 0, name: 'None', country: null};
+        this.manufacturers[0] = {id: 0, name: 'All', country: null};
 
         data.forEach((manufacturer: Manufacturer) => {
           this.manufacturers.push(manufacturer);
@@ -114,7 +113,7 @@ export class SearchPageComponent {
 
     this._modelService.getAll().subscribe({
       next: data => {
-        this.models[0] = {id: 0, name: 'None', manufacturer: null};
+        this.models[0] = {id: 0, name: 'All', manufacturer: null};
 
         data.forEach((model: Model) => {
           this.models.push(model);
@@ -128,7 +127,7 @@ export class SearchPageComponent {
 
     this._transmissionService.getAll().subscribe({
       next: data => {
-        this.transmissions[0] = {id: 0, type: 'None'};
+        this.transmissions[0] = {id: 0, type: 'All'};
 
         data.forEach((transmission: TransmissionType) => {
           this.transmissions.push(transmission);
@@ -142,25 +141,11 @@ export class SearchPageComponent {
 
     this._fuelService.getAll().subscribe({
       next: data => {
-        this.fuel[0] = {id: 0, type: 'None'};
+        this.fuel[0] = {id: 0, type: 'All'};
 
         data.forEach((fuel: Fuel) => {
           this.fuel.push(fuel);
         })
-      },
-      error: err => {
-        console.error(err);
-        this._notifications.showTimedErrorNotification(AppUtil.parseJsonErrorsToString(err.error))
-      }
-    });
-
-    this._carService.getAllColor().subscribe({
-      next: data => {
-        this.carColors[0] = 'None';
-
-        data.forEach((colorJson) => {
-          this.carColors.push(colorJson.color);
-        });
       },
       error: err => {
         console.error(err);
@@ -185,21 +170,21 @@ export class SearchPageComponent {
     const searchParameters: ISearchParameters = {
       manufacturer: this.searchForm.get('manufacturer').value,
       model: this.searchForm.get('model').value,
-      transmission: this.searchForm.get('transmission').value,
+      transmissionType: this.searchForm.get('transmission').value,
       fuel: this.searchForm.get('fuel').value,
-      carColor: this.searchForm.get('carColor').value,
+      exteriorColor: this.searchForm.get('carColor').value?.toLowerCase().trim() ?? null,
       priceFrom: this.searchForm.get('priceFrom').value,
       priceTo: this.searchForm.get('priceTo').value,
-      horsepowerFrom: this.searchForm.get('horsepowerFrom').value,
-      horsepowerTo: this.searchForm.get('horsepowerTo').value,
-      kilowattFrom: this.searchForm.get('kilowattFrom').value,
-      kilowattTo: this.searchForm.get('kilowattTo').value,
+      hpFrom: this.searchForm.get('horsepowerFrom').value,
+      hpTo: this.searchForm.get('horsepowerTo').value,
+      kwFrom: this.searchForm.get('kilowattFrom').value,
+      kwTo: this.searchForm.get('kilowattTo').value,
       isPreowned: this.searchForm.get('isPreowned').value ? 1 : 0,
       steeringWheelLeft: this.searchForm.get('steeringWheelLeft').value ? 1 : 0
     }
 
     Object.entries(searchParameters).forEach(([key, value]) => {
-      if(value === 0 && key !== 'isPreowned' && key !== 'steeringWheelLeft') searchParameters[key] = null;
+      if (value === 0 && key !== 'isPreowned' && key !== 'steeringWheelLeft') searchParameters[key] = null;
     });
 
     this._carService.parametrizedSearch(searchParameters).subscribe({
@@ -214,26 +199,26 @@ export class SearchPageComponent {
     })
   }
 
-  resetForm(){
+  resetForm() {
     this.searchForm.reset({isPreowned: true, steeringWheelLeft: true});
     this.defaultSearch();
   }
 
-  private prepareCarsForDisplay(data: Car[]){
+  private prepareCarsForDisplay(data: Car[]) {
     this.cars = data;
 
     this.numberOfRows = Math.ceil(this.cars.length / 5);
 
-    if(this.numberOfRows == 0) this.carsToDisplay = [[]];
+    if (this.numberOfRows == 0) this.carsToDisplay = [[]];
 
     for (let i = 0; i < this.numberOfRows; i++) {
       const start = i * 5;
       const end = Math.min(start + 5, this.cars.length); // Don’t exceed array length
       const rowOfCars = this.cars.slice(start, end);
 
-      if(start === 0){
+      if (start === 0) {
         this.carsToDisplay = [rowOfCars];
-      }else{
+      } else {
         this.carsToDisplay.push(rowOfCars);
       }
     }

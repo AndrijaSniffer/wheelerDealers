@@ -69,7 +69,7 @@ export class SignUpDialog {
   });
 
   formCompany: FormGroup = this._fb.group({
-    PIB: ['', [Validators.required, Validators.pattern(/^\d{9}$/)]],
+    PIB: ['', [Validators.required, Validators.pattern(/^\d{8}$/)]],
     address: ['', Validators.required],
     phone: ['', Validators.required],
     logo: [''],

@@ -32,19 +32,23 @@ export class NavBarComponent {
   isLoggedIn: boolean = false;
   username: String = '';
   isSuperuser: boolean = false;
+  isDealership: boolean = false;
 
   constructor() {
     this._appUser.loggedInObservable.subscribe(loggedIn => {
+      console.warn(this._appUser.user)
       if (loggedIn) {
         this.isLoggedIn = loggedIn;
         this.username = this._appUser.user.username;
         this.isSuperuser = this._appUser.user.isSuperuser;
+        this.isDealership = this._appUser.user.PIB !== null;
       } else {
         this.isLoggedIn = false;
         this.username = '';
         this.isSuperuser = false;
+        this.isDealership = false;
       }
-    })
+    });
   }
 
   goToHome() {
@@ -62,17 +66,33 @@ export class NavBarComponent {
     });
   }
 
+  dealershipNavigate(route: string) {
+    this._router.navigate([`dealership/${route}`]).then(() => {
+    });
+  }
+
+  goToProfile() {
+    this._router.navigate(['/profile']).then(() => {
+    });
+  }
+
   openLoginDialog() {
     const dialogRef = this._dialog.open(LoginDialog)
 
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        const pathUrl = this._appUser.user.isSuperuser ? 'admin/countryManagement' : '/';
+        let pathUrl = '/';
+        if (this._appUser.user.isSuperuser) {
+          pathUrl = 'admin/countryManagement';
+        } else if (this._appUser.user.PIB !== null) {
+          pathUrl = 'dealership/dashboard';
+        }
         this._router.navigate([pathUrl]).then(() => {
           this._notification.showTimedNotification("Logged in successfully!");
         });
       }
     });
+
   }
 
   openSignUpDialog() {
@@ -95,10 +115,11 @@ export class NavBarComponent {
   }
 
   adminNavigate(route: string) {
-    this._router.navigate([`admin/${route}`]).then(() => {});
+    this._router.navigate([`admin/${route}`]).then(() => {
+    });
   }
 
-  temporaryCarAdd(){
+  temporaryCarAdd() {
     this._dialog.open(CarDialog, {
       minWidth: '20vw',
       data: {object: null, isView: false}

@@ -1,1 +1,47 @@
-<p>landing-page works!</p>
+<div class="landing-container">
+  <section class="hero-section">
+    <h1>Wheeler Dealers</h1>
+    <p class="hero-subtitle">Find your next car, or sell the one you have.</p>
+    <div class="hero-actions">
+      <button (click)="goToSearch()" mat-raised-button color="primary">
+        <mat-icon>search</mat-icon>
+        Browse cars
+      </button>
+      <button (click)="goToContact()" mat-stroked-button>
+        Contact us
+      </button>
+    </div>
+  </section>
+
+  <mat-divider></mat-divider>
+
+  <section class="features-section">
+    <div class="feature-card">
+      <mat-icon class="feature-icon">directions_car</mat-icon>
+      <h3>Search by anything</h3>
+      <p>Filter by manufacturer, model, fuel type, price range, horsepower, drivetrain and more.</p>
+    </div>
+    <div class="feature-card">
+      <mat-icon class="feature-icon">person</mat-icon>
+      <h3>Sell as an individual</h3>
+      <p>List your car in minutes. Buyers contact you directly — we don't handle payments or take a cut.</p>
+    </div>
+    <div class="feature-card">
+      <mat-icon class="feature-icon">business</mat-icon>
+      <h3>Dealership accounts</h3>
+      <p>Register your dealership, manage your inventory, and reach more buyers through a dedicated dashboard.</p>
+    </div>
+  </section>
+
+  <mat-divider></mat-divider>
+
+  <section class="cta-section">
+    @if (!_appUser.user) {
+      <h2>Ready to get started?</h2>
+      <p>Create an account to list cars, save searches, and connect with sellers.</p>
+    } @else {
+      <h2>Welcome back, {{ _appUser.user.username }}</h2>
+      <p>Looking for something new? Head over to the search page.</p>
+    }
+  </section>
+</div>

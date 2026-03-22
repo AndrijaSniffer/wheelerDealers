@@ -1,0 +1,42 @@
+<div class="dashboard-container">
+  <h2>Dashboard</h2>
+  <p class="welcome-text">Welcome back, {{ user.username }}</p>
+
+  <mat-divider></mat-divider>
+
+  <div class="stats-grid">
+    <div class="stat-card">
+      <span class="stat-value">{{ totalListings }}</span>
+      <span class="stat-label">Active listings</span>
+    </div>
+    <div class="stat-card">
+      <span class="stat-value">{{ averagePrice | number:'1.0-0' }}&euro;</span>
+      <span class="stat-label">Average price</span>
+    </div>
+  </div>
+
+  @if (newestListing) {
+    <mat-divider></mat-divider>
+    <div class="listing-summary">
+      <h3>Most recent listing</h3>
+      <p>{{ newestListing.model.manufacturer.name }} {{ newestListing.model.name }}
+        ({{ newestListing.year }}) &mdash; {{ newestListing.price }}&euro;</p>
+      <p class="hint-text">Posted on {{ newestListing.createdAt | date:'dd/MM/yyyy' }}</p>
+    </div>
+  }
+
+  @if (oldestListing && totalListings > 1) {
+    <div class="listing-summary">
+      <h3>Oldest active listing</h3>
+      <p>{{ oldestListing.model.manufacturer.name }} {{ oldestListing.model.name }}
+        ({{ oldestListing.year }}) &mdash; {{ oldestListing.price }}&euro;</p>
+      <p class="hint-text">Posted on {{ oldestListing.createdAt | date:'dd/MM/yyyy' }}</p>
+    </div>
+  }
+
+  @if (totalListings === 0) {
+    <div class="empty-state">
+      <p>You have no active listings yet. Head over to <strong>Inventory</strong> to add your first car.</p>
+    </div>
+  }
+</div>

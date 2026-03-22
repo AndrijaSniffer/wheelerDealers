@@ -26,8 +26,11 @@ export function mapToUser(json: any): User {
   const parsed = typeof json === 'string' ? JSON.parse(json) : json;
 
   // Normalize company using mapToCompany
-  const companyJson = parsed.company; // Adjust this key if it's different (e.g., 'Company')
+  const companyJson = parsed.PIB; // Adjust this key if it's different (e.g., 'Company')
   const company: Company | null = companyJson ? mapToCompany(companyJson) : null;
+
+  console.log('Parsed user JSON:', parsed);
+  console.log('Company:', company);
 
   // Normalize fields with fallback for both naming conventions
   const id = parsed.id ?? parsed.user_id;
@@ -89,7 +92,7 @@ export function mapToModelType(json: any): ModelType {
 
 export function mapToTransmissionType(json: any): TransmissionType {
   return {
-    id: json.transmission,
+    id: json.transmission_type,
     type: json.type
   }
 }
@@ -125,17 +128,28 @@ export function mapToModel(json: any): Model {
 }
 
 export function mapToCar(json: any): Car {
-  return {
-    id: json.car,
-    user: mapToUser(json.user),
-    model: mapToModel(json.model),
-    transmissionType: mapToTransmissionType(json.transmission),
-    fuel: mapToFuel(json.fuel),
-    drivetrain: mapToDrivetrain(json.drivetrain),
-    price: json.price,
-    chassisNumber: json.chassis_number,
-    exteriorColor: json.exterior_color,
-    isPreowned: json.is_preowned,
-    createdAt: json.created_at,
-  }
+  return new Car(
+    json.car,
+    mapToUser(json.user),
+    mapToModel(json.model),
+    mapToTransmissionType(json.transmission_type),
+    mapToEngineType(json.engine_type),
+    mapToEmissionClass(json.emission_class),
+    mapToFuel(json.fuel),
+    mapToDrivetrain(json.drivetrain),
+    json.year,
+    json.horsepower,
+    json.kilowatt,
+    json.engine_volume,
+    json.gears,
+    json.doors,
+    json.seats,
+    json.steering_wheel_left,
+    json.interior_color,
+    json.price,
+    json.exterior_color,
+    json.chassis_number,
+    json.is_preowned,
+    json.created_at
+  );
 }

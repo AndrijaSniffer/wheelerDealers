@@ -8,6 +8,7 @@ import {Company} from '../classes/company';
 import {User} from '../classes/user';
 import {AppUtil} from '../app.util';
 import {Observable} from 'rxjs';
+import {mapToUser} from '../app.mappers';
 
 export interface JWToken {
   refresh: string,
@@ -52,7 +53,7 @@ export class AuthService {
               let decodedToken = AppUtil.decodeJWTAccessToken(accessToken);
               this._appUser.tokens = {refresh: response.refresh, access: response.access};
               this._appUser.tokenExpiration = decodedToken.exp;
-              this._appUser.user = JSON.stringify(await this._userService.getUserById(decodedToken.user_id));
+              this._appUser.user = mapToUser(await this._userService.getUserById(decodedToken.user_id));
               this._appUser.setLoggedIn(true);
 
               sessionStorage.setItem('tokens', JSON.stringify(this._appUser.tokens));

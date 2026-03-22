@@ -36,4 +36,9 @@ export class UserService {
     formData.append('id', id.toString());
     return this._http.put<any>(`${AppConstants.BAN_USER_URL}`, formData);
   }
+
+  updateUser(userId: number, data: any): Observable<any> {
+    return this._http.put<any>(`${AppConstants.USER_URL}/${userId}/update`, data);
+  }
+
 }

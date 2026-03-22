@@ -16,6 +16,12 @@ import {ManufacturerComponent} from './components/admin/manufacturer/manufacture
 import {ModelComponent} from './components/admin/model/model.component';
 import {CarComponent} from './components/admin/car/car.component';
 import {UserComponent} from './components/admin/user/user.component';
+import {ProfileComponent} from './components/profile/profile.component';
+import {UserGuard} from './guards/user.guard';
+import {DealershipDashboardComponent} from './components/dealership/dashboard/dashboard.component';
+import {DealershipGuard} from './guards/dealership.guard';
+import {InventoryComponent} from './components/dealership/inventory/inventory.component';
+
 
 export const routes: Routes = [
   {path: '', redirectTo: 'home', pathMatch: 'full'},
@@ -32,7 +38,10 @@ export const routes: Routes = [
   {path: 'admin/manufacturerManagement', component: ManufacturerComponent, canActivate: [AdminGuard]},
   {path: 'admin/modelManagement', component: ModelComponent, canActivate: [AdminGuard]},
   {path: 'admin/carManagement', component: CarComponent, canActivate: [AdminGuard]},
-  {path: 'admin/userManagement', component: UserComponent, canActivate: [AdminGuard]}
+  {path: 'admin/userManagement', component: UserComponent, canActivate: [AdminGuard]},
+  {path: 'profile', component: ProfileComponent, canActivate: [UserGuard]},
+  {path: 'dealership/dashboard', component: DealershipDashboardComponent, canActivate: [DealershipGuard]},
+  {path: 'dealership/inventory', component: InventoryComponent, canActivate: [DealershipGuard]},
 ];
 
 @NgModule({
