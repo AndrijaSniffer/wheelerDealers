@@ -53,4 +53,6 @@ export class AppConstants {
 
   static readonly SEARCH_URL = AppConstants.SERVER_URL + 'search';
 
+  static readonly UPDATE_USER_URL = AppConstants.USER_URL;
+
 }
