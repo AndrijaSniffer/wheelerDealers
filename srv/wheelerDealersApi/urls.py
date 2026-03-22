@@ -19,6 +19,9 @@ urlpatterns = [
     path('search/normal', views.car_search, name='normal_search'),
     path('car/colors', views.get_all_car_color, name='get_all_car_color'),
     path('model/byManufacturerId', views.get_models_by_manufacturer_id, name='get_model_by_manufacturer_id'),
+    path('api/auth/user/<int:user_id>', views.get_user_by_id, name='get_user_by_id'),
+    path('api/auth/user/<int:user_id>/update', views.update_user, name='update_user'),
+
 ]
 
 if settings.DEBUG:

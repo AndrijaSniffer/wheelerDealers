@@ -126,7 +126,6 @@ def ban_user_by_id(request):
 @api_view(['GET'])
 @permission_classes([AllowAny])
 def car_search(request):
-    # Leave as-is for now - will update separately
     if request.method == 'GET':
         search = request.GET
 
@@ -134,30 +133,38 @@ def car_search(request):
 
         id_manufacturer = search.get('manufacturer', None)
         id_model = search.get('model', None)
-        id_transmission = search.get('transmission', None)
+        id_transmission = search.get('transmission_type', None)
         id_fuel = search.get('fuel', None)
-        id_drive = search.get('drivetrain', None)
+        id_drivetrain = search.get('drivetrain', None)
+        id_engine_type = search.get('engine_type', None)
+        id_emission_class = search.get('emission_class', None)
         is_preowned = search.get('is_preowned', None)
         price_from = search.get('price_from', None)
         price_to = search.get('price_to', None)
-        volume = search.get('volume', None)
+        volume = search.get('engine_volume', None)
         hp_from = search.get('hp_from', None)
         hp_to = search.get('hp_to', None)
         kw_from = search.get('kw_from', None)
         kw_to = search.get('kw_to', None)
-        car_color = search.get('car_color', None)
+        car_color = search.get('exterior_color', None)
         steering_wheel_left = search.get('steering_wheel_left', None)
+        year_from = search.get('year_from', None)
+        year_to = search.get('year_to', None)
 
         if id_manufacturer:
             filters &= Q(model__manufacturer=id_manufacturer)
         if id_model:
             filters &= Q(model=id_model)
         if id_transmission:
-            filters &= Q(transmission=id_transmission)
+            filters &= Q(transmission_type=id_transmission)
         if id_fuel:
             filters &= Q(fuel=id_fuel)
-        if id_drive:
-            filters &= Q(drive=id_drive)
+        if id_drivetrain:
+            filters &= Q(drivetrain=id_drivetrain)
+        if id_engine_type:
+            filters &= Q(engine_type=id_engine_type)
+        if id_emission_class:
+            filters &= Q(emission_class=id_emission_class)
         if is_preowned is not None:
             filters &= Q(is_preowned=is_preowned)
         if price_from:
@@ -165,19 +172,23 @@ def car_search(request):
         if price_to:
             filters &= Q(price__lte=price_to)
         if volume:
-            filters &= Q(engine__volume=volume)
+            filters &= Q(engine_volume=volume)
         if hp_from:
-            filters &= Q(engine__horsepower__gte=hp_from)
+            filters &= Q(horsepower__gte=hp_from)
         if hp_to:
-            filters &= Q(engine__horsepower__lte=hp_to)
+            filters &= Q(horsepower__lte=hp_to)
         if kw_from:
-            filters &= Q(engine__kilowatt__gte=kw_from)
+            filters &= Q(kilowatt__gte=kw_from)
         if kw_to:
-            filters &= Q(engine__kilowatt__lte=kw_to)
+            filters &= Q(kilowatt__lte=kw_to)
         if car_color:
-            filters &= Q(color=car_color)
+            filters &= Q(exterior_color=car_color)
         if steering_wheel_left is not None:
-            filters &= Q(interior__steering_wheel_left=steering_wheel_left)
+            filters &= Q(steering_wheel_left=steering_wheel_left)
+        if year_from:
+            filters &= Q(year__gte=year_from)
+        if year_to:
+            filters &= Q(year__lte=year_to)
 
         filters &= Q(user__is_active=True)
         cars = Car.objects.filter(filters).distinct()
@@ -189,6 +200,46 @@ def car_search(request):
         return Response(status=status.HTTP_400_BAD_REQUEST)
 
 
+@api_view(['PUT'])
+@permission_classes([IsUserSelf | permissions.IsAdminUser])
+def update_user(request, user_id: int):
+    try:
+        user = User.objects.get(pk=user_id)
+    except User.DoesNotExist:
+        return Response(status=status.HTTP_404_NOT_FOUND)
+
+    allowed_fields = ['phone', 'address', 'email']
+    data = request.data
+
+    for field in allowed_fields:
+        if field in data:
+            setattr(user, field, data[field] if data[field] != '' else None)
+
+    # Handle reseller conversion
+    if 'is_reseller' in data:
+        wants_reseller = data['is_reseller']
+        if wants_reseller:
+            # To become a reseller, phone and address are required
+            # Check both the incoming data and existing values
+            phone = data.get('phone', user.phone)
+            address = data.get('address', user.address)
+            if not phone or not address:
+                return Response(
+                    status=status.HTTP_400_BAD_REQUEST,
+                    data={'error': 'Phone number and address are required to become a reseller.'}
+                )
+        user.is_reseller = wants_reseller
+
+    # Allow password change if provided
+    if 'password' in data and data['password']:
+        user.set_password(data['password'])
+
+    user.save()
+    serializer = UserSerializer(user)
+    return Response(status=status.HTTP_200_OK, data=serializer.data)
+
+
+# region ModelView classes
 class CompanyView(viewsets.ModelViewSet):
     queryset = Company.objects.all().order_by('PIB')
     serializer_class = CompanySerializer
@@ -266,6 +317,8 @@ class CarView(viewsets.ModelViewSet):
     serializer_class = CarSerializer
     permission_classes = [CarPermission]
 
+
+# endregion
 
 # region Router
 
