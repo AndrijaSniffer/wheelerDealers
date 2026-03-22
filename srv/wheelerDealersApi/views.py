@@ -13,6 +13,7 @@ from wheelerDealersApi.serializer import *
 router = routers.DefaultRouter()
 
 
+# region Endpoints
 @csrf_exempt
 @api_view(['POST'])
 @permission_classes([AllowAny])
@@ -182,7 +183,7 @@ def car_search(request):
         if kw_to:
             filters &= Q(kilowatt__lte=kw_to)
         if car_color:
-            filters &= Q(exterior_color=car_color)
+            filters &= Q(exterior_color__icontains=car_color)
         if steering_wheel_left is not None:
             filters &= Q(steering_wheel_left=steering_wheel_left)
         if year_from:
@@ -238,6 +239,16 @@ def update_user(request, user_id: int):
     serializer = UserSerializer(user)
     return Response(status=status.HTTP_200_OK, data=serializer.data)
 
+
+@api_view(['GET'])
+@permission_classes([IsUserSelf | permissions.IsAdminUser])
+def get_cars_by_user_id(request, user_id: int):
+    cars = Car.objects.filter(user_id=user_id, user__is_active=True).order_by('-created_at')
+    serializer = CarSerializer(cars, many=True)
+    return Response(status=status.HTTP_200_OK, data=serializer.data)
+
+
+# endregion
 
 # region ModelView classes
 class CompanyView(viewsets.ModelViewSet):

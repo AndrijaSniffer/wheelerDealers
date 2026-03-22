@@ -21,6 +21,7 @@ urlpatterns = [
     path('model/byManufacturerId', views.get_models_by_manufacturer_id, name='get_model_by_manufacturer_id'),
     path('api/auth/user/<int:user_id>', views.get_user_by_id, name='get_user_by_id'),
     path('api/auth/user/<int:user_id>/update', views.update_user, name='update_user'),
+    path('api/auth/user/<int:user_id>/cars', views.get_cars_by_user_id, name='get_cars_by_user_id'),
 
 ]
 
