@@ -167,7 +167,7 @@
                 <li class="list-group-item">Drivetrain: {{ car.drivetrain.type }}</li>
                 <li class="list-group-item">Price: {{ car.price }}&euro;</li>
               </ul>
-              <a class="btn btn-primary" href="#">Full details!</a>
+              <a class="btn btn-primary" [routerLink]="['/car', car.id]">Full details!</a>
             </div>
           </div>
         </div>

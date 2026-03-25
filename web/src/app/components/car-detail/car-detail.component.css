@@ -1,0 +1,161 @@
+.detail-container {
+  max-width: 950px;
+  margin: 1rem auto;
+  padding: 0 1rem;
+}
+
+.back-btn {
+  margin-bottom: 1rem;
+}
+
+.detail-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-bottom: 1.5rem;
+}
+
+.detail-header h1 {
+  font-size: 1.8rem;
+  margin: 0;
+}
+
+.price-tag {
+  font-size: 1.8rem;
+  font-weight: bold;
+  color: #1976d2;
+}
+
+/* Carousel */
+.carousel {
+  margin: 1.5rem 0;
+  text-align: center;
+}
+
+.carousel-wrapper {
+  position: relative;
+  display: inline-block;
+  max-width: 100%;
+}
+
+.carousel-image {
+  max-width: 100%;
+  max-height: 450px;
+  object-fit: contain;
+  border-radius: 8px;
+  background: #f5f5f5;
+}
+
+.carousel-btn {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 1;
+}
+
+.carousel-btn-left {
+  left: 0.5rem;
+}
+
+.carousel-btn-right {
+  right: 0.5rem;
+}
+
+.carousel-counter {
+  margin-top: 0.5rem;
+  color: #888;
+  font-size: 0.85rem;
+}
+
+.no-image {
+  padding: 3rem;
+  background: #f5f5f5;
+  border-radius: 8px;
+  color: #999;
+}
+
+.no-image-icon {
+  font-size: 3rem;
+  height: 3rem;
+  width: 3rem;
+}
+
+/* Specs */
+.specs-section {
+  padding: 1.5rem 0;
+}
+
+.specs-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
+  margin-top: 1rem;
+}
+
+.spec-group h3 {
+  margin-bottom: 0.5rem;
+  color: #333;
+}
+
+.spec-row {
+  display: flex;
+  justify-content: space-between;
+  padding: 0.3rem 0;
+  border-bottom: 1px solid #eee;
+}
+
+.spec-label {
+  color: #888;
+}
+
+.spec-value {
+  font-weight: 500;
+}
+
+/* Seller */
+.seller-section {
+  padding: 1.5rem 0;
+}
+
+.seller-card {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem;
+  background: transparent;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  margin-top: 1rem;
+}
+
+.seller-badge {
+  display: inline-block;
+  padding: 0.15rem 0.5rem;
+  border-radius: 4px;
+  font-size: 0.75rem;
+  font-weight: bold;
+  margin-top: 0.25rem;
+}
+
+.reseller-badge {
+  background: #fff3e0;
+  color: #e65100;
+}
+
+.dealership-badge {
+  background: #e3f2fd;
+  color: #1565c0;
+}
+
+.phone-revealed {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 1.1rem;
+  font-weight: bold;
+  color: #2e7d32;
+}
+
+.no-phone {
+  color: #999;
+}

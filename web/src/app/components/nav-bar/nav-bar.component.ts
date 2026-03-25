@@ -6,7 +6,6 @@ import {MatDialog} from '@angular/material/dialog';
 import {NotificationService} from '../../services/notification.service';
 import {AppUser} from '../../app.user';
 import {NgIf} from '@angular/common';
-import {AuthService} from '../../services/auth.service';
 import {LoginDialog} from '../dialogs/login/login-dialog';
 import {SignUpDialog} from '../dialogs/sign-up/sign-up-dialog';
 import {CarDialog} from '../dialogs/car/car-dialog';
@@ -27,7 +26,6 @@ export class NavBarComponent {
   private readonly _dialog = inject(MatDialog);
   private readonly _notification = inject(NotificationService)
   private readonly _appUser = inject(AppUser);
-  protected readonly _authService = inject(AuthService);
 
   isLoggedIn: boolean = false;
   username: String = '';

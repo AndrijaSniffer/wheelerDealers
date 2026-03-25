@@ -19,6 +19,12 @@ export class CarService {
     );
   }
 
+  getById(carId: number): Observable<Car> {
+    return this._http.get<any>(`${AppConstants.CAR_URL}/${carId}`).pipe(
+      map((response: any) => mapToCar(response))
+    );
+  }
+
   getAllColor(): Observable<{ color: string }[]> {
     return this._http.get<{ color: string }[]>(`${AppConstants.CAR_URL}/colors`);
   }

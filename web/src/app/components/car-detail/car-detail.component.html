@@ -1,0 +1,181 @@
+@if (isLoading) {
+  <div class="loading">
+    <p>Loading...</p>
+  </div>
+} @else if (car) {
+  <div class="detail-container">
+    <button (click)="goBack()" mat-button class="back-btn">
+      <mat-icon>arrow_back</mat-icon>
+      Back to search
+    </button>
+
+    <div class="detail-header">
+      <h1>{{ car.model.manufacturer.name }} {{ car.model.name }} ({{ car.year }})</h1>
+      <span class="price-tag">{{ car.price }}&euro;</span>
+    </div>
+
+    <!-- Image Carousel -->
+    <div class="carousel">
+      @if (car.images && car.images.length > 0) {
+        <div class="carousel-wrapper">
+          <button (click)="previousImage()" mat-mini-fab class="carousel-btn carousel-btn-left">
+            <mat-icon>chevron_left</mat-icon>
+          </button>
+          <img [src]="car.images[currentImageIndex].imageUrl"
+               [alt]="car.model.manufacturer.name + ' ' + car.model.name"
+               class="carousel-image"/>
+          <button (click)="nextImage()" mat-mini-fab class="carousel-btn carousel-btn-right">
+            <mat-icon>chevron_right</mat-icon>
+          </button>
+        </div>
+        <p class="carousel-counter">{{ currentImageIndex + 1 }} / {{ car.images.length }}</p>
+      } @else {
+        <div class="no-image">
+          <mat-icon class="no-image-icon">no_photography</mat-icon>
+          <p>No images available</p>
+        </div>
+      }
+    </div>
+
+    <mat-divider></mat-divider>
+
+    <!-- Specs Grid -->
+    <div class="specs-section">
+      <h2>Specifications</h2>
+      <div class="specs-grid">
+        <div class="spec-group">
+          <h3>Engine</h3>
+          <div class="spec-row">
+            <span class="spec-label">Type</span>
+            <span class="spec-value">{{ car.engineType.type }}</span>
+          </div>
+          <div class="spec-row">
+            <span class="spec-label">Volume</span>
+            <span class="spec-value">{{ car.engineVolume }} cc</span>
+          </div>
+          <div class="spec-row">
+            <span class="spec-label">Horsepower</span>
+            <span class="spec-value">{{ car.horsepower }} HP</span>
+          </div>
+          <div class="spec-row">
+            <span class="spec-label">Kilowatt</span>
+            <span class="spec-value">{{ car.kilowatt }} kW</span>
+          </div>
+          <div class="spec-row">
+            <span class="spec-label">Fuel</span>
+            <span class="spec-value">{{ car.fuel.type }}</span>
+          </div>
+          <div class="spec-row">
+            <span class="spec-label">Emission class</span>
+            <span class="spec-value">{{ car.emissionClass.className }}</span>
+          </div>
+        </div>
+
+        <div class="spec-group">
+          <h3>Transmission &amp; Drivetrain</h3>
+          <div class="spec-row">
+            <span class="spec-label">Transmission</span>
+            <span class="spec-value">{{ car.transmissionType.type }}</span>
+          </div>
+          @if (car.transmissionGears) {
+            <div class="spec-row">
+              <span class="spec-label">Gears</span>
+              <span class="spec-value">{{ car.transmissionGears }}</span>
+            </div>
+          }
+          <div class="spec-row">
+            <span class="spec-label">Drivetrain</span>
+            <span class="spec-value">{{ car.drivetrain.type }}</span>
+          </div>
+        </div>
+
+        <div class="spec-group">
+          <h3>Interior</h3>
+          <div class="spec-row">
+            <span class="spec-label">Doors</span>
+            <span class="spec-value">{{ car.doors }}</span>
+          </div>
+          <div class="spec-row">
+            <span class="spec-label">Seats</span>
+            <span class="spec-value">{{ car.seats }}</span>
+          </div>
+          <div class="spec-row">
+            <span class="spec-label">Steering wheel</span>
+            <span class="spec-value">{{ car.steeringWheelLeft ? 'Left (LHD)' : 'Right (RHD)' }}</span>
+          </div>
+          @if (car.interiorColor) {
+            <div class="spec-row">
+              <span class="spec-label">Interior color</span>
+              <span class="spec-value">{{ car.interiorColor }}</span>
+            </div>
+          }
+        </div>
+
+        <div class="spec-group">
+          <h3>General</h3>
+          <div class="spec-row">
+            <span class="spec-label">Condition</span>
+            <span class="spec-value">{{ car.isPreowned ? 'Pre-owned' : 'Brand new' }}</span>
+          </div>
+          @if (car.exteriorColor) {
+            <div class="spec-row">
+              <span class="spec-label">Exterior color</span>
+              <span class="spec-value">{{ car.exteriorColor }}</span>
+            </div>
+          }
+          @if (car.chassisNumber) {
+            <div class="spec-row">
+              <span class="spec-label">Chassis number</span>
+              <span class="spec-value">{{ car.chassisNumber }}</span>
+            </div>
+          }
+          <div class="spec-row">
+            <span class="spec-label">Listed on</span>
+            <span class="spec-value">{{ car.createdAt | date:'dd/MM/yyyy' }}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <mat-divider></mat-divider>
+
+    <!-- Seller Info -->
+    <div class="seller-section">
+      <h2>Seller Information</h2>
+      <div class="seller-card">
+        <div class="seller-info">
+          <p><strong>{{ car.user.username }}</strong></p>
+          @if (car.user.isReseller) {
+            <span class="seller-badge reseller-badge">Reseller</span>
+          }
+          @if (car.user.PIB) {
+            <span class="seller-badge dealership-badge">Dealership</span>
+          }
+        </div>
+
+        <div class="seller-contact">
+          @if (!_appUser.user) {
+            <button (click)="revealPhone()" mat-raised-button color="primary">
+              <mat-icon>phone</mat-icon>
+              Show phone number
+            </button>
+          } @else if (!phoneRevealed) {
+            <button (click)="revealPhone()" mat-raised-button color="primary">
+              <mat-icon>phone</mat-icon>
+              Show phone number
+            </button>
+          } @else {
+            @if (car.user.phone) {
+              <p class="phone-revealed">
+                <mat-icon>phone</mat-icon>
+                {{ car.user.phone }}
+              </p>
+            } @else {
+              <p class="no-phone">Seller has not provided a phone number.</p>
+            }
+          }
+        </div>
+      </div>
+    </div>
+  </div>
+}

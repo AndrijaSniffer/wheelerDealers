@@ -6,6 +6,7 @@ import {MatInput} from '@angular/material/input';
 import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from '@angular/forms';
 import {MatGridList, MatGridTile} from '@angular/material/grid-list';
 import {AuthService} from '../../../services/auth.service';
+import {NotificationService} from '../../../services/notification.service';
 
 @Component({
   selector: 'login-dialog',
@@ -29,6 +30,7 @@ export class LoginDialog {
   private readonly _dialogRef = inject(MatDialogRef<LoginDialog>);
   private readonly _fb = inject(FormBuilder);
   private readonly _auth = inject(AuthService);
+  private readonly _notification = inject(NotificationService)
 
   form: FormGroup;
 
@@ -50,7 +52,7 @@ export class LoginDialog {
       if (isLoggedIn) {
         this._dialogRef.close(true);
       } else {
-        this._dialogRef.close(false);
+        this._notification.showTimedErrorNotification('Login failed. Please check your credentials and try again.');
       }
     }
   }

@@ -10,6 +10,8 @@ import {Model} from './classes/model';
 import {Car} from './classes/car';
 import {Company} from './classes/company';
 import {User} from './classes/user';
+import {Image} from './classes/image';
+import {AppConstants} from './app.constants';
 
 export function mapToCompany(json: any): Company {
   return {
@@ -127,6 +129,14 @@ export function mapToModel(json: any): Model {
   }
 }
 
+export function mapToImage(json: any): Image {
+  return {
+    image: json.image,
+    imageUrl: `${AppConstants.SERVER_URL}${json.image_url}`,
+    car: json.car
+  }
+}
+
 export function mapToCar(json: any): Car {
   return new Car(
     json.car,
@@ -150,6 +160,7 @@ export function mapToCar(json: any): Car {
     json.exterior_color,
     json.chassis_number,
     json.is_preowned,
-    json.created_at
+    json.created_at,
+    json.images.map((imageJson: any) => mapToImage(imageJson))
   );
 }

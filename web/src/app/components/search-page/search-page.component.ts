@@ -21,6 +21,7 @@ import {FuelService} from '../../services/fuel.service';
 import {CarService} from '../../services/car.service';
 import {NotificationService} from '../../services/notification.service';
 import {AppUtil} from '../../app.util';
+import {RouterLink} from '@angular/router';
 
 export interface ISearchParameters {
   manufacturer: number | null;
@@ -53,7 +54,8 @@ export interface ISearchParameters {
     MatIcon,
     MatCheckbox,
     NgOptimizedImage,
-    NgForOf
+    NgForOf,
+    RouterLink
   ],
   templateUrl: './search-page.component.html',
   standalone: true,

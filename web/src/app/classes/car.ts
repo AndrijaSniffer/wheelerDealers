@@ -5,6 +5,7 @@ import {Fuel} from './fuel';
 import {Drivetrain} from './drivetrain';
 import {EngineType} from './engine-type';
 import {EmissionClass} from './emission-class';
+import {Image} from './image';
 
 export class Car {
   id: number | null;
@@ -29,6 +30,7 @@ export class Car {
   chassisNumber: string | null;
   isPreowned: boolean;
   createdAt: Date;
+  images: Image[];
 
   constructor(
     id: number | null,
@@ -52,7 +54,8 @@ export class Car {
     exteriorColor: string | null,
     chassisNumber: string | null,
     isPreowned: boolean,
-    createdAt: Date
+    createdAt: Date,
+    images: Image[],
   ) {
     this.id = id;
     this.user = user;
@@ -76,6 +79,7 @@ export class Car {
     this.chassisNumber = chassisNumber;
     this.isPreowned = isPreowned;
     this.createdAt = createdAt;
+    this.images = images;
   }
 }
 

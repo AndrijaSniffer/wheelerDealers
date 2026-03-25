@@ -21,6 +21,7 @@ import {UserGuard} from './guards/user.guard';
 import {DealershipDashboardComponent} from './components/dealership/dashboard/dashboard.component';
 import {DealershipGuard} from './guards/dealership.guard';
 import {InventoryComponent} from './components/dealership/inventory/inventory.component';
+import {CarDetailComponent} from './components/car-detail/car-detail.component';
 
 
 export const routes: Routes = [
@@ -42,6 +43,7 @@ export const routes: Routes = [
   {path: 'profile', component: ProfileComponent, canActivate: [UserGuard]},
   {path: 'dealership/dashboard', component: DealershipDashboardComponent, canActivate: [DealershipGuard]},
   {path: 'dealership/inventory', component: InventoryComponent, canActivate: [DealershipGuard]},
+  {path: 'car/:id', component: CarDetailComponent},
 ];
 
 @NgModule({
