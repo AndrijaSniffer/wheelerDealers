@@ -1,0 +1,26 @@
+meta {
+  name: updateByPK
+  type: http
+  seq: 5
+}
+
+put {
+  url: {{apiUrl}}/model/:id/
+  body: json
+  auth: inherit
+}
+
+params:path {
+  id: 1
+}
+
+body:json {
+  {
+    "name": "Civic",
+    "manufacturer": 1
+  }
+}
+
+settings {
+  encodeUrl: true
+}

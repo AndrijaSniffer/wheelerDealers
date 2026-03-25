@@ -1,0 +1,28 @@
+meta {
+  name: updateCompany
+  type: http
+  seq: 5
+}
+
+put {
+  url: {{apiUrl}}/company/:id/
+  body: json
+  auth: inherit
+}
+
+params:path {
+  id: 1
+}
+
+body:json {
+  {
+    "address": "New Address 123",
+    "phone": "0643501327",
+    "website_url": "www.example.com"
+  }
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

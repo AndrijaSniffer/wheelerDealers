@@ -1,0 +1,25 @@
+meta {
+  name: updateImageByPK
+  type: http
+  seq: 4
+}
+
+put {
+  url: {{apiUrl}}/image/:id/
+  body: json
+  auth: inherit
+}
+
+params:path {
+  id: 1
+}
+
+body:json {
+  {
+    "car": 1
+  }
+}
+
+settings {
+  encodeUrl: true
+}

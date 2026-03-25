@@ -1,0 +1,19 @@
+meta {
+  name: deleteByPK
+  type: http
+  seq: 4
+}
+
+delete {
+  url: {{apiUrl}}/modelType/:id/
+  body: none
+  auth: inherit
+}
+
+params:path {
+  id: 1
+}
+
+settings {
+  encodeUrl: true
+}

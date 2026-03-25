@@ -1,0 +1,25 @@
+meta {
+  name: updateDrivetrainByPK
+  type: http
+  seq: 4
+}
+
+put {
+  url: {{apiUrl}}/drivetrain/:id/
+  body: json
+  auth: inherit
+}
+
+params:path {
+  id: 1
+}
+
+body:json {
+  {
+    "type": "AWD"
+  }
+}
+
+settings {
+  encodeUrl: true
+}

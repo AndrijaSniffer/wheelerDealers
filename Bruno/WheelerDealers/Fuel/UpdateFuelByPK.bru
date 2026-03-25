@@ -1,0 +1,25 @@
+meta {
+  name: UpdateFuelByPK
+  type: http
+  seq: 3
+}
+
+put {
+  url: {{apiUrl}}/fuel/:id/
+  body: json
+  auth: inherit
+}
+
+params:path {
+  id: 1
+}
+
+body:json {
+  {
+    "type": "Petrol"
+  }
+}
+
+settings {
+  encodeUrl: true
+}

@@ -1,0 +1,19 @@
+meta {
+  name: insert
+  type: http
+  seq: 3
+}
+
+post {
+  url: {{apiUrl}}/emissionClass/
+  body: multipartForm
+  auth: inherit
+}
+
+body:multipart-form {
+  name: Euro 6
+}
+
+settings {
+  encodeUrl: true
+}

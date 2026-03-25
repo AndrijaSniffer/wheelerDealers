@@ -1,0 +1,25 @@
+meta {
+  name: updateByPK
+  type: http
+  seq: 4
+}
+
+put {
+  url: {{apiUrl}}/emissionClass/:id/
+  body: json
+  auth: inherit
+}
+
+params:path {
+  id: 1
+}
+
+body:json {
+  {
+    "name": "Euro 6"
+  }
+}
+
+settings {
+  encodeUrl: true
+}

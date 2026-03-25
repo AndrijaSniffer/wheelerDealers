@@ -1,0 +1,19 @@
+meta {
+  name: GetFuelByPK
+  type: http
+  seq: 2
+}
+
+get {
+  url: {{apiUrl}}/fuel/:id/
+  body: none
+  auth: none
+}
+
+params:path {
+  id: 1
+}
+
+settings {
+  encodeUrl: true
+}

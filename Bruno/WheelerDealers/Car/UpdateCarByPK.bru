@@ -1,0 +1,27 @@
+meta {
+  name: UpdateCarByPK
+  type: http
+  seq: 7
+}
+
+put {
+  url: {{apiUrl}}/car/:id/
+  body: json
+  auth: inherit
+}
+
+params:path {
+  id: 1
+}
+
+body:json {
+  {
+    "price": 13000,
+    "exterior_color": "Red",
+    "is_preowned": true
+  }
+}
+
+settings {
+  encodeUrl: true
+}

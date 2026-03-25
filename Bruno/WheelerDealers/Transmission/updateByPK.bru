@@ -1,0 +1,25 @@
+meta {
+  name: updateByPK
+  type: http
+  seq: 4
+}
+
+put {
+  url: {{apiUrl}}/transmissionType/:id/
+  body: json
+  auth: inherit
+}
+
+params:path {
+  id: 1
+}
+
+body:json {
+  {
+    "type": "Manual"
+  }
+}
+
+settings {
+  encodeUrl: true
+}

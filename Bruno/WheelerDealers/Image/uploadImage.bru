@@ -1,0 +1,20 @@
+meta {
+  name: uploadImage
+  type: http
+  seq: 3
+}
+
+post {
+  url: {{apiUrl}}/image/
+  body: multipartForm
+  auth: inherit
+}
+
+body:multipart-form {
+  car: 1
+  image: @file()
+}
+
+settings {
+  encodeUrl: true
+}

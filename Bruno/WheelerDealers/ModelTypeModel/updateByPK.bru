@@ -1,0 +1,26 @@
+meta {
+  name: updateByPK
+  type: http
+  seq: 4
+}
+
+put {
+  url: {{apiUrl}}/modelTypeModel/:id/
+  body: json
+  auth: inherit
+}
+
+params:path {
+  id: 1
+}
+
+body:json {
+  {
+    "model_type": 1,
+    "model": 1
+  }
+}
+
+settings {
+  encodeUrl: true
+}

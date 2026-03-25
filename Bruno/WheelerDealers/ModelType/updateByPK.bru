@@ -1,0 +1,25 @@
+meta {
+  name: updateByPK
+  type: http
+  seq: 3
+}
+
+put {
+  url: {{apiUrl}}/modelType/:id/
+  body: json
+  auth: inherit
+}
+
+params:path {
+  id: 1
+}
+
+body:json {
+  {
+    "type": "Hatchback"
+  }
+}
+
+settings {
+  encodeUrl: true
+}

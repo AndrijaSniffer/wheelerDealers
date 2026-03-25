@@ -1,0 +1,19 @@
+meta {
+  name: getImageByPK
+  type: http
+  seq: 2
+}
+
+get {
+  url: {{apiUrl}}/image/:id/
+  body: none
+  auth: none
+}
+
+params:path {
+  id: 1
+}
+
+settings {
+  encodeUrl: true
+}
