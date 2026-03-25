@@ -22,8 +22,10 @@ urlpatterns = [
     path('api/auth/user/<int:user_id>', views.get_user_by_id, name='get_user_by_id'),
     path('api/auth/user/<int:user_id>/update', views.update_user, name='update_user'),
     path('api/auth/user/<int:user_id>/cars', views.get_cars_by_user_id, name='get_cars_by_user_id'),
+    path('car/<int:car_id>/images', views.upload_car_images, name='upload_car_images'),
 
 ]
 
 if settings.DEBUG:
     urlpatterns += static(settings.LOGO_URL, document_root=settings.LOGO_ROOT)
+    urlpatterns += static(settings.CAR_IMAGES_URL, document_root=settings.CAR_IMAGES_ROOT)

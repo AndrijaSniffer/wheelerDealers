@@ -55,31 +55,38 @@ class IsUserSelf(BasePermission):
 
 class CarPermission(BasePermission):
     """
-    Custom permission class for car-related views:
-    - Allows anyone (even unregistered users) to use GET.
-    - Allows registered non-admin users to POST (create) cars, which will be owned by them.
-    - Allows registered users to PUT (update) and DELETE only their own cars.
-    - Allows admins to GET and DELETE any car, but not POST or PUT.
+    - GET: everyone (including anonymous users)
+    - POST (create): authenticated non-admin users only
+    - PUT/PATCH (update): car owner only
+    - DELETE: car owner or admin
     """
 
     def has_permission(self, request, view):
-        # Allow safe methods (GET, HEAD, OPTIONS) for everyone
         if request.method in SAFE_METHODS:
             return True
-        # For POST (create), allow only authenticated non-admin users
-        if view.action == 'create':
+
+        # Support both ViewSets (view.action) and FBVs (request.method)
+        action = getattr(view, 'action', None)
+
+        # POST / create
+        if request.method == 'POST' or action == 'create':
             return request.user.is_authenticated and not request.user.is_superuser
-        # For PUT and DELETE, defer to has_object_permission
-        return True
+
+        # PUT, PATCH, DELETE — defer to has_object_permission
+        return request.user.is_authenticated
 
     def has_object_permission(self, request, view, obj):
-        # Allow safe methods (GET) for everyone
         if request.method in SAFE_METHODS:
             return True
-        # For PUT (update), allow only the car's owner
-        if view.action in ['update', 'partial_update']:
+
+        action = getattr(view, 'action', None)
+
+        # PUT / PATCH — owner only
+        if request.method in ('PUT', 'PATCH') or action in ('update', 'partial_update'):
             return obj.user == request.user
-        # For DELETE, allow the owner or an admin
-        if view.action == 'destroy':
+
+        # DELETE — owner or admin
+        if request.method == 'DELETE' or action == 'destroy':
             return obj.user == request.user or request.user.is_superuser
+
         return False

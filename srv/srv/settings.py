@@ -23,9 +23,13 @@ ASSETS_DIR = os.path.join(BASE_DIR, 'wheelerDealersApi/assets')
 # Media path
 MEDIA_ROOT = os.path.join(BASE_DIR, 'wheelerDealersApi/media')
 
-#Logos path
+# Logos path
 LOGO_ROOT = os.path.join(MEDIA_ROOT, 'logos')
 LOGO_URL = 'media/logos/'
+
+# Car images
+CAR_IMAGES_URL = 'media/cars/'
+CAR_IMAGES_ROOT = os.path.join(MEDIA_ROOT, 'cars')
 
 APPEND_SLASH = True
 

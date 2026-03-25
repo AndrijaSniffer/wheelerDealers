@@ -3,7 +3,8 @@ import os
 from django.db.models import Q
 from django.views.decorators.csrf import csrf_exempt
 from rest_framework import routers, viewsets, status, permissions
-from rest_framework.decorators import api_view, permission_classes
+from rest_framework.decorators import api_view, permission_classes, parser_classes
+from rest_framework.parsers import MultiPartParser, FormParser
 from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
 
@@ -246,6 +247,45 @@ def get_cars_by_user_id(request, user_id: int):
     cars = Car.objects.filter(user_id=user_id, user__is_active=True).order_by('-created_at')
     serializer = CarSerializer(cars, many=True)
     return Response(status=status.HTTP_200_OK, data=serializer.data)
+
+
+@csrf_exempt
+@api_view(['POST'])
+@permission_classes([CarPermission])
+@parser_classes([MultiPartParser, FormParser])
+def upload_car_images(request, car_id: int):
+    try:
+        car = Car.objects.get(pk=car_id)
+    except Car.DoesNotExist:
+        return Response(status=status.HTTP_404_NOT_FOUND)
+
+    # Only the car owner or admin can upload images
+    if not (request.user == car.user or request.user.is_superuser):
+        return Response(status=status.HTTP_403_FORBIDDEN)
+
+    files = request.FILES.getlist('images')
+    if not files:
+        return Response(status=status.HTTP_400_BAD_REQUEST, data={'error': 'No images provided.'})
+
+    upload_dir = os.path.join(settings.MEDIA_ROOT, 'cars', str(car_id))
+    if not os.path.exists(upload_dir):
+        os.makedirs(upload_dir)
+
+    created_images = []
+    for file in files:
+        file_path = os.path.join(upload_dir, file.name)
+        with open(file_path, 'wb+') as destination:
+            for chunk in file.chunks():
+                destination.write(chunk)
+
+        image = Image.objects.create(
+            car=car,
+            image_url=f'media/cars/{car_id}/{file.name}'
+        )
+        created_images.append(image)
+
+    serializer = ImageSerializer(created_images, many=True)
+    return Response(status=status.HTTP_201_CREATED, data=serializer.data)
 
 
 # endregion
