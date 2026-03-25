@@ -1,0 +1,23 @@
+meta {
+  name: deleteCountryByPK
+  type: http
+  seq: 4
+}
+
+delete {
+  url: {{apiUrl}}/country/3/
+  body: none
+  auth: none
+}
+
+params:query {
+  ~country: 3
+}
+
+headers {
+  "{{tokenName}}": {{csrftoken}}
+}
+
+settings {
+  encodeUrl: true
+}

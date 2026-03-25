@@ -1,0 +1,23 @@
+meta {
+  name: search default
+  type: http
+  seq: 2
+}
+
+get {
+  url: {{apiUrl}}/car
+  body: none
+  auth: none
+}
+
+script:post-response {
+  test("Response body is not null", function () {
+      var responseXML = xml2Json(JSON.stringify(res.getBody()));
+      expect(responseXML).to.not.be.null;
+  });
+  
+}
+
+settings {
+  encodeUrl: true
+}

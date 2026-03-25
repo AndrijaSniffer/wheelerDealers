@@ -1,0 +1,25 @@
+meta {
+  name: createNewConnection
+  type: http
+  seq: 1
+}
+
+post {
+  url: {{apiUrl}}/modelTypeModels/
+  body: multipartForm
+  auth: inherit
+}
+
+params:query {
+  ~model_type: 1
+  ~model: 1
+}
+
+body:multipart-form {
+  model_type: 1
+  model: 1
+}
+
+settings {
+  encodeUrl: true
+}

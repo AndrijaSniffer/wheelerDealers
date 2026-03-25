@@ -1,0 +1,36 @@
+meta {
+  name: Login
+  type: http
+  seq: 1
+}
+
+post {
+  url: {{apiUrl}}/api/auth/login
+  body: multipartForm
+  auth: none
+}
+
+headers {
+  ~"{{tokenName}}": {{csrftoken}}
+}
+
+body:multipart-form {
+  username: {{username}}
+  password: {{password}}
+}
+
+script:post-response {
+  if (res.getStatus() === 200) {
+    const data = res.getBody();
+  
+    bru.setEnvVar("accessToken", data.access, { persist: true });
+    bru.setEnvVar("refreshToken", data.refresh, { persist: true });
+  } else {
+    console.log("Token extraction skipped – response status:", res.getStatus());
+  }
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

@@ -1,0 +1,23 @@
+meta {
+  name: deactivateUser
+  type: http
+  seq: 5
+}
+
+delete {
+  url: {{apiUrl}}/deactivateUser?PK=3
+  body: none
+  auth: inherit
+}
+
+params:query {
+  PK: 3
+}
+
+headers {
+  "{{tokenName}}": {{csrftoken}}
+}
+
+settings {
+  encodeUrl: true
+}

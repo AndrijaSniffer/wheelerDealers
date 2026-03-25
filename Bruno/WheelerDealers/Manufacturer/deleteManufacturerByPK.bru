@@ -1,0 +1,23 @@
+meta {
+  name: deleteManufacturerByPK
+  type: http
+  seq: 5
+}
+
+delete {
+  url: {{apiUrl}}/deleteManufacturerByPK?PK=6
+  body: none
+  auth: inherit
+}
+
+params:query {
+  PK: 6
+}
+
+headers {
+  "{{tokenName}}": {{csrftoken}}
+}
+
+settings {
+  encodeUrl: true
+}

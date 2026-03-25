@@ -1,0 +1,20 @@
+meta {
+  name: search
+  type: http
+  seq: 1
+}
+
+get {
+  url: {{apiUrl}}/search/normal?fuel=2
+  body: none
+  auth: none
+}
+
+params:query {
+  fuel: 2
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

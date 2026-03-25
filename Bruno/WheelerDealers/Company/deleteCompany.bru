@@ -1,0 +1,15 @@
+meta {
+  name: deleteCompany
+  type: http
+  seq: 3
+}
+
+delete {
+  url: {{apiUrl}}/company/
+  body: none
+  auth: inherit
+}
+
+settings {
+  encodeUrl: true
+}

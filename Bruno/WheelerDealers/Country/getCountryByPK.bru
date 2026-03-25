@@ -1,0 +1,19 @@
+meta {
+  name: getCountryByPK
+  type: http
+  seq: 3
+}
+
+get {
+  url: {{apiUrl}}/country/1/
+  body: multipartForm
+  auth: inherit
+}
+
+body:multipart-form {
+  ~PK: 1
+}
+
+settings {
+  encodeUrl: true
+}

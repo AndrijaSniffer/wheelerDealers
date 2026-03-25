@@ -1,0 +1,25 @@
+meta {
+  name: deleteEngineByPK
+  type: http
+  seq: 5
+}
+
+delete {
+  url: {{apiUrl}}/deleteEngineByPK
+  body: json
+  auth: inherit
+}
+
+headers {
+  "{{tokenName}}": {{csrftoken}}
+}
+
+body:json {
+  {
+      "id_engine": 2
+  }
+}
+
+settings {
+  encodeUrl: true
+}

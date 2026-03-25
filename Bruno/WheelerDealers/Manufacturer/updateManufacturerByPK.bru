@@ -1,0 +1,27 @@
+meta {
+  name: updateManufacturerByPK
+  type: http
+  seq: 4
+}
+
+put {
+  url: {{apiUrl}}/updateManufacturerByPK
+  body: json
+  auth: inherit
+}
+
+headers {
+  "{{tokenName}}": {{csrftoken}}
+}
+
+body:json {
+  {
+      "id_manufacturer": 6,
+      "name_manufacturer": "Datsun",
+      "id_country": 1
+  }
+}
+
+settings {
+  encodeUrl: true
+}

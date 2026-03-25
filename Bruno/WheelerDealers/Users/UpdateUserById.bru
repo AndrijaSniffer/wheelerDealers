@@ -1,0 +1,28 @@
+meta {
+  name: UpdateUserById
+  type: http
+  seq: 3
+}
+
+put {
+  url: http://localhost:8000/wheelerDealersApi/api/auth/user/:user_id/update
+  body: json
+  auth: inherit
+}
+
+params:path {
+  user_id: 2
+}
+
+body:json {
+  {
+      "address": "Pobede 144a",
+      "is_reseller": true
+  }
+  
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

@@ -1,0 +1,30 @@
+meta {
+  name: updateEngineByPK
+  type: http
+  seq: 4
+}
+
+put {
+  url: {{apiUrl}}/engines
+  body: json
+  auth: inherit
+}
+
+headers {
+  "{{tokenName}}": {{csrftoken}}
+}
+
+body:json {
+  {
+      "engineCode": "test",
+      "horsepower": 121,
+      "kilowatt": 33,
+      "volume": 1422,
+      "idEngineType": 1,
+      "id": 1
+  }
+}
+
+settings {
+  encodeUrl: true
+}

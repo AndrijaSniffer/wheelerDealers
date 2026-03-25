@@ -1,0 +1,20 @@
+meta {
+  name: new
+  type: http
+  seq: 2
+}
+
+post {
+  url: {{apiUrl}}/transmission/
+  body: multipartForm
+  auth: inherit
+}
+
+body:multipart-form {
+  gears: 
+  type: Manual
+}
+
+settings {
+  encodeUrl: true
+}

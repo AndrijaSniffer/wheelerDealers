@@ -1,0 +1,27 @@
+meta {
+  name: insertEngine
+  type: http
+  seq: 3
+}
+
+post {
+  url: {{apiUrl}}/engines/
+  body: multipartForm
+  auth: inherit
+}
+
+headers {
+  "{{tokenName}}": {{csrftoken}}
+}
+
+body:multipart-form {
+  engine_type: 1
+  engine_code: Code2
+  horsepower: 100
+  kilowatt: 55
+  volume: 1400
+}
+
+settings {
+  encodeUrl: true
+}

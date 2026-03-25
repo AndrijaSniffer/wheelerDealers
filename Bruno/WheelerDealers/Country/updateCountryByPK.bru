@@ -1,0 +1,26 @@
+meta {
+  name: updateCountryByPK
+  type: http
+  seq: 5
+}
+
+put {
+  url: {{apiUrl}}/countries
+  body: json
+  auth: inherit
+}
+
+headers {
+  ~"{{tokenName}}": {{csrftoken}}
+}
+
+body:json {
+  {
+      "id": 1,
+      "nameCountry": "Serbia"
+  }
+}
+
+settings {
+  encodeUrl: true
+}

@@ -1,0 +1,23 @@
+meta {
+  name: getManufacturerByPK
+  type: http
+  seq: 2
+}
+
+get {
+  url: {{apiUrl}}/getManufacturerByPK?id_manufacturer=2
+  body: none
+  auth: inherit
+}
+
+params:query {
+  id_manufacturer: 2
+}
+
+headers {
+  "{{tokenName}}": {{csrftoken}}
+}
+
+settings {
+  encodeUrl: true
+}

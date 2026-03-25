@@ -1,0 +1,155 @@
+meta {
+  name: GetAllUsers
+  type: http
+  seq: 6
+}
+
+get {
+  url: {{apiUrl}}/api/auth/getAll
+  body: json
+  auth: inherit
+}
+
+settings {
+  encodeUrl: true
+}
+
+example {
+  name: GetAllUsers
+  
+  request: {
+    url: {{apiUrl}}/api/auth/getAll
+    method: GET
+    mode: json
+  }
+  
+  response: {
+    headers: {
+      Date: Mon, 16 Dec 2024 19:19:34 GMT
+      Server: WSGIServer/0.2 CPython/3.13.0
+      Content-Type: application/json
+      Vary: Accept, origin
+      Allow: OPTIONS, GET
+      X-Frame-Options: DENY
+      X-Content-Type-Options: nosniff
+      Referrer-Policy: same-origin
+      Cross-Origin-Opener-Policy: same-origin
+      Content-Length: 1914
+    }
+  
+    status: {
+      code: 200
+      text: OK
+    }
+  
+    body: {
+      type: json
+      content: '''
+        [
+            {
+                "id": 1,
+                "PIB": null,
+                "last_login": null,
+                "is_superuser": true,
+                "username": "admin",
+                "email": "admin@admin.com",
+                "is_staff": true,
+                "is_active": true,
+                "date_joined": "2024-12-16T15:36:36.391075Z",
+                "phone": null,
+                "address": null,
+                "is_reseller": false,
+                "groups": [],
+                "user_permissions": []
+            },
+            {
+                "id": 2,
+                "PIB": null,
+                "last_login": null,
+                "is_superuser": false,
+                "username": "HondaCivic",
+                "email": "andrija.cajic.3711@metropolitan.ac.rs",
+                "is_staff": false,
+                "is_active": true,
+                "date_joined": "2024-12-16T15:49:59.424605Z",
+                "phone": null,
+                "address": null,
+                "is_reseller": false,
+                "groups": [],
+                "user_permissions": []
+            },
+            {
+                "id": 3,
+                "PIB": null,
+                "last_login": null,
+                "is_superuser": false,
+                "username": "Polovni Automobili",
+                "email": "polovni.automobili@gmail.com",
+                "is_staff": false,
+                "is_active": true,
+                "date_joined": "2024-12-16T18:39:08.096531Z",
+                "phone": null,
+                "address": null,
+                "is_reseller": true,
+                "groups": [],
+                "user_permissions": []
+            },
+            {
+                "id": 4,
+                "PIB": null,
+                "last_login": null,
+                "is_superuser": false,
+                "username": "Polovni Automobili2",
+                "email": "polovni.automobili@gmail.com",
+                "is_staff": false,
+                "is_active": true,
+                "date_joined": "2024-12-16T18:49:11.969279Z",
+                "phone": null,
+                "address": null,
+                "is_reseller": true,
+                "groups": [],
+                "user_permissions": []
+            },
+            {
+                "id": 5,
+                "PIB": null,
+                "last_login": null,
+                "is_superuser": false,
+                "username": "Polovni Automobili3",
+                "email": "polovni.automobili@gmail.com",
+                "is_staff": false,
+                "is_active": true,
+                "date_joined": "2024-12-16T18:51:01.996247Z",
+                "phone": null,
+                "address": null,
+                "is_reseller": true,
+                "groups": [],
+                "user_permissions": []
+            },
+            {
+                "id": 6,
+                "PIB": {
+                    "PIB": 1,
+                    "address": "neka adresa 123",
+                    "phone": "+38164545545",
+                    "logo_url": "https://www.polovniautomobili.com/bundles/site/images/polovniautomobili-logo.svg",
+                    "website_url": "https://www.polovniautomobili.com/"
+                },
+                "last_login": null,
+                "is_superuser": false,
+                "username": "Polovni Automobili4",
+                "email": "polovni.automobili@gmail.com",
+                "is_staff": false,
+                "is_active": true,
+                "date_joined": "2024-12-16T19:04:10.563094Z",
+                "phone": null,
+                "address": null,
+                "is_reseller": true,
+                "groups": [],
+                "user_permissions": []
+            }
+        ]
+      '''
+    }
+  }
+}

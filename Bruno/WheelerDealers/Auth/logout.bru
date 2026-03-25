@@ -1,0 +1,19 @@
+meta {
+  name: logout
+  type: http
+  seq: 2
+}
+
+delete {
+  url: {{apiUrl}}/logout
+  body: none
+  auth: inherit
+}
+
+headers {
+  "{{tokenName}}": {{csrftoken}}
+}
+
+settings {
+  encodeUrl: true
+}

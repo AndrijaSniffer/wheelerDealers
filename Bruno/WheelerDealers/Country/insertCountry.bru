@@ -1,0 +1,23 @@
+meta {
+  name: insertCountry
+  type: http
+  seq: 1
+}
+
+post {
+  url: {{apiUrl}}/country/
+  body: multipartForm
+  auth: inherit
+}
+
+headers {
+  ~"{{tokenName}}": {{csrftoken}}
+}
+
+body:multipart-form {
+  name: Japan
+}
+
+settings {
+  encodeUrl: true
+}

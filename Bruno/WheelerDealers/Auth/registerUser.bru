@@ -1,0 +1,32 @@
+meta {
+  name: registerUser
+  type: http
+  seq: 4
+}
+
+post {
+  url: {{apiUrl}}/api/auth/create
+  body: multipartForm
+  auth: none
+}
+
+body:multipart-form {
+  username: Polovni Automobili
+  password: ThisIsMyCommonPassword2
+  email: polovni.automobili@gmail.com
+  is_reseller: true
+  PIB: 12345678
+  ~username: HondaCivic2
+  ~password: ThisIsMyCommonPassword1
+  ~email: andrija.cajic.3711@metropolitan.ac.rs
+  ~is_reseller: false
+  ~username: admin
+  ~password: ThisIsMyAdminPassword
+  ~email: admin@admin.com
+  ~is_reseller: false
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

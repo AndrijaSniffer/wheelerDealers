@@ -1,0 +1,23 @@
+meta {
+  name: getEngineTypeByPK
+  type: http
+  seq: 2
+}
+
+get {
+  url: {{apiUrl}}/engineType/1/
+  body: none
+  auth: inherit
+}
+
+params:query {
+  ~PK: 2
+}
+
+headers {
+  "{{tokenName}}": {{csrftoken}}
+}
+
+settings {
+  encodeUrl: true
+}

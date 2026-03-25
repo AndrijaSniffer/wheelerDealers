@@ -1,0 +1,26 @@
+meta {
+  name: updateEngineTypeByPK
+  type: http
+  seq: 4
+}
+
+put {
+  url: {{apiUrl}}/updateEngineTypeByPK
+  body: json
+  auth: inherit
+}
+
+headers {
+  "{{tokenName}}": {{csrftoken}}
+}
+
+body:json {
+  {
+      "id_engine_type": 1,
+      "engine_type": "Unutrasnje sagorevanje"
+  }
+}
+
+settings {
+  encodeUrl: true
+}

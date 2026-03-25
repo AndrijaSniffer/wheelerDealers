@@ -1,0 +1,19 @@
+meta {
+  name: byManufacturerId
+  type: http
+  seq: 4
+}
+
+get {
+  url: {{apiUrl}}/model/byManufacturerId?manufacturer_id=2
+  body: multipartForm
+  auth: none
+}
+
+params:query {
+  manufacturer_id: 2
+}
+
+settings {
+  encodeUrl: true
+}

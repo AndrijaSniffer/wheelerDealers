@@ -1,0 +1,24 @@
+meta {
+  name: insertManufacturer
+  type: http
+  seq: 3
+}
+
+post {
+  url: {{apiUrl}}/manufacturer/
+  body: multipartForm
+  auth: inherit
+}
+
+headers {
+  "{{tokenName}}": {{csrftoken}}
+}
+
+body:multipart-form {
+  country: 1
+  name: Honda
+}
+
+settings {
+  encodeUrl: true
+}

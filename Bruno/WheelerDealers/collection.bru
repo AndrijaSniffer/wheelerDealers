@@ -1,0 +1,42 @@
+meta {
+  name: WheelerDealers
+}
+
+auth {
+  mode: bearer
+}
+
+auth:bearer {
+  token: {{accessToken}}
+}
+
+vars:pre-request {
+  ~apiUrl: http://localhost:8000/wheelerDealersApi
+  ~username: admin
+  ~csrftoken: def
+  ~tokenName: X-CSRFToken
+  ~BearerToken: 
+}
+
+script:pre-request {
+  // const options = {
+  // //     url: `${pm.collectionVariables.get('apiUrl')}/api/token/`,
+  //     method: 'POST',
+  //     header: { 'content-type': 'application/json' },
+  //     body: {
+  //         mode: 'raw',
+  //         raw: JSON.stringify({"username": "admin", "password": "MBLPLyrpfzTsDkuG3yY3"})
+  //     }
+  // };
+  
+  // // pm.sendRequest(options, function (err, res) {
+  //     console.warn(res)
+  //     var jsonData = res.json();
+  //     if (err) {
+  //         console.log(err);
+  //     }
+  //     else {
+  // //         pm.collectionVariables.set("BearerToken", jsonData.access);
+  //     }
+  // });
+}

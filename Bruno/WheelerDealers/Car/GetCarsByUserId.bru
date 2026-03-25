@@ -1,0 +1,20 @@
+meta {
+  name: GetCarsByUserId
+  type: http
+  seq: 4
+}
+
+get {
+  url: http://localhost:8000/wheelerDealersApi/api/auth/user/:user_id/cars
+  body: none
+  auth: inherit
+}
+
+params:path {
+  user_id: 3
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

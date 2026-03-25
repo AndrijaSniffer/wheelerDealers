@@ -1,0 +1,28 @@
+meta {
+  name: CreateNewCar
+  type: http
+  seq: 2
+}
+
+post {
+  url: {{apiUrl}}/car/
+  body: multipartForm
+  auth: inherit
+}
+
+body:multipart-form {
+  user: 1
+  model: 1
+  transmission: 1
+  fuel: 1
+  interior: 1
+  price: 2000
+  color: Blue
+  chassis_number: asdsadasd
+  is_preowned: true
+  ~c: 
+}
+
+settings {
+  encodeUrl: true
+}

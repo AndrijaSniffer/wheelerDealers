@@ -1,0 +1,15 @@
+meta {
+  name: getAllCountry
+  type: http
+  seq: 2
+}
+
+get {
+  url: {{apiUrl}}/country/
+  body: none
+  auth: inherit
+}
+
+settings {
+  encodeUrl: true
+}

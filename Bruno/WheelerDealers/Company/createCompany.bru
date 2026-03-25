@@ -1,0 +1,24 @@
+meta {
+  name: createCompany
+  type: http
+  seq: 2
+}
+
+post {
+  url: {{apiUrl}}/api/company
+  body: multipartForm
+  auth: none
+}
+
+body:multipart-form {
+  address: asdfg
+  phone: 0643501327
+  website_url: www.example.com
+  PIB: 12345678
+  ~logo: @file(/C:/Users/cajic/OneDrive/Slike/cursor.png)
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

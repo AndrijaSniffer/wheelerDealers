@@ -1,0 +1,22 @@
+meta {
+  name: CreateNewInterior
+  type: http
+  seq: 2
+}
+
+post {
+  url: {{apiUrl}}/interior/
+  body: multipartForm
+  auth: inherit
+}
+
+body:multipart-form {
+  doors: 3
+  seats: 5
+  steering_wheel_left: true
+  color: black
+}
+
+settings {
+  encodeUrl: true
+}

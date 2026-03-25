@@ -1,0 +1,19 @@
+meta {
+  name: CreateNewFuel
+  type: http
+  seq: 2
+}
+
+post {
+  url: {{apiUrl}}/fuel/
+  body: multipartForm
+  auth: inherit
+}
+
+body:multipart-form {
+  type: Petrol
+}
+
+settings {
+  encodeUrl: true
+}

@@ -1,0 +1,22 @@
+meta {
+  name: createNewModel
+  type: http
+  seq: 2
+}
+
+post {
+  url: {{apiUrl}}/models/
+  body: multipartForm
+  auth: inherit
+}
+
+body:multipart-form {
+  name: Civic
+  year_of_manufacture: 2000
+  manufacturer: 1
+  engine: 1
+}
+
+settings {
+  encodeUrl: true
+}

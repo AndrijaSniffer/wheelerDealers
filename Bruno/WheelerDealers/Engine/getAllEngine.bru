@@ -1,0 +1,19 @@
+meta {
+  name: getAllEngine
+  type: http
+  seq: 1
+}
+
+get {
+  url: {{apiUrl}}/engines
+  body: none
+  auth: none
+}
+
+headers {
+  "{{tokenName}}": {{csrftoken}}
+}
+
+settings {
+  encodeUrl: true
+}
