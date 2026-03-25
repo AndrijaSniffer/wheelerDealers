@@ -1,17 +1,17 @@
 meta {
   name: getCountryByPK
   type: http
-  seq: 3
+  seq: 2
 }
 
 get {
-  url: {{apiUrl}}/country/1/
-  body: multipartForm
-  auth: inherit
+  url: {{apiUrl}}/country/:id/
+  body: none
+  auth: none
 }
 
-body:multipart-form {
-  ~PK: 1
+params:path {
+  id: 1
 }
 
 settings {

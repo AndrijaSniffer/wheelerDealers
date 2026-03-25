@@ -191,7 +191,7 @@
         <div class="row search-button-row">
           <div class="col"></div>
           <div class="col-9 text-end">
-            <button style="margin-right: 1vw" (click)="resetForm()" mat-stroked-button>Reset form
+            <button (click)="resetForm()" mat-stroked-button style="margin-right: 1vw">Reset form
               <mat-icon>restart_alt</mat-icon>
             </button>
             <button (click)="submitSearch()" mat-stroked-button>Search
@@ -211,13 +211,13 @@
 
       <div class="car-grid">
         @for (car of cars; track car.id) {
-          <div class="car-card" [routerLink]="['/car', car.id]">
+          <div [routerLink]="['/car', car.id]" class="car-card">
             <div class="car-card-image">
               @if (car.images && car.images.length > 0) {
-                <img [src]="car.images[0].imageUrl"
-                     [alt]="car.model.manufacturer.name + ' ' + car.model.name"/>
+                <img [alt]="car.model.manufacturer.name + ' ' + car.model.name"
+                     [src]="car.images[0].imageUrl"/>
               } @else {
-                <img src="/No-Image-Placeholder.png" alt="No image available"/>
+                <img alt="No image available" src="/No-Image-Placeholder.png"/>
               }
             </div>
             <div class="car-card-body">

@@ -13,14 +13,9 @@ export interface JWTPair {
   providedIn: 'root'
 })
 export class AppUser {
-  private readonly _router: Router = inject(Router);
-
-  private _user: User | null;
-  private _tokenExpiration: number;
-  private _tokens: JWTPair | null;
-
-  private _loggedIn: Subject<boolean>;
   loggedInObservable: Observable<boolean>;
+  private readonly _router: Router = inject(Router);
+  private _loggedIn: Subject<boolean>;
 
   constructor() {
     this._loggedIn = new Subject<boolean>();
@@ -28,6 +23,8 @@ export class AppUser {
 
     this.loggedInObservable = this._loggedIn.asObservable();
   }
+
+  private _user: User | null;
 
   get user(): User {
     return this._user;
@@ -41,6 +38,8 @@ export class AppUser {
     this._user = typeof user === 'string' ? mapToUser(user) : user instanceof User ? user : null;
   }
 
+  private _tokenExpiration: number;
+
   get tokenExpiration(): number {
     return this._tokenExpiration;
   }
@@ -48,6 +47,8 @@ export class AppUser {
   set tokenExpiration(tokenExpiration: number) {
     this._tokenExpiration = tokenExpiration;
   }
+
+  private _tokens: JWTPair | null;
 
   get tokens(): JWTPair {
     return this._tokens;
@@ -61,16 +62,17 @@ export class AppUser {
     this._loggedIn.next(loggedIn);
   }
 
-  logout(){
+  logout() {
     this._user = null;
     this._tokenExpiration = null;
     this._tokens = null;
-    this. _loggedIn.next(false);
+    this._loggedIn.next(false);
 
     sessionStorage.removeItem('user');
     sessionStorage.removeItem('tokens');
 
-    this._router.navigate(['/']).then(_ => {});
+    this._router.navigate(['/']).then(_ => {
+    });
   }
 
 }

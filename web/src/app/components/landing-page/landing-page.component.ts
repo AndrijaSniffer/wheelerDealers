@@ -17,14 +17,16 @@ import {AppUser} from '../../app.user';
   styleUrl: './landing-page.component.css'
 })
 export class LandingPageComponent {
-  private readonly _router: Router = inject(Router);
   protected readonly _appUser: AppUser = inject(AppUser);
+  private readonly _router: Router = inject(Router);
 
   goToSearch() {
-    this._router.navigate(['/search']).then(() => {});
+    this._router.navigate(['/search']).then(() => {
+    });
   }
 
   goToContact() {
-    this._router.navigate(['/contact']).then(() => {});
+    this._router.navigate(['/contact']).then(() => {
+    });
   }
 }

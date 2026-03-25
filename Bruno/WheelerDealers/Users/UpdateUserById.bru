@@ -5,7 +5,7 @@ meta {
 }
 
 put {
-  url: http://localhost:8000/wheelerDealersApi/api/auth/user/:user_id/update
+  url: {{apiUrl}}/api/auth/user/:user_id/update/
   body: json
   auth: inherit
 }
@@ -16,10 +16,9 @@ params:path {
 
 body:json {
   {
-      "address": "Pobede 144a",
-      "is_reseller": true
+    "address": "Pobede 144a",
+    "is_reseller": true
   }
-  
 }
 
 settings {

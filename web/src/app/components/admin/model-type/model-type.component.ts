@@ -47,12 +47,11 @@ import {ModelTypeDialog} from '@dialogs/model-type/model-type-dialog';
   styleUrl: './model-type.component.css'
 })
 export class ModelTypeComponent {
+  displayedColumns = ['id', 'type', 'options'];
+  dataSource: MatTableDataSource<ModelType>;
   private readonly _notification = inject(NotificationService);
   private readonly _modelTypeService = inject(ModelTypeService);
   private readonly _dialog = inject(MatDialog);
-
-  displayedColumns = ['id', 'type', 'options'];
-  dataSource: MatTableDataSource<ModelType>;
   private modelTypes: ModelType[];
 
   constructor() {
@@ -88,7 +87,8 @@ export class ModelTypeComponent {
 
     this._dialog.open(ModelTypeDialog, {
       data: {object: selectedModelType, isView: true}
-    }).afterClosed().subscribe(() => {});
+    }).afterClosed().subscribe(() => {
+    });
   }
 
   edit(id: number) {

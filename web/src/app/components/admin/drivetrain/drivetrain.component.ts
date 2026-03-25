@@ -47,12 +47,11 @@ import {DrivetrainDialog} from '@dialogs/drivetrain/drivetrain-dialog';
   styleUrl: './drivetrain.component.css'
 })
 export class DrivetrainComponent {
+  displayedColumns = ['id', 'type', 'options'];
+  dataSource: MatTableDataSource<Drivetrain>;
   private readonly _notification = inject(NotificationService);
   private readonly _drivetrainService = inject(DrivetrainService);
   private readonly _dialog = inject(MatDialog);
-
-  displayedColumns = ['id', 'type', 'options'];
-  dataSource: MatTableDataSource<Drivetrain>;
   private drivetrains: Drivetrain[];
 
   constructor() {
@@ -88,7 +87,8 @@ export class DrivetrainComponent {
 
     this._dialog.open(DrivetrainDialog, {
       data: {object: selectedModelType, isView: true}
-    }).afterClosed().subscribe(() => {});
+    }).afterClosed().subscribe(() => {
+    });
   }
 
   edit(id: number) {

@@ -12,11 +12,13 @@ export class NoAdminGuard implements CanActivate {
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean {
     if (this._appUser.user) {
       if (this._appUser.user.isSuperuser) {
-        this._router.navigate(['admin/countryManagement']).then(_ => {});
+        this._router.navigate(['admin/countryManagement']).then(_ => {
+        });
         return false;
       }
       if (this._appUser.user.PIB !== null) {
-        this._router.navigate(['dealership/dashboard']).then(_ => {});
+        this._router.navigate(['dealership/dashboard']).then(_ => {
+        });
         return false;
       }
     }

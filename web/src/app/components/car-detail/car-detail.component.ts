@@ -27,18 +27,17 @@ import {SerbianPricePipe} from '@pipes/serbian-price.pipe';
   styleUrl: './car-detail.component.css'
 })
 export class CarDetailComponent implements OnInit {
-  private readonly _route: ActivatedRoute = inject(ActivatedRoute);
-  private readonly _router: Router = inject(Router);
-  private readonly _carService: CarService = inject(CarService);
-  private readonly _notification: NotificationService = inject(NotificationService);
-  private readonly _dialog: MatDialog = inject(MatDialog);
-  protected readonly _appUser: AppUser = inject(AppUser);
-
   car: Car | null = null;
   isLoading: boolean = true;
   phoneRevealed: boolean = false;
   currentImageIndex: number = 0;
   isOwnListing: boolean = false;
+  protected readonly _appUser: AppUser = inject(AppUser);
+  private readonly _route: ActivatedRoute = inject(ActivatedRoute);
+  private readonly _router: Router = inject(Router);
+  private readonly _carService: CarService = inject(CarService);
+  private readonly _notification: NotificationService = inject(NotificationService);
+  private readonly _dialog: MatDialog = inject(MatDialog);
 
   ngOnInit() {
     const carId = Number(this._route.snapshot.paramMap.get('id'));
@@ -54,7 +53,8 @@ export class CarDetailComponent implements OnInit {
         },
         error: () => {
           this._notification.showTimedErrorNotification('Car not found.');
-          this._router.navigate(['/search']).then(() => {});
+          this._router.navigate(['/search']).then(() => {
+          });
         }
       });
     }
@@ -87,6 +87,7 @@ export class CarDetailComponent implements OnInit {
   }
 
   goBack() {
-    this._router.navigate(['/search']).then(() => {});
+    this._router.navigate(['/search']).then(() => {
+    });
   }
 }

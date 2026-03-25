@@ -46,12 +46,11 @@ import {CountryDialog} from '@dialogs/country/country-dialog';
   styleUrl: './country.component.css'
 })
 export class CountryComponent {
+  displayedColumns = ['id', 'name', 'options'];
+  dataSource: MatTableDataSource<Country>;
   private readonly _notification = inject(NotificationService);
   private readonly _countryService = inject(CountryService);
   private readonly _dialog = inject(MatDialog);
-
-  displayedColumns = ['id', 'name', 'options'];
-  dataSource: MatTableDataSource<Country>;
   private countries: Country[];
 
   constructor() {
@@ -87,7 +86,8 @@ export class CountryComponent {
 
     this._dialog.open(CountryDialog, {
       data: {object: countrySelected, isView: true}
-    }).afterClosed().subscribe(() => {});
+    }).afterClosed().subscribe(() => {
+    });
   }
 
   edit(id: number) {
@@ -109,7 +109,7 @@ export class CountryComponent {
     this._dialog.open(YesNoDialogComponent, {
       data: `Are you sure you want to delete this country?\n${JSON.stringify(countrySelected)}?`,
     }).afterClosed().subscribe((result: boolean) => {
-      if(result) {
+      if (result) {
         this._countryService.delete(id).subscribe({
           next: _ => {
             this._notification.showTimedNotification('Country successfully deleted!');

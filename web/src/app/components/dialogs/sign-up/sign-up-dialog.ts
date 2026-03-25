@@ -45,17 +45,28 @@ import {User} from '@classes/user';
   styleUrls: ['sign-up.dialog.css']
 })
 export class SignUpDialog {
-  private readonly _dialogRef = inject(MatDialogRef<SignUpDialog>);
-  private readonly _fb = inject(FormBuilder);
-  private readonly _auth = inject(AuthService);
-
   @ViewChild('stepper') stepper: MatStepper;
-
   selectedFile: File | null = null;
   isValidFile: boolean | null = null;
   userFields: { label: string; value: any }[] = [];
   companyFields: { label: string; value: any }[] = [];
-
+  userFieldLabels = {
+    username: 'Username:',
+    email: 'Email address:',
+    password: 'Password:',
+    phone: 'Phone number:',
+    address: 'Address:',
+    isCompanyRequired: 'Company required:'
+  };
+  companyFieldLabels = {
+    pib: 'PIB:',
+    address: 'Address:',
+    phone: 'Phone number:',
+    logo: 'Logo:',
+    websiteUrl: 'Website URL:'
+  };
+  private readonly _dialogRef = inject(MatDialogRef<SignUpDialog>);
+  private readonly _fb = inject(FormBuilder);
   formUser: FormGroup = this._fb.group({
     username: ['', Validators.required],
     email: ['', [Validators.required, Validators.email]],
@@ -67,7 +78,6 @@ export class SignUpDialog {
   }, {
     validators: this.passwordsMatchValidator
   });
-
   formCompany: FormGroup = this._fb.group({
     PIB: ['', [Validators.required, Validators.pattern(/^\d{8}$/)]],
     address: ['', Validators.required],
@@ -75,23 +85,7 @@ export class SignUpDialog {
     logo: [''],
     websiteUrl: ['', [Validators.pattern(/^(https?:\/\/)?(www\.)?[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}([/?#].*)?$/)]]
   });
-
-  userFieldLabels = {
-    username: 'Username:',
-    email: 'Email address:',
-    password: 'Password:',
-    phone: 'Phone number:',
-    address: 'Address:',
-    isCompanyRequired: 'Company required:'
-  };
-
-  companyFieldLabels = {
-    pib: 'PIB:',
-    address: 'Address:',
-    phone: 'Phone number:',
-    logo: 'Logo:',
-    websiteUrl: 'Website URL:'
-  };
+  private readonly _auth = inject(AuthService);
 
   passwordsMatchValidator(form: AbstractControl): ValidationErrors | null {
     const password = form.get('password')?.value;
@@ -141,14 +135,6 @@ export class SignUpDialog {
         label: this.companyFieldLabels[key] || key,
         value: this.formatValue(value)
       }));
-  }
-
-  // Helper method to format values (e.g., booleans to Yes/No)
-  private formatValue(value: any): string {
-    if (typeof value === 'boolean') {
-      return value ? 'Yes' : 'No';
-    }
-    return value || 'No information was provided'; // Handle null/undefined as empty string
   }
 
   onFileSelected(event: any): void {
@@ -242,5 +228,13 @@ export class SignUpDialog {
     this.isValidFile = null;
 
     this.stepper.reset();
+  }
+
+  // Helper method to format values (e.g., booleans to Yes/No)
+  private formatValue(value: any): string {
+    if (typeof value === 'boolean') {
+      return value ? 'Yes' : 'No';
+    }
+    return value || 'No information was provided'; // Handle null/undefined as empty string
   }
 }

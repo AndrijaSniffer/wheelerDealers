@@ -5,9 +5,13 @@ meta {
 }
 
 get {
-  url: {{apiUrl}}/api/auth/user/3
+  url: {{apiUrl}}/api/auth/user/:user_id/
   body: none
   auth: inherit
+}
+
+params:path {
+  user_id: 3
 }
 
 settings {

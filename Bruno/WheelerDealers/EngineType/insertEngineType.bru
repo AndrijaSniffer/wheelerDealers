@@ -5,18 +5,13 @@ meta {
 }
 
 post {
-  url: {{apiUrl}}/engineTypes/
+  url: {{apiUrl}}/engineType/
   body: multipartForm
   auth: inherit
 }
 
-headers {
-  "{{tokenName}}": {{csrftoken}}
-}
-
 body:multipart-form {
   type: I4
-  engine_emission_class: Euro 4
 }
 
 settings {

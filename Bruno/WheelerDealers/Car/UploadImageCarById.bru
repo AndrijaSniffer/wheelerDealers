@@ -5,7 +5,7 @@ meta {
 }
 
 post {
-  url: http://localhost:8000/wheelerDealersApi/car/:car_id/images
+  url: {{apiUrl}}/car/:car_id/images/
   body: multipartForm
   auth: inherit
 }
@@ -15,7 +15,7 @@ params:path {
 }
 
 body:multipart-form {
-  images: @file(C:\Users\cajic\OneDrive\Slike\2000_honda_civic_2000_honda_civic_c8c96b71-4db2-4e30-a022-01f34025aecc-oWn0kb-17495-17496-scaled.jpg)
+  images: @file()
 }
 
 settings {

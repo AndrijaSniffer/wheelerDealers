@@ -5,17 +5,13 @@ meta {
 }
 
 get {
-  url: {{apiUrl}}/engineType/1/
+  url: {{apiUrl}}/engineType/:id/
   body: none
-  auth: inherit
+  auth: none
 }
 
-params:query {
-  ~PK: 2
-}
-
-headers {
-  "{{tokenName}}": {{csrftoken}}
+params:path {
+  id: 1
 }
 
 settings {

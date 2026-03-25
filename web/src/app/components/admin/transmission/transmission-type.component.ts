@@ -47,12 +47,11 @@ import {TransmissionDialog} from '@dialogs/transmission/transmission-dialog';
   styleUrl: './transmission-type.component.css'
 })
 export class TransmissionTypeComponent {
+  displayedColumns = ['id', 'type', 'options'];
+  dataSource: MatTableDataSource<TransmissionType>;
   private readonly _notification = inject(NotificationService);
   private readonly _transmissionService = inject(TransmissionTypeService);
   private readonly _dialog = inject(MatDialog);
-
-  displayedColumns = ['id', 'type', 'options'];
-  dataSource: MatTableDataSource<TransmissionType>;
   private transmissionTypes: TransmissionType[];
 
   constructor() {
@@ -88,7 +87,8 @@ export class TransmissionTypeComponent {
 
     this._dialog.open(TransmissionDialog, {
       data: {object: selectedTransmission, isView: true}
-    }).afterClosed().subscribe(() => {});
+    }).afterClosed().subscribe(() => {
+    });
   }
 
   edit(id: number) {

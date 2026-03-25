@@ -5,14 +5,14 @@
       <mat-grid-tile>
         <mat-form-field appearance="fill">
           <mat-label>Username</mat-label>
-          <input matInput formControlName="username" (keyup.enter)="submit()" required/>
+          <input (keyup.enter)="submit()" formControlName="username" matInput required/>
         </mat-form-field>
       </mat-grid-tile>
 
       <mat-grid-tile>
         <mat-form-field appearance="fill">
           <mat-label>Password</mat-label>
-          <input matInput type="password" formControlName="password" (keyup.enter)="submit()" required/>
+          <input (keyup.enter)="submit()" formControlName="password" matInput required type="password"/>
         </mat-form-field>
       </mat-grid-tile>
 
@@ -20,6 +20,6 @@
   </form>
 </mat-dialog-content>
 <mat-dialog-actions>
-  <button mat-button (click)="dismiss()">Cancel</button>
-  <button mat-button (click)="submit()" cdkFocusInitial>Login</button>
+  <button (click)="dismiss()" mat-button>Cancel</button>
+  <button (click)="submit()" cdkFocusInitial mat-button>Login</button>
 </mat-dialog-actions>

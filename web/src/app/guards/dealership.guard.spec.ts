@@ -5,7 +5,7 @@ import {dealershipGuard} from '@guards/dealership.guard';
 
 describe('dealershipGuard', () => {
   const executeGuard: CanActivateFn = (...guardParameters) =>
-      TestBed.runInInjectionContext(() => dealershipGuard(...guardParameters));
+    TestBed.runInInjectionContext(() => dealershipGuard(...guardParameters));
 
   beforeEach(() => {
     TestBed.configureTestingModule({});

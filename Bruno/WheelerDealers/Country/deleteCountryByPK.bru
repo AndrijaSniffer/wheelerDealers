@@ -5,17 +5,13 @@ meta {
 }
 
 delete {
-  url: {{apiUrl}}/country/3/
+  url: {{apiUrl}}/country/:id/
   body: none
-  auth: none
+  auth: inherit
 }
 
-params:query {
-  ~country: 3
-}
-
-headers {
-  "{{tokenName}}": {{csrftoken}}
+params:path {
+  id: 1
 }
 
 settings {

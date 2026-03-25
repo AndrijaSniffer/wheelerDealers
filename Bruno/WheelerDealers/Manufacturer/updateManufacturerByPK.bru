@@ -5,20 +5,19 @@ meta {
 }
 
 put {
-  url: {{apiUrl}}/updateManufacturerByPK
+  url: {{apiUrl}}/manufacturer/:id/
   body: json
   auth: inherit
 }
 
-headers {
-  "{{tokenName}}": {{csrftoken}}
+params:path {
+  id: 1
 }
 
 body:json {
   {
-      "id_manufacturer": 6,
-      "name_manufacturer": "Datsun",
-      "id_country": 1
+    "name": "Honda",
+    "country": 1
   }
 }
 

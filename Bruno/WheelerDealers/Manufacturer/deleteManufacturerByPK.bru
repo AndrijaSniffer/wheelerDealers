@@ -5,17 +5,13 @@ meta {
 }
 
 delete {
-  url: {{apiUrl}}/deleteManufacturerByPK?PK=6
+  url: {{apiUrl}}/manufacturer/:id/
   body: none
   auth: inherit
 }
 
-params:query {
-  PK: 6
-}
-
-headers {
-  "{{tokenName}}": {{csrftoken}}
+params:path {
+  id: 1
 }
 
 settings {

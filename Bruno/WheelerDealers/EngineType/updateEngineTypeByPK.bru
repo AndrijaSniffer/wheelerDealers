@@ -5,19 +5,18 @@ meta {
 }
 
 put {
-  url: {{apiUrl}}/updateEngineTypeByPK
+  url: {{apiUrl}}/engineType/:id/
   body: json
   auth: inherit
 }
 
-headers {
-  "{{tokenName}}": {{csrftoken}}
+params:path {
+  id: 1
 }
 
 body:json {
   {
-      "id_engine_type": 1,
-      "engine_type": "Unutrasnje sagorevanje"
+    "type": "I4"
   }
 }
 

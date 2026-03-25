@@ -46,12 +46,11 @@ import {EngineTypeDialog} from '@dialogs/engine-type/engine-type-dialog';
   styleUrl: './engine-type.component.css'
 })
 export class EngineTypeComponent {
+  displayedColumns = ['id', 'type', 'options'];
+  dataSource: MatTableDataSource<EngineType>;
   private readonly _notification = inject(NotificationService);
   private readonly _engineTypeService = inject(EngineTypeService);
   private readonly _dialog = inject(MatDialog);
-
-  displayedColumns = ['id', 'type', 'options'];
-  dataSource: MatTableDataSource<EngineType>;
   private engineTypes: EngineType[];
 
   constructor() {

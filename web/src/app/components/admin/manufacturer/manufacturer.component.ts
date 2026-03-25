@@ -47,12 +47,11 @@ import {ManufacturerDialog} from '@dialogs/manufacturer/manufacturer-dialog';
   styleUrl: './manufacturer.component.css'
 })
 export class ManufacturerComponent {
+  displayedColumns = ['id', 'countryName', 'name', 'options'];
+  dataSource: MatTableDataSource<Manufacturer>;
   private readonly _notification = inject(NotificationService);
   private readonly _manufacturerService = inject(ManufacturerService);
   private readonly _dialog = inject(MatDialog);
-
-  displayedColumns = ['id', 'countryName', 'name', 'options'];
-  dataSource: MatTableDataSource<Manufacturer>;
   private manufacturers: Manufacturer[];
 
   constructor() {
@@ -77,7 +76,7 @@ export class ManufacturerComponent {
       data: {object: null, isView: false}
     }).afterClosed().subscribe({
       next: (manufacturer) => {
-        if(manufacturer) {
+        if (manufacturer) {
           this._notification.showTimedNotification('Manufacturer was successfully created!');
           this.getAll();
         }
@@ -90,7 +89,8 @@ export class ManufacturerComponent {
 
     this._dialog.open(ManufacturerDialog, {
       data: {object: selectedManufacturer, isView: true}
-    }).afterClosed().subscribe(() => {});
+    }).afterClosed().subscribe(() => {
+    });
   }
 
   edit(id: number) {
@@ -100,7 +100,7 @@ export class ManufacturerComponent {
       data: {object: selectedManufacturer, isView: false}
     }).afterClosed().subscribe({
       next: (manufacturer) => {
-        if(manufacturer) {
+        if (manufacturer) {
           this._notification.showTimedNotification('Manufacturer was successfully updated!');
           this.getAll();
         }

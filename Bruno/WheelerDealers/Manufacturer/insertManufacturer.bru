@@ -10,10 +10,6 @@ post {
   auth: inherit
 }
 
-headers {
-  "{{tokenName}}": {{csrftoken}}
-}
-
 body:multipart-form {
   country: 1
   name: Honda

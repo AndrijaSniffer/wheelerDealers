@@ -57,16 +57,6 @@ import {EmissionClass} from '@classes/emission-class';
   styleUrls: ['car-dialog.css', '../dialogs.component.css']
 })
 export class CarDialog extends BaseDialog<Car> {
-  private readonly _carService: CarService = inject(CarService);
-  private readonly _appUser: AppUser = inject(AppUser);
-  private readonly _manufacturerService: ManufacturerService = inject(ManufacturerService);
-  private readonly _modelService: ModelService = inject(ModelService);
-  private readonly _transmissionTypeService: TransmissionTypeService = inject(TransmissionTypeService);
-  private readonly _fuelService: FuelService = inject(FuelService);
-  private readonly _drivetrainService: DrivetrainService = inject(DrivetrainService);
-  private readonly _engineTypeService: EngineTypeService = inject(EngineTypeService);
-  private readonly _emissionClassService: EmissionClassService = inject(EmissionClassService);
-
   manufacturers: Manufacturer[] = [];
   models: Model[] = [];
   transmissionTypes: TransmissionType[] = [];
@@ -77,6 +67,15 @@ export class CarDialog extends BaseDialog<Car> {
   currentYear = new Date().getFullYear();
   selectedImages: File[] = [];
   imagePreviews: string[] = [];
+  private readonly _carService: CarService = inject(CarService);
+  private readonly _appUser: AppUser = inject(AppUser);
+  private readonly _manufacturerService: ManufacturerService = inject(ManufacturerService);
+  private readonly _modelService: ModelService = inject(ModelService);
+  private readonly _transmissionTypeService: TransmissionTypeService = inject(TransmissionTypeService);
+  private readonly _fuelService: FuelService = inject(FuelService);
+  private readonly _drivetrainService: DrivetrainService = inject(DrivetrainService);
+  private readonly _engineTypeService: EngineTypeService = inject(EngineTypeService);
+  private readonly _emissionClassService: EmissionClassService = inject(EmissionClassService);
 
   constructor(
     dialogRef: MatDialogRef<CarDialog>,

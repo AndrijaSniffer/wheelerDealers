@@ -46,12 +46,11 @@ import {EmissionClassDialog} from '@dialogs/emission-class/emission-class-dialog
   styleUrl: './emission-class.component.css'
 })
 export class EmissionClassComponent {
+  displayedColumns = ['id', 'className', 'options'];
+  dataSource: MatTableDataSource<EmissionClass>;
   private readonly _notification = inject(NotificationService);
   private readonly _emissionClassService = inject(EmissionClassService);
   private readonly _dialog = inject(MatDialog);
-
-  displayedColumns = ['id', 'className', 'options'];
-  dataSource: MatTableDataSource<EmissionClass>;
   private emissionClasses: EmissionClass[];
 
   constructor() {
@@ -87,7 +86,8 @@ export class EmissionClassComponent {
 
     this._dialog.open(EmissionClassDialog, {
       data: {object: emissionClassSelected, isView: true}
-    }).afterClosed().subscribe(() => {});
+    }).afterClosed().subscribe(() => {
+    });
   }
 
   edit(id: number) {

@@ -5,9 +5,13 @@ meta {
 }
 
 get {
-  url: {{apiUrl}}/model/1
+  url: {{apiUrl}}/model/:id/
   body: none
   auth: none
+}
+
+params:path {
+  id: 1
 }
 
 settings {

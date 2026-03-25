@@ -6,14 +6,14 @@
       <form [formGroup]="formUser">
         <mat-list>
           <mat-list-item class="input-list-item">
-            <mat-form-field appearance="fill" >
+            <mat-form-field appearance="fill">
               <mat-label>Username</mat-label>
               <input cdkFocusInitial formControlName="username" matInput required type="input"/>
               <mat-error *ngIf="formUser.get('username')?.errors?.['required']">Username is required.</mat-error>
             </mat-form-field>
           </mat-list-item>
           <mat-list-item class="input-list-item">
-            <mat-form-field appearance="fill" >
+            <mat-form-field appearance="fill">
               <mat-label>Email</mat-label>
               <input formControlName="email" matInput required type="email"/>
               <mat-error *ngIf="formUser.get('email')?.errors?.['required']">Email is required.</mat-error>
@@ -22,27 +22,27 @@
             </mat-form-field>
           </mat-list-item>
           <mat-list-item class="input-list-item">
-            <mat-form-field appearance="fill" >
+            <mat-form-field appearance="fill">
               <mat-label>Password</mat-label>
               <input formControlName="password" matInput required type="password"/>
               <mat-error *ngIf="formUser.get('password')?.errors?.['required']">Password is required.</mat-error>
             </mat-form-field>
           </mat-list-item>
           <mat-list-item class="input-list-item">
-            <mat-form-field appearance="fill" >
+            <mat-form-field appearance="fill">
               <mat-label>Confirm password</mat-label>
               <input formControlName="confirmPassword" matInput required type="password"/>
               <mat-error *ngIf="hasPasswordMismatchError()">Passwords do not match</mat-error>
             </mat-form-field>
           </mat-list-item>
           <mat-list-item class="input-list-item">
-            <mat-form-field appearance="fill" >
+            <mat-form-field appearance="fill">
               <mat-label>Phone</mat-label>
               <input formControlName="phone" matInput type="number"/>
             </mat-form-field>
           </mat-list-item>
           <mat-list-item class="input-list-item">
-            <mat-form-field appearance="fill" >
+            <mat-form-field appearance="fill">
               <mat-label>Address</mat-label>
               <input formControlName="address" matInput type="text"/>
             </mat-form-field>
@@ -70,7 +70,7 @@
         <mat-list>
           <!-- PIB Field -->
           <mat-list-item class="input-list-item">
-            <mat-form-field appearance="fill" >
+            <mat-form-field appearance="fill">
               <mat-label>PIB</mat-label>
               <input formControlName="PIB" matInput placeholder="Enter exactly 9 digits" required type="number"/>
               <mat-error *ngIf="formCompany.get('PIB')?.errors?.['required']">
@@ -84,7 +84,7 @@
 
           <!-- Address Field -->
           <mat-list-item class="input-list-item">
-            <mat-form-field appearance="fill" >
+            <mat-form-field appearance="fill">
               <mat-label>Address</mat-label>
               <input formControlName="address" matInput placeholder="Enter your address" required type="text"/>
               <mat-error *ngIf="formCompany.get('address')?.errors?.['required']">
@@ -95,7 +95,7 @@
 
           <!-- Phone Field -->
           <mat-list-item class="input-list-item">
-            <mat-form-field appearance="fill" >
+            <mat-form-field appearance="fill">
               <mat-label>Phone</mat-label>
               <input formControlName="phone" matInput placeholder="Enter your phone number" required type="number"/>
               <mat-error *ngIf="formCompany.get('phone')?.errors?.['required']">
@@ -122,7 +122,7 @@
 
           <!-- Website URL (Text Input) -->
           <mat-list-item class="input-list-item">
-            <mat-form-field appearance="fill" >
+            <mat-form-field appearance="fill">
               <mat-label>Website URL</mat-label>
               <input formControlName="websiteUrl" matInput placeholder="Enter your website URL" type="text"/>
               <mat-error *ngIf="formCompany.get('websiteUrl')?.errors?.['pattern']">

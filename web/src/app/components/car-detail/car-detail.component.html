@@ -4,7 +4,7 @@
   </div>
 } @else if (car) {
   <div class="detail-container">
-    <button (click)="goBack()" mat-button class="back-btn">
+    <button (click)="goBack()" class="back-btn" mat-button>
       <mat-icon>arrow_back</mat-icon>
       Back to search
     </button>
@@ -18,13 +18,13 @@
     <div class="carousel">
       @if (car.images && car.images.length > 0) {
         <div class="carousel-wrapper">
-          <button (click)="previousImage()" mat-mini-fab class="carousel-btn carousel-btn-left">
+          <button (click)="previousImage()" class="carousel-btn carousel-btn-left" mat-mini-fab>
             <mat-icon>chevron_left</mat-icon>
           </button>
-          <img [src]="car.images[currentImageIndex].imageUrl"
-               [alt]="car.model.manufacturer.name + ' ' + car.model.name"
+          <img [alt]="car.model.manufacturer.name + ' ' + car.model.name"
+               [src]="car.images[currentImageIndex].imageUrl"
                class="carousel-image"/>
-          <button (click)="nextImage()" mat-mini-fab class="carousel-btn carousel-btn-right">
+          <button (click)="nextImage()" class="carousel-btn carousel-btn-right" mat-mini-fab>
             <mat-icon>chevron_right</mat-icon>
           </button>
         </div>
@@ -156,12 +156,12 @@
 
           <div class="seller-contact">
             @if (!_appUser.user) {
-              <button (click)="revealPhone()" mat-raised-button color="primary">
+              <button (click)="revealPhone()" color="primary" mat-raised-button>
                 <mat-icon>phone</mat-icon>
                 Show phone number
               </button>
             } @else if (!phoneRevealed) {
-              <button (click)="revealPhone()" mat-raised-button color="primary">
+              <button (click)="revealPhone()" color="primary" mat-raised-button>
                 <mat-icon>phone</mat-icon>
                 Show phone number
               </button>

@@ -5,16 +5,14 @@ meta {
 }
 
 post {
-  url: {{apiUrl}}/models/
+  url: {{apiUrl}}/model/
   body: multipartForm
   auth: inherit
 }
 
 body:multipart-form {
   name: Civic
-  year_of_manufacture: 2000
   manufacturer: 1
-  engine: 1
 }
 
 settings {

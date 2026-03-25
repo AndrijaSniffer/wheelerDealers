@@ -10,7 +10,7 @@ describe('DialogsComponent', () => {
     await TestBed.configureTestingModule({
       imports: [LoginDialog]
     })
-    .compileComponents();
+      .compileComponents();
 
     fixture = TestBed.createComponent(LoginDialog);
     component = fixture.componentInstance;

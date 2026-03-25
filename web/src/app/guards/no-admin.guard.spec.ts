@@ -5,7 +5,7 @@ import {noAdminGuard} from '@guards/no-admin.guard';
 
 describe('noAdminGuard', () => {
   const executeGuard: CanActivateFn = (...guardParameters) =>
-      TestBed.runInInjectionContext(() => noAdminGuard(...guardParameters));
+    TestBed.runInInjectionContext(() => noAdminGuard(...guardParameters));
 
   beforeEach(() => {
     TestBed.configureTestingModule({});

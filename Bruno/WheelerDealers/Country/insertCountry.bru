@@ -1,17 +1,13 @@
 meta {
   name: insertCountry
   type: http
-  seq: 1
+  seq: 2
 }
 
 post {
   url: {{apiUrl}}/country/
   body: multipartForm
   auth: inherit
-}
-
-headers {
-  ~"{{tokenName}}": {{csrftoken}}
 }
 
 body:multipart-form {

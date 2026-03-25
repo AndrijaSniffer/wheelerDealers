@@ -4,20 +4,19 @@ meta {
   seq: 5
 }
 
-delete {
-  url: {{apiUrl}}/deactivateUser?PK=3
-  body: none
+put {
+  url: {{apiUrl}}/api/auth/user/ban/
+  body: json
   auth: inherit
 }
 
-params:query {
-  PK: 3
-}
-
-headers {
-  "{{tokenName}}": {{csrftoken}}
+body:json {
+  {
+    "user_id": 3
+  }
 }
 
 settings {
   encodeUrl: true
+  timeout: 0
 }

@@ -52,15 +52,14 @@ import {SerbianPricePipe} from '@pipes/serbian-price.pipe';
   styleUrl: './inventory.component.css'
 })
 export class InventoryComponent implements OnInit {
+  displayedColumns = ['model', 'year', 'fuel', 'transmission', 'price', 'isPreowned', 'createdAt', 'options'];
+  dataSource: MatTableDataSource<Car>;
+  cars: Car[] = [];
   private readonly _appUser: AppUser = inject(AppUser);
   private readonly _carService: CarService = inject(CarService);
   private readonly _notification: NotificationService = inject(NotificationService);
   private readonly _dialog: MatDialog = inject(MatDialog);
   private readonly _router: Router = inject(Router);
-
-  displayedColumns = ['model', 'year', 'fuel', 'transmission', 'price', 'isPreowned', 'createdAt', 'options'];
-  dataSource: MatTableDataSource<Car>;
-  cars: Car[] = [];
 
   ngOnInit() {
     this.loadInventory();
@@ -136,7 +135,7 @@ export class InventoryComponent implements OnInit {
   }
 
   previewCar(id: number) {
-    this._router.navigate(['/car', id], { queryParams: { preview: true } });
+    this._router.navigate(['/car', id], {queryParams: {preview: true}});
   }
 
 }

@@ -47,13 +47,12 @@ import {DatePipe} from '@angular/common';
   styleUrl: './user.component.css'
 })
 export class UserComponent {
-  private readonly _notification = inject(NotificationService);
-  private readonly _userService = inject(UserService);
-  private readonly _dialog = inject(MatDialog);
-
   displayedColumns = ['id', 'username', 'PIB', 'email', 'isSuperuser', 'isActive', 'isReseller', 'phone', 'address',
     'dateJoined', 'lastLogin', 'options'];
   dataSource: MatTableDataSource<User>;
+  private readonly _notification = inject(NotificationService);
+  private readonly _userService = inject(UserService);
+  private readonly _dialog = inject(MatDialog);
   private users: User[];
 
   constructor() {

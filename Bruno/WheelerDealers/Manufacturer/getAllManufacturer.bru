@@ -5,13 +5,9 @@ meta {
 }
 
 get {
-  url: {{apiUrl}}/manufacturers
+  url: {{apiUrl}}/manufacturer/
   body: none
   auth: none
-}
-
-headers {
-  "{{tokenName}}": {{csrftoken}}
 }
 
 settings {

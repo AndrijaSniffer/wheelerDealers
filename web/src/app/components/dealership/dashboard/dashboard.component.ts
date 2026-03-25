@@ -19,15 +19,14 @@ import {SerbianPricePipe} from '@pipes/serbian-price.pipe';
   styleUrl: './dashboard.component.css'
 })
 export class DealershipDashboardComponent implements OnInit {
-  private readonly _appUser: AppUser = inject(AppUser);
-  private readonly _carService: CarService = inject(CarService);
-
   user: User;
   totalListings: number = 0;
   newestListing: Car | null = null;
   oldestListing: Car | null = null;
   averagePrice: number = 0;
   companyName: string = '';
+  private readonly _appUser: AppUser = inject(AppUser);
+  private readonly _carService: CarService = inject(CarService);
 
   ngOnInit() {
     this.user = this._appUser.user;

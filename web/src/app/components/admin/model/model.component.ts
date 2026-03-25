@@ -47,12 +47,11 @@ import {ModelDialog} from '@dialogs/model/model-dialog';
   styleUrl: './model.component.css'
 })
 export class ModelComponent {
+  displayedColumns = ['id', 'name', 'manufacturer', 'options'];
+  dataSource: MatTableDataSource<Model>;
   private readonly _notification = inject(NotificationService);
   private readonly _modelService = inject(ModelService);
   private readonly _dialog = inject(MatDialog);
-
-  displayedColumns = ['id', 'name', 'manufacturer', 'options'];
-  dataSource: MatTableDataSource<Model>;
   private models: Model[];
 
   constructor() {

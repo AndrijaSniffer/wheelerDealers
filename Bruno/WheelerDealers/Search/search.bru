@@ -5,13 +5,31 @@ meta {
 }
 
 get {
-  url: {{apiUrl}}/search/normal?fuel=2
+  url: {{apiUrl}}/search/normal/
   body: none
   auth: none
 }
 
 params:query {
-  fuel: 2
+  ~manufacturer: 1
+  ~model: 1
+  ~transmission_type: 1
+  ~fuel: 1
+  ~drivetrain: 1
+  ~engine_type: 1
+  ~emission_class: 1
+  ~is_preowned: true
+  ~price_from: 5000
+  ~price_to: 30000
+  ~engine_volume: 1500
+  ~hp_from: 100
+  ~hp_to: 300
+  ~kw_from: 75
+  ~kw_to: 220
+  ~exterior_color: Blue
+  ~steering_wheel_left: true
+  ~year_from: 2010
+  ~year_to: 2024
 }
 
 settings {

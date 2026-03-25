@@ -47,12 +47,11 @@ import {FuelDialog} from '@dialogs/fuel/fuel-dialog';
   styleUrl: './fuel.component.css'
 })
 export class FuelComponent {
+  displayedColumns = ['id', 'type', 'options'];
+  dataSource: MatTableDataSource<Fuel>;
   private readonly _notification = inject(NotificationService);
   private readonly _fuelService = inject(FuelService);
   private readonly _dialog = inject(MatDialog);
-
-  displayedColumns = ['id', 'type', 'options'];
-  dataSource: MatTableDataSource<Fuel>;
   private fuel: Fuel[];
 
   constructor() {
@@ -88,7 +87,8 @@ export class FuelComponent {
 
     this._dialog.open(FuelDialog, {
       data: {object: selectedFuel, isView: true}
-    }).afterClosed().subscribe(() => {});
+    }).afterClosed().subscribe(() => {
+    });
   }
 
   edit(id: number) {

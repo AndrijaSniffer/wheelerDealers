@@ -12,9 +12,8 @@ export class EngineTypeService {
   private readonly _http = inject(HttpClient);
 
   getAll(): Observable<EngineType[]> {
-    return this._http.get<any[]>(AppConstants.ENGINE_TYPE_URL).
-      pipe(
-        map((response: any[]) => response.map(mapToEngineType))
+    return this._http.get<any[]>(AppConstants.ENGINE_TYPE_URL).pipe(
+      map((response: any[]) => response.map(mapToEngineType))
     );
   }
 

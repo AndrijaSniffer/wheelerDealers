@@ -5,17 +5,13 @@ meta {
 }
 
 get {
-  url: {{apiUrl}}/getManufacturerByPK?id_manufacturer=2
+  url: {{apiUrl}}/manufacturer/:id/
   body: none
-  auth: inherit
+  auth: none
 }
 
-params:query {
-  id_manufacturer: 2
-}
-
-headers {
-  "{{tokenName}}": {{csrftoken}}
+params:path {
+  id: 2
 }
 
 settings {

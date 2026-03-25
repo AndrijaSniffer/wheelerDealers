@@ -74,6 +74,14 @@ export interface ISearchParameters {
   styleUrl: './search-page.component.css'
 })
 export class SearchPageComponent {
+  drivetrains: Drivetrain[] = [];
+  engineTypes: EngineType[] = [];
+  emissionClasses: EmissionClass[] = [];
+  manufacturers: Manufacturer[] = [];
+  models: Model[] = [];
+  transmissions: TransmissionType[] = [];
+  fuel: Fuel[] = [];
+  cars: Car[] = [];
   private readonly _drivetrainService: DrivetrainService = inject(DrivetrainService);
   private readonly _engineTypeService: EngineTypeService = inject(EngineTypeService);
   private readonly _emissionClassService: EmissionClassService = inject(EmissionClassService);
@@ -84,15 +92,6 @@ export class SearchPageComponent {
   private readonly _carService: CarService = inject(CarService);
   private readonly _notifications: NotificationService = inject(NotificationService);
   private readonly _fb: FormBuilder = inject(FormBuilder);
-
-  drivetrains: Drivetrain[] = [];
-  engineTypes: EngineType[] = [];
-  emissionClasses: EmissionClass[] = [];
-  manufacturers: Manufacturer[] = [];
-  models: Model[] = [];
-  transmissions: TransmissionType[] = [];
-  fuel: Fuel[] = [];
-  cars: Car[] = [];
   searchForm: FormGroup = this._fb.group({
     manufacturer: [null],
     model: [null],

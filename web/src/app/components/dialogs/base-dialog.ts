@@ -14,7 +14,7 @@ export abstract class BaseDialog<T> {
     protected dialogRef: MatDialogRef<any>,
     protected fb: FormBuilder,
     protected dialogData: IDialogData<T> | null,
-    protected notification : NotificationService,
+    protected notification: NotificationService,
   ) {
     this.isView = this.dialogData?.isView ?? true;
     if (this.isView) {

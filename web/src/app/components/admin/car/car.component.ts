@@ -49,13 +49,12 @@ import {SerbianPricePipe} from '@pipes/serbian-price.pipe';
   styleUrl: './car.component.css'
 })
 export class CarComponent {
-  private readonly _notification = inject(NotificationService);
-  private readonly _carService = inject(CarService);
-  private readonly _dialog = inject(MatDialog);
-
   displayedColumns = ['id', 'user', 'model', 'year', 'transmissionType', 'fuel', 'drivetrain',
     'horsepower', 'price', 'exteriorColor', 'isPreowned', 'createdAt', 'options'];
   dataSource: MatTableDataSource<Car>;
+  private readonly _notification = inject(NotificationService);
+  private readonly _carService = inject(CarService);
+  private readonly _dialog = inject(MatDialog);
   private cars: Car[];
 
   constructor() {

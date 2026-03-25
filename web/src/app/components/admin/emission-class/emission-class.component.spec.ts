@@ -10,7 +10,7 @@ describe('EmissionClassComponent', () => {
     await TestBed.configureTestingModule({
       imports: [EmissionClassComponent]
     })
-    .compileComponents();
+      .compileComponents();
 
     fixture = TestBed.createComponent(EmissionClassComponent);
     component = fixture.componentInstance;

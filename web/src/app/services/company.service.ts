@@ -8,7 +8,7 @@ import {AppConstants} from '../app.constants';
 export class CompanyService {
   private readonly _http = inject(HttpClient)
 
-  getAll(){
+  getAll() {
     return new Promise<JSON>((resolve, reject) => {
       this._http.get<JSON>(AppConstants.COMPANY_URL).subscribe({
         next: async (response: JSON) => {
@@ -22,7 +22,7 @@ export class CompanyService {
     });
   }
 
-  getCompanyByPIB(PIB: number){
+  getCompanyByPIB(PIB: number) {
     return new Promise<JSON>((resolve, reject) => {
       this._http.get<JSON>(AppConstants.COMPANY_URL + `/${PIB}`).subscribe({
         next: async (response: JSON) => {

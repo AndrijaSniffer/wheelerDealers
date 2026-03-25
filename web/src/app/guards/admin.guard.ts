@@ -13,7 +13,8 @@ export class AdminGuard implements CanActivate {
     if (this._appUser.user && this._appUser.user.isSuperuser) {
       return true;
     } else {
-      this._router.navigate(['/']).then(_ => {});
+      this._router.navigate(['/']).then(_ => {
+      });
       return false;
     }
   }

@@ -22,15 +22,14 @@ import {CarDialog} from '@dialogs/car/car-dialog';
   styleUrl: './nav-bar.component.css'
 })
 export class NavBarComponent {
-  private readonly _router = inject(Router);
-  private readonly _dialog = inject(MatDialog);
-  private readonly _notification = inject(NotificationService)
-  private readonly _appUser = inject(AppUser);
-
   isLoggedIn: boolean = false;
   username: String = '';
   isSuperuser: boolean = false;
   isDealership: boolean = false;
+  private readonly _router = inject(Router);
+  private readonly _dialog = inject(MatDialog);
+  private readonly _notification = inject(NotificationService)
+  private readonly _appUser = inject(AppUser);
 
   constructor() {
     this._appUser.loggedInObservable.subscribe(loggedIn => {

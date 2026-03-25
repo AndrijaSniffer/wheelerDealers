@@ -1,23 +1,22 @@
 meta {
   name: updateCountryByPK
   type: http
-  seq: 5
+  seq: 3
 }
 
 put {
-  url: {{apiUrl}}/countries
+  url: {{apiUrl}}/country/:id/
   body: json
   auth: inherit
 }
 
-headers {
-  ~"{{tokenName}}": {{csrftoken}}
+params:path {
+  id: 1
 }
 
 body:json {
   {
-      "id": 1,
-      "nameCountry": "Serbia"
+    "name": "Serbia"
   }
 }
 

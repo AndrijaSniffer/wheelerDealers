@@ -10,7 +10,7 @@ describe('TransmissionComponent', () => {
     await TestBed.configureTestingModule({
       imports: [TransmissionTypeComponent]
     })
-    .compileComponents();
+      .compileComponents();
 
     fixture = TestBed.createComponent(TransmissionTypeComponent);
     component = fixture.componentInstance;

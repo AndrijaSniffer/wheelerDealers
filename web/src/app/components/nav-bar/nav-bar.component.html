@@ -4,8 +4,8 @@
     <button (click)="goToHome()" mat-button>Home</button>
     <button (click)="goToSearch()" mat-button>Search</button>
     <button (click)="goToContact()" mat-button>Contact us</button>
-    <button *ngIf="isLoggedIn" (click)="temporaryCarAdd()" mat-raised-button>Add car</button>
-    <button *ngIf="isLoggedIn" (click)="goToProfile()" mat-button>My Profile</button>
+    <button (click)="temporaryCarAdd()" *ngIf="isLoggedIn" mat-raised-button>Add car</button>
+    <button (click)="goToProfile()" *ngIf="isLoggedIn" mat-button>My Profile</button>
   </div>
 
   <!-- Dealership nav -->

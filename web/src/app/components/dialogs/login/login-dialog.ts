@@ -27,12 +27,11 @@ import {NotificationService} from '@services/notification.service';
   styleUrl: 'login.dialog.css'
 })
 export class LoginDialog {
+  form: FormGroup;
   private readonly _dialogRef = inject(MatDialogRef<LoginDialog>);
   private readonly _fb = inject(FormBuilder);
   private readonly _auth = inject(AuthService);
   private readonly _notification = inject(NotificationService)
-
-  form: FormGroup;
 
   constructor() {
     this.form = this._fb.group({

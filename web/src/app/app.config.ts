@@ -8,7 +8,7 @@ import {authInterceptor} from '@interceptors/auth.interceptor';
 import {AccordionModule} from 'ngx-bootstrap/accordion';
 
 export const appConfig: ApplicationConfig = {
-  providers: [provideZoneChangeDetection({ eventCoalescing: true }), provideRouter(routes), provideAnimationsAsync(),
+  providers: [provideZoneChangeDetection({eventCoalescing: true}), provideRouter(routes), provideAnimationsAsync(),
     provideHttpClient(withInterceptors([authInterceptor])),
     importProvidersFrom([
       AccordionModule.forRoot()

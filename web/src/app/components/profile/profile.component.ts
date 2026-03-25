@@ -31,14 +31,12 @@ import {mapToUser} from '../../app.mappers';
   styleUrl: './profile.component.css'
 })
 export class ProfileComponent implements OnInit {
+  user: User;
+  isDealership: boolean = false;
   private readonly _appUser: AppUser = inject(AppUser);
   private readonly _userService: UserService = inject(UserService);
   private readonly _notification: NotificationService = inject(NotificationService);
   private readonly _fb: FormBuilder = inject(FormBuilder);
-
-  user: User;
-  isDealership: boolean = false;
-
   profileForm: FormGroup = this._fb.group({
     email: [''],
     phone: [''],

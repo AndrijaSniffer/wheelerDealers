@@ -10,7 +10,7 @@ describe('EngineTypeComponent', () => {
     await TestBed.configureTestingModule({
       imports: [EngineTypeComponent]
     })
-    .compileComponents();
+      .compileComponents();
 
     fixture = TestBed.createComponent(EngineTypeComponent);
     component = fixture.componentInstance;

@@ -2,15 +2,15 @@
 <mat-dialog-content>
   <div *ngIf="isView">
     <h3>Selected model type as JSON:<br></h3>
-    <pre>{{this.jsonCurrentObject}}</pre>
+    <pre>{{ this.jsonCurrentObject }}</pre>
   </div>
 
   <form *ngIf="!isView" [formGroup]="form">
     <mat-list class="form-list">
       <mat-list-item>
-        <mat-form-field appearance="fill" >
+        <mat-form-field appearance="fill">
           <mat-label>Type</mat-label>
-          <input matInput type="input" formControlName="type" (keyup.enter)="submit()" cdkFocusInitial required/>
+          <input (keyup.enter)="submit()" cdkFocusInitial formControlName="type" matInput required type="input"/>
           <mat-error *ngIf="form.get('type')?.errors?.['required']">Model type is required.</mat-error>
         </mat-form-field>
       </mat-list-item>
@@ -19,6 +19,7 @@
 </mat-dialog-content>
 <mat-dialog-actions>
   <button (click)="dismiss(null)" *ngIf="!isView" mat-button>Cancel</button>
-  <button (click)="submit()" [disabled]="!form.valid" *ngIf="!isView" mat-button>{{isNewOrEdit ? 'Create' : 'Edit'}}</button>
+  <button (click)="submit()" *ngIf="!isView" [disabled]="!form.valid" mat-button>{{ isNewOrEdit ? 'Create' : 'Edit' }}
+  </button>
   <button (click)="dismiss(null)" *ngIf="isView" mat-button>Ok</button>
 </mat-dialog-actions>

@@ -13,10 +13,8 @@ import {AppUtil} from './app.util';
   styleUrl: './app.component.css'
 })
 export class AppComponent {
-  private readonly _appUser: AppUser = inject(AppUser);
-
-
   title = 'Wheeler Dealers';
+  private readonly _appUser: AppUser = inject(AppUser);
 
   ngOnInit() {
     this.checkIfAuthenticated();
