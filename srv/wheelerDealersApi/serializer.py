@@ -130,6 +130,7 @@ class TransmissionTypeSerializer(serializers.ModelSerializer):
         model = TransmissionType
         fields = '__all__'
 
+
 class ManufacturerSerializer(serializers.ModelSerializer):
     country = serializers.PrimaryKeyRelatedField(queryset=Country.objects.all())
 

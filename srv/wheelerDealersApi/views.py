@@ -298,37 +298,37 @@ class CompanyView(viewsets.ModelViewSet):
 
 
 class CountryView(viewsets.ModelViewSet):
-    queryset = Country.objects.all().order_by('country')
+    queryset = Country.objects.all().order_by('name')
     serializer_class = CountrySerializer
     permission_classes = [IsAdminOrReadOnly]
 
 
 class ManufacturerView(viewsets.ModelViewSet):
-    queryset = Manufacturer.objects.all().order_by('manufacturer')
+    queryset = Manufacturer.objects.all().order_by('name')
     serializer_class = ManufacturerSerializer
     permission_classes = [IsAdminOrReadOnly]
 
 
 class EngineTypeView(viewsets.ModelViewSet):
-    queryset = EngineType.objects.all().order_by('engine_type')
+    queryset = EngineType.objects.all().order_by('type')
     serializer_class = EngineTypeSerializer
     permission_classes = [IsAdminOrReadOnly]
 
 
 class EmissionClassView(viewsets.ModelViewSet):
-    queryset = EmissionClass.objects.all().order_by('emission_class')
+    queryset = EmissionClass.objects.all().order_by('class_name')
     serializer_class = EmissionClassSerializer
     permission_classes = [IsAdminOrReadOnly]
 
 
 class ModelTypeView(viewsets.ModelViewSet):
-    queryset = ModelType.objects.all().order_by('model_type')
+    queryset = ModelType.objects.all().order_by('type')
     serializer_class = ModelTypeSerializer
     permission_classes = [IsAdminOrReadOnly]
 
 
 class ModelView(viewsets.ModelViewSet):
-    queryset = Model.objects.all().order_by('model')
+    queryset = Model.objects.all().order_by('name')
     serializer_class = ModelSerializer
     permission_classes = [IsAdminOrReadOnly]
 
@@ -340,19 +340,19 @@ class ModelTypeModelView(viewsets.ModelViewSet):
 
 
 class FuelView(viewsets.ModelViewSet):
-    queryset = Fuel.objects.all().order_by('fuel')
+    queryset = Fuel.objects.all().order_by('type')
     serializer_class = FuelSerializer
     permission_classes = [IsAdminOrReadOnly]
 
 
 class DrivetrainView(viewsets.ModelViewSet):
-    queryset = Drivetrain.objects.all().order_by('drivetrain')
+    queryset = Drivetrain.objects.all().order_by('type')
     serializer_class = DrivetrainSerializer
     permission_classes = [IsAdminOrReadOnly]
 
 
 class TransmissionTypeView(viewsets.ModelViewSet):
-    queryset = TransmissionType.objects.all().order_by('transmission_type')
+    queryset = TransmissionType.objects.all().order_by('type')
     serializer_class = TransmissionTypeSerializer
     permission_classes = [IsAdminOrReadOnly]
 

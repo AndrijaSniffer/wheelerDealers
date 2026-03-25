@@ -25,4 +25,3 @@ def create_default_superuser(sender, **kwargs):
             password='ThisIsMyAdminPassword',
             email='admin@admin.com'
         )
-        print('Default superuser created successfully')

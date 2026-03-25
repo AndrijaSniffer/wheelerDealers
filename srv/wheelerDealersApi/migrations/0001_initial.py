@@ -7,7 +7,6 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     initial = True
 
     dependencies = [
@@ -79,7 +78,9 @@ class Migration(migrations.Migration):
             fields=[
                 ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('last_login', models.DateTimeField(blank=True, null=True, verbose_name='last login')),
-                ('is_superuser', models.BooleanField(default=False, help_text='Designates that this user has all permissions without explicitly assigning them.', verbose_name='superuser status')),
+                ('is_superuser', models.BooleanField(default=False,
+                                                     help_text='Designates that this user has all permissions without explicitly assigning them.',
+                                                     verbose_name='superuser status')),
                 ('username', models.CharField(max_length=255, unique=True)),
                 ('email', models.CharField(max_length=255, unique=True)),
                 ('password', models.CharField(max_length=255)),
@@ -89,9 +90,15 @@ class Migration(migrations.Migration):
                 ('phone', models.CharField(max_length=255, null=True)),
                 ('address', models.CharField(max_length=255, null=True)),
                 ('is_reseller', models.BooleanField(default=False)),
-                ('groups', models.ManyToManyField(blank=True, help_text='The groups this user belongs to. A user will get all permissions granted to each of their groups.', related_name='user_set', related_query_name='user', to='auth.group', verbose_name='groups')),
-                ('user_permissions', models.ManyToManyField(blank=True, help_text='Specific permissions for this user.', related_name='user_set', related_query_name='user', to='auth.permission', verbose_name='user permissions')),
-                ('PIB', models.ForeignKey(null=True, on_delete=django.db.models.deletion.CASCADE, to='wheelerDealersApi.company')),
+                ('groups', models.ManyToManyField(blank=True,
+                                                  help_text='The groups this user belongs to. A user will get all permissions granted to each of their groups.',
+                                                  related_name='user_set', related_query_name='user', to='auth.group',
+                                                  verbose_name='groups')),
+                ('user_permissions', models.ManyToManyField(blank=True, help_text='Specific permissions for this user.',
+                                                            related_name='user_set', related_query_name='user',
+                                                            to='auth.permission', verbose_name='user permissions')),
+                ('PIB', models.ForeignKey(null=True, on_delete=django.db.models.deletion.CASCADE,
+                                          to='wheelerDealersApi.company')),
             ],
             options={
                 'abstract': False,
@@ -103,8 +110,10 @@ class Migration(migrations.Migration):
                 ('id_activity', models.AutoField(primary_key=True, serialize=False)),
                 ('started_at', models.DateTimeField(auto_now_add=True)),
                 ('ended_at', models.DateTimeField(null=True)),
-                ('user', models.ForeignKey(on_delete=django.db.models.deletion.RESTRICT, related_name='source', to=settings.AUTH_USER_MODEL)),
-                ('user2', models.ForeignKey(on_delete=django.db.models.deletion.RESTRICT, related_name='destination', to=settings.AUTH_USER_MODEL)),
+                ('user', models.ForeignKey(on_delete=django.db.models.deletion.RESTRICT, related_name='source',
+                                           to=settings.AUTH_USER_MODEL)),
+                ('user2', models.ForeignKey(on_delete=django.db.models.deletion.RESTRICT, related_name='destination',
+                                            to=settings.AUTH_USER_MODEL)),
             ],
         ),
         migrations.CreateModel(
@@ -126,9 +135,12 @@ class Migration(migrations.Migration):
                 ('is_preowned', models.BooleanField(default=True)),
                 ('created_at', models.DateTimeField(auto_now_add=True)),
                 ('user', models.ForeignKey(on_delete=django.db.models.deletion.RESTRICT, to=settings.AUTH_USER_MODEL)),
-                ('drivetrain', models.ForeignKey(on_delete=django.db.models.deletion.RESTRICT, to='wheelerDealersApi.drivetrain')),
-                ('emission_class', models.ForeignKey(on_delete=django.db.models.deletion.RESTRICT, to='wheelerDealersApi.emissionclass')),
-                ('engine_type', models.ForeignKey(on_delete=django.db.models.deletion.RESTRICT, to='wheelerDealersApi.enginetype')),
+                ('drivetrain',
+                 models.ForeignKey(on_delete=django.db.models.deletion.RESTRICT, to='wheelerDealersApi.drivetrain')),
+                ('emission_class',
+                 models.ForeignKey(on_delete=django.db.models.deletion.RESTRICT, to='wheelerDealersApi.emissionclass')),
+                ('engine_type',
+                 models.ForeignKey(on_delete=django.db.models.deletion.RESTRICT, to='wheelerDealersApi.enginetype')),
                 ('fuel', models.ForeignKey(on_delete=django.db.models.deletion.RESTRICT, to='wheelerDealersApi.fuel')),
             ],
         ),
@@ -137,7 +149,8 @@ class Migration(migrations.Migration):
             fields=[
                 ('image', models.AutoField(primary_key=True, serialize=False)),
                 ('image_url', models.CharField(max_length=255)),
-                ('car', models.ForeignKey(null=True, on_delete=django.db.models.deletion.CASCADE, related_name='images', to='wheelerDealersApi.car')),
+                ('car', models.ForeignKey(null=True, on_delete=django.db.models.deletion.CASCADE, related_name='images',
+                                          to='wheelerDealersApi.car')),
             ],
         ),
         migrations.CreateModel(
@@ -145,7 +158,8 @@ class Migration(migrations.Migration):
             fields=[
                 ('manufacturer', models.AutoField(primary_key=True, serialize=False)),
                 ('name', models.CharField(max_length=255)),
-                ('country', models.ForeignKey(on_delete=django.db.models.deletion.RESTRICT, to='wheelerDealersApi.country')),
+                ('country',
+                 models.ForeignKey(on_delete=django.db.models.deletion.RESTRICT, to='wheelerDealersApi.country')),
             ],
         ),
         migrations.CreateModel(
@@ -153,7 +167,8 @@ class Migration(migrations.Migration):
             fields=[
                 ('model', models.AutoField(primary_key=True, serialize=False)),
                 ('name', models.CharField(max_length=255)),
-                ('manufacturer', models.ForeignKey(on_delete=django.db.models.deletion.RESTRICT, to='wheelerDealersApi.manufacturer')),
+                ('manufacturer',
+                 models.ForeignKey(on_delete=django.db.models.deletion.RESTRICT, to='wheelerDealersApi.manufacturer')),
             ],
         ),
         migrations.AddField(
@@ -164,14 +179,17 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='car',
             name='transmission_type',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.RESTRICT, to='wheelerDealersApi.transmissiontype'),
+            field=models.ForeignKey(on_delete=django.db.models.deletion.RESTRICT,
+                                    to='wheelerDealersApi.transmissiontype'),
         ),
         migrations.CreateModel(
             name='ModelTypeModel',
             fields=[
                 ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('model', models.ForeignKey(on_delete=django.db.models.deletion.RESTRICT, to='wheelerDealersApi.model')),
-                ('model_type', models.ForeignKey(on_delete=django.db.models.deletion.RESTRICT, to='wheelerDealersApi.modeltype')),
+                ('model',
+                 models.ForeignKey(on_delete=django.db.models.deletion.RESTRICT, to='wheelerDealersApi.model')),
+                ('model_type',
+                 models.ForeignKey(on_delete=django.db.models.deletion.RESTRICT, to='wheelerDealersApi.modeltype')),
             ],
             options={
                 'constraints': [models.UniqueConstraint(fields=('model_type', 'model'), name='modelTypeModelPK')],
