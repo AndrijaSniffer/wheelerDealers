@@ -1,7 +1,7 @@
 import {Component, inject} from '@angular/core';
 import {RouterOutlet} from '@angular/router';
-import {NavBarComponent} from './components/nav-bar/nav-bar.component';
-import {FooterComponent} from './components/footer/footer.component';
+import {NavBarComponent} from '@nav-bar/nav-bar.component';
+import {FooterComponent} from '@footer/footer.component';
 import {AppUser, JWTPair} from './app.user';
 import {AppUtil} from './app.util';
 

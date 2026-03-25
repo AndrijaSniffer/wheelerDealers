@@ -4,20 +4,25 @@ import {
   MatCell,
   MatCellDef,
   MatColumnDef,
-  MatHeaderCell, MatHeaderCellDef,
+  MatHeaderCell,
+  MatHeaderCellDef,
   MatHeaderRow,
   MatHeaderRowDef,
-  MatRow, MatRowDef, MatTable, MatTableDataSource
+  MatRow,
+  MatRowDef,
+  MatTable,
+  MatTableDataSource
 } from '@angular/material/table';
 import {MatIcon} from '@angular/material/icon';
 import {MatList, MatListItem} from '@angular/material/list';
-import {NotificationService} from '../../../services/notification.service';
+import {NotificationService} from '@services/notification.service';
 import {MatDialog} from '@angular/material/dialog';
 import {AppUtil} from '../../../app.util';
-import {YesNoDialogComponent} from '../../dialogs/dialogs.component';
-import {CarService} from '../../../services/car.service';
-import {Car} from '../../../classes/car';
+import {YesNoDialogComponent} from '@dialogs/dialogs.component';
+import {CarService} from '@services/car.service';
+import {Car} from '@classes/car';
 import {DatePipe} from '@angular/common';
+import {SerbianPricePipe} from '@pipes/serbian-price.pipe';
 
 @Component({
   selector: 'app-car',
@@ -36,7 +41,8 @@ import {DatePipe} from '@angular/common';
     MatRowDef,
     MatTable,
     MatHeaderCellDef,
-    DatePipe
+    DatePipe,
+    SerbianPricePipe
   ],
   templateUrl: './car.component.html',
   standalone: true,
@@ -47,8 +53,8 @@ export class CarComponent {
   private readonly _carService = inject(CarService);
   private readonly _dialog = inject(MatDialog);
 
-  displayedColumns = ['id', 'user', 'model', 'transmission', 'fuel', 'interior', 'drivetrain', 'price', 'color',
-    'chassisNumber', 'isPreowned', 'createdAt', 'options'];
+  displayedColumns = ['id', 'user', 'model', 'year', 'transmissionType', 'fuel', 'drivetrain',
+    'horsepower', 'price', 'exteriorColor', 'isPreowned', 'createdAt', 'options'];
   dataSource: MatTableDataSource<Car>;
   private cars: Car[];
 
@@ -68,38 +74,6 @@ export class CarComponent {
       }
     });
   }
-
-  // new() {
-  //   this._dialog.open(EngineDialog, {
-  //     data: {object: null, isView: false}
-  //   }).afterClosed().subscribe({
-  //     next: (engine) => {
-  //       if (engine) {
-  //         this._notification.showTimedNotification('Engine was successfully created!');
-  //         this.getAll();
-  //       }
-  //     }
-  //   });
-  // }
-
-  view(id: number) {
-    const selectedCar = this.cars.find(c => c.id === id);
-  }
-
-  // edit(id: number) {
-  //   const selectedCar = this.cars.find(c => c.id === id);
-  //
-  //   this._dialog.open(EngineDialog, {
-  //     data: {object: selectedCar, isView: false}
-  //   }).afterClosed().subscribe({
-  //     next: (engine) => {
-  //       if (engine) {
-  //         this._notification.showTimedNotification('Engine was successfully updated!');
-  //         this.getAll();
-  //       }
-  //     }
-  //   });
-  // }
 
   delete(id: number) {
     const selectedCar = this.cars.find(c => c.id === id);

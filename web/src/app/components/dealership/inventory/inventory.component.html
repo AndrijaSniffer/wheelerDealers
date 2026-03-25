@@ -35,7 +35,7 @@
           </ng-container>
           <ng-container matColumnDef="price">
             <th *matHeaderCellDef mat-header-cell>Price</th>
-            <td *matCellDef="let car" mat-cell>{{ car.price }}&euro;</td>
+            <td *matCellDef="let car" mat-cell>{{ car.price | serbianPrice }}&euro;</td>
           </ng-container>
           <ng-container matColumnDef="isPreowned">
             <th *matHeaderCellDef mat-header-cell>Preowned</th>
@@ -48,8 +48,8 @@
           <ng-container matColumnDef="options">
             <th *matHeaderCellDef mat-header-cell>Actions</th>
             <td *matCellDef="let car" mat-cell>
-              <button (click)="viewCar(car.id)" class="option-btn" mat-mini-fab>
-                <mat-icon>visibility</mat-icon>
+              <button (click)="previewCar(car.id)" class="option-btn" mat-mini-fab>
+                <mat-icon>preview</mat-icon>
               </button>
               <button (click)="editCar(car.id)" class="option-btn" mat-mini-fab>
                 <mat-icon>edit</mat-icon>

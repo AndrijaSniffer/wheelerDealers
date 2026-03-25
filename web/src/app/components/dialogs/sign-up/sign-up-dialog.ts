@@ -16,8 +16,8 @@ import {NgForOf, NgIf} from '@angular/common';
 import {MatList, MatListItem} from '@angular/material/list';
 import {MatButton} from '@angular/material/button';
 import {MatDivider} from '@angular/material/divider';
-import {AuthService} from '../../../services/auth.service';
-import {User} from '../../../classes/user';
+import {AuthService} from '@services/auth.service';
+import {User} from '@classes/user';
 
 @Component({
   selector: 'sign-up-dialog',

@@ -1,4 +1,4 @@
-import { ModelType } from './model-type';
+import {ModelType} from '@classes/model-type';
 
 describe('ModelType', () => {
   it('should create an instance', () => {

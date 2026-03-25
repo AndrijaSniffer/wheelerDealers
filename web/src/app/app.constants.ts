@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import {Injectable} from '@angular/core';
 
 @Injectable({
   providedIn: 'root'
@@ -35,13 +35,9 @@ export class AppConstants {
 
   static readonly FUEL_URL = AppConstants.SERVER_URL + 'fuel';
 
-  static readonly INTERIOR_URL = AppConstants.SERVER_URL + 'interior';
-
   static readonly DRIVETRAINS_URL = AppConstants.SERVER_URL + 'drivetrain';
 
   static readonly MANUFACTURER_URL = AppConstants.SERVER_URL + 'manufacturer';
-
-  static readonly ENGINE_URL = AppConstants.SERVER_URL + 'engine';
 
   static readonly MODEL_URL = AppConstants.SERVER_URL + 'model';
 
@@ -49,10 +45,6 @@ export class AppConstants {
 
   static readonly CAR_URL = AppConstants.SERVER_URL + 'car';
 
-  static readonly CAR_COLORS_URL = AppConstants.CAR_URL + '/colors';
-
   static readonly SEARCH_URL = AppConstants.SERVER_URL + 'search';
-
-  static readonly UPDATE_USER_URL = AppConstants.USER_URL;
 
 }

@@ -1,10 +1,10 @@
 import {ApplicationConfig, importProvidersFrom, provideZoneChangeDetection} from '@angular/core';
-import { provideRouter } from '@angular/router';
+import {provideRouter} from '@angular/router';
 
-import { routes } from './app.routes';
-import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
+import {routes} from './app.routes';
+import {provideAnimationsAsync} from '@angular/platform-browser/animations/async';
 import {provideHttpClient, withInterceptors} from '@angular/common/http';
-import {authInterceptor} from './interceptors/auth.interceptor';
+import {authInterceptor} from '@interceptors/auth.interceptor';
 import {AccordionModule} from 'ngx-bootstrap/accordion';
 
 export const appConfig: ApplicationConfig = {

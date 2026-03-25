@@ -1,5 +1,5 @@
 import {inject, Injectable} from '@angular/core';
-import {User} from './classes/user';
+import {User} from '@classes/user';
 import {Observable, Subject} from 'rxjs';
 import {Router} from '@angular/router';
 import {mapToUser} from './app.mappers';

@@ -1,16 +1,16 @@
-import {Country} from './classes/country';
-import {EngineType} from './classes/engine-type';
-import {EmissionClass} from './classes/emission-class';
-import {ModelType} from './classes/model-type';
-import {TransmissionType} from './classes/transmissionType';
-import {Fuel} from './classes/fuel';
-import {Drivetrain} from './classes/drivetrain';
-import {Manufacturer} from './classes/manufacturer';
-import {Model} from './classes/model';
-import {Car} from './classes/car';
-import {Company} from './classes/company';
-import {User} from './classes/user';
-import {Image} from './classes/image';
+import {Country} from '@classes/country';
+import {EngineType} from '@classes/engine-type';
+import {EmissionClass} from '@classes/emission-class';
+import {ModelType} from '@classes/model-type';
+import {TransmissionType} from '@classes/transmissionType';
+import {Fuel} from '@classes/fuel';
+import {Drivetrain} from '@classes/drivetrain';
+import {Manufacturer} from '@classes/manufacturer';
+import {Model} from '@classes/model';
+import {Car} from '@classes/car';
+import {Company} from '@classes/company';
+import {User} from '@classes/user';
+import {Image} from '@classes/image';
 import {AppConstants} from './app.constants';
 
 export function mapToCompany(json: any): Company {
@@ -30,9 +30,6 @@ export function mapToUser(json: any): User {
   // Normalize company using mapToCompany
   const companyJson = parsed.PIB; // Adjust this key if it's different (e.g., 'Company')
   const company: Company | null = companyJson ? mapToCompany(companyJson) : null;
-
-  console.log('Parsed user JSON:', parsed);
-  console.log('Company:', company);
 
   // Normalize fields with fallback for both naming conventions
   const id = parsed.id ?? parsed.user_id;

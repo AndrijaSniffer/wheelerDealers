@@ -2,7 +2,7 @@ import {inject, Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {map, Observable} from 'rxjs';
 import {AppConstants} from '../app.constants';
-import {Manufacturer, ManufacturerDTO} from '../classes/manufacturer';
+import {Manufacturer, ManufacturerDTO} from '@classes/manufacturer';
 import {mapToManufacturer} from '../app.mappers';
 import {AppUtil} from '../app.util';
 

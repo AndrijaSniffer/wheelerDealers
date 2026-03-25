@@ -3,12 +3,12 @@ import {MatToolbar} from '@angular/material/toolbar';
 import {MatButton} from '@angular/material/button';
 import {Router} from '@angular/router';
 import {MatDialog} from '@angular/material/dialog';
-import {NotificationService} from '../../services/notification.service';
+import {NotificationService} from '@services/notification.service';
 import {AppUser} from '../../app.user';
 import {NgIf} from '@angular/common';
-import {LoginDialog} from '../dialogs/login/login-dialog';
-import {SignUpDialog} from '../dialogs/sign-up/sign-up-dialog';
-import {CarDialog} from '../dialogs/car/car-dialog';
+import {LoginDialog} from '@dialogs/login/login-dialog';
+import {SignUpDialog} from '@dialogs/sign-up/sign-up-dialog';
+import {CarDialog} from '@dialogs/car/car-dialog';
 
 @Component({
   selector: 'app-nav-bar',
@@ -34,7 +34,6 @@ export class NavBarComponent {
 
   constructor() {
     this._appUser.loggedInObservable.subscribe(loggedIn => {
-      console.warn(this._appUser.user)
       if (loggedIn) {
         this.isLoggedIn = loggedIn;
         this.username = this._appUser.user.username;
@@ -119,7 +118,7 @@ export class NavBarComponent {
 
   temporaryCarAdd() {
     this._dialog.open(CarDialog, {
-      minWidth: '20vw',
+      minWidth: '50vw',
       data: {object: null, isView: false}
     }).afterClosed().subscribe(result => {
       if (result) {

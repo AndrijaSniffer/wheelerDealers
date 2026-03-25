@@ -14,13 +14,13 @@ import {
   MatTable,
   MatTableDataSource
 } from '@angular/material/table';
-import {Country} from '../../../classes/country';
-import {CountryService} from '../../../services/country.service';
+import {Country} from '@classes/country';
+import {CountryService} from '@services/country.service';
 import {MatIcon} from '@angular/material/icon';
 import {MatDialog} from '@angular/material/dialog';
-import {YesNoDialogComponent} from '../../dialogs/dialogs.component';
-import {NotificationService} from '../../../services/notification.service';
-import {CountryDialog} from '../../dialogs/country/country-dialog';
+import {YesNoDialogComponent} from '@dialogs/dialogs.component';
+import {NotificationService} from '@services/notification.service';
+import {CountryDialog} from '@dialogs/country/country-dialog';
 
 @Component({
   selector: 'app-country',
@@ -63,7 +63,6 @@ export class CountryComponent {
       next: data => {
         this.countries = data;
         this.dataSource = new MatTableDataSource(this.countries);
-        // this._notification.showTimedNotification('Countries loaded');
       },
       error: err => {
         console.error(err);
@@ -88,9 +87,7 @@ export class CountryComponent {
 
     this._dialog.open(CountryDialog, {
       data: {object: countrySelected, isView: true}
-    }).afterClosed().subscribe(result => {
-      console.warn(result);
-    });
+    }).afterClosed().subscribe(() => {});
   }
 
   edit(id: number) {

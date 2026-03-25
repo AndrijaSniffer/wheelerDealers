@@ -1,4 +1,4 @@
-import { Fuel } from './fuel';
+import {Fuel} from '@classes/fuel';
 
 describe('Fuel', () => {
   it('should create an instance', () => {

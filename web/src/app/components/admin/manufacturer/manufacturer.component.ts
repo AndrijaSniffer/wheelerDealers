@@ -4,20 +4,24 @@ import {
   MatCell,
   MatCellDef,
   MatColumnDef,
-  MatHeaderCell, MatHeaderCellDef,
+  MatHeaderCell,
+  MatHeaderCellDef,
   MatHeaderRow,
   MatHeaderRowDef,
-  MatRow, MatRowDef, MatTable, MatTableDataSource
+  MatRow,
+  MatRowDef,
+  MatTable,
+  MatTableDataSource
 } from '@angular/material/table';
 import {MatIcon} from '@angular/material/icon';
 import {MatList, MatListItem} from '@angular/material/list';
-import {NotificationService} from '../../../services/notification.service';
+import {NotificationService} from '@services/notification.service';
 import {MatDialog} from '@angular/material/dialog';
 import {AppUtil} from '../../../app.util';
-import {ManufacturerService} from '../../../services/manufacturer.service';
-import {Manufacturer} from '../../../classes/manufacturer';
-import {YesNoDialogComponent} from '../../dialogs/dialogs.component';
-import {ManufacturerDialog} from '../../dialogs/manufacturer/manufacturer-dialog';
+import {ManufacturerService} from '@services/manufacturer.service';
+import {Manufacturer} from '@classes/manufacturer';
+import {YesNoDialogComponent} from '@dialogs/dialogs.component';
+import {ManufacturerDialog} from '@dialogs/manufacturer/manufacturer-dialog';
 
 @Component({
   selector: 'app-manufacturer',

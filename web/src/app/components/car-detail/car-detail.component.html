@@ -11,7 +11,7 @@
 
     <div class="detail-header">
       <h1>{{ car.model.manufacturer.name }} {{ car.model.name }} ({{ car.year }})</h1>
-      <span class="price-tag">{{ car.price }}&euro;</span>
+      <span class="price-tag">{{ car.price | serbianPrice }}&euro;</span>
     </div>
 
     <!-- Image Carousel -->
@@ -140,42 +140,54 @@
     <mat-divider></mat-divider>
 
     <!-- Seller Info -->
-    <div class="seller-section">
-      <h2>Seller Information</h2>
-      <div class="seller-card">
-        <div class="seller-info">
-          <p><strong>{{ car.user.username }}</strong></p>
-          @if (car.user.isReseller) {
-            <span class="seller-badge reseller-badge">Reseller</span>
-          }
-          @if (car.user.PIB) {
-            <span class="seller-badge dealership-badge">Dealership</span>
-          }
-        </div>
-
-        <div class="seller-contact">
-          @if (!_appUser.user) {
-            <button (click)="revealPhone()" mat-raised-button color="primary">
-              <mat-icon>phone</mat-icon>
-              Show phone number
-            </button>
-          } @else if (!phoneRevealed) {
-            <button (click)="revealPhone()" mat-raised-button color="primary">
-              <mat-icon>phone</mat-icon>
-              Show phone number
-            </button>
-          } @else {
-            @if (car.user.phone) {
-              <p class="phone-revealed">
-                <mat-icon>phone</mat-icon>
-                {{ car.user.phone }}
-              </p>
-            } @else {
-              <p class="no-phone">Seller has not provided a phone number.</p>
+    @if (!isOwnListing) {
+      <div class="seller-section">
+        <h2>Seller Information</h2>
+        <div class="seller-card">
+          <div class="seller-info">
+            <p><strong>{{ car.user.username }}</strong></p>
+            @if (car.user.isReseller && !car.user.PIB) {
+              <span class="seller-badge reseller-badge">Reseller</span>
             }
-          }
+            @if (car.user.PIB) {
+              <span class="seller-badge dealership-badge">Dealership</span>
+            }
+          </div>
+
+          <div class="seller-contact">
+            @if (!_appUser.user) {
+              <button (click)="revealPhone()" mat-raised-button color="primary">
+                <mat-icon>phone</mat-icon>
+                Show phone number
+              </button>
+            } @else if (!phoneRevealed) {
+              <button (click)="revealPhone()" mat-raised-button color="primary">
+                <mat-icon>phone</mat-icon>
+                Show phone number
+              </button>
+            } @else {
+              @if (car.user.phone) {
+                <p class="phone-revealed">
+                  <mat-icon>phone</mat-icon>
+                  {{ car.user.phone }}
+                </p>
+              } @else if (car.user?.PIB?.phone) {
+                <p class="phone-revealed">
+                  <mat-icon>phone</mat-icon>
+                  {{ car.user.PIB.phone }}
+                </p>
+              } @else {
+                <p class="no-phone">Seller has not provided a phone number.</p>
+              }
+            }
+          </div>
         </div>
       </div>
-    </div>
+    } @else {
+      <div class="seller-section">
+        <h2>This is your listing</h2>
+        <p class="hint-text">This is how buyers see your car.</p>
+      </div>
+    }
   </div>
 }

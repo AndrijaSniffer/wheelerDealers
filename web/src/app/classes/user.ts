@@ -1,4 +1,4 @@
-import {Company} from './company';
+import {Company} from '@classes/company';
 
 export class User {
   id: number;

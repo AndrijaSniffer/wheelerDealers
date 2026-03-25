@@ -1,11 +1,11 @@
 import {inject, Injectable} from '@angular/core';
 import {HttpBackend, HttpClient, HttpErrorResponse} from '@angular/common/http';
 import {AppConstants} from '../app.constants';
-import {NotificationService} from './notification.service';
+import {NotificationService} from '@services/notification.service';
 import {AppUser, JWTPair} from '../app.user';
-import {UserService} from './user.service';
-import {Company} from '../classes/company';
-import {User} from '../classes/user';
+import {UserService} from '@services/user.service';
+import {Company} from '@classes/company';
+import {User} from '@classes/user';
 import {AppUtil} from '../app.util';
 import {Observable} from 'rxjs';
 import {mapToUser} from '../app.mappers';
@@ -46,7 +46,6 @@ export class AuthService {
       this._http.post<JWToken>(AppConstants.LOGIN_URL, formData).subscribe(
         {
           next: async (response: JWToken) => {
-            // console.log(response);
             let accessToken = response.access
 
             try {

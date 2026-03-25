@@ -4,20 +4,24 @@ import {
   MatCell,
   MatCellDef,
   MatColumnDef,
-  MatHeaderCell, MatHeaderCellDef,
+  MatHeaderCell,
+  MatHeaderCellDef,
   MatHeaderRow,
   MatHeaderRowDef,
-  MatRow, MatRowDef, MatTable, MatTableDataSource
+  MatRow,
+  MatRowDef,
+  MatTable,
+  MatTableDataSource
 } from '@angular/material/table';
 import {MatIcon} from '@angular/material/icon';
 import {MatList, MatListItem} from '@angular/material/list';
-import {NotificationService} from '../../../services/notification.service';
+import {NotificationService} from '@services/notification.service';
 import {MatDialog} from '@angular/material/dialog';
 import {AppUtil} from '../../../app.util';
-import {YesNoDialogComponent} from '../../dialogs/dialogs.component';
-import {FuelService} from '../../../services/fuel.service';
-import {Fuel} from '../../../classes/fuel';
-import {FuelDialog} from '../../dialogs/fuel/fuel-dialog';
+import {YesNoDialogComponent} from '@dialogs/dialogs.component';
+import {FuelService} from '@services/fuel.service';
+import {Fuel} from '@classes/fuel';
+import {FuelDialog} from '@dialogs/fuel/fuel-dialog';
 
 @Component({
   selector: 'app-fuel',
@@ -72,7 +76,6 @@ export class FuelComponent {
     this._dialog.open(FuelDialog, {
       data: {object: null, isView: false}
     }).afterClosed().subscribe(result => {
-      console.warn(result);
       if (result) {
         this._notification.showTimedNotification('New fuel was successfully created!');
         this.getAll();
@@ -94,7 +97,6 @@ export class FuelComponent {
     this._dialog.open(FuelDialog, {
       data: {object: selectedFuel, isView: false}
     }).afterClosed().subscribe(result => {
-      console.warn(result);
       if (result) {
         this._notification.showTimedNotification('Fuel was successfully updated!');
         this.getAll();

@@ -1,7 +1,7 @@
 import {inject, Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {map, Observable} from 'rxjs';
-import {Drivetrain} from '../classes/drivetrain';
+import {Drivetrain} from '@classes/drivetrain';
 import {AppConstants} from '../app.constants';
 import {mapToDrivetrain} from '../app.mappers';
 import {AppUtil} from '../app.util';

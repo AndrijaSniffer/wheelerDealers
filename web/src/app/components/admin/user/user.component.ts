@@ -3,20 +3,24 @@ import {
   MatCell,
   MatCellDef,
   MatColumnDef,
-  MatHeaderCell, MatHeaderCellDef,
+  MatHeaderCell,
+  MatHeaderCellDef,
   MatHeaderRow,
   MatHeaderRowDef,
-  MatRow, MatRowDef, MatTable, MatTableDataSource
+  MatRow,
+  MatRowDef,
+  MatTable,
+  MatTableDataSource
 } from "@angular/material/table";
 import {MatIcon} from "@angular/material/icon";
 import {MatList, MatListItem} from "@angular/material/list";
 import {MatMiniFabButton} from "@angular/material/button";
-import {NotificationService} from '../../../services/notification.service';
+import {NotificationService} from '@services/notification.service';
 import {MatDialog} from '@angular/material/dialog';
 import {AppUtil} from '../../../app.util';
-import {UserService} from '../../../services/user.service';
-import {User} from '../../../classes/user';
-import {YesNoDialogComponent} from '../../dialogs/dialogs.component';
+import {UserService} from '@services/user.service';
+import {User} from '@classes/user';
+import {YesNoDialogComponent} from '@dialogs/dialogs.component';
 import {DatePipe} from '@angular/common';
 
 @Component({
@@ -59,7 +63,6 @@ export class UserComponent {
   getAll() {
     this._userService.getAll().subscribe({
       next: data => {
-        console.warn("Data:", data);
         this.users = data;
         this.dataSource = new MatTableDataSource(this.users);
       },

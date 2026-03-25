@@ -1,6 +1,6 @@
 import {inject, Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
-import {Country} from '../classes/country';
+import {Country} from '@classes/country';
 import {AppConstants} from '../app.constants';
 import {map, Observable} from 'rxjs';
 import {mapToCountry} from '../app.mappers';

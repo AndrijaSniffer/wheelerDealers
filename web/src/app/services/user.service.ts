@@ -2,7 +2,7 @@ import {inject, Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {AppConstants} from '../app.constants';
 import {map, Observable} from 'rxjs';
-import {User} from '../classes/user';
+import {User} from '@classes/user';
 import {mapToUser} from '../app.mappers';
 
 @Injectable({

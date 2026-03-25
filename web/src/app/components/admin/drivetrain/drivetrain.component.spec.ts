@@ -1,6 +1,6 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import {ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { DrivetrainComponent } from './drivetrain.component';
+import {DrivetrainComponent} from '@admin/drivetrain/drivetrain.component';
 
 describe('DrivetrainComponent', () => {
   let component: DrivetrainComponent;

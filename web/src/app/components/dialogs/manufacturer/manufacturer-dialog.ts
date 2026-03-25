@@ -13,14 +13,14 @@ import {MatList, MatListItem} from '@angular/material/list';
 import {MatError, MatFormField, MatLabel} from '@angular/material/form-field';
 import {MatInput} from '@angular/material/input';
 import {MatOption, MatSelect} from '@angular/material/select';
-import {Manufacturer, ManufacturerDTO} from '../../../classes/manufacturer';
-import {ManufacturerService} from '../../../services/manufacturer.service';
-import {CountryService} from '../../../services/country.service';
-import {NotificationService} from '../../../services/notification.service';
-import {Country} from '../../../classes/country';
+import {Manufacturer, ManufacturerDTO} from '@classes/manufacturer';
+import {ManufacturerService} from '@services/manufacturer.service';
+import {CountryService} from '@services/country.service';
+import {NotificationService} from '@services/notification.service';
+import {Country} from '@classes/country';
 import {AppUtil} from '../../../app.util';
-import {IDialogData} from '../dialogs.component';
-import {BaseDialog} from '../base-dialog';
+import {IDialogData} from '@dialogs/dialogs.component';
+import {BaseDialog} from '@dialogs/base-dialog';
 
 @Component({
   selector: 'manufacturer-dialog',

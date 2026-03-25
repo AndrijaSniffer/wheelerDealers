@@ -12,12 +12,12 @@ import {NgIf} from '@angular/common';
 import {MatList, MatListItem} from '@angular/material/list';
 import {MatError, MatFormField, MatLabel} from '@angular/material/form-field';
 import {MatInput} from '@angular/material/input';
-import {Country} from '../../../classes/country';
-import {CountryService} from '../../../services/country.service';
-import {NotificationService} from '../../../services/notification.service';
+import {Country} from '@classes/country';
+import {CountryService} from '@services/country.service';
+import {NotificationService} from '@services/notification.service';
 import {AppUtil} from '../../../app.util';
-import {IDialogData} from '../dialogs.component';
-import {BaseDialog} from '../base-dialog';
+import {IDialogData} from '@dialogs/dialogs.component';
+import {BaseDialog} from '@dialogs/base-dialog';
 
 @Component({
   selector: 'country-dialog',
@@ -73,7 +73,6 @@ export class CountryDialog extends BaseDialog<Country> {
 
         this._countryService.create(newCountry).subscribe({
           next: (country) => {
-            console.log(country);
             this.dismiss(country);
           },
           error: (error) => {

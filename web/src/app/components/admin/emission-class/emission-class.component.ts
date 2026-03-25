@@ -4,19 +4,23 @@ import {
   MatCell,
   MatCellDef,
   MatColumnDef,
-  MatHeaderCell, MatHeaderCellDef,
+  MatHeaderCell,
+  MatHeaderCellDef,
   MatHeaderRow,
   MatHeaderRowDef,
-  MatRow, MatRowDef, MatTable, MatTableDataSource
+  MatRow,
+  MatRowDef,
+  MatTable,
+  MatTableDataSource
 } from '@angular/material/table';
 import {MatIcon} from '@angular/material/icon';
 import {MatList, MatListItem} from '@angular/material/list';
-import {NotificationService} from '../../../services/notification.service';
+import {NotificationService} from '@services/notification.service';
 import {MatDialog} from '@angular/material/dialog';
-import {EmissionClassService} from '../../../services/emission-class.service';
-import {EmissionClass} from '../../../classes/emission-class';
-import {YesNoDialogComponent} from '../../dialogs/dialogs.component';
-import {EmissionClassDialog} from '../../dialogs/emission-class/emission-class-dialog';
+import {EmissionClassService} from '@services/emission-class.service';
+import {EmissionClass} from '@classes/emission-class';
+import {YesNoDialogComponent} from '@dialogs/dialogs.component';
+import {EmissionClassDialog} from '@dialogs/emission-class/emission-class-dialog';
 
 @Component({
   selector: 'app-emission-class',

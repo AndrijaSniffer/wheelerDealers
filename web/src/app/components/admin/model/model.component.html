@@ -13,20 +13,12 @@
           <td *matCellDef="let model" mat-cell> {{ model.id }}</td>
         </ng-container>
         <ng-container matColumnDef="name">
-          <th *matHeaderCellDef mat-header-cell> Engine type</th>
+          <th *matHeaderCellDef mat-header-cell> Model name</th>
           <td *matCellDef="let model" mat-cell> {{ model.name }}</td>
-        </ng-container>
-        <ng-container matColumnDef="yearOfManufacture">
-          <th *matHeaderCellDef mat-header-cell> Year of manufacture</th>
-          <td *matCellDef="let model" mat-cell> {{ model.yearOfManufacture }}</td>
         </ng-container>
         <ng-container matColumnDef="manufacturer">
           <th *matHeaderCellDef mat-header-cell> Manufacturer</th>
           <td *matCellDef="let model" mat-cell> {{ model.manufacturer.name }}</td>
-        </ng-container>
-        <ng-container matColumnDef="engine">
-          <th *matHeaderCellDef mat-header-cell> Engine</th>
-          <td *matCellDef="let model" mat-cell> {{ model.engine.engineType.type }}</td>
         </ng-container>
         <ng-container matColumnDef="options">
           <th *matHeaderCellDef mat-header-cell> Options</th>

@@ -4,20 +4,24 @@ import {
   MatCell,
   MatCellDef,
   MatColumnDef,
-  MatHeaderCell, MatHeaderCellDef,
+  MatHeaderCell,
+  MatHeaderCellDef,
   MatHeaderRow,
   MatHeaderRowDef,
-  MatRow, MatRowDef, MatTable, MatTableDataSource
+  MatRow,
+  MatRowDef,
+  MatTable,
+  MatTableDataSource
 } from '@angular/material/table';
 import {MatIcon} from '@angular/material/icon';
 import {MatList, MatListItem} from '@angular/material/list';
-import {NotificationService} from '../../../services/notification.service';
+import {NotificationService} from '@services/notification.service';
 import {MatDialog} from '@angular/material/dialog';
 import {AppUtil} from '../../../app.util';
-import {YesNoDialogComponent} from '../../dialogs/dialogs.component';
-import {DrivetrainService} from '../../../services/drivetrain.service';
-import {Drivetrain} from '../../../classes/drivetrain';
-import {DrivetrainDialog} from '../../dialogs/drivetrain/drivetrain-dialog';
+import {YesNoDialogComponent} from '@dialogs/dialogs.component';
+import {DrivetrainService} from '@services/drivetrain.service';
+import {Drivetrain} from '@classes/drivetrain';
+import {DrivetrainDialog} from '@dialogs/drivetrain/drivetrain-dialog';
 
 @Component({
   selector: 'app-drivetrain',
@@ -72,7 +76,6 @@ export class DrivetrainComponent {
     this._dialog.open(DrivetrainDialog, {
       data: {object: null, isView: false}
     }).afterClosed().subscribe(result => {
-      console.warn(result);
       if (result) {
         this._notification.showTimedNotification('Drivetrain was successfully created!');
         this.getAll();
@@ -94,7 +97,6 @@ export class DrivetrainComponent {
     this._dialog.open(DrivetrainDialog, {
       data: {object: selectedModelType, isView: false}
     }).afterClosed().subscribe(result => {
-      console.warn(result);
       if (result) {
         this._notification.showTimedNotification('Drivetrain was successfully updated!');
         this.getAll();

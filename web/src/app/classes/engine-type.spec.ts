@@ -1,4 +1,4 @@
-import { EngineType } from './engine-type';
+import {EngineType} from '@classes/engine-type';
 
 describe('EngineType', () => {
   it('should create an instance', () => {

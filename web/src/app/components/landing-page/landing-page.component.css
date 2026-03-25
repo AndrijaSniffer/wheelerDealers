@@ -16,7 +16,7 @@
 
 .hero-subtitle {
   font-size: 1.2rem;
-  color: #666;
+  color: #bdbdbd;
   margin-bottom: 1.5rem;
 }
 
@@ -51,7 +51,7 @@
 }
 
 .feature-card p {
-  color: #666;
+  color: #bdbdbd;
   font-size: 0.9rem;
 }
 
@@ -65,5 +65,5 @@
 }
 
 .cta-section p {
-  color: #666;
+  color: #bdbdbd;
 }

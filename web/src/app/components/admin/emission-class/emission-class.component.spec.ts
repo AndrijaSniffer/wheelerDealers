@@ -1,6 +1,6 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import {ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { EmissionClassComponent } from './emission-class.component';
+import {EmissionClassComponent} from '@admin/emission-class/emission-class.component';
 
 describe('EmissionClassComponent', () => {
   let component: EmissionClassComponent;

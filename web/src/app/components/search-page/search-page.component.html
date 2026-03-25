@@ -27,7 +27,7 @@
               </mat-form-field>
             </div>
             <div class="col-3">
-              <mat-form-field appearance="fill" >
+              <mat-form-field appearance="fill">
                 <mat-label>Price to</mat-label>
                 <input formControlName="priceTo" matInput type="number"/>
               </mat-form-field>
@@ -50,7 +50,7 @@
                   <div class="accordion-body">
                     <div class="row">
                       <div class="col">
-                        <mat-form-field appearance="fill" >
+                        <mat-form-field appearance="fill">
                           <mat-label>Price from</mat-label>
                           <input formControlName="priceFrom" matInput type="number"/>
                         </mat-form-field>
@@ -60,9 +60,7 @@
                           <mat-label>Transmission type</mat-label>
                           <mat-select formControlName="transmission">
                             @for (transmissionType of transmissions; track transmissionType) {
-                              <mat-option
-                                [value]="transmissionType.id">{{ transmissionType.type }}
-                              </mat-option>
+                              <mat-option [value]="transmissionType.id">{{ transmissionType.type }}</mat-option>
                             }
                           </mat-select>
                         </mat-form-field>
@@ -71,8 +69,8 @@
                         <mat-form-field>
                           <mat-label>Fuel</mat-label>
                           <mat-select formControlName="fuel">
-                            @for (fuel of fuel; track fuel) {
-                              <mat-option [value]="fuel.id">{{ fuel.type }}</mat-option>
+                            @for (f of fuel; track f) {
+                              <mat-option [value]="f.id">{{ f.type }}</mat-option>
                             }
                           </mat-select>
                         </mat-form-field>
@@ -81,44 +79,93 @@
 
                     <div class="row">
                       <div class="col">
-                        <mat-form-field appearance="fill" >
-                          <mat-label>Engine volume</mat-label>
-                          <input formControlName="volume" matInput type="number"/>
+                        <mat-form-field>
+                          <mat-label>Drivetrain</mat-label>
+                          <mat-select formControlName="drivetrain">
+                            @for (dt of drivetrains; track dt) {
+                              <mat-option [value]="dt.id">{{ dt.type }}</mat-option>
+                            }
+                          </mat-select>
                         </mat-form-field>
                       </div>
                       <div class="col">
-                        <mat-form-field appearance="fill" >
-                          <mat-label>Horsepower from</mat-label>
-                          <input formControlName="horsepowerFrom" matInput type="number"/>
+                        <mat-form-field>
+                          <mat-label>Engine type</mat-label>
+                          <mat-select formControlName="engineType">
+                            @for (et of engineTypes; track et) {
+                              <mat-option [value]="et.id">{{ et.type }}</mat-option>
+                            }
+                          </mat-select>
                         </mat-form-field>
                       </div>
                       <div class="col">
-                        <mat-form-field appearance="fill" >
-                          <mat-label>Horsepower to</mat-label>
-                          <input formControlName="horsepowerTo" matInput type="number"/>
+                        <mat-form-field>
+                          <mat-label>Emission class</mat-label>
+                          <mat-select formControlName="emissionClass">
+                            @for (ec of emissionClasses; track ec) {
+                              <mat-option [value]="ec.id">{{ ec.className }}</mat-option>
+                            }
+                          </mat-select>
                         </mat-form-field>
                       </div>
                     </div>
 
                     <div class="row">
                       <div class="col">
-                        <mat-form-field appearance="fill" >
+                        <mat-form-field appearance="fill">
+                          <mat-label>Year from</mat-label>
+                          <input formControlName="yearFrom" matInput type="number"/>
+                        </mat-form-field>
+                      </div>
+                      <div class="col">
+                        <mat-form-field appearance="fill">
+                          <mat-label>Year to</mat-label>
+                          <input formControlName="yearTo" matInput type="number"/>
+                        </mat-form-field>
+                      </div>
+                      <div class="col">
+                        <mat-form-field appearance="fill">
+                          <mat-label>Engine volume (cc)</mat-label>
+                          <input formControlName="volume" matInput type="number"/>
+                        </mat-form-field>
+                      </div>
+                    </div>
+
+                    <div class="row">
+                      <div class="col">
+                        <mat-form-field appearance="fill">
+                          <mat-label>Horsepower from</mat-label>
+                          <input formControlName="horsepowerFrom" matInput type="number"/>
+                        </mat-form-field>
+                      </div>
+                      <div class="col">
+                        <mat-form-field appearance="fill">
+                          <mat-label>Horsepower to</mat-label>
+                          <input formControlName="horsepowerTo" matInput type="number"/>
+                        </mat-form-field>
+                      </div>
+                      <div class="col">
+                        <mat-form-field appearance="fill">
+                          <mat-label>Car color</mat-label>
+                          <input formControlName="carColor" matInput/>
+                        </mat-form-field>
+                      </div>
+                    </div>
+
+                    <div class="row">
+                      <div class="col">
+                        <mat-form-field appearance="fill">
                           <mat-label>Kilowatt from</mat-label>
                           <input formControlName="kilowattFrom" matInput type="number"/>
                         </mat-form-field>
                       </div>
                       <div class="col">
-                        <mat-form-field appearance="fill" >
+                        <mat-form-field appearance="fill">
                           <mat-label>Kilowatt to</mat-label>
                           <input formControlName="kilowattTo" matInput type="number"/>
                         </mat-form-field>
                       </div>
-                      <div class="col">
-                        <mat-form-field>
-                          <mat-label>Car color</mat-label>
-                          <input formControlName="carColor" matInput/>
-                        </mat-form-field>
-                      </div>
+                      <div class="col"></div>
                     </div>
 
                     <div class="row">
@@ -155,22 +202,44 @@
         </div>
       </div>
       <mat-divider></mat-divider>
-      <div *ngFor="let rowOfCars of carsToDisplay" class="row row-cols-5 text-center">
-        <div *ngFor="let car of rowOfCars" class="col">
-          <div class="card mx-auto" style="width: 16vw;">
-            <img alt="Picture of a car" class="card-img-top" height="390" priority ngSrc="/No-Image-Placeholder.png" width="481">
-            <div class="card-body">
-              <h5 class="card-title">{{ car.model.manufacturer.name }} {{ car.model.name }}</h5>
-              <ul class="list-group list-group-flush">
-<!--                <li class="list-group-item">Horsepower: {{ car.model.engine.horsepower }} HP</li>-->
-                <li class="list-group-item">Fuel type: {{ car.fuel.type }}</li>
-                <li class="list-group-item">Drivetrain: {{ car.drivetrain.type }}</li>
-                <li class="list-group-item">Price: {{ car.price }}&euro;</li>
-              </ul>
-              <a class="btn btn-primary" [routerLink]="['/car', car.id]">Full details!</a>
+
+      @if (cars.length === 0) {
+        <div class="empty-results">
+          <p>No cars found matching your criteria.</p>
+        </div>
+      }
+
+      <div class="car-grid">
+        @for (car of cars; track car.id) {
+          <div class="car-card" [routerLink]="['/car', car.id]">
+            <div class="car-card-image">
+              @if (car.images && car.images.length > 0) {
+                <img [src]="car.images[0].imageUrl"
+                     [alt]="car.model.manufacturer.name + ' ' + car.model.name"/>
+              } @else {
+                <img src="/No-Image-Placeholder.png" alt="No image available"/>
+              }
+            </div>
+            <div class="car-card-body">
+              <h3 class="car-card-title">{{ car.model.manufacturer.name }} {{ car.model.name }}</h3>
+              <p class="car-card-year">{{ car.year }}</p>
+              <div class="car-card-specs">
+                <span>{{ car.horsepower }} HP</span>
+                <span>{{ car.fuel.type }}</span>
+                <span>{{ car.drivetrain.type }}</span>
+              </div>
+              <div class="car-card-footer">
+                <span class="car-card-price">{{ car.price | serbianPrice }}&euro;</span>
+                @if (car.user.isReseller && !car.user.PIB) {
+                  <span class="badge reseller">Reseller</span>
+                }
+                @if (car.user.PIB) {
+                  <span class="badge dealership">Dealership</span>
+                }
+              </div>
             </div>
           </div>
-        </div>
+        }
       </div>
     </div>
   </div>

@@ -12,12 +12,12 @@ import {NgIf} from '@angular/common';
 import {MatList, MatListItem} from '@angular/material/list';
 import {MatError, MatFormField, MatLabel} from '@angular/material/form-field';
 import {MatInput} from '@angular/material/input';
-import {ModelType} from '../../../classes/model-type';
-import {ModelTypeService} from '../../../services/model-type.service';
-import {NotificationService} from '../../../services/notification.service';
+import {ModelType} from '@classes/model-type';
+import {ModelTypeService} from '@services/model-type.service';
+import {NotificationService} from '@services/notification.service';
 import {AppUtil} from '../../../app.util';
-import {IDialogData} from '../dialogs.component';
-import {BaseDialog} from '../base-dialog';
+import {IDialogData} from '@dialogs/dialogs.component';
+import {BaseDialog} from '@dialogs/base-dialog';
 
 @Component({
   selector: 'model-type-dialog',

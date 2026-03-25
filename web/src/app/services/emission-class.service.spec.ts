@@ -1,6 +1,6 @@
-import { TestBed } from '@angular/core/testing';
+import {TestBed} from '@angular/core/testing';
 
-import { EmissionClassService } from './emission-class.service';
+import {EmissionClassService} from '@services/emission-class.service';
 
 describe('EmissionClassService', () => {
   let service: EmissionClassService;

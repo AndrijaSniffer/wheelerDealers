@@ -1,17 +1,18 @@
 import {Component, inject, OnInit} from '@angular/core';
 import {AppUser} from '../../../app.user';
-import {CarService} from '../../../services/car.service';
-import {Car} from '../../../classes/car';
-import {DatePipe, DecimalPipe} from '@angular/common';
+import {CarService} from '@services/car.service';
+import {Car} from '@classes/car';
+import {DatePipe} from '@angular/common';
 import {MatDivider} from '@angular/material/divider';
-import {User} from '../../../classes/user';
+import {User} from '@classes/user';
+import {SerbianPricePipe} from '@pipes/serbian-price.pipe';
 
 @Component({
   selector: 'app-dealership-dashboard',
   imports: [
     DatePipe,
     MatDivider,
-    DecimalPipe
+    SerbianPricePipe
   ],
   templateUrl: './dashboard.component.html',
   standalone: true,

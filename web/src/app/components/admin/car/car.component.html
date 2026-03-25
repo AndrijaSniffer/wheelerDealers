@@ -1,11 +1,5 @@
 <div class="main-container">
   <mat-list>
-<!--    <mat-list-item>-->
-<!--      <button (click)="new()" mat-button>-->
-<!--        <mat-icon>add</mat-icon>-->
-<!--        Add new-->
-<!--      </button>-->
-<!--    </mat-list-item>-->
     <mat-list-item class="table-list-item">
       <table [dataSource]="dataSource" mat-table>
         <ng-container matColumnDef="id">
@@ -13,58 +7,52 @@
           <td *matCellDef="let car" mat-cell> {{ car.id }}</td>
         </ng-container>
         <ng-container matColumnDef="user">
-          <th *matHeaderCellDef mat-header-cell> Username</th>
+          <th *matHeaderCellDef mat-header-cell> Posted by</th>
           <td *matCellDef="let car" mat-cell> {{ car.user.username }}</td>
         </ng-container>
         <ng-container matColumnDef="model">
-          <th *matHeaderCellDef mat-header-cell> Model name</th>
-          <td *matCellDef="let car" mat-cell> {{ car.model.name }}</td>
+          <th *matHeaderCellDef mat-header-cell> Car</th>
+          <td *matCellDef="let car" mat-cell> {{ car.model.manufacturer.name }} {{ car.model.name }}</td>
         </ng-container>
-        <ng-container matColumnDef="transmission">
-          <th *matHeaderCellDef mat-header-cell> Transmission type</th>
-          <td *matCellDef="let car" mat-cell> {{ car.transmission.type }}</td>
+        <ng-container matColumnDef="year">
+          <th *matHeaderCellDef mat-header-cell> Year</th>
+          <td *matCellDef="let car" mat-cell> {{ car.year }}</td>
+        </ng-container>
+        <ng-container matColumnDef="transmissionType">
+          <th *matHeaderCellDef mat-header-cell> Transmission</th>
+          <td *matCellDef="let car" mat-cell> {{ car.transmissionType.type }}</td>
         </ng-container>
         <ng-container matColumnDef="fuel">
-          <th *matHeaderCellDef mat-header-cell> Fuel type</th>
+          <th *matHeaderCellDef mat-header-cell> Fuel</th>
           <td *matCellDef="let car" mat-cell> {{ car.fuel.type }}</td>
         </ng-container>
-        <ng-container matColumnDef="interior">
-          <th *matHeaderCellDef mat-header-cell> Interior color</th>
-          <td *matCellDef="let car" mat-cell> {{ car.interior.color }}</td>
-        </ng-container>
         <ng-container matColumnDef="drivetrain">
-          <th *matHeaderCellDef mat-header-cell> Car drivetrain</th>
+          <th *matHeaderCellDef mat-header-cell> Drivetrain</th>
           <td *matCellDef="let car" mat-cell> {{ car.drivetrain.type }}</td>
+        </ng-container>
+        <ng-container matColumnDef="horsepower">
+          <th *matHeaderCellDef mat-header-cell> Power</th>
+          <td *matCellDef="let car" mat-cell> {{ car.horsepower }} HP</td>
         </ng-container>
         <ng-container matColumnDef="price">
           <th *matHeaderCellDef mat-header-cell> Price</th>
-          <td *matCellDef="let car" mat-cell> {{ car.price }}</td>
+          <td *matCellDef="let car" mat-cell> {{ car.price | serbianPrice }}&euro;</td>
         </ng-container>
-        <ng-container matColumnDef="color">
-          <th *matHeaderCellDef mat-header-cell> Color of car</th>
-          <td *matCellDef="let car" mat-cell> {{ car.color ? car.color : 'N/A' }}</td>
-        </ng-container>
-        <ng-container matColumnDef="chassisNumber">
-          <th *matHeaderCellDef mat-header-cell> Chassis number</th>
-          <td *matCellDef="let car" mat-cell> {{ car.chassisNumber ? car.chassisNumber : 'N/A' }}</td>
+        <ng-container matColumnDef="exteriorColor">
+          <th *matHeaderCellDef mat-header-cell> Color</th>
+          <td *matCellDef="let car" mat-cell> {{ car.exteriorColor ? car.exteriorColor : 'N/A' }}</td>
         </ng-container>
         <ng-container matColumnDef="isPreowned">
-          <th *matHeaderCellDef mat-header-cell> Is the car preowned</th>
+          <th *matHeaderCellDef mat-header-cell> Preowned</th>
           <td *matCellDef="let car" mat-cell> {{ car.isPreowned ? 'Yes' : 'No' }}</td>
         </ng-container>
         <ng-container matColumnDef="createdAt">
-          <th *matHeaderCellDef mat-header-cell> Car post created at</th>
-          <td *matCellDef="let car" mat-cell> {{ car.createdAt | date: 'dd/mm/yyyy  hh:mm:ss' }}</td>
+          <th *matHeaderCellDef mat-header-cell> Listed on</th>
+          <td *matCellDef="let car" mat-cell> {{ car.createdAt | date:'dd/MM/yyyy HH:mm' }}</td>
         </ng-container>
         <ng-container matColumnDef="options">
           <th *matHeaderCellDef mat-header-cell> Options</th>
           <td *matCellDef="let car" mat-cell>
-            <button (click)="view(car.id)" class="option-btn" mat-mini-fab>
-              <mat-icon>visibility</mat-icon>
-            </button>
-<!--            <button (click)="edit(car.id)" class="option-btn" mat-mini-fab>-->
-<!--              <mat-icon>edit</mat-icon>-->
-<!--            </button>-->
             <button (click)="delete(car.id)" class="option-btn" mat-mini-fab>
               <mat-icon>delete</mat-icon>
             </button>

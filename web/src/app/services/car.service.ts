@@ -3,9 +3,9 @@ import {HttpClient} from '@angular/common/http';
 import {map, Observable} from 'rxjs';
 import {AppConstants} from '../app.constants';
 import {AppUtil} from '../app.util';
-import {Car, CarDTO} from '../classes/car';
+import {Car, CarDTO} from '@classes/car';
 import {mapToCar} from '../app.mappers';
-import {ISearchParameters} from '../components/search-page/search-page.component';
+import {ISearchParameters} from '@search-page/search-page.component';
 
 @Injectable({
   providedIn: 'root'
@@ -58,6 +58,14 @@ export class CarService {
     return this._http.get<any[]>(`${AppConstants.USER_URL}/${userId}/cars`).pipe(
       map((response: any[]) => response.map(mapToCar))
     );
+  }
+
+  uploadImages(carId: number, images: File[]): Observable<any> {
+    const formData = new FormData();
+    images.forEach(image => {
+      formData.append('images', image);
+    });
+    return this._http.post(`${AppConstants.CAR_URL}/${carId}/images`, formData);
   }
 
 }

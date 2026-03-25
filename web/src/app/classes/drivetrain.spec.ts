@@ -1,4 +1,4 @@
-import { Drivetrain } from './drivetrain';
+import {Drivetrain} from '@classes/drivetrain';
 
 describe('Drivetrain', () => {
   it('should create an instance', () => {

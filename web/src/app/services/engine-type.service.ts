@@ -1,7 +1,7 @@
 import {inject, Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {map, Observable} from 'rxjs';
-import {EngineType} from '../classes/engine-type';
+import {EngineType} from '@classes/engine-type';
 import {AppConstants} from '../app.constants';
 import {mapToEngineType} from '../app.mappers';
 

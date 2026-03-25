@@ -1,4 +1,4 @@
-import {Manufacturer} from './manufacturer';
+import {Manufacturer} from '@classes/manufacturer';
 
 export class Model {
   id: number | null;

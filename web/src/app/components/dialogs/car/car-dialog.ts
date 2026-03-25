@@ -8,34 +8,32 @@ import {
 } from '@angular/material/dialog';
 import {MatButton} from '@angular/material/button';
 import {FormBuilder, FormsModule, ReactiveFormsModule, Validators} from '@angular/forms';
-import {NgIf} from '@angular/common';
-import {Car, CarDTO} from '../../../classes/car';
-import {IDialogData} from '../dialogs.component';
-import {BaseDialog} from '../base-dialog';
-import {NotificationService} from '../../../services/notification.service';
-import {CarService} from '../../../services/car.service';
-import {ModelService} from '../../../services/model.service';
-import {TransmissionTypeService} from '../../../services/transmission-type.service';
-import {FuelService} from '../../../services/fuel.service';
+import {Car, CarDTO} from '@classes/car';
+import {IDialogData} from '@dialogs/dialogs.component';
+import {BaseDialog} from '@dialogs/base-dialog';
+import {NotificationService} from '@services/notification.service';
+import {CarService} from '@services/car.service';
+import {ModelService} from '@services/model.service';
+import {TransmissionTypeService} from '@services/transmission-type.service';
+import {FuelService} from '@services/fuel.service';
 import {MatError, MatFormField, MatLabel} from '@angular/material/form-field';
 import {MatInput} from '@angular/material/input';
-import {MatList, MatListItem} from '@angular/material/list';
 import {MatOption} from '@angular/material/core';
 import {MatSelect, MatSelectChange} from '@angular/material/select';
-import {DrivetrainService} from '../../../services/drivetrain.service';
-import {Model} from '../../../classes/model';
-import {TransmissionType} from '../../../classes/transmissionType';
-import {Fuel} from '../../../classes/fuel';
-import {Drivetrain} from '../../../classes/drivetrain';
-import {ManufacturerService} from '../../../services/manufacturer.service';
-import {Manufacturer} from '../../../classes/manufacturer';
+import {DrivetrainService} from '@services/drivetrain.service';
+import {Model} from '@classes/model';
+import {TransmissionType} from '@classes/transmissionType';
+import {Fuel} from '@classes/fuel';
+import {Drivetrain} from '@classes/drivetrain';
+import {ManufacturerService} from '@services/manufacturer.service';
+import {Manufacturer} from '@classes/manufacturer';
 import {MatCheckbox} from '@angular/material/checkbox';
 import {AppUtil} from '../../../app.util';
 import {AppUser} from '../../../app.user';
-import {EngineTypeService} from '../../../services/engine-type.service';
-import {EmissionClassService} from '../../../services/emission-class.service';
-import {EngineType} from '../../../classes/engine-type';
-import {EmissionClass} from '../../../classes/emission-class';
+import {EngineTypeService} from '@services/engine-type.service';
+import {EmissionClassService} from '@services/emission-class.service';
+import {EngineType} from '@classes/engine-type';
+import {EmissionClass} from '@classes/emission-class';
 
 @Component({
   selector: 'car-dialog',
@@ -45,14 +43,11 @@ import {EmissionClass} from '../../../classes/emission-class';
     MatDialogActions,
     MatButton,
     ReactiveFormsModule,
-    NgIf,
     FormsModule,
     MatError,
     MatFormField,
     MatInput,
     MatLabel,
-    MatList,
-    MatListItem,
     MatOption,
     MatSelect,
     MatCheckbox
@@ -62,15 +57,6 @@ import {EmissionClass} from '../../../classes/emission-class';
   styleUrls: ['car-dialog.css', '../dialogs.component.css']
 })
 export class CarDialog extends BaseDialog<Car> {
-  manufacturers: Manufacturer[] = [];
-  models: Model[] = [];
-  transmissionTypes: TransmissionType[] = [];
-  fuels: Fuel[] = [];
-  drivetrains: Drivetrain[] = [];
-  engineTypes: EngineType[] = [];
-  emissionClasses: EmissionClass[] = [];
-  currentYear = new Date().getFullYear();
-
   private readonly _carService: CarService = inject(CarService);
   private readonly _appUser: AppUser = inject(AppUser);
   private readonly _manufacturerService: ManufacturerService = inject(ManufacturerService);
@@ -80,6 +66,17 @@ export class CarDialog extends BaseDialog<Car> {
   private readonly _drivetrainService: DrivetrainService = inject(DrivetrainService);
   private readonly _engineTypeService: EngineTypeService = inject(EngineTypeService);
   private readonly _emissionClassService: EmissionClassService = inject(EmissionClassService);
+
+  manufacturers: Manufacturer[] = [];
+  models: Model[] = [];
+  transmissionTypes: TransmissionType[] = [];
+  fuels: Fuel[] = [];
+  drivetrains: Drivetrain[] = [];
+  engineTypes: EngineType[] = [];
+  emissionClasses: EmissionClass[] = [];
+  currentYear = new Date().getFullYear();
+  selectedImages: File[] = [];
+  imagePreviews: string[] = [];
 
   constructor(
     dialogRef: MatDialogRef<CarDialog>,
@@ -203,9 +200,30 @@ export class CarDialog extends BaseDialog<Car> {
     });
   }
 
+  onImagesSelected(event: any) {
+    const files: FileList = event.target.files;
+    this.selectedImages = [];
+    this.imagePreviews = [];
+
+    for (let i = 0; i < files.length; i++) {
+      const file = files[i];
+      const allowedTypes = ['image/png', 'image/jpeg', 'image/jpg'];
+      if (allowedTypes.includes(file.type)) {
+        this.selectedImages.push(file);
+
+        // Generate preview
+        const reader = new FileReader();
+        reader.onload = (e: any) => {
+          this.imagePreviews.push(e.target.result);
+        };
+        reader.readAsDataURL(file);
+      }
+    }
+  }
+
   submit() {
     if (this.form.valid) {
-      const formData = this.form.getRawValue();  // Gets all fields including disabled ones
+      const formData = this.form.getRawValue();
 
       const carDTO: CarDTO = {
         id: this.isNewOrEdit ? null : this.dialogData?.object?.id ?? null,
@@ -232,12 +250,16 @@ export class CarDialog extends BaseDialog<Car> {
         createdAt: this.isNewOrEdit ? new Date() : this.dialogData?.object?.createdAt ?? new Date()
       };
 
-      console.warn(carDTO);
-
       if (this.isNewOrEdit) {
         this._carService.create(carDTO).subscribe({
-          next: car => {
-            this.dismiss(car);
+          next: (car: any) => {
+            if (this.selectedImages.length > 0) {
+              this.uploadImages(car.car ?? car.id).then(() => {
+                this.dismiss(car);
+              });
+            } else {
+              this.dismiss(car);
+            }
           },
           error: (error) => {
             console.error('Error creating car:', error);
@@ -246,8 +268,14 @@ export class CarDialog extends BaseDialog<Car> {
         });
       } else {
         this._carService.update(carDTO).subscribe({
-          next: car => {
-            this.dismiss(car);
+          next: (car: any) => {
+            if (this.selectedImages.length > 0) {
+              this.uploadImages(car.car ?? car.id ?? this.dialogData.object.id).then(() => {
+                this.dismiss(car);
+              });
+            } else {
+              this.dismiss(car);
+            }
           },
           error: (error) => {
             console.error('Error updating car:', error);
@@ -258,5 +286,18 @@ export class CarDialog extends BaseDialog<Car> {
     } else {
       this.notification.showTimedErrorNotification('Please fill out all required fields');
     }
+  }
+
+  private uploadImages(carId: number): Promise<void> {
+    return new Promise((resolve) => {
+      this._carService.uploadImages(carId, this.selectedImages).subscribe({
+        next: () => resolve(),
+        error: (err) => {
+          console.error('Image upload failed:', err);
+          this.notification.showTimedErrorNotification('Car saved, but image upload failed.');
+          resolve(); // Still dismiss — car was saved
+        }
+      });
+    });
   }
 }

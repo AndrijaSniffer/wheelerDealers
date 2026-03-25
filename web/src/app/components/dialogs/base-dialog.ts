@@ -1,8 +1,8 @@
-import { FormBuilder, FormGroup } from '@angular/forms';
-import { MatDialogRef } from '@angular/material/dialog';
-import {IDialogData} from './dialogs.component';
+import {FormBuilder, FormGroup} from '@angular/forms';
+import {MatDialogRef} from '@angular/material/dialog';
+import {IDialogData} from '@dialogs/dialogs.component';
 import {AppUtil} from '../../app.util';
-import {NotificationService} from '../../services/notification.service';
+import {NotificationService} from '@services/notification.service';
 
 export abstract class BaseDialog<T> {
   isView: boolean = true;

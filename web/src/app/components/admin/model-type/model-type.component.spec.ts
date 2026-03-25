@@ -1,6 +1,6 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import {ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { ModelTypeComponent } from './model-type.component';
+import {ModelTypeComponent} from '@admin/model-type/model-type.component';
 
 describe('ModelTypeComponent', () => {
   let component: ModelTypeComponent;

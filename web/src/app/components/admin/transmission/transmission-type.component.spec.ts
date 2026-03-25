@@ -1,6 +1,6 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import {ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { TransmissionTypeComponent } from './transmission-type.component';
+import {TransmissionTypeComponent} from '@admin/transmission/transmission-type.component';
 
 describe('TransmissionComponent', () => {
   let component: TransmissionTypeComponent;

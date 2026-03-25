@@ -1,10 +1,14 @@
 import {Component, inject, OnInit} from '@angular/core';
 import {
-  MatCell, MatCellDef,
+  MatCell,
+  MatCellDef,
   MatColumnDef,
-  MatHeaderCell, MatHeaderCellDef,
-  MatHeaderRow, MatHeaderRowDef,
-  MatRow, MatRowDef,
+  MatHeaderCell,
+  MatHeaderCellDef,
+  MatHeaderRow,
+  MatHeaderRowDef,
+  MatRow,
+  MatRowDef,
   MatTable,
   MatTableDataSource
 } from '@angular/material/table';
@@ -14,11 +18,13 @@ import {MatList, MatListItem} from '@angular/material/list';
 import {MatDialog} from '@angular/material/dialog';
 import {DatePipe} from '@angular/common';
 import {AppUser} from '../../../app.user';
-import {CarService} from '../../../services/car.service';
-import {NotificationService} from '../../../services/notification.service';
-import {Car} from '../../../classes/car';
-import {CarDialog} from '../../dialogs/car/car-dialog';
-import {YesNoDialogComponent} from '../../dialogs/dialogs.component';
+import {CarService} from '@services/car.service';
+import {NotificationService} from '@services/notification.service';
+import {Car} from '@classes/car';
+import {CarDialog} from '@dialogs/car/car-dialog';
+import {YesNoDialogComponent} from '@dialogs/dialogs.component';
+import {Router} from '@angular/router';
+import {SerbianPricePipe} from '@pipes/serbian-price.pipe';
 
 @Component({
   selector: 'app-dealership-inventory',
@@ -38,7 +44,8 @@ import {YesNoDialogComponent} from '../../dialogs/dialogs.component';
     MatIcon,
     MatList,
     MatListItem,
-    DatePipe
+    DatePipe,
+    SerbianPricePipe
   ],
   templateUrl: './inventory.component.html',
   standalone: true,
@@ -49,6 +56,7 @@ export class InventoryComponent implements OnInit {
   private readonly _carService: CarService = inject(CarService);
   private readonly _notification: NotificationService = inject(NotificationService);
   private readonly _dialog: MatDialog = inject(MatDialog);
+  private readonly _router: Router = inject(Router);
 
   displayedColumns = ['model', 'year', 'fuel', 'transmission', 'price', 'isPreowned', 'createdAt', 'options'];
   dataSource: MatTableDataSource<Car>;
@@ -73,7 +81,7 @@ export class InventoryComponent implements OnInit {
 
   addCar() {
     this._dialog.open(CarDialog, {
-      minWidth: '20vw',
+      minWidth: '50vw',
       data: {object: null, isView: false}
     }).afterClosed().subscribe(result => {
       if (result) {
@@ -87,7 +95,7 @@ export class InventoryComponent implements OnInit {
     const selectedCar = this.cars.find(c => c.id === id);
 
     this._dialog.open(CarDialog, {
-      minWidth: '20vw',
+      minWidth: '50vw',
       data: {object: selectedCar, isView: true}
     });
   }
@@ -96,7 +104,7 @@ export class InventoryComponent implements OnInit {
     const selectedCar = this.cars.find(c => c.id === id);
 
     this._dialog.open(CarDialog, {
-      minWidth: '20vw',
+      minWidth: '50vw',
       data: {object: selectedCar, isView: false}
     }).afterClosed().subscribe(result => {
       if (result) {
@@ -126,4 +134,9 @@ export class InventoryComponent implements OnInit {
       }
     });
   }
+
+  previewCar(id: number) {
+    this._router.navigate(['/car', id], { queryParams: { preview: true } });
+  }
+
 }

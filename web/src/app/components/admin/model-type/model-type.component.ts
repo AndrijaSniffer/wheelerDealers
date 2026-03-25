@@ -4,20 +4,24 @@ import {
   MatCell,
   MatCellDef,
   MatColumnDef,
-  MatHeaderCell, MatHeaderCellDef,
+  MatHeaderCell,
+  MatHeaderCellDef,
   MatHeaderRow,
   MatHeaderRowDef,
-  MatRow, MatRowDef, MatTable, MatTableDataSource
+  MatRow,
+  MatRowDef,
+  MatTable,
+  MatTableDataSource
 } from "@angular/material/table";
 import {MatIcon} from "@angular/material/icon";
 import {MatList, MatListItem} from "@angular/material/list";
-import {NotificationService} from '../../../services/notification.service';
+import {NotificationService} from '@services/notification.service';
 import {MatDialog} from '@angular/material/dialog';
-import {ModelTypeService} from '../../../services/model-type.service';
-import {ModelType} from '../../../classes/model-type';
+import {ModelTypeService} from '@services/model-type.service';
+import {ModelType} from '@classes/model-type';
 import {AppUtil} from '../../../app.util';
-import {YesNoDialogComponent} from '../../dialogs/dialogs.component';
-import {ModelTypeDialog} from '../../dialogs/model-type/model-type-dialog';
+import {YesNoDialogComponent} from '@dialogs/dialogs.component';
+import {ModelTypeDialog} from '@dialogs/model-type/model-type-dialog';
 
 @Component({
   selector: 'app-model-type',
@@ -72,7 +76,6 @@ export class ModelTypeComponent {
     this._dialog.open(ModelTypeDialog, {
       data: {object: null, isView: false}
     }).afterClosed().subscribe(result => {
-      console.warn(result);
       if (result) {
         this._notification.showTimedNotification('Model Type was successfully created!');
         this.getAll();
@@ -94,7 +97,6 @@ export class ModelTypeComponent {
     this._dialog.open(ModelTypeDialog, {
       data: {object: selectedModelType, isView: false}
     }).afterClosed().subscribe(result => {
-      console.warn(result);
       if (result) {
         this._notification.showTimedNotification('Model Type was successfully updated!');
         this.getAll();

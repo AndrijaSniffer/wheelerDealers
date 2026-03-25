@@ -3,7 +3,7 @@ import {HttpClient} from '@angular/common/http';
 import {map, Observable} from 'rxjs';
 import {AppConstants} from '../app.constants';
 import {AppUtil} from '../app.util';
-import {ModelType} from '../classes/model-type';
+import {ModelType} from '@classes/model-type';
 import {mapToModelType} from '../app.mappers';
 
 @Injectable({

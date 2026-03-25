@@ -1,7 +1,7 @@
 import {inject, Injectable} from '@angular/core';
 import {map, Observable} from 'rxjs';
 import {HttpClient} from '@angular/common/http';
-import {Model, ModelDTO} from '../classes/model';
+import {Model, ModelDTO} from '@classes/model';
 import {mapToModel} from '../app.mappers';
 import {AppConstants} from '../app.constants';
 import {AppUtil} from '../app.util';

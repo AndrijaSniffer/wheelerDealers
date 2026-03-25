@@ -63,7 +63,7 @@
 
 .carousel-counter {
   margin-top: 0.5rem;
-  color: #888;
+  color: #9e9e9e;
   font-size: 0.85rem;
 }
 
@@ -94,7 +94,7 @@
 
 .spec-group h3 {
   margin-bottom: 0.5rem;
-  color: #333;
+  color: #e0e0e0;
 }
 
 .spec-row {
@@ -105,7 +105,7 @@
 }
 
 .spec-label {
-  color: #888;
+  color: #9e9e9e;
 }
 
 .spec-value {

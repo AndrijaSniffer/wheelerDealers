@@ -10,7 +10,7 @@
       <span class="stat-label">Active listings</span>
     </div>
     <div class="stat-card">
-      <span class="stat-value">{{ averagePrice | number:'1.0-0' }}&euro;</span>
+      <span class="stat-value">{{ averagePrice | serbianPrice }}&euro;</span>
       <span class="stat-label">Average price</span>
     </div>
   </div>
@@ -20,7 +20,7 @@
     <div class="listing-summary">
       <h3>Most recent listing</h3>
       <p>{{ newestListing.model.manufacturer.name }} {{ newestListing.model.name }}
-        ({{ newestListing.year }}) &mdash; {{ newestListing.price }}&euro;</p>
+        ({{ newestListing.year }}) &mdash; {{ newestListing.price | serbianPrice }}&euro;</p>
       <p class="hint-text">Posted on {{ newestListing.createdAt | date:'dd/MM/yyyy' }}</p>
     </div>
   }
@@ -29,7 +29,7 @@
     <div class="listing-summary">
       <h3>Oldest active listing</h3>
       <p>{{ oldestListing.model.manufacturer.name }} {{ oldestListing.model.name }}
-        ({{ oldestListing.year }}) &mdash; {{ oldestListing.price }}&euro;</p>
+        ({{ oldestListing.year }}) &mdash; {{ oldestListing.price | serbianPrice }}&euro;</p>
       <p class="hint-text">Posted on {{ oldestListing.createdAt | date:'dd/MM/yyyy' }}</p>
     </div>
   }

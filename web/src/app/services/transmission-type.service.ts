@@ -3,7 +3,7 @@ import {HttpClient} from '@angular/common/http';
 import {map, Observable} from 'rxjs';
 import {AppConstants} from '../app.constants';
 import {AppUtil} from '../app.util';
-import {TransmissionType} from '../classes/transmissionType';
+import {TransmissionType} from '@classes/transmissionType';
 import {mapToTransmissionType} from '../app.mappers';
 
 @Injectable({

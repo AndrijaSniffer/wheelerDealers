@@ -1,6 +1,6 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import {ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { EngineTypeComponent } from './engine-type.component';
+import {EngineTypeComponent} from '@admin/engine-type/engine-type.component';
 
 describe('EngineTypeComponent', () => {
   let component: EngineTypeComponent;

@@ -1,11 +1,5 @@
 <div class="main-container">
   <mat-list>
-    <!--    <mat-list-item>-->
-    <!--      <button (click)="new()" mat-button>-->
-    <!--        <mat-icon>add</mat-icon>-->
-    <!--        Add new-->
-    <!--      </button>-->
-    <!--    </mat-list-item>-->
     <mat-list-item class="table-list-item">
       <table [dataSource]="dataSource" mat-table>
         <ng-container matColumnDef="id">
@@ -55,12 +49,6 @@
         <ng-container matColumnDef="options">
           <th *matHeaderCellDef mat-header-cell> Options</th>
           <td *matCellDef="let user" mat-cell>
-            <!--            <button (click)="view(user.id)" class="option-btn" mat-mini-fab>-->
-            <!--              <mat-icon>visibility</mat-icon>-->
-            <!--            </button>-->
-            <!--            <button (click)="edit(user.id)" class="option-btn" mat-mini-fab>-->
-            <!--              <mat-icon>edit</mat-icon>-->
-            <!--            </button>-->
             <button (click)="ban(user.id)" [disabled]="user.isSuperuser || !user.isActive" class="option-btn"
                     mat-mini-fab>
               <mat-icon>cancel</mat-icon>

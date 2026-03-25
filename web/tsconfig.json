@@ -3,6 +3,25 @@
 {
   "compileOnSave": false,
   "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "@styles/*": ["src/app/styles/*"],
+      "@services/*": ["src/app/services/*"],
+      "@pipes/*": ["src/app/pipes/*"],
+      "@interceptors/*": ["src/app/interceptors/*"],
+      "@guards/*": ["src/app/guards/*"],
+      "@classes/*": ["src/app/classes/*"],
+      "@admin/*": ["src/app/components/admin/*"],
+      "@car-detail/*": ["src/app/components/car-detail/*"],
+      "@contact-us-page/*": ["src/app/components/contact-us-page/*"],
+      "@dealership/*": ["src/app/components/dealership/*"],
+      "@dialogs/*": ["src/app/components/dialogs/*"],
+      "@footer/*": ["src/app/components/footer/*"],
+      "@landing-page/*": ["src/app/components/landing-page/*"],
+      "@nav-bar/*": ["src/app/components/nav-bar/*"],
+      "@profile/*": ["src/app/components/profile/*"],
+      "@search-page/*": ["src/app/components/search-page/*"]
+    },
     "outDir": "./dist/out-tsc",
     "strict": false,
     "noImplicitOverride": true,

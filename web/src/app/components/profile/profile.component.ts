@@ -1,8 +1,8 @@
 import {Component, inject, OnInit} from '@angular/core';
 import {FormBuilder, FormGroup, ReactiveFormsModule} from '@angular/forms';
 import {AppUser} from '../../app.user';
-import {UserService} from '../../services/user.service';
-import {NotificationService} from '../../services/notification.service';
+import {UserService} from '@services/user.service';
+import {NotificationService} from '@services/notification.service';
 import {MatFormField, MatLabel} from '@angular/material/form-field';
 import {MatInput} from '@angular/material/input';
 import {MatButton} from '@angular/material/button';
@@ -10,7 +10,7 @@ import {MatCheckbox} from '@angular/material/checkbox';
 import {MatDivider} from '@angular/material/divider';
 import {DatePipe, NgIf} from '@angular/common';
 import {AppUtil} from '../../app.util';
-import {User} from '../../classes/user';
+import {User} from '@classes/user';
 import {mapToUser} from '../../app.mappers';
 
 @Component({

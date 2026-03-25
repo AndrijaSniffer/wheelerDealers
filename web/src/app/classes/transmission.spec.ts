@@ -1,4 +1,4 @@
-import { TransmissionType } from './transmissionType';
+import {TransmissionType} from '@classes/transmissionType';
 
 describe('Transmission', () => {
   it('should create an instance', () => {

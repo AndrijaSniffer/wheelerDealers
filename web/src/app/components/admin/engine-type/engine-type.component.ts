@@ -15,12 +15,12 @@ import {
 } from '@angular/material/table';
 import {MatIcon} from '@angular/material/icon';
 import {MatList, MatListItem} from '@angular/material/list';
-import {NotificationService} from '../../../services/notification.service';
-import {EngineTypeService} from '../../../services/engine-type.service';
+import {NotificationService} from '@services/notification.service';
+import {EngineTypeService} from '@services/engine-type.service';
 import {MatDialog} from '@angular/material/dialog';
-import {EngineType} from '../../../classes/engine-type';
-import {YesNoDialogComponent} from '../../dialogs/dialogs.component';
-import {EngineTypeDialog} from '../../dialogs/engine-type/engine-type-dialog';
+import {EngineType} from '@classes/engine-type';
+import {YesNoDialogComponent} from '@dialogs/dialogs.component';
+import {EngineTypeDialog} from '@dialogs/engine-type/engine-type-dialog';
 
 @Component({
   selector: 'app-engine-type',

@@ -4,12 +4,13 @@ import {MatButton} from '@angular/material/button';
 import {MatIcon} from '@angular/material/icon';
 import {MatDivider} from '@angular/material/divider';
 import {DatePipe} from '@angular/common';
-import {CarService} from '../../services/car.service';
-import {Car} from '../../classes/car';
+import {CarService} from '@services/car.service';
+import {Car} from '@classes/car';
 import {AppUser} from '../../app.user';
-import {NotificationService} from '../../services/notification.service';
+import {NotificationService} from '@services/notification.service';
 import {MatDialog} from '@angular/material/dialog';
-import {LoginDialog} from '../dialogs/login/login-dialog';
+import {LoginDialog} from '@dialogs/login/login-dialog';
+import {SerbianPricePipe} from '@pipes/serbian-price.pipe';
 
 
 @Component({
@@ -18,7 +19,8 @@ import {LoginDialog} from '../dialogs/login/login-dialog';
     MatButton,
     MatIcon,
     MatDivider,
-    DatePipe
+    DatePipe,
+    SerbianPricePipe
   ],
   templateUrl: './car-detail.component.html',
   standalone: true,
@@ -36,6 +38,7 @@ export class CarDetailComponent implements OnInit {
   isLoading: boolean = true;
   phoneRevealed: boolean = false;
   currentImageIndex: number = 0;
+  isOwnListing: boolean = false;
 
   ngOnInit() {
     const carId = Number(this._route.snapshot.paramMap.get('id'));
@@ -43,8 +46,11 @@ export class CarDetailComponent implements OnInit {
       this._carService.getById(carId).subscribe({
         next: (car: Car) => {
           this.car = car;
-          console.warn(car.images[0])
           this.isLoading = false;
+          // Check if the logged-in user owns this listing
+          if (this._appUser.user && this.car.user.id === this._appUser.user.id) {
+            this.isOwnListing = true;
+          }
         },
         error: () => {
           this._notification.showTimedErrorNotification('Car not found.');
@@ -67,7 +73,6 @@ export class CarDetailComponent implements OnInit {
     }
     this.phoneRevealed = true;
   }
-
 
   previousImage() {
     if (this.car?.images?.length > 0) {

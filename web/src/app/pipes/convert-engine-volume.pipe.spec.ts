@@ -1,4 +1,4 @@
-import { ConvertEngineVolumePipe } from './convert-engine-volume.pipe';
+import {ConvertEngineVolumePipe} from '@pipes/convert-engine-volume.pipe';
 
 describe('ConvertEngineVolumePipe', () => {
   it('create an instance', () => {

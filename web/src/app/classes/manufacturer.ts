@@ -1,4 +1,4 @@
-import {Country} from './country';
+import {Country} from '@classes/country';
 
 export class Manufacturer {
   id: number | null;

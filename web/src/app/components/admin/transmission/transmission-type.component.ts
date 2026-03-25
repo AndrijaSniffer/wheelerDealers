@@ -4,20 +4,24 @@ import {
   MatCell,
   MatCellDef,
   MatColumnDef,
-  MatHeaderCell, MatHeaderCellDef,
+  MatHeaderCell,
+  MatHeaderCellDef,
   MatHeaderRow,
   MatHeaderRowDef,
-  MatRow, MatRowDef, MatTable, MatTableDataSource
+  MatRow,
+  MatRowDef,
+  MatTable,
+  MatTableDataSource
 } from '@angular/material/table';
 import {MatIcon} from '@angular/material/icon';
 import {MatList, MatListItem} from '@angular/material/list';
-import {NotificationService} from '../../../services/notification.service';
+import {NotificationService} from '@services/notification.service';
 import {MatDialog} from '@angular/material/dialog';
 import {AppUtil} from '../../../app.util';
-import {TransmissionTypeService} from '../../../services/transmission-type.service';
-import {TransmissionType} from '../../../classes/transmissionType';
-import {YesNoDialogComponent} from '../../dialogs/dialogs.component';
-import {TransmissionDialog} from '../../dialogs/transmission/transmission-dialog';
+import {TransmissionTypeService} from '@services/transmission-type.service';
+import {TransmissionType} from '@classes/transmissionType';
+import {YesNoDialogComponent} from '@dialogs/dialogs.component';
+import {TransmissionDialog} from '@dialogs/transmission/transmission-dialog';
 
 @Component({
   selector: 'app-transmission',

@@ -1,14 +1,53 @@
-<h2 mat-dialog-title>Car</h2>
+<h2 mat-dialog-title>{{ isView ? 'Car Details' : (isNewOrEdit ? 'Add New Car' : 'Edit Car') }}</h2>
 <mat-dialog-content>
-  <div *ngIf="isView">
-    <h3>Selected car as JSON:<br></h3>
-    <pre>{{ this.jsonCurrentObject }}</pre>
-  </div>
 
-  <form *ngIf="!isView" [formGroup]="form">
-    <mat-list class="form-list">
-      <!-- Manufacturer & Model -->
-      <mat-list-item>
+  @if (isView && dialogData?.object) {
+    <div class="view-grid">
+      <div class="view-section">
+        <h3>Vehicle</h3>
+        <p><strong>Car:</strong> {{ dialogData.object.model.manufacturer.name }} {{ dialogData.object.model.name }}</p>
+        <p><strong>Year:</strong> {{ dialogData.object.year }}</p>
+        <p><strong>Condition:</strong> {{ dialogData.object.isPreowned ? 'Pre-owned' : 'Brand new' }}</p>
+        <p><strong>Price:</strong> {{ dialogData.object.price }}&euro;</p>
+      </div>
+      <div class="view-section">
+        <h3>Engine</h3>
+        <p><strong>Type:</strong> {{ dialogData.object.engineType.type }}</p>
+        <p><strong>Volume:</strong> {{ dialogData.object.engineVolume }} cc</p>
+        <p><strong>Power:</strong> {{ dialogData.object.horsepower }} HP / {{ dialogData.object.kilowatt }} kW</p>
+        <p><strong>Fuel:</strong> {{ dialogData.object.fuel.type }}</p>
+        <p><strong>Emission:</strong> {{ dialogData.object.emissionClass.className }}</p>
+      </div>
+      <div class="view-section">
+        <h3>Transmission</h3>
+        <p><strong>Type:</strong> {{ dialogData.object.transmissionType.type }}</p>
+        @if (dialogData.object.transmissionGears) {
+          <p><strong>Gears:</strong> {{ dialogData.object.transmissionGears }}</p>
+        }
+        <p><strong>Drivetrain:</strong> {{ dialogData.object.drivetrain.type }}</p>
+      </div>
+      <div class="view-section">
+        <h3>Details</h3>
+        <p><strong>Doors:</strong> {{ dialogData.object.doors }}</p>
+        <p><strong>Seats:</strong> {{ dialogData.object.seats }}</p>
+        <p><strong>Steering:</strong> {{ dialogData.object.steeringWheelLeft ? 'Left (LHD)' : 'Right (RHD)' }}</p>
+        @if (dialogData.object.interiorColor) {
+          <p><strong>Interior:</strong> {{ dialogData.object.interiorColor }}</p>
+        }
+        @if (dialogData.object.exteriorColor) {
+          <p><strong>Exterior:</strong> {{ dialogData.object.exteriorColor }}</p>
+        }
+        @if (dialogData.object.chassisNumber) {
+          <p><strong>Chassis:</strong> {{ dialogData.object.chassisNumber }}</p>
+        }
+      </div>
+    </div>
+  }
+
+  @if (!isView) {
+    <form [formGroup]="form" class="car-form">
+      <!-- Row 1: Manufacturer, Model, Year -->
+      <div class="form-row">
         <mat-form-field>
           <mat-label>Manufacturer</mat-label>
           <mat-select (selectionChange)="updateModel($event)" cdkFocusInitial formControlName="manufacturer">
@@ -16,11 +55,9 @@
               <mat-option [value]="manufacturer.id">{{ manufacturer.name }}</mat-option>
             }
           </mat-select>
-          <mat-error *ngIf="form.get('manufacturer')?.errors?.['required']">Manufacturer is required.</mat-error>
+          <mat-error>Required</mat-error>
         </mat-form-field>
-      </mat-list-item>
 
-      <mat-list-item>
         <mat-form-field>
           <mat-label>Model</mat-label>
           <mat-select formControlName="model">
@@ -28,181 +65,167 @@
               <mat-option [value]="model.id">{{ model.name }}</mat-option>
             }
           </mat-select>
-          <mat-error *ngIf="form.get('model')?.errors?.['required']">Model is required.</mat-error>
+          <mat-error>Required</mat-error>
         </mat-form-field>
-      </mat-list-item>
 
-      <mat-list-item>
         <mat-form-field appearance="fill">
           <mat-label>Year</mat-label>
-          <input (keyup.enter)="submit()" formControlName="year" matInput type="number" min="1900"
-                 [max]="currentYear + 1"/>
-          <mat-error *ngIf="form.get('year')?.errors?.['required']">Year is required.</mat-error>
-          <mat-error *ngIf="form.get('year')?.errors?.['min']">Year must be after 1900.</mat-error>
-          <mat-error *ngIf="form.get('year')?.errors?.['max']">Year cannot be in the future.</mat-error>
+          <input formControlName="year" matInput type="number" min="1900" [max]="currentYear + 1"/>
+          <mat-error>1900 - {{ currentYear + 1 }}</mat-error>
         </mat-form-field>
-      </mat-list-item>
+      </div>
 
-      <!-- Engine Specs -->
-      <mat-list-item>
+      <!-- Row 2: Engine Type, Volume, HP, kW -->
+      <div class="form-row">
         <mat-form-field>
           <mat-label>Engine Type</mat-label>
           <mat-select formControlName="engineType">
-            @for (engineType of engineTypes; track engineType) {
-              <mat-option [value]="engineType.id">{{ engineType.type }}</mat-option>
+            @for (et of engineTypes; track et) {
+              <mat-option [value]="et.id">{{ et.type }}</mat-option>
             }
           </mat-select>
-          <mat-error *ngIf="form.get('engineType')?.errors?.['required']">Engine type is required.</mat-error>
+          <mat-error>Required</mat-error>
         </mat-form-field>
-      </mat-list-item>
 
-      <mat-list-item>
         <mat-form-field appearance="fill">
-          <mat-label>Engine Volume (cc)</mat-label>
-          <input (keyup.enter)="submit()" formControlName="engineVolume" matInput type="number" min="1"/>
-          <mat-error *ngIf="form.get('engineVolume')?.errors?.['required']">Engine volume is required.</mat-error>
+          <mat-label>Volume (cc)</mat-label>
+          <input formControlName="engineVolume" matInput type="number" min="1"/>
+          <mat-error>Required</mat-error>
         </mat-form-field>
-      </mat-list-item>
 
-      <mat-list-item>
         <mat-form-field appearance="fill">
-          <mat-label>Horsepower (HP)</mat-label>
-          <input (keyup.enter)="submit()" formControlName="horsepower" matInput type="number" min="1"/>
-          <mat-error *ngIf="form.get('horsepower')?.errors?.['required']">Horsepower is required.</mat-error>
+          <mat-label>Horsepower</mat-label>
+          <input formControlName="horsepower" matInput type="number" min="1"/>
+          <mat-error>Required</mat-error>
         </mat-form-field>
-      </mat-list-item>
 
-      <mat-list-item>
         <mat-form-field appearance="fill">
-          <mat-label>Kilowatt (kW) - Auto-calculated</mat-label>
-          <input formControlName="kilowatt" matInput type="number" min="1" readonly/>
-          <mat-error *ngIf="form.get('kilowatt')?.errors?.['required']">Kilowatt is required.</mat-error>
+          <mat-label>kW (auto)</mat-label>
+          <input formControlName="kilowatt" matInput type="number" readonly/>
         </mat-form-field>
-      </mat-list-item>
+      </div>
 
-
-      <mat-list-item>
-        <mat-form-field>
-          <mat-label>Emission Class</mat-label>
-          <mat-select formControlName="emissionClass">
-            @for (emissionClass of emissionClasses; track emissionClass) {
-              <mat-option [value]="emissionClass.id">{{ emissionClass.className }}</mat-option>
-            }
-          </mat-select>
-          <mat-error *ngIf="form.get('emissionClass')?.errors?.['required']">Emission class is required.</mat-error>
-        </mat-form-field>
-      </mat-list-item>
-
-      <!-- Transmission & Drivetrain -->
-      <mat-list-item>
-        <mat-form-field>
-          <mat-label>Transmission Type</mat-label>
-          <mat-select formControlName="transmissionType">
-            @for (transmissionType of transmissionTypes; track transmissionType) {
-              <mat-option [value]="transmissionType.id">{{ transmissionType.type }}</mat-option>
-            }
-          </mat-select>
-          <mat-error *ngIf="form.get('transmissionType')?.errors?.['required']">Transmission type is required.
-          </mat-error>
-        </mat-form-field>
-      </mat-list-item>
-
-      <mat-list-item>
-        <mat-form-field appearance="fill">
-          <mat-label>Number of Gears</mat-label>
-          <input (keyup.enter)="submit()" formControlName="transmissionGears" matInput type="number" min="1"/>
-        </mat-form-field>
-      </mat-list-item>
-
-      <mat-list-item>
+      <!-- Row 3: Fuel, Emission, Transmission, Gears -->
+      <div class="form-row">
         <mat-form-field>
           <mat-label>Fuel</mat-label>
           <mat-select formControlName="fuel">
-            @for (fuelType of fuels; track fuelType) {
-              <mat-option [value]="fuelType.id">{{ fuelType.type }}</mat-option>
+            @for (f of fuels; track f) {
+              <mat-option [value]="f.id">{{ f.type }}</mat-option>
             }
           </mat-select>
-          <mat-error *ngIf="form.get('fuel')?.errors?.['required']">Fuel type is required.</mat-error>
+          <mat-error>Required</mat-error>
         </mat-form-field>
-      </mat-list-item>
 
-      <mat-list-item>
+        <mat-form-field>
+          <mat-label>Emission Class</mat-label>
+          <mat-select formControlName="emissionClass">
+            @for (ec of emissionClasses; track ec) {
+              <mat-option [value]="ec.id">{{ ec.className }}</mat-option>
+            }
+          </mat-select>
+          <mat-error>Required</mat-error>
+        </mat-form-field>
+
+        <mat-form-field>
+          <mat-label>Transmission</mat-label>
+          <mat-select formControlName="transmissionType">
+            @for (tt of transmissionTypes; track tt) {
+              <mat-option [value]="tt.id">{{ tt.type }}</mat-option>
+            }
+          </mat-select>
+          <mat-error>Required</mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="fill">
+          <mat-label>Gears</mat-label>
+          <input formControlName="transmissionGears" matInput type="number" min="1"/>
+        </mat-form-field>
+      </div>
+
+      <!-- Row 4: Drivetrain, Doors, Seats -->
+      <div class="form-row">
         <mat-form-field>
           <mat-label>Drivetrain</mat-label>
           <mat-select formControlName="drivetrain">
-            @for (drivetrain of drivetrains; track drivetrain) {
-              <mat-option [value]="drivetrain.id">{{ drivetrain.type }}</mat-option>
+            @for (dt of drivetrains; track dt) {
+              <mat-option [value]="dt.id">{{ dt.type }}</mat-option>
             }
           </mat-select>
-          <mat-error *ngIf="form.get('drivetrain')?.errors?.['required']">Drivetrain is required.</mat-error>
+          <mat-error>Required</mat-error>
         </mat-form-field>
-      </mat-list-item>
 
-      <!-- Interior -->
-      <mat-list-item>
         <mat-form-field appearance="fill">
           <mat-label>Doors</mat-label>
-          <input (keyup.enter)="submit()" formControlName="doors" matInput type="number" min="2" max="7"/>
-          <mat-error *ngIf="form.get('doors')?.errors?.['required']">Number of doors is required.</mat-error>
+          <input formControlName="doors" matInput type="number" min="2" max="7"/>
+          <mat-error>2 - 7</mat-error>
         </mat-form-field>
-      </mat-list-item>
 
-      <mat-list-item>
         <mat-form-field appearance="fill">
           <mat-label>Seats</mat-label>
-          <input (keyup.enter)="submit()" formControlName="seats" matInput type="number" min="1" max="12"/>
-          <mat-error *ngIf="form.get('seats')?.errors?.['required']">Number of seats is required.</mat-error>
+          <input formControlName="seats" matInput type="number" min="1" max="12"/>
+          <mat-error>1 - 12</mat-error>
         </mat-form-field>
-      </mat-list-item>
+      </div>
 
-      <mat-list-item>
-        <p>
-          <mat-checkbox formControlName="steeringWheelLeft">Steering wheel on left side</mat-checkbox>
-        </p>
-      </mat-list-item>
-
-      <mat-list-item>
-        <mat-form-field appearance="fill">
-          <mat-label>Interior Color</mat-label>
-          <input (keyup.enter)="submit()" formControlName="interiorColor" matInput type="text"/>
-        </mat-form-field>
-      </mat-list-item>
-
-      <!-- Exterior & General -->
-      <mat-list-item>
+      <!-- Row 5: Colors, Price, Chassis -->
+      <div class="form-row">
         <mat-form-field appearance="fill">
           <mat-label>Exterior Color</mat-label>
-          <input (keyup.enter)="submit()" formControlName="exteriorColor" matInput type="text"/>
+          <input formControlName="exteriorColor" matInput/>
         </mat-form-field>
-      </mat-list-item>
 
-      <mat-list-item>
         <mat-form-field appearance="fill">
-          <mat-label>Price (in euros)</mat-label>
-          <input (keyup.enter)="submit()" formControlName="price" matInput type="number" min="0" step="0.01"/>
-          <mat-error *ngIf="form.get('price')?.errors?.['required']">Price is required.</mat-error>
+          <mat-label>Interior Color</mat-label>
+          <input formControlName="interiorColor" matInput/>
         </mat-form-field>
-      </mat-list-item>
 
-      <mat-list-item>
+        <mat-form-field appearance="fill">
+          <mat-label>Price (&euro;)</mat-label>
+          <input formControlName="price" matInput type="number" min="0" step="0.01"/>
+          <mat-error>Required</mat-error>
+        </mat-form-field>
+
         <mat-form-field appearance="fill">
           <mat-label>Chassis Number</mat-label>
-          <input (keyup.enter)="submit()" formControlName="chassisNumber" matInput type="text"/>
+          <input formControlName="chassisNumber" matInput/>
         </mat-form-field>
-      </mat-list-item>
+      </div>
 
-      <mat-list-item>
-        <p>
-          <mat-checkbox formControlName="isPreowned">Is the car preowned?</mat-checkbox>
-        </p>
-      </mat-list-item>
-    </mat-list>
-  </form>
+      <!-- Row 6: Checkboxes -->
+      <div class="form-row checkbox-row">
+        <mat-checkbox formControlName="steeringWheelLeft">Steering wheel on left side</mat-checkbox>
+        <mat-checkbox formControlName="isPreowned">Pre-owned vehicle</mat-checkbox>
+      </div>
+
+      <!-- Row 7: Image Upload -->
+      <div class="image-upload-section">
+        <h3>Images</h3>
+        <input type="file" multiple accept="image/png,image/jpeg,image/jpg"
+               (change)="onImagesSelected($event)" #fileInput hidden/>
+        <button mat-stroked-button type="button" (click)="fileInput.click()">
+          Choose images
+        </button>
+        @if (selectedImages.length > 0) {
+          <p class="image-count">{{ selectedImages.length }} image(s) selected</p>
+          <div class="image-preview-row">
+            @for (preview of imagePreviews; track preview) {
+              <img [src]="preview" class="image-preview-thumb" alt="Preview"/>
+            }
+          </div>
+        }
+      </div>
+    </form>
+  }
+
 </mat-dialog-content>
 <mat-dialog-actions>
-  <button (click)="dismiss(null)" *ngIf="!isView" mat-button>Cancel</button>
-  <button (click)="submit()" *ngIf="!isView" [disabled]="!form.valid"
-          mat-button>{{ isNewOrEdit ? 'Create' : 'Edit' }}
-  </button>
-  <button (click)="dismiss(null)" *ngIf="isView" mat-button>Ok</button>
+  @if (!isView) {
+    <button (click)="dismiss(null)" mat-button>Cancel</button>
+    <button (click)="submit()" [disabled]="!form.valid" mat-raised-button color="primary">
+      {{ isNewOrEdit ? 'Create' : 'Save' }}
+    </button>
+  } @else {
+    <button (click)="dismiss(null)" mat-button>Close</button>
+  }
 </mat-dialog-actions>

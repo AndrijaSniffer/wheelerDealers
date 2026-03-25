@@ -4,30 +4,40 @@ import {FormBuilder, FormGroup, FormsModule, ReactiveFormsModule} from '@angular
 import {MatFormField, MatLabel} from '@angular/material/form-field';
 import {MatOption} from '@angular/material/core';
 import {MatSelect} from '@angular/material/select';
-import {Manufacturer} from '../../classes/manufacturer';
-import {Model} from '../../classes/model';
+import {Manufacturer} from '@classes/manufacturer';
+import {Model} from '@classes/model';
 import {MatInput} from '@angular/material/input';
 import {MatButton} from '@angular/material/button';
 import {MatIcon} from '@angular/material/icon';
-import {TransmissionType} from '../../classes/transmissionType';
-import {Fuel} from '../../classes/fuel';
+import {TransmissionType} from '@classes/transmissionType';
+import {Fuel} from '@classes/fuel';
 import {MatCheckbox} from '@angular/material/checkbox';
-import {NgForOf, NgOptimizedImage} from '@angular/common';
-import {Car} from '../../classes/car';
-import {ManufacturerService} from '../../services/manufacturer.service';
-import {ModelService} from '../../services/model.service';
-import {TransmissionTypeService} from '../../services/transmission-type.service';
-import {FuelService} from '../../services/fuel.service';
-import {CarService} from '../../services/car.service';
-import {NotificationService} from '../../services/notification.service';
+import {Car} from '@classes/car';
+import {ManufacturerService} from '@services/manufacturer.service';
+import {ModelService} from '@services/model.service';
+import {TransmissionTypeService} from '@services/transmission-type.service';
+import {FuelService} from '@services/fuel.service';
+import {CarService} from '@services/car.service';
+import {NotificationService} from '@services/notification.service';
 import {AppUtil} from '../../app.util';
 import {RouterLink} from '@angular/router';
+import {Drivetrain} from '@classes/drivetrain';
+import {EngineType} from '@classes/engine-type';
+import {EmissionClass} from '@classes/emission-class';
+import {DrivetrainService} from '@services/drivetrain.service';
+import {EngineTypeService} from '@services/engine-type.service';
+import {EmissionClassService} from '@services/emission-class.service';
+import {SerbianPricePipe} from '@pipes/serbian-price.pipe';
+
 
 export interface ISearchParameters {
   manufacturer: number | null;
   model: number | null;
   transmissionType: number | null;
   fuel: number | null;
+  drivetrain: number | null;
+  engineType: number | null;
+  emissionClass: number | null;
   exteriorColor: string | null;
   priceFrom: number | null;
   priceTo: number | null;
@@ -35,6 +45,9 @@ export interface ISearchParameters {
   hpTo: number | null;
   kwFrom: number | null;
   kwTo: number | null;
+  engineVolume: number | null;
+  yearFrom: number | null;
+  yearTo: number | null;
   isPreowned: number | null;
   steeringWheelLeft: number | null;
 }
@@ -53,22 +66,17 @@ export interface ISearchParameters {
     MatButton,
     MatIcon,
     MatCheckbox,
-    NgOptimizedImage,
-    NgForOf,
-    RouterLink
+    RouterLink,
+    SerbianPricePipe
   ],
   templateUrl: './search-page.component.html',
   standalone: true,
   styleUrl: './search-page.component.css'
 })
 export class SearchPageComponent {
-  manufacturers: Manufacturer[] = [];
-  models: Model[] = [];
-  transmissions: TransmissionType[] = [];
-  fuel: Fuel[] = [];
-  cars: Car[] = [];
-  carsToDisplay: [Car[]] = [[]];
-  numberOfRows: number = 0;
+  private readonly _drivetrainService: DrivetrainService = inject(DrivetrainService);
+  private readonly _engineTypeService: EngineTypeService = inject(EngineTypeService);
+  private readonly _emissionClassService: EmissionClassService = inject(EmissionClassService);
   private readonly _manufacturerService: ManufacturerService = inject(ManufacturerService);
   private readonly _modelService: ModelService = inject(ModelService);
   private readonly _transmissionService: TransmissionTypeService = inject(TransmissionTypeService);
@@ -76,6 +84,15 @@ export class SearchPageComponent {
   private readonly _carService: CarService = inject(CarService);
   private readonly _notifications: NotificationService = inject(NotificationService);
   private readonly _fb: FormBuilder = inject(FormBuilder);
+
+  drivetrains: Drivetrain[] = [];
+  engineTypes: EngineType[] = [];
+  emissionClasses: EmissionClass[] = [];
+  manufacturers: Manufacturer[] = [];
+  models: Model[] = [];
+  transmissions: TransmissionType[] = [];
+  fuel: Fuel[] = [];
+  cars: Car[] = [];
   searchForm: FormGroup = this._fb.group({
     manufacturer: [null],
     model: [null],
@@ -83,12 +100,17 @@ export class SearchPageComponent {
     priceFrom: [null],
     transmission: [null],
     fuel: [null],
+    drivetrain: [null],
+    engineType: [null],
+    emissionClass: [null],
     volume: [null],
     horsepowerFrom: [null],
     horsepowerTo: [null],
     kilowattFrom: [null],
     kilowattTo: [null],
     carColor: [null],
+    yearFrom: [null],
+    yearTo: [null],
     isPreowned: [true],
     steeringWheelLeft: [true]
   });
@@ -154,12 +176,51 @@ export class SearchPageComponent {
         this._notifications.showTimedErrorNotification(AppUtil.parseJsonErrorsToString(err.error))
       }
     });
+
+    this._drivetrainService.getAll().subscribe({
+      next: data => {
+        this.drivetrains[0] = {id: 0, type: 'All'};
+        data.forEach((drivetrain: Drivetrain) => {
+          this.drivetrains.push(drivetrain);
+        });
+      },
+      error: err => {
+        console.error(err);
+        this._notifications.showTimedErrorNotification(AppUtil.parseJsonErrorsToString(err.error));
+      }
+    });
+
+    this._engineTypeService.getAll().subscribe({
+      next: data => {
+        this.engineTypes[0] = {id: 0, type: 'All'};
+        data.forEach((engineType: EngineType) => {
+          this.engineTypes.push(engineType);
+        });
+      },
+      error: err => {
+        console.error(err);
+        this._notifications.showTimedErrorNotification(AppUtil.parseJsonErrorsToString(err.error));
+      }
+    });
+
+    this._emissionClassService.getAll().subscribe({
+      next: data => {
+        this.emissionClasses[0] = {id: 0, className: 'All'};
+        data.forEach((emissionClass: EmissionClass) => {
+          this.emissionClasses.push(emissionClass);
+        });
+      },
+      error: err => {
+        console.error(err);
+        this._notifications.showTimedErrorNotification(AppUtil.parseJsonErrorsToString(err.error));
+      }
+    });
   }
 
   defaultSearch() {
     this._carService.getAll().subscribe({
       next: data => {
-        this.prepareCarsForDisplay(data);
+        this.cars = data;
       },
       error: err => {
         console.error(err);
@@ -174,6 +235,9 @@ export class SearchPageComponent {
       model: this.searchForm.get('model').value,
       transmissionType: this.searchForm.get('transmission').value,
       fuel: this.searchForm.get('fuel').value,
+      drivetrain: this.searchForm.get('drivetrain').value,
+      engineType: this.searchForm.get('engineType').value,
+      emissionClass: this.searchForm.get('emissionClass').value,
       exteriorColor: this.searchForm.get('carColor').value?.toLowerCase().trim() ?? null,
       priceFrom: this.searchForm.get('priceFrom').value,
       priceTo: this.searchForm.get('priceTo').value,
@@ -181,6 +245,9 @@ export class SearchPageComponent {
       hpTo: this.searchForm.get('horsepowerTo').value,
       kwFrom: this.searchForm.get('kilowattFrom').value,
       kwTo: this.searchForm.get('kilowattTo').value,
+      engineVolume: this.searchForm.get('volume').value,
+      yearFrom: this.searchForm.get('yearFrom').value,
+      yearTo: this.searchForm.get('yearTo').value,
       isPreowned: this.searchForm.get('isPreowned').value ? 1 : 0,
       steeringWheelLeft: this.searchForm.get('steeringWheelLeft').value ? 1 : 0
     }
@@ -191,38 +258,16 @@ export class SearchPageComponent {
 
     this._carService.parametrizedSearch(searchParameters).subscribe({
       next: data => {
-        this.prepareCarsForDisplay(data);
-
-        console.log("Cars to display:", this.carsToDisplay);
+        this.cars = data;
       },
       error: err => {
         this._notifications.showTimedErrorNotification(AppUtil.parseJsonErrorsToString(err.error));
       }
-    })
+    });
   }
 
   resetForm() {
     this.searchForm.reset({isPreowned: true, steeringWheelLeft: true});
     this.defaultSearch();
-  }
-
-  private prepareCarsForDisplay(data: Car[]) {
-    this.cars = data;
-
-    this.numberOfRows = Math.ceil(this.cars.length / 5);
-
-    if (this.numberOfRows == 0) this.carsToDisplay = [[]];
-
-    for (let i = 0; i < this.numberOfRows; i++) {
-      const start = i * 5;
-      const end = Math.min(start + 5, this.cars.length); // Don’t exceed array length
-      const rowOfCars = this.cars.slice(start, end);
-
-      if (start === 0) {
-        this.carsToDisplay = [rowOfCars];
-      } else {
-        this.carsToDisplay.push(rowOfCars);
-      }
-    }
   }
 }

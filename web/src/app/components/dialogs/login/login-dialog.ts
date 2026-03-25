@@ -5,8 +5,8 @@ import {MatButton} from '@angular/material/button';
 import {MatInput} from '@angular/material/input';
 import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from '@angular/forms';
 import {MatGridList, MatGridTile} from '@angular/material/grid-list';
-import {AuthService} from '../../../services/auth.service';
-import {NotificationService} from '../../../services/notification.service';
+import {AuthService} from '@services/auth.service';
+import {NotificationService} from '@services/notification.service';
 
 @Component({
   selector: 'login-dialog',
