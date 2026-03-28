@@ -72,7 +72,7 @@
           <mat-list-item class="input-list-item">
             <mat-form-field appearance="fill">
               <mat-label>PIB</mat-label>
-              <input formControlName="PIB" matInput placeholder="Enter exactly 9 digits" required type="number"/>
+              <input formControlName="PIB" matInput placeholder="Enter exactly 8 digits" required type="number"/>
               <mat-error *ngIf="formCompany.get('PIB')?.errors?.['required']">
                 PIB is required.
               </mat-error>
