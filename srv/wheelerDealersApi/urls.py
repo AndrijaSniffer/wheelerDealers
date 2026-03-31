@@ -21,7 +21,7 @@ urlpatterns = [
     path('search/normal/', views.car_search, name='normal_search'),
     path('car/colors/', views.get_all_car_color, name='get_all_car_color'),
     path('car/<int:car_id>/images/', views.upload_car_images, name='upload_car_images'),
-    path('model/byManufacturerId/', views.get_models_by_manufacturer_id, name='get_model_by_manufacturer_id'),
+    path('model/byManufacturerId', views.get_models_by_manufacturer_id, name='get_model_by_manufacturer_id'),
 
 ]
 

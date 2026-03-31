@@ -19,7 +19,7 @@ export class ModelService {
   }
 
   getByManufacturerId(manufacturerId: number): Observable<Model[]> {
-    return this._http.get<any>(AppConstants.MODEL_BY_MANUFACTURER_ID + `?manufacturer_id=${manufacturerId}`).pipe(
+    return this._http.get<any>(AppConstants.MODEL_BY_MANUFACTURER_ID, {params: {manufacturer_id: manufacturerId}}).pipe(
       map((response: any[]) => response.map(mapToModel))
     )
   }

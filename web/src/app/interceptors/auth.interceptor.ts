@@ -10,43 +10,38 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
   const appUser = inject(AppUser);
   const authService = inject(AuthService);
 
+  const needsSlash = req.params.keys().length === 0 && !req.url.endsWith('/');
+  const normalizedUrl = needsSlash ? `${req.url}/` : req.url;
+
   const token = appUser.tokens?.access;
+
   if (!token) {
-    const authReq = req.clone({
-      url: `${req.url}/`
-    });
-    return next(authReq); // No token available, proceed without Authorization header
+    return next(req.clone({ url: normalizedUrl }));
   }
-  // Check if token is expired
+
   if (Date.now() > appUser.tokenExpiration * 1000) {
     return authService.refreshUserSession(appUser.tokens.refresh).pipe(
       switchMap(jwtTokens => {
-        // Update appUser with new tokens and expiration
         appUser.tokens = jwtTokens;
         appUser.tokenExpiration = AppUtil.decodeJWTAccessToken(jwtTokens.access).exp;
-
         sessionStorage.setItem('tokens', JSON.stringify(appUser.tokens));
         sessionStorage.setItem('user', JSON.stringify(appUser.user));
 
-        // Clone request with new token
-        const authReq = req.clone({
-          setHeaders: {Authorization: `Bearer ${jwtTokens.access}`},
-          url: `${req.url}/`
-        });
-        return next(authReq);
+        return next(req.clone({
+          setHeaders: { Authorization: `Bearer ${jwtTokens.access}` },
+          url: normalizedUrl
+        }));
       }),
       catchError(err => {
         console.error(err.message);
         appUser.logout();
-        return throwError(() => err); // Propagate error to trigger app-level handling
+        return throwError(() => err);
       })
     );
   } else {
-    // Clone request with current token
-    const authReq = req.clone({
-      setHeaders: {Authorization: `Bearer ${token}`},
-      url: `${req.url}/`
-    });
-    return next(authReq);
+    return next(req.clone({
+      setHeaders: { Authorization: `Bearer ${token}` },
+      url: normalizedUrl
+    }));
   }
 };

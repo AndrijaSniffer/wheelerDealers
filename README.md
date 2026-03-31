@@ -60,8 +60,8 @@ A web application for buying and selling cars. Graduation project for University
 
 ### Prerequisites
 
-- Python 3.11+
-- Node.js 18+
+- Python 3.12
+- Node.js 20
 - MySQL / MariaDB running on `localhost:3306`
 
 ### Database Setup
