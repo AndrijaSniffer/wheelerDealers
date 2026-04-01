@@ -5,7 +5,7 @@ meta {
 }
 
 get {
-  url: {{apiUrl}}/model/byManufacturerId/
+  url: {{apiUrl}}/model/byManufacturerId?manufacturer_id=2
   body: none
   auth: none
 }
@@ -16,4 +16,5 @@ params:query {
 
 settings {
   encodeUrl: true
+  timeout: 0
 }
