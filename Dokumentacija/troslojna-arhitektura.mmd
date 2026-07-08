@@ -1,0 +1,25 @@
+---
+title: Troslojna arhitektura
+---
+flowchart LR
+    subgraph client["Klijent"]
+        browser["Web pregledač<br/>(Chrome, Firefox, Edge)"]
+    end
+
+    subgraph presentation["Prezentacioni sloj (Frontend)"]
+        angular["Angular 19 SPA<br/>Port: 4200"]
+    end
+
+    subgraph application["Aplikacioni sloj (Backend)"]
+        django["Django 5.1.3 + DRF<br/>REST API, poslovna logika,<br/>autentifikacija i autorizacija<br/>Port: 8000"]
+    end
+
+    subgraph data["Sloj podataka"]
+        mariadb[("MariaDB<br/>relaciona baza podataka")]
+    end
+
+    browser --> angular
+    angular -->|"HTTP / REST API<br/>JSON, JWT (Bearer)<br/>CORS"| django
+    django -->|"Django ORM / SQL"| mariadb
+    mariadb -.->|"rezultati upita"| django
+    django -.->|"JSON odgovori"| angular

@@ -13,7 +13,7 @@
 
 -- drop table `user`;
 
-# Dummy Data
+-- Dummy Data
 
 -- Country (30 rows)
 INSERT INTO wheelerDealersApi_country (name)
