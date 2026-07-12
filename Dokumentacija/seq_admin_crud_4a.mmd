@@ -1,0 +1,68 @@
+sequenceDiagram
+    autonumber
+    title Sekvencijalni dijagram - Admin CRUD (Čitanje i Kreiranje)
+
+    actor Administrator
+    participant CountryComponent as Angular<br/>CountryComponent
+    participant CountryDialog
+    participant CountryService
+    participant NotificationService
+    participant CountryViewSet as Django API<br/>CountryView (ViewSet)
+    participant MariaDB
+
+    rect rgb(245, 245, 245)
+        Note over CountryComponent,CountryViewSet: Učitavanje liste (GET ALL)
+
+        Administrator->>CountryComponent: Otvara /admin/countryManagement
+        activate CountryComponent
+        CountryComponent->>CountryService: getAll()
+        activate CountryService
+        CountryService->>CountryViewSet: GET /country/
+        activate CountryViewSet
+        CountryViewSet->>CountryViewSet: IsAdminOrReadOnly:<br/>GET je SAFE_METHOD -> dozvoljeno
+        CountryViewSet->>MariaDB: SELECT * FROM country<br/>ORDER BY country
+        activate MariaDB
+        MariaDB-->>CountryViewSet: lista država
+        deactivate MariaDB
+        CountryViewSet-->>CountryService: 200 OK ([country, name], ...)
+        deactivate CountryViewSet
+        CountryService->>CountryService: response.map(mapToCountry)
+        CountryService-->>CountryComponent: Country[]
+        deactivate CountryService
+        CountryComponent->>CountryComponent: Popunjava MatTableDataSource
+        deactivate CountryComponent
+    end
+
+    rect rgb(240, 248, 255)
+        Note over CountryComponent,CountryViewSet: Dodavanje nove države (CREATE)
+
+        Administrator->>CountryComponent: Klik na "Add new"
+        activate CountryComponent
+        CountryComponent->>CountryDialog: Otvara CountryDialog<br/>{object: null, isView: false}
+        deactivate CountryComponent
+        activate CountryDialog
+        Administrator->>CountryDialog: Unosi naziv države
+        Administrator->>CountryDialog: Klik na "Create"
+        CountryDialog->>CountryService: create({name: "Nova Država"})
+        activate CountryService
+        CountryService->>CountryViewSet: POST /country/<br/>{name: "Nova Država"}
+        activate CountryViewSet
+        CountryViewSet->>CountryViewSet: IsAdminOrReadOnly:<br/>POST zahteva is_superuser
+        CountryViewSet->>MariaDB: INSERT INTO country (name)
+        activate MariaDB
+        MariaDB-->>CountryViewSet: created record
+        deactivate MariaDB
+        CountryViewSet-->>CountryService: 200 OK {country, name}
+        deactivate CountryViewSet
+        CountryService-->>CountryDialog: Country
+        deactivate CountryService
+        CountryDialog->>CountryDialog: Zatvara dijalog (result = Country)
+        CountryDialog->>NotificationService: "Nova država uspešno kreirana!"
+        activate CountryService
+        CountryDialog->>CountryService: getAll()
+        deactivate CountryDialog
+        activate CountryComponent
+        CountryService-->>CountryComponent: Ponovo učitava listu<br/>sa novim zapisom
+        deactivate CountryService
+        deactivate CountryComponent
+    end

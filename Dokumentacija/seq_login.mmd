@@ -1,0 +1,84 @@
+sequenceDiagram
+    autonumber
+    title Sekvencijalni dijagram - Prijava i autorizacija (JWT)
+
+    actor Korisnik
+    participant LoginDialog as Angular<br/>LoginDialog
+    participant AuthService
+    participant AppUser
+    participant AuthInterceptor
+    participant DjangoAPI as Django API
+    participant MariaDB
+
+    rect rgb(245, 245, 245)
+        Note over LoginDialog,DjangoAPI: Prijava
+
+        Korisnik->>LoginDialog: Unosi username i password
+        activate LoginDialog
+        LoginDialog->>AuthService: login(username, password)
+        activate AuthService
+        AuthService->>DjangoAPI: POST /api/auth/login/<br/>[username, password]
+        activate DjangoAPI
+        DjangoAPI->>MariaDB: SELECT * FROM user<br/>WHERE username = ?
+        activate MariaDB
+        MariaDB-->>DjangoAPI: user record
+        deactivate MariaDB
+        DjangoAPI->>DjangoAPI: Verifikuje password hash
+        DjangoAPI->>DjangoAPI: Generiše JWT par<br/>(access: 1h, refresh: 3d)
+        DjangoAPI-->>AuthService: 200 OK {access, refresh}
+        deactivate DjangoAPI
+
+        AuthService->>AuthService: decodeJWTAccessToken(access)
+        AuthService->>DjangoAPI: GET /api/auth/user/{user_id}/
+        activate DjangoAPI
+        DjangoAPI->>MariaDB: SELECT * FROM user JOIN company
+        activate MariaDB
+        MariaDB-->>DjangoAPI: user + company data
+        deactivate MariaDB
+        DjangoAPI-->>AuthService: 200 OK (user data)
+        deactivate DjangoAPI
+
+        AuthService->>AuthService: user = mapToUser(response)
+        AuthService->>AppUser: tokens = {access, refresh}
+        activate AppUser
+        AuthService->>AppUser: tokenExpiration = decoded.exp
+        AuthService->>AppUser: setLoggedIn(true)
+        deactivate AppUser
+        AuthService->>AuthService: sessionStorage.setItem('tokens')
+        AuthService->>AuthService: sessionStorage.setItem('user')
+        AuthService-->>LoginDialog: true
+        deactivate AuthService
+
+        LoginDialog->>LoginDialog: Zatvara dijalog
+        LoginDialog->>LoginDialog: Preusmeravanje na osnovu uloge:<br/>- Admin -> /admin/countryManagement<br/>- Firma -> /dealership/dashboard<br/>- Korisnik -> /home
+        deactivate LoginDialog
+    end
+
+    rect rgb(240, 248, 255)
+        Note over AuthInterceptor,DjangoAPI: Automatsko osvežavanje tokena
+
+        Korisnik->>LoginDialog: Akcija koja zahteva API poziv
+        activate LoginDialog
+        LoginDialog->>AuthInterceptor: HTTP zahtev
+        deactivate LoginDialog
+        activate AuthInterceptor
+        AuthInterceptor->>AuthInterceptor: Proverava da li je<br/>access token istekao
+
+        alt Token istekao
+            AuthInterceptor->>DjangoAPI: POST /api/token/refresh/<br/>{refresh: refreshToken}
+            activate DjangoAPI
+            DjangoAPI-->>AuthInterceptor: 200 OK {access, refresh}
+            deactivate DjangoAPI
+            AuthInterceptor->>AuthInterceptor: Ažurira tokens i expiration
+            AuthInterceptor->>AuthInterceptor: Klonira zahtev sa novim tokenom
+        end
+
+        AuthInterceptor->>AuthInterceptor: Dodaje Authorization header<br/>Bearer {accessToken}
+        AuthInterceptor->>AuthInterceptor: Dodaje trailing slash na URL
+        AuthInterceptor->>DjangoAPI: Prosleđuje zahtev
+        activate DjangoAPI
+        DjangoAPI-->>AuthInterceptor: HTTP Odgovor (Podaci)
+        deactivate DjangoAPI
+        AuthInterceptor-->>Korisnik: Vraća podatke na UI
+        deactivate AuthInterceptor
+    end

@@ -1,0 +1,84 @@
+sequenceDiagram
+    autonumber
+    title Sekvencijalni dijagram - Admin CRUD (Ažuriranje i Brisanje)
+
+    actor Administrator
+    participant CountryComponent as Angular<br/>CountryComponent
+    participant CountryDialog
+    participant YesNoDialog
+    participant CountryService
+    participant NotificationService
+    participant CountryViewSet as Django API<br/>CountryView (ViewSet)
+    participant MariaDB
+
+    rect rgb(245, 245, 245)
+        Note over CountryComponent,CountryViewSet: Ažuriranje države (UPDATE)
+
+        Administrator->>CountryComponent: Klik na ikonu "Edit"
+        activate CountryComponent
+        CountryComponent->>CountryComponent: Pronalazi državu po ID-u
+        CountryComponent->>CountryDialog: Otvara CountryDialog<br/>{object: country, isView: false}
+        deactivate CountryComponent
+        activate CountryDialog
+        CountryDialog->>CountryDialog: Popunjava formu sa<br/>postojećim podacima
+        Administrator->>CountryDialog: Menja naziv
+        Administrator->>CountryDialog: Klik na "Edit"
+        CountryDialog->>CountryService: update(country)
+        activate CountryService
+        CountryService->>CountryViewSet: PUT /country/{id}/<br/>{name: "Ažurirano ime"}
+        activate CountryViewSet
+        CountryViewSet->>CountryViewSet: IsAdminOrReadOnly:<br/>PUT zahteva is_superuser
+        CountryViewSet->>MariaDB: UPDATE country SET name = ?<br/>WHERE country = ?
+        activate MariaDB
+        MariaDB-->>CountryViewSet: updated record
+        deactivate MariaDB
+        CountryViewSet-->>CountryService: 200 OK
+        deactivate CountryViewSet
+        CountryService-->>CountryDialog: Country
+        deactivate CountryService
+        CountryDialog->>CountryDialog: Zatvara dijalog
+        deactivate CountryDialog
+        activate CountryComponent
+        CountryDialog->>NotificationService: "Država uspešno ažurirana!"
+        activate CountryService
+        CountryDialog->>CountryService: getAll()
+        CountryService-->>CountryComponent: Ponovo učitava listu
+        deactivate CountryService
+        deactivate CountryComponent
+    end
+
+    rect rgb(255, 240, 245)
+        Note over CountryComponent,CountryViewSet: Brisanje države (DELETE)
+
+        Administrator->>CountryComponent: Klik na ikonu "Delete"
+        activate CountryComponent
+        CountryComponent->>YesNoDialog: Otvara YesNoDialog<br/>"Da li ste sigurni?"
+        activate YesNoDialog
+        Administrator->>YesNoDialog: Klik na "Da"
+        YesNoDialog-->>CountryComponent: result = true
+        deactivate YesNoDialog
+        CountryComponent->>CountryService: delete(id)
+        activate CountryService
+        CountryService->>CountryViewSet: DELETE /country/{id}/
+        activate CountryViewSet
+        CountryViewSet->>CountryViewSet: IsAdminOrReadOnly:<br/>DELETE zahteva is_superuser
+        CountryViewSet->>MariaDB: DELETE FROM country<br/>WHERE country = ?
+        activate MariaDB
+        
+        alt Država nije korišćena
+            MariaDB-->>CountryViewSet: OK (deleted)
+            CountryViewSet-->>CountryService: 204 No Content
+            CountryService-->>CountryComponent: OK
+            CountryComponent->>NotificationService: "Država uspešno obrisana!"
+            CountryComponent->>CountryService: getAll()
+        else Država je FK manufacturer
+            MariaDB-->>CountryViewSet: RESTRICT error
+            deactivate MariaDB
+            CountryViewSet-->>CountryService: 400/500 Error
+            deactivate CountryViewSet
+            CountryService-->>CountryComponent: error
+            deactivate CountryService
+            CountryComponent->>NotificationService: "Greška pri brisanju!"
+        end
+        deactivate CountryComponent
+    end

@@ -1,0 +1,134 @@
+erDiagram
+    USER ||--o| COMPANY : "PIB_id"
+    USER ||--o{ CAR : "user_id"
+    USER ||--o{ CHATACTIVITYLOGS : "user_id"
+    USER ||--o{ CHATACTIVITYLOGS : "user2_id"
+    
+    CAR ||--o{ IMAGE : "car_id"
+    MODEL ||--o{ CAR : "model_id"
+    TRANSMISSIONTYPE ||--o{ CAR : "transmission_type_id"
+    FUEL ||--o{ CAR : "fuel_id"
+    DRIVETRAIN ||--o{ CAR : "drivetrain_id"
+    ENGINETYPE ||--o{ CAR : "engine_type_id"
+    EMISSIONCLASS ||--o{ CAR : "emission_class_id"
+    
+    MANUFACTURER ||--o{ MODEL : "manufacturer_id"
+    COUNTRY ||--o{ MANUFACTURER : "country_id"
+    MODELTYPE ||--o{ MODELTYPEMODEL : "model_type_id"
+    MODEL ||--o{ MODELTYPEMODEL : "model_id"
+
+    USER {
+        BIGINT id PK
+        BIGINT PIB_id FK
+        VARCHAR username
+        VARCHAR email
+        VARCHAR password
+        TINYINT is_staff
+        TINYINT is_active
+        DATETIME date_joined
+        VARCHAR phone
+        VARCHAR address
+        TINYINT is_reseller
+        TINYINT is_superuser
+        DATETIME last_login
+    }
+
+    COMPANY {
+        BIGINT PIB PK
+        VARCHAR address
+        VARCHAR phone
+        VARCHAR logo_name
+        VARCHAR website_url
+    }
+
+    CAR {
+        INT car PK
+        BIGINT user_id FK
+        INT model_id FK
+        INT transmission_type_id FK
+        INT fuel_id FK
+        INT drivetrain_id FK
+        INT engine_type_id FK
+        INT emission_class_id FK
+        INT year
+        INT horsepower
+        INT kilowatt
+        INT engine_volume
+        INT gears
+        INT doors
+        INT seats
+        TINYINT steering_wheel_left
+        VARCHAR interior_color
+        DECIMAL price
+        VARCHAR exterior_color
+        VARCHAR chassis_number
+        TINYINT is_preowned
+        DATETIME created_at
+    }
+
+    IMAGE {
+        INT image PK
+        INT car_id FK
+        VARCHAR image_url
+    }
+
+    CHATACTIVITYLOGS {
+        INT id_activity PK
+        BIGINT user_id FK
+        BIGINT user2_id FK
+        DATETIME started_at
+        DATETIME ended_at
+    }
+
+    COUNTRY {
+        INT country PK
+        VARCHAR name
+    }
+
+    MANUFACTURER {
+        INT manufacturer PK
+        INT country_id FK
+        VARCHAR name
+    }
+
+    MODEL {
+        INT model PK
+        VARCHAR name
+        INT manufacturer_id FK
+    }
+
+    MODELTYPE {
+        INT model_type PK
+        VARCHAR type
+    }
+
+    MODELTYPEMODEL {
+        BIGINT id PK
+        INT model_type_id FK
+        INT model_id FK
+    }
+
+    TRANSMISSIONTYPE {
+        INT transmission_type PK
+        VARCHAR type
+    }
+
+    EMISSIONCLASS {
+        INT emission_class PK
+        VARCHAR class_name
+    }
+
+    ENGINETYPE {
+        INT engine_type PK
+        VARCHAR type
+    }
+
+    FUEL {
+        INT fuel PK
+        VARCHAR type
+    }
+
+    DRIVETRAIN {
+        INT drivetrain PK
+        VARCHAR type
+    }

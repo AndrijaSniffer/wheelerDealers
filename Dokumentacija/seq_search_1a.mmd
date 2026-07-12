@@ -1,0 +1,37 @@
+sequenceDiagram
+    autonumber
+    title Sekvencijalni dijagram - Pretraga i filtriranje oglasa
+
+    actor Korisnik
+    participant SearchPage as Angular<br/>SearchPage
+    participant CarService
+    participant DjangoAPI as Django API
+    participant MariaDB
+
+    rect rgb(245, 245, 245)
+        Note over SearchPage,DjangoAPI: Učitavanje stranice pretrage
+        Korisnik->>SearchPage: Otvara /search
+        SearchPage->>CarService: getAll()
+        CarService->>DjangoAPI: GET /car/
+        DjangoAPI->>MariaDB: SELECT * FROM car<br/>WHERE user.is_active = 1
+        MariaDB-->>DjangoAPI: lista automobila
+        DjangoAPI-->>CarService: 200 OK [cars + nested objects]
+        CarService->>CarService: response.map(mapToCar)
+        CarService-->>SearchPage: Car[]
+        SearchPage->>SearchPage: Prikazuje kartice automobila<br/>(slika, naziv, godište, HP, cena)
+    end
+
+    rect rgb(240, 248, 255)
+        Note over SearchPage,DjangoAPI: Pretraga sa filterima
+        Korisnik->>SearchPage: Popunjava filtere i klikće "Search"
+        SearchPage->>SearchPage: Kreira ISearchParameters<br/>iz forme
+        SearchPage->>CarService: parametrizedSearch(params)
+        CarService->>CarService: Konvertuje parametre<br/>u query string (snake_case)
+        CarService->>DjangoAPI: GET /search/normal?<br/>manufacturer=1&fuel=2&price_to=10000...
+        DjangoAPI->>DjangoAPI: Gradi Q() filtere<br/>za svaki prisutan parametar
+        DjangoAPI->>MariaDB: SELECT * FROM car<br/>WHERE (filters) AND user.is_active = 1
+        MariaDB-->>DjangoAPI: filtrirani rezultati
+        DjangoAPI-->>CarService: 200 OK [filtered cars]
+        CarService-->>SearchPage: Car[]
+        SearchPage->>SearchPage: Ažurira prikaz kartica
+    end

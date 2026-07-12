@@ -1,0 +1,98 @@
+sequenceDiagram
+    autonumber
+    title Sekvencijalni dijagram - Postavljanje oglasa sa slikama
+
+    actor Korisnik
+    participant CarDialog as Angular<br/>CarDialog
+    participant CarService
+    participant DjangoAPI as Django API
+    participant MariaDB
+    participant FileSystem as File System
+
+    rect rgb(245, 245, 245)
+        Note over CarDialog,DjangoAPI: Otvaranje dijaloga
+
+        Korisnik->>CarDialog: Klik na "Add car"
+        activate CarDialog
+        CarDialog->>CarService: Učitava sve šifarnike paralelno
+        activate CarService
+        CarService->>DjangoAPI: GET /manufacturer/, /transmissionType/<br/>/fuel/, /drivetrain/, /engineType/<br/>/emissionClass/
+        activate DjangoAPI
+        DjangoAPI-->>CarService: Podaci svih šifarnika
+        deactivate DjangoAPI
+        CarService-->>CarDialog: Popunjava select polja
+        deactivate CarService
+    end
+
+    rect rgb(240, 248, 255)
+        Note over CarDialog,DjangoAPI: Popunjavanje forme
+
+        Korisnik->>CarDialog: Bira proizvođača
+        CarDialog->>CarService: getByManufacturerId(manufacturerId)
+        activate CarService
+        CarService->>DjangoAPI: GET /model/byManufacturerId/<br/>?manufacturer_id={id}
+        activate DjangoAPI
+        DjangoAPI->>MariaDB: SELECT * FROM model<br/>WHERE manufacturer_id = ?
+        activate MariaDB
+        MariaDB-->>DjangoAPI: modeli za proizvođača
+        deactivate MariaDB
+        DjangoAPI-->>CarService: 200 OK [models]
+        deactivate DjangoAPI
+        CarService-->>CarDialog: Aktivira Model select polje
+        deactivate CarService
+
+        Korisnik->>CarDialog: Popunjava ostala polja<br/>(godište, HP, gorivo, cena, itd.)
+        CarDialog->>CarDialog: Auto-izračunava kW<br/>iz HP (HP * 0.7355)
+
+        Korisnik->>CarDialog: Bira slike za otpremanje
+        CarDialog->>CarDialog: Validira tip fajla<br/>(png, jpg, jpeg)
+        CarDialog->>CarDialog: Generiše preview thumbnails
+    end
+
+    rect rgb(255, 240, 245)
+        Note over CarDialog,FileSystem: Kreiranje oglasa
+
+        Korisnik->>CarDialog: Klik na "Create"
+        CarDialog->>CarDialog: Validira formu
+        CarDialog->>CarService: create(carDTO)
+        activate CarService
+        CarService->>DjangoAPI: POST /car/<br/>[multipart: svi podaci automobila]
+        activate DjangoAPI
+        DjangoAPI->>DjangoAPI: CarPermission proverava:<br/>- Korisnik je autentifikovan<br/>- Korisnik nije admin
+        DjangoAPI->>MariaDB: INSERT INTO car
+        activate MariaDB
+        MariaDB-->>DjangoAPI: car record (sa car.id)
+        deactivate MariaDB
+        DjangoAPI-->>CarService: 200 OK (created car)
+        deactivate DjangoAPI
+        deactivate CarService
+
+        alt Korisnik je odabrao slike
+            CarService-->>CarDialog: car.id iz odgovora
+            CarDialog->>CarService: uploadImages(carId, files)
+            activate CarService
+            CarService->>DjangoAPI: POST /car/{carId}/images/<br/>[multipart: images[]]
+            activate DjangoAPI
+            DjangoAPI->>DjangoAPI: Proverava vlasništvo nad oglasom
+            DjangoAPI->>FileSystem: Čuva svaki fajl u<br/>/media/cars/{carId}/
+            
+            loop Za svaku sliku
+                DjangoAPI->>MariaDB: INSERT INTO image<br/>(car_id, image_url)
+                activate MariaDB
+                MariaDB-->>DjangoAPI: OK
+                deactivate MariaDB
+            end
+            
+            DjangoAPI-->>CarService: 201 Created [image records]
+            deactivate DjangoAPI
+            CarService-->>CarDialog: Slike uspešno otpremljene
+            deactivate CarService
+        end
+
+        activate CarService
+        CarService-->>CarDialog: Završen proces
+        deactivate CarService
+        CarDialog->>Korisnik: Prikazuje poruku:<br/>"Oglas uspešno postavljen!"
+        CarDialog->>CarDialog: Zatvara dijalog
+        deactivate CarDialog
+    end

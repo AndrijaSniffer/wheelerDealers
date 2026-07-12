@@ -1,0 +1,67 @@
+flowchart LR
+    %% Akteri
+    Gost(["👤 Gost"])
+    Korisnik(["👤 Korisnik / Preprodavac"])
+    Firma(["🏢 Firma"])
+    Admin(["🛠️ Administrator"])
+
+    %% Use Case grupe
+    subgraph Pretraga_i_pregled ["Pretraga i pregled"]
+        UC1([Pretraga oglasa])
+        UC2([Pregled detalja oglasa])
+        UC3([Pregled stranice kontakt])
+        UC4([Pregled početne stranice])
+        UC5([Otkrivanje broja telefona prodavca])
+    end
+
+    subgraph Upravljanje_oglasom ["Upravljanje oglasom"]
+        UC6([Konverzija u preprodavca])
+        UC7([Postavljanje oglasa])
+        UC8([Otpremanje slika])
+        
+        UC7 -. "<< include >>" .-> UC8
+    end
+
+    subgraph Profil_korisnika ["Profil korisnika"]
+        UC9([Pregled i izmena profila])
+    end
+
+    subgraph Firma_upravljanje ["Firma - upravljanje"]
+        UC10([Pregled kontrolne table])
+        UC11([Pregled inventara])
+        UC12([Postavljanje oglasa iz inventara])
+        UC13([Pregled oglasa iz perspektive kupca])
+        
+        UC12 -. "<< include >>" .-> UC8
+    end
+
+    subgraph Autentifikacija ["Autentifikacija"]
+        UC14([Registracija])
+        UC15([Prijava])
+        UC16([Odjava])
+        
+        UC5 -. "<< include >>\ngost mora da se prijavi" .-> UC15
+    end
+
+    subgraph Admin_operacije ["Administrator operacije"]
+        UC17([CRUD operacije nad šifarnicima])
+        UC18([Pregled svih korisnika])
+        UC19([Deaktivacija korisnika])
+        UC20([Brisanje oglasa])
+    end
+
+    %% Relacije aktera sa Use Case-ovima
+    Gost --> UC1 & UC2 & UC3 & UC4
+    Gost --> UC14 & UC15
+    
+    Korisnik --> UC1 & UC2 & UC3 & UC4 & UC5
+    Korisnik --> UC6 & UC7
+    Korisnik --> UC9
+    Korisnik --> UC16
+    
+    Firma --> UC9
+    Firma --> UC10 & UC11 & UC12 & UC13
+    Firma --> UC16
+    
+    Admin --> UC17 & UC18 & UC19 & UC20
+    Admin --> UC16

@@ -1,0 +1,50 @@
+sequenceDiagram
+    autonumber
+    title Sekvencijalni dijagram - Pregled detalja i autorizacija kontakta
+
+    actor Korisnik
+    participant SearchPage as Angular<br/>SearchPage
+    participant CarDetail as Angular<br/>CarDetail
+    participant CarService
+    participant LoginDialog
+    participant AuthService
+    participant DjangoAPI as Django API
+    participant MariaDB
+
+    rect rgb(245, 245, 245)
+        Note over SearchPage,DjangoAPI: Pregled detalja oglasa
+        Korisnik->>SearchPage: Klik na karticu automobila
+        activate SearchPage
+        SearchPage->>CarDetail: Navigacija na /car/{id}
+        deactivate SearchPage
+        activate CarDetail
+        CarDetail->>CarService: getById(carId)
+        CarService->>DjangoAPI: GET /car/{id}/
+        DjangoAPI->>MariaDB: SELECT * FROM car WHERE car = id
+        MariaDB-->>DjangoAPI: car + images + user
+        DjangoAPI-->>CarService: 200 OK (car data)
+        CarService-->>CarDetail: Car
+        CarDetail->>CarDetail: Prikazuje specifikacije,<br/>karusel slika, podatke o prodavcu
+    end
+
+    rect rgb(255, 240, 245)
+        Note over CarDetail,DjangoAPI: Otkrivanje broja telefona
+
+        alt Korisnik nije prijavljen
+            Korisnik->>CarDetail: Klik na "Show phone number"
+            CarDetail->>LoginDialog: Otvara LoginDialog
+            activate LoginDialog
+            Korisnik->>LoginDialog: Unosi kredencijale
+            LoginDialog->>AuthService: login(username, password)
+            AuthService-->>LoginDialog: true
+            LoginDialog-->>CarDetail: result = true
+            deactivate LoginDialog
+            CarDetail->>CarDetail: phoneRevealed = true
+            CarDetail->>CarDetail: Prikazuje broj telefona
+        else Korisnik je prijavljen
+            Korisnik->>CarDetail: Klik na "Show phone number"
+            CarDetail->>CarDetail: phoneRevealed = true
+            CarDetail->>CarDetail: Prikazuje broj telefona
+        end
+    end
+    deactivate CarDetail

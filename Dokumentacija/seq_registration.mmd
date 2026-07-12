@@ -1,0 +1,58 @@
+sequenceDiagram
+    autonumber
+    title Sekvencijalni dijagram - Registracija korisnika
+
+    actor Korisnik
+    participant SignUpDialog as Angular<br/>SignUpDialog
+    participant AuthService
+    participant DjangoAPI as Django API
+    participant MariaDB
+
+    Korisnik->>SignUpDialog: Klik na "Sign up"
+    activate SignUpDialog
+    SignUpDialog->>SignUpDialog: Prikazuje stepper formu<br/>(Korak 1: Podaci korisnika)
+    Korisnik->>SignUpDialog: Unosi podatke<br/>(username, email, password)
+    Korisnik->>SignUpDialog: Bira tip naloga<br/>(Običan korisnik / Firma)
+
+    alt Firma (Dealership)
+        SignUpDialog->>SignUpDialog: Prikazuje Korak 2:<br/>Podaci firme (PIB, adresa, telefon, logo)
+        Korisnik->>SignUpDialog: Unosi podatke firme
+        SignUpDialog->>SignUpDialog: Validira PIB (8 cifara)
+        SignUpDialog->>AuthService: registerCompany(company, logoFile)
+        activate AuthService
+        AuthService->>DjangoAPI: POST /api/company/<br/>[multipart: PIB, address, phone, logo]
+        activate DjangoAPI
+        DjangoAPI->>MariaDB: INSERT INTO company
+        activate MariaDB
+        MariaDB-->>DjangoAPI: OK
+        deactivate MariaDB
+        DjangoAPI->>DjangoAPI: Čuva logo fajl na disk
+        DjangoAPI-->>AuthService: 200 OK (company data)
+        deactivate DjangoAPI
+        AuthService-->>SignUpDialog: company data saved
+        deactivate AuthService
+    end
+
+    SignUpDialog->>SignUpDialog: Prikazuje Korak 3:<br/>Pregled podataka
+    Korisnik->>SignUpDialog: Potvrđuje registraciju
+    SignUpDialog->>AuthService: registerUser(user)
+    activate AuthService
+    AuthService->>DjangoAPI: POST /api/auth/create/<br/>[multipart: username, email, password, PIB, is_reseller]
+    activate DjangoAPI
+    DjangoAPI->>MariaDB: SELECT COUNT(*) FROM user<br/>WHERE is_superuser = 1
+    activate MariaDB
+    MariaDB-->>DjangoAPI: admin_exists = true/false
+    deactivate MariaDB
+    DjangoAPI->>DjangoAPI: Ako admin ne postoji:<br/>is_superuser = true, is_staff = true
+    DjangoAPI->>MariaDB: INSERT INTO user<br/>(set_password za hash)
+    activate MariaDB
+    MariaDB-->>DjangoAPI: OK
+    deactivate MariaDB
+    DjangoAPI-->>AuthService: 200 OK (user data)
+    deactivate DjangoAPI
+    AuthService-->>SignUpDialog: true
+    deactivate AuthService
+    
+    SignUpDialog->>Korisnik: Prikazuje poruku:<br/>"Registracija uspešna!"
+    SignUpDialog->>SignUpDialog: Otvara Login dijalog
+    deactivate SignUpDialog

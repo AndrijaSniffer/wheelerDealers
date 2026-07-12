@@ -1,0 +1,73 @@
+classDiagram
+    direction LR
+
+    namespace Interceptori {
+        class AuthInterceptor {
+            <<HttpInterceptorFn>>
+            +intercept(req, next)
+            -Dodaje Bearer token()
+            -Osvezava token ako je istekao()
+            -Dodaje trailing slash()
+        }
+    }
+
+    namespace Cuvari_ruta {
+        class AdminGuard {
+            +canActivate() boolean
+        }
+        class DealershipGuard {
+            +canActivate() boolean
+        }
+        class UserGuard {
+            +canActivate() boolean
+        }
+        class NoAdminGuard {
+            +canActivate() boolean
+        }
+    }
+
+    namespace Stanje_aplikacije {
+        class AppUser {
+            <<Injectable>>
+            +User user
+            +JWTPair tokens
+            +number tokenExpiration
+            +Observable loggedInObservable
+            +setLoggedIn(loggedIn) void
+            +logout() void
+        }
+    }
+
+    namespace Servisi {
+        class AuthService {
+            +login(username, password) Promise~boolean~
+            +registerCompany(company, logo) Promise~boolean|string~
+            +registerUser(user) Promise~boolean~
+            +refreshUserSession(token) Observable~JWTPair~
+        }
+        class CarService {
+            +getAll() Observable~Car[]~
+            +getById(id) Observable~Car~
+            +create(car) Observable~Car~
+            +update(car) Observable~Car~
+            +delete(id) Observable~any~
+            +parametrizedSearch(params) Observable~Car[]~
+            +getByUserId(userId) Observable~Car[]~
+            +uploadImages(carId, images) Observable~any~
+        }
+        class UserService {
+            +getUserById(id) Promise~JSON~
+            +getAll() Observable~User[]~
+            +banUserById(id) Observable~any~
+            +updateUser(id, data) Observable~any~
+        }
+    }
+
+    %% Relacije
+    AdminGuard ..> AppUser : proverava ulogu
+    DealershipGuard ..> AppUser : proverava ulogu
+    UserGuard ..> AppUser : proverava ulogu
+    NoAdminGuard ..> AppUser : proverava ulogu
+    
+    AuthInterceptor ..> AppUser : čita token
+    AuthInterceptor ..> AuthService : osvežava token

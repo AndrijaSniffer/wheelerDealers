@@ -1,0 +1,129 @@
+classDiagram
+    namespace Interceptori {
+        class AuthInterceptor {
+            <<HttpInterceptorFn>>
+            +intercept(req, next)
+            -Dodaje Bearer token()
+            -Osvezava token ako je istekao()
+            -Dodaje trailing slash()
+        }
+    }
+
+    namespace Cuvari_ruta {
+        class AdminGuard {
+            +canActivate() boolean
+        }
+        class DealershipGuard {
+            +canActivate() boolean
+        }
+        class UserGuard {
+            +canActivate() boolean
+        }
+        class NoAdminGuard {
+            +canActivate() boolean
+        }
+    }
+
+    namespace Stanje_aplikacije {
+        class AppUser {
+            <<Injectable>>
+            +User user
+            +JWTPair tokens
+            +number tokenExpiration
+            +Observable loggedInObservable
+            +setLoggedIn(loggedIn) void
+            +logout() void
+        }
+    }
+
+    namespace Modeli {
+        class User {
+            +number id
+            +Company PIB
+            +string username
+            +string email
+            +boolean isStaff
+            +boolean isActive
+            +Date dateJoined
+            +string phone
+            +string address
+            +boolean isReseller
+            +boolean isSuperuser
+        }
+        class Company {
+            +number id
+            +string name
+            +string address
+            +string phone
+            +string logoUrl
+            +string websiteUrl
+        }
+        class Car {
+            +number id
+            +User user
+            +Model model
+            +TransmissionType transmissionType
+            +EngineType engineType
+            +EmissionClass emissionClass
+            +Fuel fuel
+            +Drivetrain drivetrain
+            +number year
+            +number horsepower
+            +number kilowatt
+            +number engineVolume
+            +number transmissionGears
+            +number doors
+            +number seats
+            +boolean steeringWheelLeft
+            +string interiorColor
+            +number price
+            +string exteriorColor
+            +string chassisNumber
+            +boolean isPreowned
+            +Date createdAt
+            +Image[] images
+        }
+        class Model {
+            +number id
+            +string name
+            +Manufacturer manufacturer
+        }
+    }
+
+    namespace Servisi {
+        class AuthService {
+            +login(username, password) Promise~boolean~
+            +registerCompany(company, logo) Promise~boolean|string~
+            +registerUser(user) Promise~boolean~
+            +refreshUserSession(token) Observable~JWTPair~
+        }
+        class CarService {
+            +getAll() Observable~Car[]~
+            +getById(id) Observable~Car~
+            +create(car) Observable~Car~
+            +update(car) Observable~Car~
+            +delete(id) Observable~any~
+            +parametrizedSearch(params) Observable~Car[]~
+            +getByUserId(userId) Observable~Car[]~
+            +uploadImages(carId, images) Observable~any~
+        }
+        class UserService {
+            +getUserById(id) Promise~JSON~
+            +getAll() Observable~User[]~
+            +banUserById(id) Observable~any~
+            +updateUser(id, data) Observable~any~
+        }
+    }
+
+    %% Relacije
+    AdminGuard ..> AppUser : proverava ulogu
+    DealershipGuard ..> AppUser : proverava ulogu
+    UserGuard ..> AppUser : proverava ulogu
+    NoAdminGuard ..> AppUser : proverava ulogu
+    
+    AuthInterceptor ..> AppUser : cita token
+    AuthInterceptor ..> AuthService : osvezava token
+    
+    Car --> User
+    Car --> Model
+    User --> Company

@@ -1,0 +1,132 @@
+classDiagram
+    namespace Korisnici {
+        class User {
+            +BigAutoField id [PK]
+            +ForeignKey PIB
+            +CharField username
+            +CharField email
+            +CharField password
+            +BooleanField is_staff
+            +BooleanField is_active
+            +DateTimeField date_joined
+            +CharField phone
+            +CharField address
+            +BooleanField is_reseller
+            +BooleanField is_superuser
+            +__str__() String
+        }
+        class Company {
+            +BigInteger PIB [PK]
+            +CharField address
+            +CharField phone
+            +CharField logo_name
+            +CharField website_url
+        }
+        class ChatActivityLogs {
+            +AutoField id_activity [PK]
+            +DateTimeField started_at
+            +DateTimeField ended_at
+            +ForeignKey user
+            +ForeignKey user2
+        }
+    }
+
+    namespace Automobil {
+        class Car {
+            +AutoField car [PK]
+            +IntegerField year
+            +IntegerField horsepower
+            +IntegerField kilowatt
+            +IntegerField engine_volume
+            +IntegerField gears
+            +IntegerField doors
+            +IntegerField seats
+            +BooleanField steering_wheel_left
+            +CharField interior_color
+            +DecimalField price
+            +CharField exterior_color
+            +CharField chassis_number
+            +BooleanField is_preowned
+            +DateTimeField created_at
+            +ForeignKey user
+            +ForeignKey model
+            +ForeignKey transmission_type
+            +ForeignKey fuel
+            +ForeignKey drivetrain
+            +ForeignKey engine_type
+            +ForeignKey emission_class
+        }
+        class Image {
+            +AutoField image [PK]
+            +CharField image_url
+            +ForeignKey car
+        }
+    }
+
+    namespace Proizvodjaci_i_Modeli {
+        class Manufacturer {
+            +AutoField manufacturer [PK]
+            +CharField name
+            +ForeignKey country
+        }
+        class Model {
+            +AutoField model [PK]
+            +CharField name
+            +ForeignKey manufacturer
+        }
+        class ModelTypeModel {
+            +ForeignKey model_type
+            +ForeignKey model
+        }
+        class Country {
+            +AutoField country [PK]
+            +CharField name
+        }
+        class ModelType {
+            +AutoField model_type [PK]
+            +CharField type
+        }
+    }
+
+    namespace Sifarnici {
+        class Fuel {
+            +AutoField fuel [PK]
+            +CharField type
+        }
+        class Drivetrain {
+            +AutoField drivetrain [PK]
+            +CharField type
+        }
+        class EngineType {
+            +AutoField engine_type [PK]
+            +CharField type
+        }
+        class EmissionClass {
+            +AutoField emission_class [PK]
+            +CharField class_name
+        }
+        class TransmissionType {
+            +AutoField transmission_type [PK]
+            +CharField type
+        }
+    }
+
+    %% Relacije
+    User "0..*" --> "0..1" Company : PIB
+    ChatActivityLogs "0..*" --> "1" User : source
+    ChatActivityLogs "0..*" --> "1" User : destination
+    
+    Car "0..*" --> "1" User : user
+    Image "0..*" --> "0..1" Car : car
+    
+    Car "0..*" --> "1" Model : model
+    Car "0..*" --> "1" TransmissionType : transmission_type
+    Car "0..*" --> "1" Fuel : fuel
+    Car "0..*" --> "1" Drivetrain : drivetrain
+    Car "0..*" --> "1" EngineType : engine_type
+    Car "0..*" --> "1" EmissionClass : emission_class
+    
+    Model "0..*" --> "1" Manufacturer : manufacturer
+    Manufacturer "0..*" --> "1" Country : country
+    ModelTypeModel "0..*" --> "1" Model : model
+    ModelTypeModel "0..*" --> "1" ModelType : model_type

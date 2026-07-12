@@ -1,0 +1,59 @@
+classDiagram
+    namespace Modeli {
+        class User {
+            +number id
+            +Company PIB
+            +string username
+            +string email
+            +boolean isStaff
+            +boolean isActive
+            +Date dateJoined
+            +string phone
+            +string address
+            +boolean isReseller
+            +boolean isSuperuser
+        }
+        class Company {
+            +number id
+            +string name
+            +string address
+            +string phone
+            +string logoUrl
+            +string websiteUrl
+        }
+        class Car {
+            +number id
+            +User user
+            +Model model
+            +TransmissionType transmissionType
+            +EngineType engineType
+            +EmissionClass emissionClass
+            +Fuel fuel
+            +Drivetrain drivetrain
+            +number year
+            +number horsepower
+            +number kilowatt
+            +number engineVolume
+            +number transmissionGears
+            +number doors
+            +number seats
+            +boolean steeringWheelLeft
+            +string interiorColor
+            +number price
+            +string exteriorColor
+            +string chassisNumber
+            +boolean isPreowned
+            +Date createdAt
+            +Image[] images
+        }
+        class Model {
+            +number id
+            +string name
+            +Manufacturer manufacturer
+        }
+    }
+
+    %% Relacije
+    Car --> User
+    Car --> Model
+    User --> Company
