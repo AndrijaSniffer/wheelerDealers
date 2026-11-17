@@ -62,5 +62,6 @@ volumes:
 
 # =====================================================================
 # DEMO DAY COMMANDS (Run in standard Windows Terminal):
-# cat .\seed_data.sql | docker compose exec -T db mysql -u root -p'' wheelerdealers
+# PowerShell: use raw file redirection to preserve UTF-8 characters.
+# cmd /c "docker compose exec -T db mysql --default-character-set=utf8mb4 -uroot -proot wheelerdealers < seed_data.sql"
 # =====================================================================

@@ -72,7 +72,38 @@ A web application for buying and selling cars. Graduation project for University
    source seed_data.sql;
    ```
 
+With Docker, import the UTF-8 seed file after migrations finish. In Bash:
+
+```bash
+docker compose exec -T db mysql --default-character-set=utf8mb4 -uroot -proot wheelerdealers < seed_data.sql
+```
+
+In PowerShell, use CMD redirection to pass the file bytes directly to MySQL:
+
+```powershell
+cmd /c "docker compose exec -T db mysql --default-character-set=utf8mb4 -uroot -proot wheelerdealers < seed_data.sql"
+```
+
+The seed explicitly selects UTF-8 and encodes the accented manufacturer names as
+UTF-8 byte literals so they also survive older PowerShell pipelines. For a fresh
+development database, import this file once before running `seed_demo`. If an
+earlier import stored `?` characters, those rows need to be repaired or the
+database reset and seeded again; changing the connection encoding does not repair
+existing values. The SQL lookup seed itself is not safe to rerun on populated tables.
+
 ### Backend
+
+For Docker development, after migrations have finished and `seed_data.sql` has
+been imported, create demo accounts and eight test cars without images:
+
+```bash
+docker compose exec backend python manage.py seed_demo
+```
+
+The accounts are `demo_admin`, `demo_buyer`, `demo_seller`, `demo_reseller`, and
+`demo_dealer`. Newly created accounts all use the development password
+`DemoPass123!`. Rerunning the command leaves existing demo accounts and cars
+unchanged. Cars belong to the seller, reseller, and dealership accounts.
 
 ```bash
 cd srv

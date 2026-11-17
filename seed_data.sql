@@ -1,3 +1,6 @@
+-- Use UTF-8 for the MySQL connection, regardless of client defaults.
+SET NAMES utf8mb4;
+
 -- DROP TABLES --
 -- drop table order_car;
 
@@ -250,7 +253,7 @@ VALUES (2, 'Volkswagen'),
        (3, 'Maserati'),
        (4, 'Renault'),
        (4, 'Peugeot'),
-       (4, 'Citroën'),
+       (4, CONVERT(0x436974726fc3ab6e USING utf8mb4)), -- Citroën (UTF-8 bytes)
        (5, 'Toyota'),
        (5, 'Honda'),
        (5, 'Nissan'),
@@ -258,7 +261,7 @@ VALUES (2, 'Volkswagen'),
        (5, 'Subaru'),
        (7, 'Hyundai'),
        (7, 'Kia'),
-       (8, 'Škoda'),
+       (8, CONVERT(0xc5a06b6f6461 USING utf8mb4)), -- Škoda (UTF-8 bytes)
        (6, 'Tesla'),
        (6, 'Ford'),
        (6, 'Chevrolet'),
